@@ -124,7 +124,6 @@ export default function NewProjectWizard() {
           governorate,
           addressDetails,
           issueDate,
-          status,
           projectType: {
             workType,
             hasArchModification,
@@ -132,7 +131,11 @@ export default function NewProjectWizard() {
           }
         },
         zones,
-        user.uid
+        user.uid,
+        user.name,
+        user.email,
+        'other',
+        user.jobTitle || 'مدير المشروع'
       );
       router.push(`/projects/${projectId}`);
     } catch (err: any) {

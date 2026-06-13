@@ -157,11 +157,13 @@ export async function generateProjectCode(): Promise<string> {
 // 1. Create a Project and Seed all Templates
 // ==========================================
 export async function createProject(
-  headerInput: Omit<ProjectHeader, 'projectCode' | 'assignedEngineers' | 'engineersDetails' | 'expectedDeliveryDate' | 'actualDeliveryDate' | 'consultantName'>,
+  headerInput: Omit<ProjectHeader, 'projectCode' | 'assignedEngineers' | 'engineersDetails' | 'expectedDeliveryDate' | 'actualDeliveryDate' | 'consultantName' | 'status' | 'supervisionPercentage'>,
   zonesInput: Omit<Zone, 'id' | 'wallArea' | 'ceilingArea'>[],
   engineerId: string,
   engineerName?: string,
-  engineerEmail?: string
+  engineerEmail?: string,
+  engineerSpecialty?: AssignedEngineer['specialty'],
+  engineerSpecialtyLabel?: string
 ): Promise<string> {
   const projectId = doc(collection(db, 'projects')).id;
   const projectCode = await generateProjectCode();
@@ -179,8 +181,8 @@ export async function createProject(
       uid: engineerId,
       name: engineerName || 'مهندس',
       email: engineerEmail || '',
-      specialty: 'finishing_supervisor',
-      specialtyLabel: 'مشرف تشطيبات',
+      specialty: engineerSpecialty || 'finishing_supervisor',
+      specialtyLabel: engineerSpecialtyLabel || 'مشرف تشطيبات',
       joinedAt: new Date().toISOString()
     }]
   };
