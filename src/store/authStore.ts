@@ -26,6 +26,7 @@ interface AuthState {
   
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  updateProfile: (data: Partial<UserProfile>) => Promise<void>;
   initialize: () => () => void; // Returns unsubscribe function
 }
 
@@ -59,6 +60,24 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
+  },
+
+  updateProfile: async (data: Partial<UserProfile>) => {
+    // Cannot use 'get' directly in 'set' callback without adding 'get' to the create function signature.
+    // Instead we can use set with a callback.
+    set((state) => {
+      if (!state.user) return state;
+      // Optimistically update
+      const updatedUser = { ...state.user, ...data };
+      
+      // Update firestore asynchronously
+      const userRef = doc(db, 'users', state.user.uid);
+      setDoc(userRef, data, { merge: true }).catch((err) => {
+        console.error('Error updating profile in firestore:', err);
+      });
+
+      return { user: updatedUser };
+    });
   },
 
   initialize: () => {

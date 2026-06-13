@@ -28,11 +28,12 @@ service cloud.firestore {
       return isSignedIn() && (getUserData().role == 'tech_office' || getUserData().role == 'admin');
     }
 
-    // Check if user is assigned to a specific project
+    // Check if user is assigned to a specific project (backward compatible with old projects)
     function isAssignedEngineer(projectData) {
       return isSignedIn() && (
-        request.auth.uid in projectData.header.assignedEngineers ||
-        getUserData().role == 'admin'
+        getUserData().role == 'admin' ||
+        !projectData.header.keys().hasAll(['assignedEngineers']) ||
+        request.auth.uid in projectData.header.assignedEngineers
       );
     }
 

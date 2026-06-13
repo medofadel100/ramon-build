@@ -8,7 +8,7 @@ import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
-import { User, Mail, Phone, Briefcase, Calendar, FileText, ChevronLeft, Award } from 'lucide-react';
+import { User, Mail, Phone, Briefcase, Calendar, FileText, ChevronLeft, Award, Edit2, Save, X } from 'lucide-react';
 
 interface ProjectListItem {
   id: string;
@@ -19,7 +19,35 @@ interface ProjectListItem {
 export default function ProfilePage() {
   const user = useAuthStore((state) => state.user);
   const loadingAuth = useAuthStore((state) => state.loading);
+  const updateProfile = useAuthStore((state) => state.updateProfile);
   const router = useRouter();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [editJobTitle, setEditJobTitle] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setEditName(user.name);
+      setEditPhone(user.phone || '');
+      setEditJobTitle(user.jobTitle || 'مهندس مكتب فني');
+    }
+  }, [user, isEditing]);
+
+  const handleSaveProfile = async () => {
+    if (!editName.trim()) return;
+    setIsSaving(true);
+    try {
+      await updateProfile({ name: editName, phone: editPhone, jobTitle: editJobTitle });
+      setIsEditing(false);
+    } catch (err) {
+      console.error('Failed to update profile:', err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const [projects, setProjects] = useState<ProjectListItem[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
@@ -124,14 +152,57 @@ export default function ProfilePage() {
           
           {/* Profile Details Sidebar */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="rounded-2xl border border-[#222634] bg-[#13151c] p-6 shadow-xl text-center">
+            <div className="rounded-2xl border border-[#222634] bg-[#13151c] p-6 shadow-xl text-center relative group">
+              {!isEditing && (
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-[#c5a880] hover:bg-[#c5a880]/10 transition opacity-0 group-hover:opacity-100"
+                  title="تعديل البيانات"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </button>
+              )}
               <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#c5a880] to-[#e5c595] text-[#0d0e12] font-bold text-3xl shadow-lg mb-4">
                 {user.name.charAt(0).toUpperCase()}
               </div>
-              <h2 className="text-xl font-bold text-white">{user.name}</h2>
-              <span className="inline-block px-3 py-1 mt-2 rounded-md bg-[#c5a880]/10 border border-[#c5a880]/20 text-xs font-semibold text-[#c5a880]">
-                {roleLabels[user.role] || user.role}
-              </span>
+              
+              {isEditing ? (
+                <div className="space-y-3 mt-4 text-right">
+                  <div>
+                    <label className="block text-[10px] text-slate-500 mb-1">الاسم</label>
+                    <input 
+                      type="text" 
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-3 py-1.5 text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                    />
+                  </div>
+                  <div className="flex gap-2 justify-center pt-2">
+                    <button 
+                      onClick={handleSaveProfile}
+                      disabled={isSaving}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 disabled:opacity-50"
+                    >
+                      {isSaving ? <div className="h-3 w-3 animate-spin rounded-full border-2 border-[#0d0e12] border-t-transparent" /> : <Save className="h-3 w-3" />}
+                      حفظ
+                    </button>
+                    <button 
+                      onClick={() => setIsEditing(false)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-white text-xs font-medium hover:bg-slate-700"
+                    >
+                      <X className="h-3 w-3" />
+                      إلغاء
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <h2 className="text-xl font-bold text-white">{user.name}</h2>
+                  <span className="inline-block px-3 py-1 mt-2 rounded-md bg-[#c5a880]/10 border border-[#c5a880]/20 text-xs font-semibold text-[#c5a880]">
+                    {roleLabels[user.role] || user.role}
+                  </span>
+                </>
+              )}
             </div>
 
             <div className="rounded-2xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
@@ -139,23 +210,42 @@ export default function ProfilePage() {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Briefcase className="h-4 w-4 text-[#c5a880] mt-0.5" />
-                  <div>
+                  <div className="w-full">
                     <span className="block text-[10px] font-semibold text-slate-500">المسمى الوظيفي</span>
-                    <span className="text-sm text-white font-medium">{user.jobTitle || 'مهندس مكتب فني'}</span>
+                    {isEditing ? (
+                      <input 
+                        type="text" 
+                        value={editJobTitle}
+                        onChange={(e) => setEditJobTitle(e.target.value)}
+                        className="w-full mt-1 rounded-lg border border-[#222634] bg-[#1a1c24] px-2 py-1 text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                      />
+                    ) : (
+                      <span className="text-sm text-white font-medium">{user.jobTitle || 'مهندس مكتب فني'}</span>
+                    )}
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <Mail className="h-4 w-4 text-[#c5a880] mt-0.5" />
-                  <div>
+                  <div className="w-full">
                     <span className="block text-[10px] font-semibold text-slate-500">البريد الإلكتروني</span>
                     <span className="text-sm text-white font-medium">{user.email}</span>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <Phone className="h-4 w-4 text-[#c5a880] mt-0.5" />
-                  <div>
+                  <div className="w-full">
                     <span className="block text-[10px] font-semibold text-slate-500">رقم الهاتف</span>
-                    <span className="text-sm text-white font-medium">{user.phone || 'غير مسجل'}</span>
+                    {isEditing ? (
+                      <input 
+                        type="tel" 
+                        value={editPhone}
+                        onChange={(e) => setEditPhone(e.target.value)}
+                        className="w-full mt-1 rounded-lg border border-[#222634] bg-[#1a1c24] px-2 py-1 text-sm text-white focus:border-[#c5a880] focus:outline-none text-right dir-rtl"
+                        placeholder="01xxxxxxxxx"
+                      />
+                    ) : (
+                      <span className="text-sm text-white font-medium">{user.phone || 'غير مسجل'}</span>
+                    )}
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
