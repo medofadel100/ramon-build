@@ -524,7 +524,8 @@ export async function acceptEngineerInvite(
   token: string,
   userId: string,
   userName: string,
-  userEmail: string
+  userEmail: string,
+  userJobTitle?: string
 ): Promise<boolean> {
   const inviteRef = doc(db, 'projects', projectId, 'inviteTokens', token);
   const inviteSnap = await getDoc(inviteRef);
@@ -552,7 +553,7 @@ export async function acceptEngineerInvite(
     name: userName,
     email: userEmail,
     specialty: inviteData.specialty,
-    specialtyLabel: inviteData.specialtyLabel,
+    specialtyLabel: userJobTitle && userJobTitle.trim() !== '' ? userJobTitle : inviteData.specialtyLabel,
     joinedAt: new Date().toISOString()
   };
 

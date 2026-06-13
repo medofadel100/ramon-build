@@ -64,7 +64,8 @@ export default function InvitePage({ params }: InvitePageProps) {
           token, 
           user.uid, 
           user.name || user.email.split('@')[0], 
-          user.email
+          user.email,
+          user.jobTitle
         );
 
         if (success) {
