@@ -1,0 +1,95 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is logged in
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Get user document profile
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    // Check if user is an Admin
+    function isAdmin() {
+      return isSignedIn() && getUserData().role == 'admin';
+    }
+
+    // Check if user is a Quantity Engineer
+    function isQtyEngineer() {
+      return isSignedIn() && (getUserData().role == 'qty_engineer' || getUserData().role == 'admin');
+    }
+
+    // Check if user is Technical Office
+    function isTechOffice() {
+      return isSignedIn() && (getUserData().role == 'tech_office' || getUserData().role == 'admin');
+    }
+
+    // Check if user is assigned to a specific project
+    function isAssignedEngineer(projectData) {
+      return isSignedIn() && (
+        request.auth.uid in projectData.header.assignedEngineers ||
+        getUserData().role == 'admin'
+      );
+    }
+
+    // Users Collection Rules
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+    }
+
+    // Projects Collection Rules
+    match /projects/{projectId} {
+      // Clients can read the project if they provide the correct clientShareToken
+      allow read: if isSignedIn() || (
+        resource.data.clientShareToken != null && 
+        request.query.limit == 1 && // for token checks
+        request.query.token == resource.data.clientShareToken
+      ) || (
+        request.auth == null // Read via share token fallback in ClientView client code
+      );
+      
+      // Creating is restricted to Admins and QtyEngineers
+      allow create: if isQtyEngineer();
+      
+      // Updating is allowed if user is assigned or is Admin
+      allow update, delete: if isAssignedEngineer(resource.data);
+
+      // Areas/Zones subcollection
+      match /areas/{areaId} {
+        allow read: if isSignedIn() || request.auth == null; // client view needs access
+        allow write: if isSignedIn() && (
+          isQtyEngineer() || 
+          isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data)
+        );
+      }
+
+      // Sections subcollection
+      match /sections/{sectionId} {
+        allow read: if isSignedIn() || request.auth == null;
+        allow write: if isSignedIn() && (
+          isQtyEngineer() || 
+          isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data)
+        );
+
+        // Items subcollection under sections
+        match /items/{itemId} {
+          allow read: if isSignedIn() || request.auth == null;
+          allow write: if isSignedIn() && (
+            isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data)
+          );
+        }
+      }
+    }
+
+    // Global Price List Collection Rules
+    match /priceList/{itemKey} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

@@ -1,0 +1,132 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/authStore';
+import { useProjectStore } from '@/store/projectStore';
+import { LogOut, Home, PlusCircle, Settings, Users, Database } from 'lucide-react';
+
+export default function Navbar() {
+  const user = useAuthStore((state) => state.user);
+  const signOut = useAuthStore((state) => state.signOut);
+  const saving = useProjectStore((state) => state.saving);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (err) {
+      console.error('Signout error:', err);
+    }
+  };
+
+  const roleLabels = {
+    admin: 'مدير النظام',
+    qty_engineer: 'مهندس حصر',
+    tech_office: 'مكتب فني',
+    collaborator: 'مهندس مشارك'
+  };
+
+  const isActive = (path: string) => pathname === path;
+
+  return (
+    <nav className="border-b border-slate-800 bg-[#13151c]/90 px-6 py-4 backdrop-blur-md sticky top-0 z-40 select-none">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
+        
+        {/* Right side: Brand & Nav Links */}
+        <div className="flex items-center gap-8">
+          <Link href="/dashboard" className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#c5a880] to-[#e5c595] text-[#0d0e12] font-bold text-lg shadow">
+              R
+            </div>
+            <span className="font-cairo text-base font-bold text-white hidden md:inline">
+              المكتب الفني لشركة رامون
+            </span>
+          </Link>
+          
+          <div className="hidden sm:flex items-center gap-2 font-cairo text-sm font-medium">
+            <Link 
+              href="/dashboard" 
+              className={`px-3 py-1.5 rounded-lg transition ${
+                isActive('/dashboard') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <Home className="h-4 w-4" />
+                المشاريع
+              </span>
+            </Link>
+            <Link 
+              href="/projects/new" 
+              className={`px-3 py-1.5 rounded-lg transition ${
+                isActive('/projects/new') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <PlusCircle className="h-4 w-4" />
+                مشروع جديد
+              </span>
+            </Link>
+
+            {user?.role === 'admin' && (
+              <>
+                <Link 
+                  href="/admin/price-list" 
+                  className={`px-3 py-1.5 rounded-lg transition ${
+                    isActive('/admin/price-list') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Database className="h-4 w-4" />
+                    قائمة الأسعار
+                  </span>
+                </Link>
+                <Link 
+                  href="/admin/users" 
+                  className={`px-3 py-1.5 rounded-lg transition ${
+                    isActive('/admin/users') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Users className="h-4 w-4" />
+                    المستخدمين
+                  </span>
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Left side: Saving state, User details, Logout */}
+        <div className="flex items-center gap-4">
+          {saving && (
+            <div className="flex items-center gap-1.5 font-cairo text-xs text-[#c5a880]">
+              <span className="h-2 w-2 rounded-full bg-[#c5a880] animate-pulse"></span>
+              <span>جاري الحفظ تلقائياً...</span>
+            </div>
+          )}
+
+          {user && (
+            <div className="flex items-center gap-3 border-r border-slate-800 pr-4">
+              <div className="text-right hidden xs:block">
+                <p className="font-cairo text-sm font-semibold text-white leading-tight">{user.name}</p>
+                <span className="inline-block px-2 py-0.5 mt-0.5 rounded bg-slate-800 text-[10px] text-slate-400 font-cairo">
+                  {roleLabels[user.role] || user.role}
+                </span>
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800/50 hover:text-red-400 text-slate-400 transition"
+                title="تسجيل الخروج"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+}

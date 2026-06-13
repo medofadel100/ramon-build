@@ -1,0 +1,300 @@
+'use client';
+
+import { useState } from 'react';
+import { useProjectStore } from '@/store/projectStore';
+import { useAuthStore } from '@/store/authStore';
+import { ProjectHeader } from '@/lib/project-service';
+import { Save, Info, User, Phone, MapPin, Calendar, CheckSquare, Eye } from 'lucide-react';
+import Link from 'next/link';
+
+export default function ProjectHeaderTab() {
+  const currentProject = useProjectStore((state) => state.currentProject);
+  const updateHeader = useProjectStore((state) => state.updateHeader);
+  const user = useAuthStore((state) => state.user);
+
+  const [name, setName] = useState(currentProject?.header.name || '');
+  const [ownerName, setOwnerName] = useState(currentProject?.header.ownerName || '');
+  const [ownerPhone, setOwnerPhone] = useState(currentProject?.header.ownerPhone || '');
+  const [designCode, setDesignCode] = useState(currentProject?.header.designCode || '');
+  const [governorate, setGovernorate] = useState(currentProject?.header.governorate || '');
+  const [addressDetails, setAddressDetails] = useState(currentProject?.header.addressDetails || '');
+  const [issueDate, setIssueDate] = useState(currentProject?.header.issueDate || '');
+  const [status, setStatus] = useState<ProjectHeader['status']>(currentProject?.header.status || 'draft');
+  const [isEditing, setIsEditing] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  if (!currentProject) return null;
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await updateHeader({
+      name,
+      ownerName,
+      ownerPhone,
+      designCode,
+      governorate,
+      addressDetails,
+      issueDate,
+      status
+    });
+    setIsEditing(false);
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+  };
+
+  const getStatusLabel = (s: string) => {
+    switch (s) {
+      case 'draft': return 'مسودة';
+      case 'review': return 'تحت المراجعة';
+      case 'approved': return 'معتمد فنيًا';
+      case 'sent_to_client': return 'مرسل للعميل';
+      case 'closed': return 'مغلق/منتهي';
+      default: return s;
+    }
+  };
+
+  const getWorkTypeLabel = (w: string) => {
+    switch (w) {
+      case 'new_build': return 'إنشاء جديد كامل (Core & Shell)';
+      case 'finishing_only': return 'تشطيب فقط';
+      case 'renovation': return 'تجديد / ترميم جزئي';
+      default: return w;
+    }
+  };
+
+  const governorates = [
+    'القاهرة', 'الجيزة', 'الإسكندرية', 'القليوبية', 'الدقهلية', 'الشرقية', 'المنوفية', 
+    'الغربية', 'البحيرة', 'دمياط', 'بورسعيد', 'الإسماعيلية', 'السويس', 'كفر الشيخ', 
+    'الفيوم', 'بني سويف', 'المنيا', 'أسيوط', 'سوهاج', 'قنا', 'الأقصر', 'أسوان', 
+    'البحر الأحمر', 'الوادي الجديد', 'مطروح', 'شمال سيناء', 'جنوب سيناء'
+  ];
+
+  const canEdit = user?.role === 'admin' || currentProject.header.assignedEngineers.includes(user?.uid || '');
+
+  return (
+    <div className="space-y-6 font-cairo select-none">
+      
+      {/* Overview Metadata Card */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
+          <span className="block text-xs font-semibold text-slate-500 mb-1">رمز التعريف والمسلسل</span>
+          <p className="text-xl font-extrabold text-[#c5a880] tracking-wider">{currentProject.header.projectCode}</p>
+        </div>
+        <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
+          <span className="block text-xs font-semibold text-slate-500 mb-1">نوع المشروع</span>
+          <p className="text-sm font-bold text-white mt-1">{getWorkTypeLabel(currentProject.header.projectType.workType)}</p>
+        </div>
+        <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
+          <span className="block text-xs font-semibold text-slate-500 mb-1">حالة المستند الحالية</span>
+          <div className="flex items-center gap-2 mt-1">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#c5a880] animate-pulse"></span>
+            <p className="text-sm font-bold text-white">{getStatusLabel(currentProject.header.status)}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Details Form */}
+      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
+        <div className="flex items-center justify-between border-b border-[#222634] pb-4 mb-6">
+          <div>
+            <h3 className="text-lg font-bold text-white">تفاصيل وملف المشروع</h3>
+            <p className="text-xs text-slate-400 mt-0.5">البيانات الفنية وتفاصيل الاتصال الخاصة بالعميل والموقع.</p>
+          </div>
+          {canEdit && !isEditing && (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="px-4 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-[#c5a880] hover:bg-slate-800 transition"
+            >
+              تعديل البيانات
+            </button>
+          )}
+        </div>
+
+        {saveSuccess && (
+          <div className="mb-6 rounded-lg bg-emerald-950/40 border border-emerald-800/60 p-3 text-center text-xs text-emerald-400 font-semibold animate-pulse">
+            تم حفظ تعديلات المشروع بنجاح ومزامنتها مع قاعدة البيانات.
+          </div>
+        )}
+
+        <form onSubmit={handleSave} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Project Name */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <Info className="h-3.5 w-3.5 text-slate-500" />
+                اسم المشروع
+              </label>
+              <input
+                type="text"
+                required
+                disabled={!isEditing}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 disabled:border-slate-850 px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
+            {/* Owner Name */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-slate-500" />
+                اسم المالك (العميل)
+              </label>
+              <input
+                type="text"
+                required
+                disabled={!isEditing}
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
+            {/* Owner Phone */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <Phone className="h-3.5 w-3.5 text-slate-500" />
+                رقم تليفون المالك
+              </label>
+              <div className="relative">
+                <input
+                  type="tel"
+                  required
+                  disabled={!isEditing}
+                  value={ownerPhone}
+                  onChange={(e) => setOwnerPhone(e.target.value)}
+                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                />
+                {!isEditing && ownerPhone && (
+                  <a
+                    href={`https://wa.me/2${ownerPhone}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute left-3 top-2.5 px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-[10px] text-emerald-400 flex items-center gap-1 hover:brightness-110 transition"
+                  >
+                    واتساب
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Design Code */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <CheckSquare className="h-3.5 w-3.5 text-slate-500" />
+                الكود التصميمي / المرجعي
+              </label>
+              <input
+                type="text"
+                disabled={!isEditing}
+                value={designCode}
+                onChange={(e) => setDesignCode(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
+            {/* Governorate */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-slate-500" />
+                الموقع / المحافظة
+              </label>
+              <select
+                disabled={!isEditing}
+                value={governorate}
+                onChange={(e) => setGovernorate(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              >
+                {governorates.map(g => <option key={g} value={g}>{g}</option>)}
+              </select>
+            </div>
+
+            {/* Location details */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-slate-500" />
+                العنوان التفصيلي
+              </label>
+              <input
+                type="text"
+                disabled={!isEditing}
+                value={addressDetails}
+                onChange={(e) => setAddressDetails(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
+            {/* Issue Date */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-slate-500" />
+                تاريخ الإصدار
+              </label>
+              <input
+                type="date"
+                disabled={!isEditing}
+                value={issueDate}
+                onChange={(e) => setIssueDate(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
+            {/* Status */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <Eye className="h-3.5 w-3.5 text-slate-500" />
+                حالة المستند
+              </label>
+              <select
+                disabled={!isEditing}
+                value={status}
+                onChange={(e) => setStatus(e.target.value as any)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              >
+                <option value="draft">مسودة</option>
+                <option value="review">تحت المراجعة</option>
+                <option value="approved">معتمد فنيًا</option>
+                <option value="sent_to_client">مرسل للعميل</option>
+                <option value="closed">مغلق/منتهي</option>
+              </select>
+            </div>
+
+          </div>
+
+          {/* Form Actions */}
+          {isEditing && (
+            <div className="flex gap-3 justify-end border-t border-[#222634] pt-5 mt-8">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsEditing(false);
+                  // Reset states
+                  setName(currentProject.header.name);
+                  setOwnerName(currentProject.header.ownerName);
+                  setOwnerPhone(currentProject.header.ownerPhone);
+                  setDesignCode(currentProject.header.designCode);
+                  setGovernorate(currentProject.header.governorate);
+                  setAddressDetails(currentProject.header.addressDetails);
+                  setIssueDate(currentProject.header.issueDate);
+                  setStatus(currentProject.header.status);
+                }}
+                className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-400 hover:text-white transition"
+              >
+                إلغاء التغييرات
+              </button>
+              <button
+                type="submit"
+                className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold shadow hover:brightness-110 transition animate-pulse"
+              >
+                <Save className="h-4 w-4" />
+                حفظ التعديلات
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
+
+    </div>
+  );
+}
