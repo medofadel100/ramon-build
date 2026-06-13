@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { FileText, Image as ImageIcon, Trash2, Upload, ExternalLink, Paperclip, Eye, Download } from 'lucide-react';
 
 interface Attachment {
@@ -14,7 +13,6 @@ interface Attachment {
   type: string;
   uploadedAt: string;
   size: number;
-  storagePath?: string;
 }
 
 export default function ProjectAttachmentsTab() {
@@ -45,33 +43,27 @@ export default function ProjectAttachmentsTab() {
     setLoading(true);
     setUploadProgress(0);
 
-    const uniqueName = `${Date.now()}_${file.name}`;
-    const storageRef = ref(storage, `projects/${currentProject.id}/attachments/${uniqueName}`);
+    const xhr = new XMLHttpRequest();
     
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on('state_changed', 
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    xhr.upload.addEventListener('progress', (event) => {
+      if (event.lengthComputable) {
+        const progress = (event.loaded / event.total) * 100;
         setUploadProgress(Math.round(progress));
-      }, 
-      (error) => {
-        console.error('Error uploading file:', error);
-        alert('حدث خطأ أثناء تحميل الملف. تأكد من تفعيل Storage في إعدادات Firebase.');
-        setLoading(false);
-        setUploadProgress(null);
-      }, 
-      async () => {
+      }
+    });
+
+    xhr.addEventListener('load', async () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
         try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          const response = JSON.parse(xhr.responseText);
+          const downloadURL = response.url;
           
           const newAttachment: Attachment = {
             name: file.name,
             url: downloadURL,
             type: file.type,
             uploadedAt: new Date().toISOString(),
-            size: file.size,
-            storagePath: storageRef.fullPath
+            size: file.size
           };
 
           const projectDocRef = doc(db, 'projects', currentProject.id);
@@ -92,21 +84,35 @@ export default function ProjectAttachmentsTab() {
           setLoading(false);
           setUploadProgress(null);
         }
+      } else {
+        console.error('Upload failed with status:', xhr.status);
+        alert('حدث خطأ أثناء تحميل الملف.');
+        setLoading(false);
+        setUploadProgress(null);
       }
-    );
+    });
+
+    xhr.addEventListener('error', () => {
+      alert('حدث خطأ في الاتصال بالخادم أثناء التحميل.');
+      setLoading(false);
+      setUploadProgress(null);
+    });
+
+    const uniqueName = `${Date.now()}_${file.name}`;
+    xhr.open('POST', `/api/upload?filename=${encodeURIComponent(uniqueName)}`);
+    xhr.send(file);
   };
 
   const handleDeleteAttachment = async (att: Attachment) => {
     if (!confirm('هل أنت متأكد من رغبتك في حذف هذا المرفق؟')) return;
 
     try {
-      if (att.storagePath) {
-        const fileRef = ref(storage, att.storagePath);
-        await deleteObject(fileRef).catch(err => {
-            console.warn("Storage delete error (might be already deleted):", err);
-        });
-      } else if (att.url.includes('vercel-storage.com') || att.url.includes('public.blob.vercel-storage.com')) {
-        await fetch(`/api/upload?url=${encodeURIComponent(att.url)}`, { method: 'DELETE' }).catch(() => {});
+      const res = await fetch(`/api/upload?url=${encodeURIComponent(att.url)}`, {
+        method: 'DELETE',
+      });
+      
+      if (!res.ok) {
+        throw new Error('Failed to delete file from storage');
       }
 
       const projectDocRef = doc(db, 'projects', currentProject.id);
