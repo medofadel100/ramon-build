@@ -7,7 +7,7 @@ import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { FileText, Image as ImageIcon, Trash2, Upload, ExternalLink, Paperclip, Eye, Download } from 'lucide-react';
 
-interface Attachment {
+export interface Attachment {
   name: string;
   url: string;
   type: string;

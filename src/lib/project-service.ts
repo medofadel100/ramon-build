@@ -16,6 +16,7 @@ import {
 import { db } from './firebase';
 import { DEFAULT_SECTIONS, DEFAULT_ITEMS } from './default-items';
 import { Zone, BOQItem } from './calculations';
+import { Attachment } from '@/components/project/ProjectAttachmentsTab';
 
 export function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return 'غير متوفر';
@@ -131,6 +132,7 @@ export interface ProjectData {
   suppliers?: Supplier[];
   workers?: Worker[];
   accounts?: AccountEntry[];
+  attachments?: Attachment[];
 }
 
 // ==========================================
@@ -370,7 +372,8 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
     clientShareSettings: pData.clientShareSettings || { showPrices: true, showDetailedPricing: true },
     suppliers,
     workers,
-    accounts
+    accounts,
+    attachments: pData.attachments || []
   };
 }
 
