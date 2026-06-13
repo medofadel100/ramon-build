@@ -10,15 +10,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file body provided' }, { status: 400 });
     }
 
-    // Upload to Vercel Blob using the explicit server token
+    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    if (!token) {
+      console.error('BLOB_READ_WRITE_TOKEN is not set in environment variables');
+      return NextResponse.json({ error: 'Server configuration error: BLOB token missing' }, { status: 500 });
+    }
+
+    // Upload to Vercel Blob
     const blob = await put(filename, request.body, {
       access: 'public',
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+      token,
     });
 
     return NextResponse.json(blob);
   } catch (error: any) {
-    console.error('Error uploading file to Vercel Blob:', error);
+    console.error('Error uploading file to Vercel Blob:', error?.message, error?.stack);
     return NextResponse.json({ error: error.message || 'Upload failed' }, { status: 500 });
   }
 }
@@ -32,13 +38,15 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'URL query parameter is required' }, { status: 400 });
     }
 
-    // Delete from Vercel Blob using the explicit server token
-    await del(url, {
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    });
+    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    if (!token) {
+      return NextResponse.json({ error: 'Server configuration error: BLOB token missing' }, { status: 500 });
+    }
+
+    await del(url, { token });
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error('Error deleting file from Vercel Blob:', error);
+    console.error('Error deleting file from Vercel Blob:', error?.message, error?.stack);
     return NextResponse.json({ error: error.message || 'Deletion failed' }, { status: 500 });
   }
 }
