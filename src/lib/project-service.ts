@@ -44,6 +44,13 @@ export interface AssignedEngineer {
   joinedAt: string;
 }
 
+export interface ScheduleOverride {
+  id: string;
+  title: string;
+  startDay: number;
+  duration: number;
+}
+
 export interface ProjectHeader {
   name: string;
   ownerName: string;
@@ -65,6 +72,7 @@ export interface ProjectHeader {
   };
   assignedEngineers: string[];
   engineersDetails: AssignedEngineer[];
+  scheduleOverrides?: ScheduleOverride[];
 }
 
 export interface Supplier {
