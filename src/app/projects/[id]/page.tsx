@@ -146,7 +146,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
 
       {/* Tab Navigation header */}
       <div className="mx-auto max-w-7xl w-full px-4 pt-6">
-        <div className="flex items-center gap-1 overflow-x-auto pb-2 border-b border-[#222634] select-none scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-[#222634] select-none scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {tabList.map(tab => {
             const TabIcon = tab.icon;
             const active = activeTab === tab.id;
