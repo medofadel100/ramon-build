@@ -85,8 +85,13 @@ export default function ProjectAttachmentsTab() {
           setUploadProgress(null);
         }
       } else {
-        console.error('Upload failed with status:', xhr.status);
-        alert('حدث خطأ أثناء تحميل الملف.');
+        let errorMsg = 'Unknown error';
+        try {
+          const response = JSON.parse(xhr.responseText);
+          errorMsg = response.error || errorMsg;
+        } catch (e) {}
+        console.error('Upload failed with status:', xhr.status, errorMsg);
+        alert(`حدث خطأ أثناء تحميل الملف: ${errorMsg}`);
         setLoading(false);
         setUploadProgress(null);
       }
