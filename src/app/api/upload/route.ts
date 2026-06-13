@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file body provided' }, { status: 400 });
     }
 
-    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    const token = process.env.ramonbuild_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN;
     if (!token) {
       console.error('BLOB_READ_WRITE_TOKEN is not set in environment variables');
       return NextResponse.json({ error: 'Server configuration error: BLOB token missing' }, { status: 500 });
@@ -38,7 +38,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'URL query parameter is required' }, { status: 400 });
     }
 
-    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    const token = process.env.ramonbuild_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN;
     if (!token) {
       return NextResponse.json({ error: 'Server configuration error: BLOB token missing' }, { status: 500 });
     }
