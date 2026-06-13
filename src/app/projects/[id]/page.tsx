@@ -12,7 +12,10 @@ import ProjectBOQTab from '@/components/project/ProjectBOQTab';
 import ProjectSummaryTab from '@/components/project/ProjectSummaryTab';
 import ProjectAttachmentsTab from '@/components/project/ProjectAttachmentsTab';
 import ProjectSharingTab from '@/components/project/ProjectSharingTab';
-import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft } from 'lucide-react';
+import ProjectTeamTab from '@/components/project/ProjectTeamTab';
+import ProjectSuppliersTab from '@/components/project/ProjectSuppliersTab';
+import ProjectAccountingTab from '@/components/project/ProjectAccountingTab';
+import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectPageProps {
@@ -32,7 +35,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
   const loadingProject = useProjectStore((state) => state.loading);
   const projectError = useProjectStore((state) => state.error);
 
-  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'summary' | 'attachments' | 'sharing'>('boq');
+  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting'>('boq');
 
   useEffect(() => {
     if (!loadingAuth && !user) {
@@ -90,6 +93,9 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
     { id: 'zones', label: 'المساحات والحيّز', icon: Layers },
     { id: 'summary', label: 'الملخص المالي والزمني', icon: Layout },
     { id: 'info', label: 'ملف المشروع', icon: Info },
+    { id: 'team', label: 'فريق العمل', icon: Users },
+    { id: 'suppliers', label: 'الموردين والصناعية', icon: Package },
+    { id: 'accounting', label: 'الحسابات والدفعات', icon: DollarSign },
     { id: 'attachments', label: 'المرفقات', icon: Paperclip },
     { id: 'sharing', label: 'مشاركة العميل', icon: Share2 }
   ] as const;
@@ -115,6 +121,12 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
                 <span className="text-xs font-bold text-[#c5a880] tracking-wider">{currentProject.header.projectCode}</span>
                 <span className="text-[10px] text-slate-500">•</span>
                 <span className="text-xs text-slate-400 font-medium">المالك: {currentProject.header.ownerName}</span>
+                {currentProject.header.consultantName && (
+                  <>
+                    <span className="text-[10px] text-slate-500">•</span>
+                    <span className="text-xs text-slate-400 font-medium">الاستشاري: {currentProject.header.consultantName}</span>
+                  </>
+                )}
               </div>
               <h2 className="text-xl font-bold text-white mt-1.5">{currentProject.header.name}</h2>
             </div>
@@ -164,6 +176,9 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
           {activeTab === 'zones' && <ProjectZonesTab />}
           {activeTab === 'summary' && <ProjectSummaryTab />}
           {activeTab === 'info' && <ProjectHeaderTab />}
+          {activeTab === 'team' && <ProjectTeamTab />}
+          {activeTab === 'suppliers' && <ProjectSuppliersTab />}
+          {activeTab === 'accounting' && <ProjectAccountingTab />}
           {activeTab === 'attachments' && <ProjectAttachmentsTab />}
           {activeTab === 'sharing' && <ProjectSharingTab />}
         </div>

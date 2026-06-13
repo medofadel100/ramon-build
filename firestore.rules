@@ -45,7 +45,8 @@ service cloud.firestore {
     // Projects Collection Rules
     match /projects/{projectId} {
       // Clients can read the project if they provide the correct clientShareToken
-      allow read: if isSignedIn() || (
+      // Engineers can read only if they are assigned (or Admin)
+      allow read: if isAssignedEngineer(resource.data) || (
         resource.data.clientShareToken != null && 
         request.query.limit == 1 && // for token checks
         request.query.token == resource.data.clientShareToken
@@ -83,6 +84,31 @@ service cloud.firestore {
             isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data)
           );
         }
+      }
+
+      // Invite Tokens Subcollection
+      match /inviteTokens/{tokenId} {
+        allow read: if true; // Any user can read tokens to verify them
+        allow create, delete: if isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data);
+        allow update: if isSignedIn(); // Allow updating usage status when accepting
+      }
+
+      // Suppliers Subcollection
+      match /suppliers/{supplierId} {
+        allow read: if isSignedIn() || request.auth == null;
+        allow write: if isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data);
+      }
+
+      // Workers Subcollection
+      match /workers/{workerId} {
+        allow read: if isSignedIn() || request.auth == null;
+        allow write: if isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data);
+      }
+
+      // Accounts Subcollection
+      match /accounts/{accountId} {
+        allow read: if isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data);
+        allow write: if isAssignedEngineer(get(/databases/$(database)/documents/projects/$(projectId)).data);
       }
     }
 

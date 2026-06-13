@@ -10,9 +10,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file body provided' }, { status: 400 });
     }
 
-    // Upload to Vercel Blob using the server token
+    // Upload to Vercel Blob using the explicit server token
     const blob = await put(filename, request.body, {
       access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
     return NextResponse.json(blob);
@@ -31,8 +32,10 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'URL query parameter is required' }, { status: 400 });
     }
 
-    // Delete from Vercel Blob
-    await del(url);
+    // Delete from Vercel Blob using the explicit server token
+    await del(url, {
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Error deleting file from Vercel Blob:', error);

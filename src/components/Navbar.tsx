@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useProjectStore } from '@/store/projectStore';
-import { LogOut, Home, PlusCircle, Settings, Users, Database } from 'lucide-react';
+import { LogOut, Home, PlusCircle, Settings, Users, Database, User } from 'lucide-react';
 
 export default function Navbar() {
   const user = useAuthStore((state) => state.user);
@@ -110,12 +110,19 @@ export default function Navbar() {
 
           {user && (
             <div className="flex items-center gap-3 border-r border-slate-800 pr-4">
-              <div className="text-right hidden xs:block">
-                <p className="font-cairo text-sm font-semibold text-white leading-tight">{user.name}</p>
+              <Link href="/profile" className="text-right hidden xs:block hover:opacity-80 transition group">
+                <p className="font-cairo text-sm font-semibold text-white leading-tight group-hover:text-[#c5a880]">{user.name}</p>
                 <span className="inline-block px-2 py-0.5 mt-0.5 rounded bg-slate-800 text-[10px] text-slate-400 font-cairo">
                   {roleLabels[user.role] || user.role}
                 </span>
-              </div>
+              </Link>
+              <Link
+                href="/profile"
+                className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:bg-[#c5a880]/15 hover:text-[#c5a880] text-slate-400 transition"
+                title="الملف الشخصي"
+              >
+                <User className="h-4 w-4" />
+              </Link>
               <button
                 onClick={handleSignOut}
                 className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800/50 hover:text-red-400 text-slate-400 transition"

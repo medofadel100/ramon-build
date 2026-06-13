@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { deleteProject } from '@/lib/project-service';
 import Navbar from '@/components/Navbar';
-import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText } from 'lucide-react';
+import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectListItem {
@@ -41,6 +42,11 @@ export default function DashboardPage() {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
+  // Deletion state
+  const [projectToDelete, setProjectToDelete] = useState<ProjectListItem | null>(null);
+  const [deleteInput, setDeleteInput] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     if (!loadingAuth && !user) {
       router.push('/login');
@@ -53,26 +59,34 @@ export default function DashboardPage() {
     async function fetchProjects() {
       setLoadingProjects(true);
       try {
-        const pQuery = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+        let pQuery;
+        if (user!.role === 'admin') {
+          pQuery = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+        } else {
+          pQuery = query(collection(db, 'projects'), where('header.assignedEngineers', 'array-contains', user!.uid));
+        }
+
         const querySnapshot = await getDocs(pQuery);
-        const list: ProjectListItem[] = [];
+        let list: ProjectListItem[] = [];
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
-          // Access permissions: Admin sees all. Collaborator/Engineer sees if they are assigned.
-          if (
-            user && (
-              user.role === 'admin' ||
-              (data.header?.assignedEngineers && data.header.assignedEngineers.includes(user.uid))
-            )
-          ) {
-            list.push({
-              id: docSnap.id,
-              header: data.header,
-              createdAt: data.createdAt,
-              updatedAt: data.updatedAt
-            } as ProjectListItem);
-          }
+          list.push({
+            id: docSnap.id,
+            header: data.header,
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt
+          } as ProjectListItem);
         });
+
+        // Local sort for non-admins to avoid needing a complex composite index
+        if (user!.role !== 'admin') {
+          list.sort((a, b) => {
+            const dateA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+            const dateB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+            return dateB - dateA;
+          });
+        }
+
         setProjects(list);
       } catch (err) {
         console.error('Error fetching projects:', err);
@@ -83,6 +97,23 @@ export default function DashboardPage() {
 
     fetchProjects();
   }, [user]);
+
+  const handleDeleteProject = async () => {
+    if (!projectToDelete || deleteInput !== projectToDelete.header.name) return;
+    
+    setIsDeleting(true);
+    try {
+      await deleteProject(projectToDelete.id);
+      setProjects(prev => prev.filter(p => p.id !== projectToDelete.id));
+      setProjectToDelete(null);
+      setDeleteInput('');
+    } catch (err) {
+      console.error('Error deleting project:', err);
+      alert('حدث خطأ أثناء حذف المشروع.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch =
@@ -280,12 +311,88 @@ export default function DashboardPage() {
                   >
                     <FileText className="h-4 w-4" />
                   </Link>
+                  {user && user.role === 'admin' && (
+                    <button
+                      onClick={() => setProjectToDelete(project)}
+                      className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-rose-500/60 hover:text-rose-400 hover:border-rose-900/50 transition"
+                      title="حذف المشروع"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
           </div>
         )}
       </main>
+
+      {/* Delete Confirmation Modal */}
+      {projectToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md bg-[#13151c] border border-rose-900/50 rounded-2xl shadow-2xl p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-rose-950/50 text-rose-500">
+                  <AlertTriangle className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">حذف المشروع نهائياً</h3>
+                  <p className="text-xs text-rose-400/80">هذا الإجراء لا يمكن التراجع عنه.</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => { setProjectToDelete(null); setDeleteInput(''); }}
+                className="text-slate-500 hover:text-white transition"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="space-y-4 my-6">
+              <p className="text-sm text-slate-300">
+                أنت على وشك حذف المشروع:
+                <span className="block font-bold text-white mt-1 p-2 bg-slate-900 rounded border border-slate-800">
+                  {projectToDelete.header.name}
+                </span>
+              </p>
+              <p className="text-xs text-slate-400">
+                سيتم حذف جميع بيانات المشروع، بما في ذلك بنود الحصر، المرفقات، حسابات الموردين والصناعية، والدفعات نهائياً.
+              </p>
+
+              <div>
+                <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">
+                  يرجى كتابة اسم المشروع لتأكيد الحذف:
+                </label>
+                <input
+                  type="text"
+                  value={deleteInput}
+                  onChange={(e) => setDeleteInput(e.target.value)}
+                  placeholder="اكتب اسم المشروع هنا..."
+                  className="w-full rounded-lg border border-rose-900/30 bg-rose-950/10 px-4 py-2.5 text-right text-sm text-white focus:border-rose-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => { setProjectToDelete(null); setDeleteInput(''); }}
+                className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-sm font-semibold text-slate-400 hover:text-white transition"
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleDeleteProject}
+                disabled={isDeleting || deleteInput !== projectToDelete.header.name}
+                className="flex items-center gap-2 px-5 py-2 rounded-lg bg-rose-600 text-white text-sm font-bold hover:bg-rose-500 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-rose-900/20"
+              >
+                {isDeleting ? 'جاري الحذف...' : 'تأكيد الحذف'}
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

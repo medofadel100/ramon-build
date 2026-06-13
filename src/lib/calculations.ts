@@ -717,6 +717,131 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[]): MaterialRe
       break;
     }
 
+    // ==========================================
+    // 3.1.2 - وحدات تكييف سبليت (داخلية + خارجية)
+    // ==========================================
+    case '3.1.2': {
+      const unitPrice = getSpecNum('unitPrice', 22000);
+      const bracketPrice = getSpecNum('bracketPrice', 350);
+      const copperLength = getSpecNum('copperLength', 5);
+      const copperPricePerMeter = getSpecNum('copperPricePerMeter', 180);
+
+      matList.push({
+        key: 'ac_unit',
+        name: `وحدة تكييف سبليت ${getSpecStr('capacity', '2.25 حصان')} - ${getSpecStr('brand', 'شارب')}`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'وحدة',
+        unitPrice: unitPrice,
+        totalCost: Math.ceil(qty) * unitPrice,
+        packagingDetails: `${getSpecStr('acType', 'بارد وساخن')} - ${getSpecStr('technology', 'انفرتر')}`
+      });
+
+      matList.push({
+        key: 'ac_bracket',
+        name: 'حامل وحدة خارجية (براكت حديد)',
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: bracketPrice,
+        totalCost: Math.ceil(qty) * bracketPrice,
+        packagingDetails: 'حامل لكل وحدة خارجية'
+      });
+
+      const totalCopper = qty * copperLength;
+      matList.push({
+        key: 'copper_pipes',
+        name: 'مواسير نحاس معزولة بالأرماكفلكس',
+        qtyRequired: totalCopper,
+        qtyRounded: Math.ceil(totalCopper),
+        unit: 'متر طولي',
+        unitPrice: copperPricePerMeter,
+        totalCost: Math.ceil(totalCopper) * copperPricePerMeter,
+        packagingDetails: `${copperLength} متر لكل وحدة تكييف`
+      });
+      break;
+    }
+
+    // ==========================================
+    // 3.1.3 - نقاط كهرباء مخصصة للتكييف
+    // ==========================================
+    case '3.1.3': {
+      const wirePerPoint = getSpecNum('wirePerPoint', 20);
+      const rollLength = getSpecNum('rollLength', 100);
+      const wireRollPrice = getSpecNum('wireRollPrice', 3500);
+      const breakerPrice = getSpecNum('breakerPrice', 280);
+      const isolatorPrice = getSpecNum('isolatorPrice', 150);
+
+      const totalWireLength = qty * wirePerPoint;
+      const wireRolls = Math.ceil(totalWireLength / rollLength);
+
+      matList.push({
+        key: 'ac_wire',
+        name: `سلك كهرباء السويدي ${getSpecStr('wireGauge', '4 مم')}`,
+        qtyRequired: totalWireLength,
+        qtyRounded: wireRolls,
+        unit: 'لفة',
+        unitPrice: wireRollPrice,
+        totalCost: wireRolls * wireRollPrice,
+        packagingDetails: `لفة ${rollLength} متر (مجموع الاحتياج: ${totalWireLength.toFixed(1)} م)`
+      });
+
+      matList.push({
+        key: 'ac_breaker',
+        name: `قاطع أوتوماتيك تكييف ${getSpecStr('breakerType', '20 أمبير')}`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: breakerPrice,
+        totalCost: Math.ceil(qty) * breakerPrice,
+        packagingDetails: 'قاطع لكل نقطة تكييف'
+      });
+
+      matList.push({
+        key: 'ac_isolator',
+        name: 'مفتاح أيزوليتور حائط (قطع التيار)',
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: isolatorPrice,
+        totalCost: Math.ceil(qty) * isolatorPrice,
+        packagingDetails: 'مفتاح لكل نقطة تكييف'
+      });
+      break;
+    }
+
+    // ==========================================
+    // 3.2.3 - دكتات تهوية (مجاري الهواء)
+    // ==========================================
+    case '3.2.3': {
+      const ductPricePerMeter = getSpecNum('ductPricePerMeter', 120);
+      const fittingsPercent = getSpecNum('fittingsPercent', 15);
+
+      matList.push({
+        key: 'duct_main',
+        name: `دكت تهوية ${getSpecStr('ductMaterial', 'فليكسبل PVC')} - قطر ${getSpecStr('ductDiameter', '6 بوصة')}`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'متر طولي',
+        unitPrice: ductPricePerMeter,
+        totalCost: Math.ceil(qty) * ductPricePerMeter,
+        packagingDetails: `خامة: ${getSpecStr('ductMaterial', 'فليكسبل PVC')}`
+      });
+
+      const fittingsCost = Math.ceil(qty) * ductPricePerMeter * (fittingsPercent / 100);
+      matList.push({
+        key: 'duct_fittings',
+        name: 'وصلات وأكواع ومحولات (Fittings)',
+        qtyRequired: fittingsPercent,
+        qtyRounded: 1,
+        unit: 'مجموعة',
+        unitPrice: fittingsCost,
+        totalCost: fittingsCost,
+        packagingDetails: `${fittingsPercent}% من تكلفة الدكتات`
+      });
+      break;
+    }
+
     default:
       break;
   }

@@ -15,6 +15,7 @@ export interface UserProfile {
   role: 'admin' | 'qty_engineer' | 'tech_office' | 'collaborator';
   phone?: string;
   jobTitle?: string;
+  createdAt?: string;
 }
 
 interface AuthState {

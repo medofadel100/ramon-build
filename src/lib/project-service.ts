@@ -17,6 +17,19 @@ import { db } from './firebase';
 import { DEFAULT_SECTIONS, DEFAULT_ITEMS } from './default-items';
 import { Zone, BOQItem } from './calculations';
 
+// ==========================================
+// Interfaces
+// ==========================================
+
+export interface AssignedEngineer {
+  uid: string;
+  name: string;
+  email: string;
+  specialty: 'electrical' | 'mechanical' | 'civil' | 'interior_design' | 'finishing_supervisor' | 'structural' | 'other';
+  specialtyLabel: string;
+  joinedAt: string;
+}
+
 export interface ProjectHeader {
   name: string;
   ownerName: string;
@@ -26,6 +39,9 @@ export interface ProjectHeader {
   governorate: string;
   addressDetails: string;
   issueDate: string;
+  expectedDeliveryDate: string;
+  actualDeliveryDate: string;
+  consultantName: string;
   status: 'draft' | 'review' | 'approved' | 'sent_to_client' | 'closed';
   projectType: {
     workType: 'new_build' | 'finishing_only' | 'renovation';
@@ -33,6 +49,45 @@ export interface ProjectHeader {
     foundationType: 'full' | 'partial' | 'none';
   };
   assignedEngineers: string[];
+  engineersDetails: AssignedEngineer[];
+}
+
+export interface Supplier {
+  id: string;
+  name: string;
+  phone: string;
+  specialty: string;
+  notes: string;
+}
+
+export interface Worker {
+  id: string;
+  name: string;
+  phone: string;
+  trade: string;
+  assignedItems: string[];
+  dailyRate: number;
+  notes: string;
+}
+
+export interface PaymentInstallment {
+  id: string;
+  amount: number;
+  dueDate: string;
+  isPaid: boolean;
+  paidDate?: string;
+  paymentMethod?: string;
+  receiptNote?: string;
+}
+
+export interface AccountEntry {
+  id: string;
+  personType: 'supplier' | 'worker';
+  personId: string;
+  personName: string;
+  totalAgreedAmount: number;
+  installments: PaymentInstallment[];
+  notes: string;
 }
 
 export interface ProjectData {
@@ -43,14 +98,18 @@ export interface ProjectData {
   items: BOQItem[];
   clientShareToken: string;
   clientShareSettings: { showPrices: boolean; showDetailedPricing: boolean };
+  suppliers?: Supplier[];
+  workers?: Worker[];
+  accounts?: AccountEntry[];
 }
 
-// Helper: Generate unique project code (e.g., RMD-2026-001)
+// ==========================================
+// Helper: Generate unique project code
+// ==========================================
 export async function generateProjectCode(): Promise<string> {
   const currentYear = new Date().getFullYear();
   const projectsRef = collection(db, 'projects');
   
-  // Query all projects of the current year
   const q = query(
     projectsRef, 
     where('header.projectCode', '>=', `RMD-${currentYear}-000`),
@@ -79,11 +138,15 @@ export async function generateProjectCode(): Promise<string> {
   return `RMD-${currentYear}-${paddedNum}`;
 }
 
+// ==========================================
 // 1. Create a Project and Seed all Templates
+// ==========================================
 export async function createProject(
-  headerInput: Omit<ProjectHeader, 'projectCode' | 'assignedEngineers'>,
+  headerInput: Omit<ProjectHeader, 'projectCode' | 'assignedEngineers' | 'engineersDetails' | 'expectedDeliveryDate' | 'actualDeliveryDate' | 'consultantName'>,
   zonesInput: Omit<Zone, 'id' | 'wallArea' | 'ceilingArea'>[],
-  engineerId: string
+  engineerId: string,
+  engineerName?: string,
+  engineerEmail?: string
 ): Promise<string> {
   const projectId = doc(collection(db, 'projects')).id;
   const projectCode = await generateProjectCode();
@@ -91,7 +154,18 @@ export async function createProject(
   const header: ProjectHeader = {
     ...headerInput,
     projectCode,
-    assignedEngineers: [engineerId]
+    expectedDeliveryDate: '',
+    actualDeliveryDate: '',
+    consultantName: '',
+    assignedEngineers: [engineerId],
+    engineersDetails: [{
+      uid: engineerId,
+      name: engineerName || 'مهندس',
+      email: engineerEmail || '',
+      specialty: 'finishing_supervisor',
+      specialtyLabel: 'مشرف تشطيبات',
+      joinedAt: new Date().toISOString()
+    }]
   };
 
   const clientShareToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -129,7 +203,6 @@ export async function createProject(
 
   // 3. Add Sections (Filter and seed templates)
   const sections = DEFAULT_SECTIONS.map((sec) => {
-    // Determine if section is enabled based on project wizard choices
     let enabled = true;
     if (sec.id === '1.1' && !header.projectType.hasArchModification) {
       enabled = false;
@@ -149,7 +222,6 @@ export async function createProject(
 
   // 4. Add Items (Filter and seed templates)
   const itemsToSeed = DEFAULT_ITEMS.filter((item) => {
-    // If section is disabled, or requiresArchModification is true but project doesn't have it, skip or set inactive
     if (item.requiresArchModification && !header.projectType.hasArchModification) {
       return false;
     }
@@ -159,7 +231,6 @@ export async function createProject(
   for (const item of itemsToSeed) {
     const itemDocRef = doc(db, 'projects', projectId, 'sections', item.sectionId, 'items', item.id);
     
-    // Convert specs template fields to default values mapping
     const specsMap: Record<string, any> = {};
     item.specs.forEach(field => {
       specsMap[field.key] = field.defaultValue;
@@ -187,7 +258,6 @@ export async function createProject(
       isActive: true
     };
 
-    // If renovation, add the action property
     if (header.projectType.workType === 'renovation') {
       boqItem.renovationAction = 'new_addition';
     }
@@ -199,7 +269,9 @@ export async function createProject(
   return projectId;
 }
 
+// ==========================================
 // 2. Fetch Complete Project Data Tree
+// ==========================================
 export async function getProjectData(projectId: string): Promise<ProjectData | null> {
   const projectDocRef = doc(db, 'projects', projectId);
   const projectSnap = await getDoc(projectDocRef);
@@ -229,24 +301,47 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
 
   await Promise.all(itemPromises);
 
-  // Sort items by ID to keep consistent order
   items.sort((a, b) => a.id.localeCompare(b.id));
-
-  // Sort sections by ID
   sections.sort((a, b) => a.id.localeCompare(b.id));
+
+  // Fetch Suppliers
+  const suppliersSnapshot = await getDocs(collection(db, 'projects', projectId, 'suppliers'));
+  const suppliers: Supplier[] = suppliersSnapshot.docs.map(doc => doc.data() as Supplier);
+
+  // Fetch Workers
+  const workersSnapshot = await getDocs(collection(db, 'projects', projectId, 'workers'));
+  const workers: Worker[] = workersSnapshot.docs.map(doc => doc.data() as Worker);
+
+  // Fetch Accounts
+  const accountsSnapshot = await getDocs(collection(db, 'projects', projectId, 'accounts'));
+  const accounts: AccountEntry[] = accountsSnapshot.docs.map(doc => doc.data() as AccountEntry);
+
+  // Ensure header has new fields (backward compatibility)
+  const header: ProjectHeader = {
+    ...pData.header,
+    expectedDeliveryDate: pData.header?.expectedDeliveryDate || '',
+    actualDeliveryDate: pData.header?.actualDeliveryDate || '',
+    consultantName: pData.header?.consultantName || '',
+    engineersDetails: pData.header?.engineersDetails || []
+  };
 
   return {
     id: projectId,
-    header: pData.header,
+    header,
     zones,
     sections,
     items,
     clientShareToken: pData.clientShareToken,
-    clientShareSettings: pData.clientShareSettings || { showPrices: true, showDetailedPricing: true }
+    clientShareSettings: pData.clientShareSettings || { showPrices: true, showDetailedPricing: true },
+    suppliers,
+    workers,
+    accounts
   };
 }
 
+// ==========================================
 // 3. Update Project Header Info
+// ==========================================
 export async function updateProjectHeader(projectId: string, header: ProjectHeader): Promise<void> {
   const docRef = doc(db, 'projects', projectId);
   await updateDoc(docRef, {
@@ -255,7 +350,9 @@ export async function updateProjectHeader(projectId: string, header: ProjectHead
   });
 }
 
+// ==========================================
 // 4. Update Sharing Settings
+// ==========================================
 export async function updateProjectSharing(
   projectId: string, 
   settings: { showPrices: boolean; showDetailedPricing: boolean }
@@ -267,12 +364,12 @@ export async function updateProjectSharing(
   });
 }
 
+// ==========================================
 // 5. CRUD Zones
+// ==========================================
 export async function dbAddZone(projectId: string, zone: Zone): Promise<void> {
   const docRef = doc(db, 'projects', projectId, 'areas', zone.id);
   await setDoc(docRef, zone);
-  
-  // Touch project updated timestamp
   await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
 }
 
@@ -288,7 +385,9 @@ export async function dbDeleteZone(projectId: string, zoneId: string): Promise<v
   await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
 }
 
+// ==========================================
 // 6. Item update operations
+// ==========================================
 export async function dbUpdateItem(projectId: string, item: BOQItem): Promise<void> {
   const docRef = doc(db, 'projects', projectId, 'sections', item.sectionId, 'items', item.id);
   await setDoc(docRef, item);
@@ -301,9 +400,196 @@ export async function dbDeleteItem(projectId: string, sectionId: string, itemId:
   await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
 }
 
+// ==========================================
 // 7. Toggle Section enabled
+// ==========================================
 export async function dbToggleSection(projectId: string, sectionId: string, enabled: boolean): Promise<void> {
   const docRef = doc(db, 'projects', projectId, 'sections', sectionId);
   await updateDoc(docRef, { enabled });
   await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+// ==========================================
+// 8. CRUD Suppliers
+// ==========================================
+export async function dbAddSupplier(projectId: string, supplier: Supplier): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'suppliers', supplier.id);
+  await setDoc(docRef, supplier);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+export async function dbUpdateSupplier(projectId: string, supplier: Supplier): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'suppliers', supplier.id);
+  await setDoc(docRef, supplier);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+export async function dbDeleteSupplier(projectId: string, supplierId: string): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'suppliers', supplierId);
+  await deleteDoc(docRef);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+// ==========================================
+// 9. CRUD Workers
+// ==========================================
+export async function dbAddWorker(projectId: string, worker: Worker): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'workers', worker.id);
+  await setDoc(docRef, worker);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+export async function dbUpdateWorker(projectId: string, worker: Worker): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'workers', worker.id);
+  await setDoc(docRef, worker);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+export async function dbDeleteWorker(projectId: string, workerId: string): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'workers', workerId);
+  await deleteDoc(docRef);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+// ==========================================
+// 10. CRUD Accounts
+// ==========================================
+export async function dbAddAccount(projectId: string, account: AccountEntry): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'accounts', account.id);
+  await setDoc(docRef, account);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+export async function dbUpdateAccount(projectId: string, account: AccountEntry): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'accounts', account.id);
+  await setDoc(docRef, account);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+export async function dbDeleteAccount(projectId: string, accountId: string): Promise<void> {
+  const docRef = doc(db, 'projects', projectId, 'accounts', accountId);
+  await deleteDoc(docRef);
+  await updateDoc(doc(db, 'projects', projectId), { updatedAt: serverTimestamp() });
+}
+
+// ==========================================
+// 11. Engineer Invite System
+// ==========================================
+export async function generateEngineerInviteToken(
+  projectId: string, 
+  specialty: AssignedEngineer['specialty'],
+  specialtyLabel: string
+): Promise<string> {
+  const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  const inviteDocRef = doc(db, 'projects', projectId, 'inviteTokens', token);
+  await setDoc(inviteDocRef, {
+    token,
+    projectId,
+    specialty,
+    specialtyLabel,
+    createdAt: serverTimestamp(),
+    used: false
+  });
+  return token;
+}
+
+export async function getInviteTokenData(projectId: string, token: string): Promise<any | null> {
+  const docRef = doc(db, 'projects', projectId, 'inviteTokens', token);
+  const snap = await getDoc(docRef);
+  return snap.exists() ? snap.data() : null;
+}
+
+export async function acceptEngineerInvite(
+  projectId: string,
+  token: string,
+  userId: string,
+  userName: string,
+  userEmail: string
+): Promise<boolean> {
+  const inviteRef = doc(db, 'projects', projectId, 'inviteTokens', token);
+  const inviteSnap = await getDoc(inviteRef);
+  
+  if (!inviteSnap.exists() || inviteSnap.data()?.used) {
+    return false;
+  }
+
+  const inviteData = inviteSnap.data();
+  
+  // Update project header to add engineer
+  const projectRef = doc(db, 'projects', projectId);
+  const projectSnap = await getDoc(projectRef);
+  if (!projectSnap.exists()) return false;
+
+  const pData = projectSnap.data();
+  const existingEngineers: string[] = pData.header?.assignedEngineers || [];
+  const existingDetails: AssignedEngineer[] = pData.header?.engineersDetails || [];
+
+  // Check if already added
+  if (existingEngineers.includes(userId)) return true;
+
+  const newEngineer: AssignedEngineer = {
+    uid: userId,
+    name: userName,
+    email: userEmail,
+    specialty: inviteData.specialty,
+    specialtyLabel: inviteData.specialtyLabel,
+    joinedAt: new Date().toISOString()
+  };
+
+  await updateDoc(projectRef, {
+    'header.assignedEngineers': [...existingEngineers, userId],
+    'header.engineersDetails': [...existingDetails, newEngineer],
+    updatedAt: serverTimestamp()
+  });
+
+  // Mark invite as used
+  await updateDoc(inviteRef, { used: true, usedBy: userId });
+
+  return true;
+}
+
+export async function removeEngineerFromProject(projectId: string, engineerUid: string): Promise<void> {
+  const projectRef = doc(db, 'projects', projectId);
+  const projectSnap = await getDoc(projectRef);
+  if (!projectSnap.exists()) return;
+
+  const pData = projectSnap.data();
+  const updatedEngineers = (pData.header?.assignedEngineers || []).filter((uid: string) => uid !== engineerUid);
+  const updatedDetails = (pData.header?.engineersDetails || []).filter((e: AssignedEngineer) => e.uid !== engineerUid);
+
+  await updateDoc(projectRef, {
+    'header.assignedEngineers': updatedEngineers,
+    'header.engineersDetails': updatedDetails,
+    updatedAt: serverTimestamp()
+  });
+}
+
+// ==========================================
+// 12. Delete Project (with all subcollections)
+// ==========================================
+export async function deleteProject(projectId: string): Promise<void> {
+  // Delete subcollections first
+  const subcollections = ['areas', 'suppliers', 'workers', 'accounts', 'inviteTokens'];
+  
+  for (const sub of subcollections) {
+    const subSnapshot = await getDocs(collection(db, 'projects', projectId, sub));
+    const batch = writeBatch(db);
+    subSnapshot.docs.forEach(d => batch.delete(d.ref));
+    if (!subSnapshot.empty) await batch.commit();
+  }
+
+  // Delete sections and their items
+  const sectionsSnapshot = await getDocs(collection(db, 'projects', projectId, 'sections'));
+  for (const secDoc of sectionsSnapshot.docs) {
+    const itemsSnapshot = await getDocs(collection(db, 'projects', projectId, 'sections', secDoc.id, 'items'));
+    if (!itemsSnapshot.empty) {
+      const itemBatch = writeBatch(db);
+      itemsSnapshot.docs.forEach(d => itemBatch.delete(d.ref));
+      await itemBatch.commit();
+    }
+    await deleteDoc(secDoc.ref);
+  }
+
+  // Delete the project document itself
+  await deleteDoc(doc(db, 'projects', projectId));
 }

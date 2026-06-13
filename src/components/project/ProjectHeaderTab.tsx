@@ -15,10 +15,13 @@ export default function ProjectHeaderTab() {
   const [name, setName] = useState(currentProject?.header.name || '');
   const [ownerName, setOwnerName] = useState(currentProject?.header.ownerName || '');
   const [ownerPhone, setOwnerPhone] = useState(currentProject?.header.ownerPhone || '');
+  const [consultantName, setConsultantName] = useState(currentProject?.header.consultantName || '');
   const [designCode, setDesignCode] = useState(currentProject?.header.designCode || '');
   const [governorate, setGovernorate] = useState(currentProject?.header.governorate || '');
   const [addressDetails, setAddressDetails] = useState(currentProject?.header.addressDetails || '');
   const [issueDate, setIssueDate] = useState(currentProject?.header.issueDate || '');
+  const [expectedDeliveryDate, setExpectedDeliveryDate] = useState(currentProject?.header.expectedDeliveryDate || '');
+  const [actualDeliveryDate, setActualDeliveryDate] = useState(currentProject?.header.actualDeliveryDate || '');
   const [status, setStatus] = useState<ProjectHeader['status']>(currentProject?.header.status || 'draft');
   const [isEditing, setIsEditing] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -31,10 +34,13 @@ export default function ProjectHeaderTab() {
       name,
       ownerName,
       ownerPhone,
+      consultantName,
       designCode,
       governorate,
       addressDetails,
       issueDate,
+      expectedDeliveryDate,
+      actualDeliveryDate,
       status
     });
     setIsEditing(false);
@@ -179,6 +185,22 @@ export default function ProjectHeaderTab() {
               </div>
             </div>
 
+            {/* Consultant Name */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-slate-500" />
+                اسم الاستشاري
+              </label>
+              <input
+                type="text"
+                disabled={!isEditing}
+                value={consultantName}
+                onChange={(e) => setConsultantName(e.target.value)}
+                placeholder="اسم المهندس الاستشاري أو المكتب"
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
             {/* Design Code */}
             <div>
               <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
@@ -229,13 +251,43 @@ export default function ProjectHeaderTab() {
             <div>
               <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5 text-slate-500" />
-                تاريخ الإصدار
+                تاريخ الإصدار (بدء المشروع)
               </label>
               <input
                 type="date"
                 disabled={!isEditing}
                 value={issueDate}
                 onChange={(e) => setIssueDate(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
+            {/* Expected Delivery Date */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-slate-500" />
+                تاريخ التسليم المتوقع
+              </label>
+              <input
+                type="date"
+                disabled={!isEditing}
+                value={expectedDeliveryDate}
+                onChange={(e) => setExpectedDeliveryDate(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
+
+            {/* Actual Delivery Date */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-emerald-500" />
+                تاريخ التسليم الفعلي
+              </label>
+              <input
+                type="date"
+                disabled={!isEditing}
+                value={actualDeliveryDate}
+                onChange={(e) => setActualDeliveryDate(e.target.value)}
                 className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
               />
             </div>
@@ -273,10 +325,13 @@ export default function ProjectHeaderTab() {
                   setName(currentProject.header.name);
                   setOwnerName(currentProject.header.ownerName);
                   setOwnerPhone(currentProject.header.ownerPhone);
+                  setConsultantName(currentProject.header.consultantName || '');
                   setDesignCode(currentProject.header.designCode);
                   setGovernorate(currentProject.header.governorate);
                   setAddressDetails(currentProject.header.addressDetails);
                   setIssueDate(currentProject.header.issueDate);
+                  setExpectedDeliveryDate(currentProject.header.expectedDeliveryDate || '');
+                  setActualDeliveryDate(currentProject.header.actualDeliveryDate || '');
                   setStatus(currentProject.header.status);
                 }}
                 className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-400 hover:text-white transition"

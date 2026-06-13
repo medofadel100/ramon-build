@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import { 
   ProjectData, 
   ProjectHeader, 
+  Supplier,
+  Worker,
+  AccountEntry,
   getProjectData, 
   updateProjectHeader, 
   dbAddZone, 
@@ -10,7 +13,17 @@ import {
   dbUpdateItem, 
   dbDeleteItem,
   dbToggleSection,
-  updateProjectSharing
+  updateProjectSharing,
+  dbAddSupplier,
+  dbUpdateSupplier,
+  dbDeleteSupplier,
+  dbAddWorker,
+  dbUpdateWorker,
+  dbDeleteWorker,
+  dbAddAccount,
+  dbUpdateAccount,
+  dbDeleteAccount,
+  deleteProject
 } from '@/lib/project-service';
 import { Zone, BOQItem, calculateWallArea } from '@/lib/calculations';
 
@@ -41,6 +54,24 @@ interface ProjectState {
   
   // Section operations
   toggleSection: (sectionId: string, enabled: boolean) => Promise<void>;
+
+  // Supplier operations
+  addSupplier: (supplier: Omit<Supplier, 'id'>) => Promise<void>;
+  updateSupplier: (supplier: Supplier) => Promise<void>;
+  removeSupplier: (supplierId: string) => Promise<void>;
+
+  // Worker operations
+  addWorker: (worker: Omit<Worker, 'id'>) => Promise<void>;
+  updateWorkerData: (worker: Worker) => Promise<void>;
+  removeWorker: (workerId: string) => Promise<void>;
+
+  // Account operations
+  addAccount: (account: Omit<AccountEntry, 'id'>) => Promise<void>;
+  updateAccount: (account: AccountEntry) => Promise<void>;
+  removeAccount: (accountId: string) => Promise<void>;
+
+  // Project deletion
+  deleteCurrentProject: () => Promise<void>;
 }
 
 export const useProjectStore = create<ProjectState>((set, get) => ({
@@ -295,6 +326,213 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       set({ saving: false });
     } catch (err: any) {
       console.error('Failed to toggle section:', err);
+      set({ saving: false });
+    }
+  },
+
+  // ==========================================
+  // Supplier operations
+  // ==========================================
+  addSupplier: async (supplierInput) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const id = `supplier_${Date.now()}`;
+    const newSupplier: Supplier = { ...supplierInput, id };
+    const updatedSuppliers = [...(currentProject.suppliers || []), newSupplier];
+
+    set({
+      currentProject: { ...currentProject, suppliers: updatedSuppliers },
+      saving: true
+    });
+
+    try {
+      await dbAddSupplier(currentProject.id, newSupplier);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to add supplier:', err);
+      set({ saving: false });
+    }
+  },
+
+  updateSupplier: async (supplier) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const updatedSuppliers = (currentProject.suppliers || []).map(s => s.id === supplier.id ? supplier : s);
+    set({
+      currentProject: { ...currentProject, suppliers: updatedSuppliers },
+      saving: true
+    });
+
+    try {
+      await dbUpdateSupplier(currentProject.id, supplier);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to update supplier:', err);
+      set({ saving: false });
+    }
+  },
+
+  removeSupplier: async (supplierId) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const updatedSuppliers = (currentProject.suppliers || []).filter(s => s.id !== supplierId);
+    set({
+      currentProject: { ...currentProject, suppliers: updatedSuppliers },
+      saving: true
+    });
+
+    try {
+      await dbDeleteSupplier(currentProject.id, supplierId);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to delete supplier:', err);
+      set({ saving: false });
+    }
+  },
+
+  // ==========================================
+  // Worker operations
+  // ==========================================
+  addWorker: async (workerInput) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const id = `worker_${Date.now()}`;
+    const newWorker: Worker = { ...workerInput, id };
+    const updatedWorkers = [...(currentProject.workers || []), newWorker];
+
+    set({
+      currentProject: { ...currentProject, workers: updatedWorkers },
+      saving: true
+    });
+
+    try {
+      await dbAddWorker(currentProject.id, newWorker);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to add worker:', err);
+      set({ saving: false });
+    }
+  },
+
+  updateWorkerData: async (worker) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const updatedWorkers = (currentProject.workers || []).map(w => w.id === worker.id ? worker : w);
+    set({
+      currentProject: { ...currentProject, workers: updatedWorkers },
+      saving: true
+    });
+
+    try {
+      await dbUpdateWorker(currentProject.id, worker);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to update worker:', err);
+      set({ saving: false });
+    }
+  },
+
+  removeWorker: async (workerId) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const updatedWorkers = (currentProject.workers || []).filter(w => w.id !== workerId);
+    set({
+      currentProject: { ...currentProject, workers: updatedWorkers },
+      saving: true
+    });
+
+    try {
+      await dbDeleteWorker(currentProject.id, workerId);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to delete worker:', err);
+      set({ saving: false });
+    }
+  },
+
+  // ==========================================
+  // Account operations
+  // ==========================================
+  addAccount: async (accountInput) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const id = `account_${Date.now()}`;
+    const newAccount: AccountEntry = { ...accountInput, id };
+    const updatedAccounts = [...(currentProject.accounts || []), newAccount];
+
+    set({
+      currentProject: { ...currentProject, accounts: updatedAccounts },
+      saving: true
+    });
+
+    try {
+      await dbAddAccount(currentProject.id, newAccount);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to add account:', err);
+      set({ saving: false });
+    }
+  },
+
+  updateAccount: async (account) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const updatedAccounts = (currentProject.accounts || []).map(a => a.id === account.id ? account : a);
+    set({
+      currentProject: { ...currentProject, accounts: updatedAccounts },
+      saving: true
+    });
+
+    try {
+      await dbUpdateAccount(currentProject.id, account);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to update account:', err);
+      set({ saving: false });
+    }
+  },
+
+  removeAccount: async (accountId) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    const updatedAccounts = (currentProject.accounts || []).filter(a => a.id !== accountId);
+    set({
+      currentProject: { ...currentProject, accounts: updatedAccounts },
+      saving: true
+    });
+
+    try {
+      await dbDeleteAccount(currentProject.id, accountId);
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to delete account:', err);
+      set({ saving: false });
+    }
+  },
+
+  // ==========================================
+  // Project deletion
+  // ==========================================
+  deleteCurrentProject: async () => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    set({ saving: true });
+
+    try {
+      await deleteProject(currentProject.id);
+      set({ currentProject: null, saving: false });
+    } catch (err: any) {
+      console.error('Failed to delete project:', err);
       set({ saving: false });
     }
   }

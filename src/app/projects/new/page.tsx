@@ -243,12 +243,18 @@ export default function NewProjectWizard() {
                   </div>
                   <div>
                     <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">كود التصميم المرجعي</label>
-                    <input
-                      type="text"
+                    <select
                       value={designCode}
                       onChange={(e) => setDesignCode(e.target.value)}
-                      className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
-                    />
+                      className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                    >
+                      <option value="الكود المصري للتشطيبات">الكود المصري للتشطيبات (ECP)</option>
+                      <option value="كود البناء السعودي (SBC)">كود البناء السعودي (SBC)</option>
+                      <option value="كود البناء الإماراتي">كود البناء الإماراتي (UAE UBC)</option>
+                      <option value="كود البناء القطري (QCS)">كود البناء القطري (QCS)</option>
+                      <option value="كود البناء الكويتي (MEW)">كود البناء الكويتي (MEW)</option>
+                      <option value="كودات دولية عامة (IBC/UPC)">كودات دولية عامة (IBC/UPC)</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">الموقع / المحافظة *</label>

@@ -15,6 +15,14 @@ export interface SpecFieldTemplate {
   defaultValue?: any;
 }
 
+export interface CodeReferences {
+  egyptian?: string;
+  saudiSBC?: string;
+  uaeUBC?: string;
+  kuwaitMEW?: string;
+  qatarQCS?: string;
+}
+
 export interface ItemTemplate {
   id: string;
   sectionId: string;
@@ -33,7 +41,9 @@ export interface ItemTemplate {
     dailyRate: number;
     estimatedDays: number;
   };
+  /** @deprecated Use codeReferences instead */
   egyptianCodeRef?: string;
+  codeReferences?: CodeReferences;
 }
 
 export const DEFAULT_SECTIONS: SectionTemplate[] = [
@@ -52,7 +62,9 @@ export const DEFAULT_SECTIONS: SectionTemplate[] = [
   { id: '2.8', sectionKey: 'electrical_finishing', title: 'التشطيبات الكهربائية (النهائية)', applicableTo: ['new_build', 'finishing_only', 'renovation'] },
   { id: '2.9', sectionKey: 'sanitary_finishing', title: 'التشطيبات الصحية (النهائية)', applicableTo: ['new_build', 'finishing_only', 'renovation'] },
   { id: '2.10', sectionKey: 'final_paint', title: 'الوجه النهائي للدهانات', applicableTo: ['new_build', 'finishing_only', 'renovation'] },
-  { id: '2.11', sectionKey: 'flooring', title: 'تركيب الأرضيات (سيراميك/بورسلين/HDF/SPC)', applicableTo: ['new_build', 'finishing_only', 'renovation'] }
+  { id: '2.11', sectionKey: 'flooring', title: 'تركيب الأرضيات (سيراميك/بورسلين/HDF/SPC)', applicableTo: ['new_build', 'finishing_only', 'renovation'] },
+  { id: '3.1', sectionKey: 'hvac', title: 'أعمال التكييف والتبريد (HVAC)', applicableTo: ['new_build', 'finishing_only', 'renovation'] },
+  { id: '3.2', sectionKey: 'exhaust_ventilation', title: 'الشفاطات والتهوية الميكانيكية', applicableTo: ['new_build', 'finishing_only', 'renovation'] }
 ];
 
 export const DEFAULT_ITEMS: ItemTemplate[] = [
@@ -553,6 +565,157 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'groutBagPrice', label: 'سعر كيس الترويبة (ج.م)', type: 'number', defaultValue: 40 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 250, laborUnitPrice: 95, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 },
-    egyptianCodeRef: 'كود تكسية الأرضيات والحوائط بالبلاط والرخام'
+    egyptianCodeRef: 'كود تكسية الأرضيات والحوائط بالبلاط والرخام',
+    codeReferences: { egyptian: 'كود تكسية الأرضيات والحوائط بالبلاط والرخام', saudiSBC: 'SBC 201 - الفصل 9', uaeUBC: 'UBC - Flooring Standards' }
+  },
+
+  // ============================================
+  // 3.1 أعمال التكييف والتبريد (HVAC)
+  // ============================================
+  {
+    id: '3.1.1',
+    sectionId: '3.1',
+    title: 'تأسيس مواسير دفن تكييف (نحاس معزول)',
+    unit: 'متر طولي',
+    quantitySource: 'manual',
+    specs: [
+      { key: 'pipeType', label: 'نوع الماسورة', type: 'select', options: ['نحاس معزول بالأرماكفلكس', 'PVC فليكس مرن', 'نحاس عاري + عزل منفصل'], defaultValue: 'نحاس معزول بالأرماكفلكس' },
+      { key: 'pipeDiameter', label: 'مقاس الماسورة (بوصة)', type: 'select', options: ['1/4" + 1/2" (1.5 حصان)', '1/4" + 5/8" (2.25 حصان)', '3/8" + 3/4" (3 حصان)', '3/8" + 7/8" (4-5 حصان)'], defaultValue: '1/4" + 5/8" (2.25 حصان)' },
+      { key: 'installationType', label: 'طريقة التركيب', type: 'select', options: ['مدفون في الحائط', 'مدفون في السقف', 'ظاهر مع تغطية'], defaultValue: 'مدفون في الحائط' },
+      { key: 'drainPipe', label: 'ماسورة صرف المكثفات', type: 'select', options: ['PVC 3/4 بوصة', 'خرطوم مرن'], defaultValue: 'PVC 3/4 بوصة' },
+      { key: 'pipePrice', label: 'سعر المتر ماسورة نحاس (ج.م)', type: 'number', defaultValue: 180 },
+      { key: 'insulationPrice', label: 'سعر المتر عزل أرماكفلكس (ج.م)', type: 'number', defaultValue: 25 }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 200, laborUnitPrice: 80, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
+    egyptianCodeRef: 'كود MEP المصري - أعمال التكييف',
+    codeReferences: { egyptian: 'كود MEP المصري - أعمال التكييف', saudiSBC: 'SBC 501 - HVAC Systems', uaeUBC: 'UBC - Mechanical', kuwaitMEW: 'MEW/R-6 (كفاءة الطاقة)', qatarQCS: 'QCS 2014 - Section 21' }
+  },
+  {
+    id: '3.1.2',
+    sectionId: '3.1',
+    title: 'وحدات تكييف سبليت (داخلية + خارجية)',
+    unit: 'وحدة',
+    quantitySource: 'manual',
+    perAreaOverride: true,
+    specs: [
+      { key: 'capacity', label: 'القدرة (حصان)', type: 'select', options: ['1.5 حصان (12000 BTU)', '2.25 حصان (18000 BTU)', '3 حصان (24000 BTU)', '4 حصان (30000 BTU)', '5 حصان (36000 BTU)'], defaultValue: '2.25 حصان (18000 BTU)' },
+      { key: 'brand', label: 'الماركة والشركة', type: 'select', options: ['شارب Sharp', 'كاريير Carrier', 'يونيون إير Unionaire', 'LG إل جي', 'سامسونج Samsung', 'دايكن Daikin', 'جري Gree', 'ميديا Midea', 'تورنيدو Tornado'], defaultValue: 'شارب Sharp' },
+      { key: 'acType', label: 'نوع التشغيل', type: 'select', options: ['بارد فقط (Cool Only)', 'بارد وساخن (Hot & Cold)'], defaultValue: 'بارد وساخن (Hot & Cold)' },
+      { key: 'technology', label: 'تكنولوجيا الضاغط', type: 'select', options: ['انفرتر (Inverter) موفر للطاقة', 'عادي (Fixed Speed)'], defaultValue: 'انفرتر (Inverter) موفر للطاقة' },
+      { key: 'mountType', label: 'نوع التركيب', type: 'select', options: ['حائطي (Wall Mounted)', 'سقفي كاسيت (Cassette)', 'كونسيلد مخفي (Concealed Ducted)', 'أرضي (Floor Standing)'], defaultValue: 'حائطي (Wall Mounted)' },
+      { key: 'unitPrice', label: 'سعر الوحدة كاملة (ج.م)', type: 'number', defaultValue: 22000 },
+      { key: 'bracketPrice', label: 'سعر الحامل الخارجي (ج.م)', type: 'number', defaultValue: 350 },
+      { key: 'copperLength', label: 'طول مواسير النحاس المقدّر (متر)', type: 'number', defaultValue: 5 },
+      { key: 'copperPricePerMeter', label: 'سعر متر النحاس المعزول (ج.م)', type: 'number', defaultValue: 180 }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 22000, laborUnitPrice: 1500, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
+    egyptianCodeRef: 'كود MEP المصري - معدات التكييف',
+    codeReferences: { egyptian: 'كود MEP المصري - معدات التكييف', saudiSBC: 'SBC 501 - Equipment', uaeUBC: 'UBC - HVAC Equipment', kuwaitMEW: 'MEW/R-6', qatarQCS: 'QCS 2014 - Section 21' }
+  },
+  {
+    id: '3.1.3',
+    sectionId: '3.1',
+    title: 'نقاط كهرباء مخصصة للتكييف (20-32 أمبير)',
+    unit: 'نقطة',
+    quantitySource: 'manual',
+    perAreaOverride: true,
+    specs: [
+      { key: 'breakerType', label: 'نوع القاطع/المفتاح', type: 'select', options: ['قاطع 20 أمبير (1.5 - 2.25 حصان)', 'قاطع 25 أمبير (3 حصان)', 'قاطع 32 أمبير (4-5 حصان)'], defaultValue: 'قاطع 20 أمبير (1.5 - 2.25 حصان)' },
+      { key: 'switchBrand', label: 'ماركة المفتاح والقاطع', type: 'select', options: ['شنايدر Schneider', 'ليجراند Legrand', 'هاجر Hager', 'ABB'], defaultValue: 'شنايدر Schneider' },
+      { key: 'wireGauge', label: 'سُمك السلك', type: 'select', options: ['4 مم (حتى 2.25 حصان)', '6 مم (3 حصان فأكثر)'], defaultValue: '4 مم (حتى 2.25 حصان)' },
+      { key: 'wirePerPoint', label: 'طول السلك للنقطة (متر)', type: 'number', defaultValue: 20 },
+      { key: 'rollLength', label: 'طول اللفة (متر)', type: 'number', defaultValue: 100 },
+      { key: 'wireRollPrice', label: 'سعر لفة السلك (ج.م)', type: 'number', defaultValue: 3500 },
+      { key: 'breakerPrice', label: 'سعر القاطع (ج.م)', type: 'number', defaultValue: 280 },
+      { key: 'isolatorPrice', label: 'سعر مفتاح الأيزوليتور (ج.م)', type: 'number', defaultValue: 150 }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 450, laborUnitPrice: 120, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
+    egyptianCodeRef: 'كود التركيبات الكهربائية - تغذية معدات التكييف',
+    codeReferences: { egyptian: 'كود التركيبات الكهربائية - تغذية معدات التكييف', saudiSBC: 'SBC 401 - HVAC Electrical', uaeUBC: 'UBC - Electrical/HVAC' }
+  },
+  {
+    id: '3.1.4',
+    sectionId: '3.1',
+    title: 'صيانة وتنظيف مجاري الهواء (تكييف مركزي)',
+    unit: 'مقطوعية',
+    quantitySource: 'manual',
+    specs: [
+      { key: 'systemType', label: 'نوع نظام التكييف', type: 'select', options: ['سبليت مركزي (VRF/VRV)', 'شيللر ومراوح (Fan Coil)', 'باكيدج مركزي'], defaultValue: 'سبليت مركزي (VRF/VRV)' },
+      { key: 'supplyGrilles', label: 'عدد فتحات السبلاي (Supply)', type: 'number', defaultValue: 8 },
+      { key: 'returnGrilles', label: 'عدد فتحات الريتيرن (Return)', type: 'number', defaultValue: 4 },
+      { key: 'ductLength', label: 'إجمالي طول الدكتات (متر)', type: 'number', defaultValue: 30 }
+    ],
+    defaultPricing: { mode: 'lump_sum', materialUnitPrice: 0, laborUnitPrice: 0, lumpSumPrice: 8000, dailyRate: 0, estimatedDays: 2 },
+    codeReferences: { egyptian: 'كود التهوية الميكانيكية للمباني', saudiSBC: 'SBC 501 - Ductwork', qatarQCS: 'QCS 2014 - Section 21' }
+  },
+
+  // ============================================
+  // 3.2 الشفاطات والتهوية الميكانيكية
+  // ============================================
+  {
+    id: '3.2.1',
+    sectionId: '3.2',
+    title: 'شفاط مطبخ (سحب هواء)',
+    unit: 'وحدة',
+    quantitySource: 'manual',
+    specs: [
+      { key: 'hoodType', label: 'نوع الشفاط', type: 'select', options: ['مسطح (Flat)', 'هرمي مدخنة (Chimney)', 'بلت إن مدمج (Built-In)', 'جزيرة (Island Hood)'], defaultValue: 'هرمي مدخنة (Chimney)' },
+      { key: 'airflowCapacity', label: 'قدرة السحب (م³/ساعة)', type: 'select', options: ['350 م³/ساعة', '500 م³/ساعة', '750 م³/ساعة', '1000 م³/ساعة'], defaultValue: '500 م³/ساعة' },
+      { key: 'brand', label: 'الماركة', type: 'select', options: ['فريش Fresh', 'تورنيدو Tornado', 'بوش Bosch', 'إلكتا Electa', 'أريستون Ariston', 'بيكو Beko'], defaultValue: 'فريش Fresh' },
+      { key: 'size', label: 'المقاس (عرض)', type: 'select', options: ['60 سم', '90 سم', '120 سم'], defaultValue: '90 سم' },
+      { key: 'color', label: 'لون الهيكل', type: 'select', options: ['ستانلس ستيل', 'أسود', 'أبيض', 'سيلفر'], defaultValue: 'ستانلس ستيل' },
+      { key: 'hoodPrice', label: 'سعر الشفاط (ج.م)', type: 'number', defaultValue: 4500 }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 4500, laborUnitPrice: 350, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
+    codeReferences: { egyptian: 'كود التهوية الميكانيكية - شفاطات المطابخ', saudiSBC: 'SBC 501 - Kitchen Ventilation', uaeUBC: 'UBC - Kitchen Exhaust' }
+  },
+  {
+    id: '3.2.2',
+    sectionId: '3.2',
+    title: 'شفاط حمام (مروحة طرد هواء)',
+    unit: 'وحدة',
+    quantitySource: 'manual',
+    perAreaOverride: true,
+    specs: [
+      { key: 'fanSize', label: 'المقاس', type: 'select', options: ['15x15 سم (6 بوصة)', '20x20 سم (8 بوصة)', '25x25 سم (10 بوصة)', '30x30 سم (12 بوصة)'], defaultValue: '20x20 سم (8 بوصة)' },
+      { key: 'operationType', label: 'نوع التشغيل', type: 'select', options: ['بمفتاح عادي', 'بسنسور حركة PIR', 'بتايمر تأخير', 'مع إضاءة مدمجة'], defaultValue: 'بمفتاح عادي' },
+      { key: 'brand', label: 'الماركة', type: 'select', options: ['تورنيدو Tornado', 'فريش Fresh', 'ستاندرد Standard', 'باناسونيك Panasonic'], defaultValue: 'تورنيدو Tornado' },
+      { key: 'fanPrice', label: 'سعر الشفاط (ج.م)', type: 'number', defaultValue: 350 }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 350, laborUnitPrice: 80, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
+    codeReferences: { egyptian: 'كود التهوية الميكانيكية - الحمامات', saudiSBC: 'SBC 501 - Bathroom Ventilation' }
+  },
+  {
+    id: '3.2.3',
+    sectionId: '3.2',
+    title: 'دكتات تهوية (مجاري الهواء)',
+    unit: 'متر طولي',
+    quantitySource: 'manual',
+    specs: [
+      { key: 'ductMaterial', label: 'خامة الدكت', type: 'select', options: ['صاج مجلفن (Galvanized)', 'فليكسبل PVC مرن', 'ألومنيوم مرن', 'فايبر جلاس معزول'], defaultValue: 'فليكسبل PVC مرن' },
+      { key: 'ductDiameter', label: 'القطر/المقاس', type: 'select', options: ['4 بوصة (100 مم)', '6 بوصة (150 مم)', '8 بوصة (200 مم)', '10 بوصة (250 مم)', '12 بوصة (300 مم)'], defaultValue: '6 بوصة (150 مم)' },
+      { key: 'insulated', label: 'عزل حراري', type: 'select', options: ['نعم - معزول حرارياً', 'لا - بدون عزل'], defaultValue: 'لا - بدون عزل' },
+      { key: 'ductPricePerMeter', label: 'سعر المتر دكت (ج.م)', type: 'number', defaultValue: 120 },
+      { key: 'fittingsPercent', label: 'نسبة الوصلات والأكواع (%)', type: 'number', defaultValue: 15 }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 120, laborUnitPrice: 60, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
+    codeReferences: { egyptian: 'كود التهوية الميكانيكية - مجاري الهواء', saudiSBC: 'SBC 501 - Ductwork', uaeUBC: 'UBC - Duct Standards', qatarQCS: 'QCS 2014 - Section 21' }
+  },
+  {
+    id: '3.2.4',
+    sectionId: '3.2',
+    title: 'فتحات تهوية وديفيوزرات (Grilles & Diffusers)',
+    unit: 'عدد',
+    quantitySource: 'manual',
+    perAreaOverride: true,
+    specs: [
+      { key: 'grilleType', label: 'نوع الفتحة', type: 'select', options: ['شبك تهوية عادي (Grille)', 'ديفيوزر مربع (Square Diffuser)', 'ديفيوزر خطي (Linear Diffuser)', 'فتحة ريتيرن (Return Air Grille)'], defaultValue: 'ديفيوزر مربع (Square Diffuser)' },
+      { key: 'grilleSize', label: 'المقاس', type: 'select', options: ['20x20 سم', '30x30 سم', '40x40 سم', '60x15 سم (خطي)', '120x15 سم (خطي)'], defaultValue: '30x30 سم' },
+      { key: 'color', label: 'اللون', type: 'select', options: ['أبيض', 'سيلفر', 'أسود مطفي', 'لون حسب التصميم'], defaultValue: 'أبيض' },
+      { key: 'grillePrice', label: 'سعر الفتحة الواحدة (ج.م)', type: 'number', defaultValue: 180 }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 180, laborUnitPrice: 40, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
+    codeReferences: { egyptian: 'كود التهوية - فتحات التوزيع', saudiSBC: 'SBC 501 - Air Distribution' }
   }
 ];
+
