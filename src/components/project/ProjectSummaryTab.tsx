@@ -5,6 +5,17 @@ import { calculateProjectSummary, calculateItemTotal } from '@/lib/calculations'
 import { DollarSign, Clock, Layout, Hammer, Percent, Save, Edit, Trash2, Plus, RefreshCw, Split } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
 
+interface ScheduleItem {
+  id: string;
+  title: string;
+  duration: number;
+  startDay: number;
+  endDay: number;
+  sourceSectionId?: string;
+  color?: string;
+  phase?: number;
+}
+
 export default function ProjectSummaryTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
   const updateHeader = useProjectStore((state) => state.updateHeader);
@@ -47,24 +58,25 @@ export default function ProjectSummaryTab() {
         const endDay = cumulativeDay + duration;
         cumulativeDay = endDay;
 
-        return {
+        const item: ScheduleItem = {
           id: sec.id,
           title: sec.title,
           duration,
           startDay,
           endDay
         };
+        return item;
       })
       .filter(sec => sec.duration > 0);
   }, [currentProject.sections, currentProject.items, currentProject.zones]);
 
   const hasOverrides = Array.isArray(currentProject.header.scheduleOverrides) && currentProject.header.scheduleOverrides.length > 0;
-  const activeSchedule = hasOverrides 
-    ? currentProject.header.scheduleOverrides!.map(s => ({...s, endDay: Number(s.startDay) + Number(s.duration)}))
+  const activeSchedule: ScheduleItem[] = hasOverrides 
+    ? currentProject.header.scheduleOverrides!.map(s => ({...s, endDay: Number(s.startDay) + Number(s.duration)} as ScheduleItem))
     : defaultSequentialSchedule;
 
   const [isEditingTimeline, setIsEditingTimeline] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState(activeSchedule);
+  const [editingSchedule, setEditingSchedule] = useState<ScheduleItem[]>(activeSchedule);
 
   useEffect(() => {
     if (!isEditingTimeline) {
@@ -81,7 +93,10 @@ export default function ProjectSummaryTab() {
       id: s.id,
       title: s.title,
       startDay: Number(s.startDay) || 0,
-      duration: Number(s.duration) || 0
+      duration: Number(s.duration) || 0,
+      sourceSectionId: s.sourceSectionId,
+      color: s.color,
+      phase: s.phase
     }));
     await updateHeader({ scheduleOverrides: overridesToSave });
     setIsEditingTimeline(false);
