@@ -275,7 +275,15 @@ export default function ProjectAttachmentsTab() {
               ) : previewAttachment.name.match(/\.(doc|docx|xls|xlsx|ppt|pptx)$/i) ? (
                 <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(previewAttachment.url)}`} className="w-full h-full border-0 bg-white" title="Office Preview" />
               ) : previewAttachment.name.match(/\.(dwg|dxf)$/i) ? (
-                <iframe src={`https://iframe.sharecad.org/cadframe/load?url=${encodeURIComponent(previewAttachment.url)}`} className="w-full h-full border-0 bg-white" title="CAD Preview" />
+                <div className="text-center p-8 max-w-sm">
+                  <FileText className="h-16 w-16 text-[#c5a880] mx-auto mb-4" />
+                  <p className="text-slate-300 font-bold mb-2">معاينة ملفات الأوتوكاد (CAD)</p>
+                  <p className="text-xs text-slate-400 mb-6 leading-relaxed">المتصفح لا يدعم عرض ملفات الكاد المعقدة بكفاءة عالية. لضمان رؤية التفاصيل والمقاسات بدقة، يرجى تحميل الملف وفتحه على جهازك.</p>
+                  <a href={previewAttachment.url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold hover:brightness-110 transition shadow-lg">
+                    <Download className="h-4 w-4" />
+                    تحميل الملف
+                  </a>
+                </div>
               ) : (
                 <div className="text-center p-8 max-w-sm">
                   <FileText className="h-16 w-16 text-slate-700 mx-auto mb-4" />
