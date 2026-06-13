@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { storage, db } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { FileText, Image, Trash2, Upload, ExternalLink, Paperclip } from 'lucide-react';
 
 interface Attachment {
@@ -27,8 +26,6 @@ export default function ProjectAttachmentsTab() {
   useEffect(() => {
     if (currentProject) {
       // Access files list directly from project doc if present
-      // We can also fetch the project document again or read local field.
-      // Let's assume we store attachments inside the projects document metadata in a field `attachments`
       const dbAttachments = (currentProject as any).attachments || [];
       setAttachments(dbAttachments);
     }
@@ -45,24 +42,21 @@ export default function ProjectAttachmentsTab() {
     setLoading(true);
     setUploadProgress(0);
 
-    const storageRef = ref(storage, `projects/${currentProject.id}/attachments/${Date.now()}_${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    const xhr = new XMLHttpRequest();
+    
+    xhr.upload.addEventListener('progress', (event) => {
+      if (event.lengthComputable) {
+        const progress = (event.loaded / event.total) * 100;
         setUploadProgress(Math.round(progress));
-      },
-      (error) => {
-        console.error('Upload error:', error);
-        alert('حدث خطأ أثناء تحميل الملف. يرجى مراجعة صلاحيات Firebase Storage.');
-        setLoading(false);
-        setUploadProgress(null);
-      },
-      async () => {
+      }
+    });
+
+    xhr.addEventListener('load', async () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
         try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          const response = JSON.parse(xhr.responseText);
+          const downloadURL = response.url;
+          
           const newAttachment: Attachment = {
             name: file.name,
             url: downloadURL,
@@ -88,23 +82,41 @@ export default function ProjectAttachmentsTab() {
           setUploadProgress(null);
         } catch (err) {
           console.error('Error saving download URL:', err);
+          alert('حدث خطأ أثناء حفظ بيانات الملف.');
           setLoading(false);
           setUploadProgress(null);
         }
+      } else {
+        console.error('Upload failed with status:', xhr.status);
+        alert('حدث خطأ أثناء تحميل الملف.');
+        setLoading(false);
+        setUploadProgress(null);
       }
-    );
+    });
+
+    xhr.addEventListener('error', () => {
+      alert('حدث خطأ في الاتصال بالخادم أثناء التحميل.');
+      setLoading(false);
+      setUploadProgress(null);
+    });
+
+    const uniqueName = `${Date.now()}_${file.name}`;
+    xhr.open('POST', `/api/upload?filename=${encodeURIComponent(uniqueName)}`);
+    xhr.send(file);
   };
 
   const handleDeleteAttachment = async (att: Attachment) => {
     if (!confirm('هل أنت متأكد من رغبتك في حذف هذا المرفق؟')) return;
 
     try {
-      // 1. Delete from Firebase Storage
-      // Extract path from download URL or use exact url (deleteObject can take the full ref URL)
-      const fileRef = ref(storage, att.url);
-      await deleteObject(fileRef).catch(err => {
-        console.warn('Storage delete warning (could be missing/mocked):', err);
+      // 1. Delete from Vercel Blob
+      const res = await fetch(`/api/upload?url=${encodeURIComponent(att.url)}`, {
+        method: 'DELETE',
       });
+      
+      if (!res.ok) {
+        throw new Error('Failed to delete file from storage');
+      }
 
       // 2. Remove from Firestore array
       const projectDocRef = doc(db, 'projects', currentProject.id);
