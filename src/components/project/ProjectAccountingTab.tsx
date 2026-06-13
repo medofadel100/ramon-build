@@ -1,16 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { AccountEntry, PaymentInstallment } from '@/lib/project-service';
-import { DollarSign, Plus, Trash2, CheckCircle, Clock, CreditCard, AlertTriangle, ChevronDown, ChevronUp, Filter, Users, User, HardHat, Package } from 'lucide-react';
+import { calculateProjectSummary } from '@/lib/calculations';
+import { DollarSign, Plus, Trash2, CheckCircle, Clock, CreditCard, AlertTriangle, ChevronDown, ChevronUp, Filter, Users, User, HardHat, Package, Percent, Save, RefreshCw } from 'lucide-react';
 
 export default function ProjectAccountingTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
   const addAccount = useProjectStore((state) => state.addAccount);
   const updateAccount = useProjectStore((state) => state.updateAccount);
   const removeAccount = useProjectStore((state) => state.removeAccount);
+  const updateHeader = useProjectStore((state) => state.updateHeader);
   const user = useAuthStore((state) => state.user);
 
   const [showAddForm, setShowAddForm] = useState(false);
@@ -38,13 +40,55 @@ export default function ProjectAccountingTab() {
   const workers = currentProject.workers || [];
   const canEdit = user?.role === 'admin' || currentProject.header.assignedEngineers.includes(user?.uid || '');
 
+  const [supervisionPercentage, setSupervisionPercentage] = useState(currentProject.header.supervisionPercentage || 0);
+  const [isSavingSupervision, setIsSavingSupervision] = useState(false);
+
+  useEffect(() => {
+    if (currentProject?.header.supervisionPercentage !== undefined) {
+      setSupervisionPercentage(currentProject.header.supervisionPercentage);
+    }
+  }, [currentProject?.header.supervisionPercentage]);
+
+  const summary = useMemo(() => {
+    return calculateProjectSummary(
+      currentProject.items,
+      currentProject.sections,
+      currentProject.zones,
+      currentProject.header.supervisionPercentage || 0
+    );
+  }, [currentProject.items, currentProject.sections, currentProject.zones, currentProject.header.supervisionPercentage]);
+
+  const handleSaveSupervision = async () => {
+    setIsSavingSupervision(true);
+    await updateHeader({ supervisionPercentage });
+    setIsSavingSupervision(false);
+  };
+
+  const clientAccounts = accounts.filter(a => a.personType === 'client');
+  const expenseAccounts = accounts.filter(a => a.personType === 'worker' || a.personType === 'supplier');
   const filteredAccounts = accounts.filter(a => filterType === 'all' || a.personType === filterType);
 
-  // Financial summary (Filtered)
-  const totalAgreed = filteredAccounts.reduce((sum, a) => sum + a.totalAgreedAmount, 0);
-  const totalPaid = filteredAccounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
-  const totalRemaining = totalAgreed - totalPaid;
-  const overdueCount = filteredAccounts.reduce((sum, a) => sum + a.installments.filter(i => !i.isPaid && new Date(i.dueDate) < new Date()).length, 0);
+  let totalAgreed = 0;
+  let totalPaid = 0;
+  let totalRemaining = 0;
+  let overdueCount = 0;
+  let clientPaid = 0;
+  let expensePaid = 0;
+
+  if (filterType === 'all') {
+    clientPaid = clientAccounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
+    expensePaid = expenseAccounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
+    
+    totalAgreed = clientPaid; 
+    totalPaid = expensePaid;
+    totalRemaining = clientPaid - expensePaid;
+    overdueCount = accounts.reduce((sum, a) => sum + a.installments.filter(i => !i.isPaid && new Date(i.dueDate) < new Date()).length, 0);
+  } else {
+    totalAgreed = filteredAccounts.reduce((sum, a) => sum + a.totalAgreedAmount, 0);
+    totalPaid = filteredAccounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
+    totalRemaining = totalAgreed - totalPaid;
+    overdueCount = filteredAccounts.reduce((sum, a) => sum + a.installments.filter(i => !i.isPaid && new Date(i.dueDate) < new Date()).length, 0);
+  }
 
   const resetForm = () => {
     setFormPersonType('supplier'); setFormPersonId(''); setFormPersonName(''); setFormTotalAmount(0); setFormNotes('');
@@ -112,25 +156,79 @@ export default function ProjectAccountingTab() {
   return (
     <div className="space-y-6 font-cairo select-none">
       
+      {/* Supervision Settings Card */}
+      {canEdit && (
+        <div className="rounded-xl border border-[#c5a880]/20 bg-[#c5a880]/5 p-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-sm font-bold text-[#c5a880] mb-1">إعدادات الإشراف الهندسي</h3>
+            <p className="text-xs text-slate-400">حدد نسبة الإشراف لحساب الربح المتوقع من إجمالي التكلفة الأساسية للبنود ({summary.grandTotal.toLocaleString('ar-EG')} ج.م)</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="relative w-32">
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={supervisionPercentage}
+                onChange={(e) => setSupervisionPercentage(parseFloat(e.target.value) || 0)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 pl-8 text-left text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              />
+              <Percent className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+            </div>
+            <button
+              onClick={handleSaveSupervision}
+              disabled={isSavingSupervision || supervisionPercentage === (currentProject.header.supervisionPercentage || 0)}
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 disabled:opacity-50 transition"
+            >
+              {isSavingSupervision ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              حفظ النسبة
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Financial Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
-          <span className="block text-xs font-semibold text-slate-500 mb-1">إجمالي المستحقات</span>
-          <p className="text-xl font-extrabold text-white">{totalAgreed.toLocaleString('ar-EG')} <span className="text-xs text-slate-400">ج.م</span></p>
+      {filterType === 'all' ? (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="rounded-xl border border-emerald-900/40 bg-emerald-950/20 p-5">
+            <span className="block text-xs font-semibold text-emerald-600 mb-1">إجمالي المستلم من العميل</span>
+            <p className="text-xl font-extrabold text-emerald-400">{clientPaid.toLocaleString('ar-EG')} <span className="text-xs">ج.م</span></p>
+          </div>
+          <div className="rounded-xl border border-rose-900/40 bg-rose-950/20 p-5">
+            <span className="block text-xs font-semibold text-rose-600 mb-1">إجمالي المنصرف (موردين/عمال)</span>
+            <p className="text-xl font-extrabold text-rose-400">{expensePaid.toLocaleString('ar-EG')} <span className="text-xs">ج.م</span></p>
+          </div>
+          <div className="rounded-xl border border-[#c5a880]/30 bg-[#c5a880]/10 p-5 shadow-lg shadow-[#c5a880]/5">
+            <span className="block text-xs font-semibold text-[#c5a880] mb-1">الرصيد الصافي بالخزينة</span>
+            <p className="text-xl font-extrabold text-white">{(clientPaid - expensePaid).toLocaleString('ar-EG')} <span className="text-xs">ج.م</span></p>
+          </div>
+          <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
+            <span className="block text-xs font-semibold text-slate-400 mb-1">ربح الإشراف المتوقع</span>
+            <p className="text-xl font-extrabold text-white">{summary.supervisionValue.toLocaleString('ar-EG')} <span className="text-xs text-slate-500">ج.م</span></p>
+          </div>
         </div>
-        <div className="rounded-xl border border-emerald-900/40 bg-emerald-950/20 p-5">
-          <span className="block text-xs font-semibold text-emerald-600 mb-1">المدفوع</span>
-          <p className="text-xl font-extrabold text-emerald-400">{totalPaid.toLocaleString('ar-EG')} <span className="text-xs">ج.م</span></p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
+            <span className="block text-xs font-semibold text-slate-500 mb-1">
+              إجمالي {filterType === 'client' ? 'التعاقد' : 'المستحقات'}
+            </span>
+            <p className="text-xl font-extrabold text-white">{totalAgreed.toLocaleString('ar-EG')} <span className="text-xs text-slate-400">ج.م</span></p>
+          </div>
+          <div className="rounded-xl border border-emerald-900/40 bg-emerald-950/20 p-5">
+            <span className="block text-xs font-semibold text-emerald-600 mb-1">المدفوع</span>
+            <p className="text-xl font-extrabold text-emerald-400">{totalPaid.toLocaleString('ar-EG')} <span className="text-xs">ج.م</span></p>
+          </div>
+          <div className="rounded-xl border border-amber-900/40 bg-amber-950/20 p-5">
+            <span className="block text-xs font-semibold text-amber-600 mb-1">المتبقي</span>
+            <p className="text-xl font-extrabold text-amber-400">{totalRemaining.toLocaleString('ar-EG')} <span className="text-xs">ج.م</span></p>
+          </div>
+          <div className="rounded-xl border border-rose-900/40 bg-rose-950/20 p-5">
+            <span className="block text-xs font-semibold text-rose-600 mb-1">دفعات متأخرة</span>
+            <p className="text-xl font-extrabold text-rose-400">{overdueCount} <span className="text-xs">دفعة</span></p>
+          </div>
         </div>
-        <div className="rounded-xl border border-amber-900/40 bg-amber-950/20 p-5">
-          <span className="block text-xs font-semibold text-amber-600 mb-1">المتبقي</span>
-          <p className="text-xl font-extrabold text-amber-400">{totalRemaining.toLocaleString('ar-EG')} <span className="text-xs">ج.م</span></p>
-        </div>
-        <div className="rounded-xl border border-rose-900/40 bg-rose-950/20 p-5">
-          <span className="block text-xs font-semibold text-rose-600 mb-1">دفعات متأخرة</span>
-          <p className="text-xl font-extrabold text-rose-400">{overdueCount} <span className="text-xs">دفعة</span></p>
-        </div>
-      </div>
+      )}
 
       {/* Add Account Button */}
       {canEdit && !showAddForm && (
@@ -196,6 +294,7 @@ export default function ProjectAccountingTab() {
                     setFormPersonType('client');
                     setFormPersonId('client_1');
                     setFormPersonName(currentProject.header.ownerName || 'العميل');
+                    setFormTotalAmount(summary.grandTotal + summary.supervisionValue);
                   }}
                   className={`flex-1 py-2 rounded-lg text-xs font-semibold border transition ${
                     formPersonType === 'client' ? 'bg-purple-950/40 border-purple-500 text-white' : 'border-slate-800 text-slate-400'
