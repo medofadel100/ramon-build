@@ -97,7 +97,7 @@ export interface PaymentInstallment {
 
 export interface AccountEntry {
   id: string;
-  personType: 'supplier' | 'worker';
+  personType: 'supplier' | 'worker' | 'client';
   personId: string;
   personName: string;
   totalAgreedAmount: number;

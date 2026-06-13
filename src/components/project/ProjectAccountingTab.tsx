@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { AccountEntry, PaymentInstallment } from '@/lib/project-service';
-import { DollarSign, Plus, Trash2, CheckCircle, Clock, CreditCard, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
+import { DollarSign, Plus, Trash2, CheckCircle, Clock, CreditCard, AlertTriangle, ChevronDown, ChevronUp, Filter, Users, User, HardHat, Package } from 'lucide-react';
 
 export default function ProjectAccountingTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
@@ -16,9 +16,10 @@ export default function ProjectAccountingTab() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [expandedAccountId, setExpandedAccountId] = useState<string | null>(null);
   const [showInstallmentForm, setShowInstallmentForm] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<'all' | 'client' | 'supplier' | 'worker'>('all');
 
   // Add account form
-  const [formPersonType, setFormPersonType] = useState<'supplier' | 'worker'>('supplier');
+  const [formPersonType, setFormPersonType] = useState<'client' | 'supplier' | 'worker'>('supplier');
   const [formPersonId, setFormPersonId] = useState('');
   const [formPersonName, setFormPersonName] = useState('');
   const [formTotalAmount, setFormTotalAmount] = useState(0);
@@ -37,11 +38,13 @@ export default function ProjectAccountingTab() {
   const workers = currentProject.workers || [];
   const canEdit = user?.role === 'admin' || currentProject.header.assignedEngineers.includes(user?.uid || '');
 
-  // Financial summary
-  const totalAgreed = accounts.reduce((sum, a) => sum + a.totalAgreedAmount, 0);
-  const totalPaid = accounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
+  const filteredAccounts = accounts.filter(a => filterType === 'all' || a.personType === filterType);
+
+  // Financial summary (Filtered)
+  const totalAgreed = filteredAccounts.reduce((sum, a) => sum + a.totalAgreedAmount, 0);
+  const totalPaid = filteredAccounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
   const totalRemaining = totalAgreed - totalPaid;
-  const overdueCount = accounts.reduce((sum, a) => sum + a.installments.filter(i => !i.isPaid && new Date(i.dueDate) < new Date()).length, 0);
+  const overdueCount = filteredAccounts.reduce((sum, a) => sum + a.installments.filter(i => !i.isPaid && new Date(i.dueDate) < new Date()).length, 0);
 
   const resetForm = () => {
     setFormPersonType('supplier'); setFormPersonId(''); setFormPersonName(''); setFormTotalAmount(0); setFormNotes('');
@@ -140,6 +143,46 @@ export default function ProjectAccountingTab() {
         </button>
       )}
 
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-[#222634] pb-4">
+        <div className="flex items-center gap-2 ml-4">
+          <Filter className="h-4 w-4 text-slate-500" />
+          <span className="text-xs font-bold text-slate-400">تصفية الحسابات:</span>
+        </div>
+        <button
+          onClick={() => setFilterType('all')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold border transition ${
+            filterType === 'all' ? 'bg-[#c5a880]/10 border-[#c5a880] text-white' : 'border-[#222634] text-slate-400 hover:text-white bg-[#1a1c24]'
+          }`}
+        >
+          <Users className="h-4 w-4" /> الكل
+        </button>
+        <button
+          onClick={() => setFilterType('client')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold border transition ${
+            filterType === 'client' ? 'bg-purple-950/40 border-purple-500 text-purple-400' : 'border-[#222634] text-slate-400 hover:text-white bg-[#1a1c24]'
+          }`}
+        >
+          <User className="h-4 w-4" /> دفعات العميل
+        </button>
+        <button
+          onClick={() => setFilterType('supplier')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold border transition ${
+            filterType === 'supplier' ? 'bg-sky-950/40 border-sky-500 text-sky-400' : 'border-[#222634] text-slate-400 hover:text-white bg-[#1a1c24]'
+          }`}
+        >
+          <Package className="h-4 w-4" /> الموردين
+        </button>
+        <button
+          onClick={() => setFilterType('worker')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold border transition ${
+            filterType === 'worker' ? 'bg-amber-950/40 border-amber-500 text-amber-400' : 'border-[#222634] text-slate-400 hover:text-white bg-[#1a1c24]'
+          }`}
+        >
+          <HardHat className="h-4 w-4" /> الصنايعية
+        </button>
+      </div>
+
       {/* Add Account Form */}
       {showAddForm && (
         <div className="rounded-xl border border-[#c5a880]/30 bg-[#1a1c24] p-5 space-y-4">
@@ -149,37 +192,59 @@ export default function ProjectAccountingTab() {
               <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">نوع الشخص</label>
               <div className="flex gap-2">
                 <button
-                  onClick={() => setFormPersonType('supplier')}
+                  onClick={() => {
+                    setFormPersonType('client');
+                    setFormPersonId('client_1');
+                    setFormPersonName(currentProject.header.ownerName || 'العميل');
+                  }}
                   className={`flex-1 py-2 rounded-lg text-xs font-semibold border transition ${
-                    formPersonType === 'supplier' ? 'bg-[#c5a880]/10 border-[#c5a880] text-white' : 'border-slate-800 text-slate-400'
+                    formPersonType === 'client' ? 'bg-purple-950/40 border-purple-500 text-white' : 'border-slate-800 text-slate-400'
+                  }`}
+                >عميل</button>
+                <button
+                  onClick={() => { setFormPersonType('supplier'); setFormPersonId(''); setFormPersonName(''); }}
+                  className={`flex-1 py-2 rounded-lg text-xs font-semibold border transition ${
+                    formPersonType === 'supplier' ? 'bg-sky-950/40 border-sky-500 text-white' : 'border-slate-800 text-slate-400'
                   }`}
                 >مورد</button>
                 <button
-                  onClick={() => setFormPersonType('worker')}
+                  onClick={() => { setFormPersonType('worker'); setFormPersonId(''); setFormPersonName(''); }}
                   className={`flex-1 py-2 rounded-lg text-xs font-semibold border transition ${
-                    formPersonType === 'worker' ? 'bg-[#c5a880]/10 border-[#c5a880] text-white' : 'border-slate-800 text-slate-400'
+                    formPersonType === 'worker' ? 'bg-amber-950/40 border-amber-500 text-white' : 'border-slate-800 text-slate-400'
                   }`}
                 >صنايعي</button>
               </div>
             </div>
-            <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">اختر من القائمة أو أدخل اسم</label>
-              <select
-                value={formPersonId}
-                onChange={(e) => {
-                  setFormPersonId(e.target.value);
-                  const list = formPersonType === 'supplier' ? suppliers : workers;
-                  const p = list.find(l => l.id === e.target.value);
-                  if (p) setFormPersonName(p.name);
-                }}
-                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
-              >
-                <option value="">أدخل يدوياً...</option>
-                {(formPersonType === 'supplier' ? suppliers : workers).map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
-            </div>
+            
+            {formPersonType !== 'client' ? (
+              <div>
+                <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">اختر من القائمة أو أدخل اسم</label>
+                <select
+                  value={formPersonId}
+                  onChange={(e) => {
+                    setFormPersonId(e.target.value);
+                    const list = formPersonType === 'supplier' ? suppliers : workers;
+                    const p = list.find(l => l.id === e.target.value);
+                    if (p) setFormPersonName(p.name);
+                  }}
+                  className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                >
+                  <option value="">أدخل يدوياً...</option>
+                  {(formPersonType === 'supplier' ? suppliers : workers).map(p => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div>
+                <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">اسم العميل</label>
+                <input
+                  type="text" value={formPersonName} readOnly
+                  className="w-full rounded-lg border border-[#222634] bg-[#13151c]/50 text-slate-500 px-4 py-2.5 text-right text-sm focus:outline-none cursor-not-allowed"
+                />
+              </div>
+            )}
+            
             <div>
               <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">اسم الشخص *</label>
               <input
@@ -215,14 +280,14 @@ export default function ProjectAccountingTab() {
 
       {/* Accounts List */}
       <div className="space-y-4">
-        {accounts.length === 0 ? (
+        {filteredAccounts.length === 0 ? (
           <div className="text-center py-12 border border-dashed border-[#222634] rounded-xl bg-[#13151c]/40">
             <DollarSign className="h-10 w-10 text-slate-700 mx-auto mb-3" />
-            <p className="text-sm text-slate-400">لا يوجد حسابات مالية مسجلة</p>
-            <p className="text-xs text-slate-500 mt-1">أنشئ حساب مالي لمورد أو صنايعي لتتبع الدفعات والأقساط</p>
+            <p className="text-sm text-slate-400">لا يوجد حسابات مالية متطابقة</p>
+            <p className="text-xs text-slate-500 mt-1">تأكد من اختيار الفلتر الصحيح أو قم بإضافة حساب جديد</p>
           </div>
         ) : (
-          accounts.map(account => {
+          filteredAccounts.map(account => {
             const paid = account.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0);
             const remaining = account.totalAgreedAmount - paid;
             const progress = getPaymentProgress(account);
@@ -239,11 +304,13 @@ export default function ProjectAccountingTab() {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                        account.personType === 'supplier'
-                          ? 'bg-sky-950/40 text-sky-400 border-sky-800/40'
-                          : 'bg-amber-950/40 text-amber-400 border-amber-800/40'
+                        account.personType === 'client'
+                          ? 'bg-purple-950/40 text-purple-400 border-purple-800/40'
+                          : account.personType === 'supplier'
+                            ? 'bg-sky-950/40 text-sky-400 border-sky-800/40'
+                            : 'bg-amber-950/40 text-amber-400 border-amber-800/40'
                       }`}>
-                        {account.personType === 'supplier' ? 'مورد' : 'صنايعي'}
+                        {account.personType === 'client' ? 'العميل' : account.personType === 'supplier' ? 'مورد' : 'صنايعي'}
                       </div>
                       <h4 className="text-sm font-bold text-white">{account.personName}</h4>
                       {hasOverdue && (
