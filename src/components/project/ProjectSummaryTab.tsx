@@ -2,7 +2,7 @@
 
 import { useProjectStore } from '@/store/projectStore';
 import { calculateProjectSummary, calculateItemTotal } from '@/lib/calculations';
-import { DollarSign, Clock, Layout, Hammer, Percent, Save, Edit, Trash2, Plus, RefreshCw } from 'lucide-react';
+import { DollarSign, Clock, Layout, Hammer, Percent, Save, Edit, Trash2, Plus, RefreshCw, Split } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
 
 export default function ProjectSummaryTab() {
@@ -255,144 +255,215 @@ export default function ProjectSummaryTab() {
         </div>
       </div>
 
-      {/* 3. Gantt Scheduling Schedule */}
-      {displaySchedule.length > 0 && (
-        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl relative">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-            <div className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-[#c5a880]" />
-              <h3 className="text-base font-bold text-white">الجدول الزمني ومسار التنفيذ (Gantt Chart)</h3>
-            </div>
-            
-            {!isEditingTimeline ? (
-              <button
-                onClick={() => setIsEditingTimeline(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-bold text-[#c5a880] hover:bg-slate-800 transition"
-              >
-                <Edit className="h-4 w-4" />
-                تخصيص وتعديل الجدول
-              </button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handleResetTimeline}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-rose-950/30 border border-rose-900 text-xs font-bold text-rose-400 hover:bg-rose-900 hover:text-white transition"
-                >
-                  <RefreshCw className="h-3.5 w-3.5" />
-                  إلغاء التعديلات
-                </button>
-                <button
-                  onClick={() => setIsEditingTimeline(false)}
-                  className="px-3 py-2 rounded-lg bg-slate-800 text-xs font-bold text-slate-300 hover:text-white transition"
-                >
-                  إلغاء
-                </button>
-                <button
-                  onClick={handleSaveTimeline}
-                  disabled={isSaving}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
-                >
-                  {isSaving ? 'جاري الحفظ...' : <><Save className="h-4 w-4" /> حفظ الجدول</>}
-                </button>
-              </div>
-            )}
+      {/* 3. Professional Gantt Chart */}
+      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl relative">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div className="flex items-center gap-2">
+            <Clock className="h-5 w-5 text-[#c5a880]" />
+            <h3 className="text-base font-bold text-white">الجدول الزمني ومسار التنفيذ (Gantt Chart)</h3>
           </div>
           
-          <p className="text-xs text-slate-400 mb-6 leading-normal">
-            {hasOverrides 
-              ? 'يتم عرض الجدول الزمني المخصص والمحفوظ لهذا المشروع.'
-              : 'محاكاة توضح تتابع مراحل العمل الفني بناءً على تقدير الأيام الإجمالية. يمكنك تعديلها بحرية عن طريق "تخصيص الجدول".'}
-          </p>
-
-          <div className="space-y-4">
-            {displaySchedule.map((sec) => {
-              const safeTotal = projectTotalDays > 0 ? projectTotalDays : 1;
-              const startPercent = (sec.startDay / safeTotal) * 100;
-              const widthPercent = (sec.duration / safeTotal) * 100;
-
-              return (
-                <div key={sec.id} className={`grid grid-cols-1 ${isEditingTimeline ? 'md:grid-cols-6' : 'md:grid-cols-4'} gap-4 items-center`}>
-                  
-                  {/* Left Label or Editor */}
-                  {isEditingTimeline ? (
-                    <div className="md:col-span-2 flex items-center gap-2">
-                      <input 
-                        type="text" 
-                        value={sec.title}
-                        onChange={(e) => updateTimelineStage(sec.id, 'title', e.target.value)}
-                        className="w-full rounded border border-[#222634] bg-[#1a1c24] px-2 py-1 text-xs text-white"
-                        placeholder="اسم المرحلة"
-                      />
-                      <div className="flex items-center gap-1">
-                        <span className="text-[10px] text-slate-500">بداية:</span>
-                        <input 
-                          type="number" min="0" value={sec.startDay}
-                          onChange={(e) => updateTimelineStage(sec.id, 'startDay', e.target.value)}
-                          className="w-12 rounded border border-[#222634] bg-[#1a1c24] px-1 py-1 text-xs text-white text-center"
-                        />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="text-[10px] text-slate-500">مدة:</span>
-                        <input 
-                          type="number" min="1" value={sec.duration}
-                          onChange={(e) => updateTimelineStage(sec.id, 'duration', e.target.value)}
-                          className="w-12 rounded border border-[#222634] bg-[#1a1c24] px-1 py-1 text-xs text-white text-center"
-                        />
-                      </div>
-                      <button onClick={() => removeTimelineStage(sec.id)} className="text-rose-500 hover:text-rose-400 p-1">
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-right">
-                      {!sec.id.startsWith('stage_') && <span className="text-[10px] text-slate-500 font-bold block">{sec.id}</span>}
-                      <span className="text-xs font-bold text-white truncate block">{sec.title}</span>
-                    </div>
-                  )}
-
-                  {/* Visual timeline bar */}
-                  <div className={`bg-slate-900 border border-slate-800/80 h-9 rounded-lg relative overflow-hidden flex items-center ${isEditingTimeline ? 'md:col-span-4' : 'md:col-span-3'}`}>
-                    <div 
-                      className={`absolute ${hasOverrides || isEditingTimeline ? 'bg-gradient-to-l from-emerald-600 to-emerald-400/60' : 'bg-gradient-to-l from-[#c5a880] to-[#e5c595]/60'} h-full rounded-md flex items-center justify-end px-3 transition-all duration-300 ease-in-out`}
-                      style={{
-                        right: `${Math.min(100, Math.max(0, startPercent))}%`,
-                        width: `${Math.min(100, Math.max(0, widthPercent))}%`
-                      }}
-                    >
-                      <span className="text-[9px] font-bold text-[#0d0e12] whitespace-nowrap bg-white/70 px-1 py-0.5 rounded leading-none">
-                        {sec.duration} يوم
-                      </span>
-                    </div>
-
-                    {/* Timeline dates markers */}
-                    <div className="absolute right-0 left-0 flex justify-between px-3 text-[8px] text-slate-500 font-bold select-none pointer-events-none">
-                      <span>اليوم {sec.startDay}</span>
-                      <span>اليوم {sec.endDay}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {isEditingTimeline && (
-            <div className="mt-6 flex justify-center">
-              <button 
-                onClick={addTimelineStage}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-slate-600 text-slate-400 hover:text-white hover:border-slate-400 transition text-xs font-bold"
+          {!isEditingTimeline ? (
+            <button
+              onClick={() => { setIsEditingTimeline(true); setEditingSchedule(activeSchedule.map(s => ({...s}))); }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-bold text-[#c5a880] hover:bg-slate-800 transition"
+            >
+              <Edit className="h-4 w-4" />
+              تخصيص وتعديل الجدول
+            </button>
+          ) : (
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={handleResetTimeline}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-rose-950/30 border border-rose-900 text-xs font-bold text-rose-400 hover:bg-rose-900 hover:text-white transition"
               >
-                <Plus className="h-4 w-4" />
-                إضافة مرحلة جديدة للجدول
+                <RefreshCw className="h-3.5 w-3.5" />
+                إعادة للتلقائي
+              </button>
+              <button
+                onClick={() => setIsEditingTimeline(false)}
+                className="px-3 py-2 rounded-lg bg-slate-800 text-xs font-bold text-slate-300 hover:text-white transition"
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleSaveTimeline}
+                disabled={isSaving}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+              >
+                {isSaving ? 'جاري الحفظ...' : <><Save className="h-4 w-4" /> حفظ الجدول</>}
               </button>
             </div>
           )}
+        </div>
+        
+        <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+          {hasOverrides 
+            ? '✅ يتم عرض الجدول الزمني المخصص المحفوظ لهذا المشروع. اضغط "تخصيص" لتعديله.'
+            : 'جدول تلقائي بناءً على تقدير أيام كل قسم. اضغط "تخصيص وتعديل" لتغيير الترتيب أو تقسيم أي مرحلة.'}
+        </p>
 
-          <div className="border-t border-[#222634] pt-4 mt-8 flex justify-between text-xs font-semibold text-slate-400">
-            <span>بداية المشروع: اليوم الأول</span>
-            <span>نهاية المشروع التقديرية: اليوم {projectTotalDays}</span>
+        {/* Timeline Ruler - horizontal axis */}
+        {projectTotalDays > 0 && (
+          <div className="mb-2 relative h-6 border-b border-[#222634]">
+            {Array.from({ length: Math.min(Math.ceil(projectTotalDays / Math.max(1, Math.ceil(projectTotalDays / 10))), 12) }, (_, i) => {
+              const step = Math.max(1, Math.ceil(projectTotalDays / 10));
+              const day = i * step;
+              const leftPercent = (day / projectTotalDays) * 100;
+              return (
+                <div key={i} className="absolute top-0 flex flex-col items-center" style={{ left: `${Math.min(leftPercent, 98)}%` }}>
+                  <div className="w-px h-2 bg-[#222634]"></div>
+                  <span className="text-[8px] text-slate-600 font-bold mt-0.5">يوم {day}</span>
+                </div>
+              );
+            })}
+            <div className="absolute top-0 left-full flex flex-col items-end" style={{ right: 0, left: 'auto' }}>
+              <div className="w-px h-2 bg-[#c5a880]"></div>
+              <span className="text-[8px] text-[#c5a880] font-bold mt-0.5">{projectTotalDays}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Gantt Bars */}
+        <div className="space-y-2">
+          {displaySchedule.map((sec, idx) => {
+            const safeTotal = projectTotalDays > 0 ? projectTotalDays : 1;
+            const leftPercent = (Number(sec.startDay) / safeTotal) * 100;
+            const widthPercent = (Number(sec.duration) / safeTotal) * 100;
+            
+            const COLORS = [
+              'from-blue-500 to-blue-600',
+              'from-emerald-500 to-emerald-600',
+              'from-amber-500 to-amber-600',
+              'from-purple-500 to-purple-600',
+              'from-rose-500 to-rose-600',
+              'from-cyan-500 to-cyan-600',
+              'from-orange-500 to-orange-600',
+              'from-indigo-500 to-indigo-600',
+              'from-pink-500 to-pink-600',
+              'from-teal-500 to-teal-600',
+            ];
+            const colorClass = sec.color 
+              ? '' 
+              : COLORS[idx % COLORS.length];
+            
+            const isPhase = sec.phase && sec.phase > 1;
+
+            return (
+              <div key={sec.id} className="group">
+                {isEditingTimeline ? (
+                  <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                    <input 
+                      type="text" 
+                      value={sec.title}
+                      onChange={(e) => updateTimelineStage(sec.id, 'title', e.target.value)}
+                      className="flex-1 min-w-[140px] rounded border border-[#222634] bg-[#1a1c24] px-2 py-1.5 text-xs text-white focus:border-[#c5a880] focus:outline-none"
+                      placeholder="اسم المرحلة"
+                    />
+                    <div className="flex items-center gap-1 bg-[#1a1c24] rounded border border-[#222634] px-2 py-1">
+                      <span className="text-[10px] text-slate-500">بداية:</span>
+                      <input 
+                        type="number" min="0" value={sec.startDay}
+                        onChange={(e) => updateTimelineStage(sec.id, 'startDay', e.target.value)}
+                        className="w-14 bg-transparent text-xs text-white text-center focus:outline-none"
+                      />
+                    </div>
+                    <div className="flex items-center gap-1 bg-[#1a1c24] rounded border border-[#222634] px-2 py-1">
+                      <span className="text-[10px] text-slate-500">مدة:</span>
+                      <input 
+                        type="number" min="1" value={sec.duration}
+                        onChange={(e) => updateTimelineStage(sec.id, 'duration', e.target.value)}
+                        className="w-14 bg-transparent text-xs text-white text-center focus:outline-none"
+                      />
+                      <span className="text-[10px] text-slate-500">يوم</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const newPhase = {
+                          id: `split_${sec.id}_${Date.now()}`,
+                          title: `${sec.title} (مرحلة ${(sec.phase || 1) + 1})`,
+                          duration: Math.max(1, Math.floor(Number(sec.duration) / 2)),
+                          startDay: Number(sec.startDay) + Number(sec.duration),
+                          endDay: 0,
+                          sourceSectionId: sec.sourceSectionId || sec.id,
+                          phase: (sec.phase || 1) + 1
+                        };
+                        newPhase.endDay = newPhase.startDay + newPhase.duration;
+                        const newSchedule = [...editingSchedule];
+                        newSchedule.splice(idx + 1, 0, newPhase);
+                        setEditingSchedule(newSchedule);
+                      }}
+                      className="flex items-center gap-1 px-2 py-1 rounded bg-blue-950/40 border border-blue-800/50 text-[10px] font-bold text-blue-400 hover:bg-blue-900 hover:text-white transition whitespace-nowrap"
+                      title="تقسيم هذا البند لمرحلة إضافية"
+                    >
+                      <Split className="h-3 w-3" />
+                      تقسيم
+                    </button>
+                    <button onClick={() => removeTimelineStage(sec.id)} className="text-rose-500 hover:text-rose-400 p-1">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 mb-0.5">
+                    {isPhase && <span className="text-[9px] text-slate-600 bg-slate-900 px-1.5 py-0.5 rounded">مرحلة {sec.phase}</span>}
+                    <span className="text-[11px] font-bold text-white truncate max-w-[200px]">{sec.title}</span>
+                    <span className="text-[9px] text-slate-500">
+                      (يوم {sec.startDay} → يوم {sec.endDay})
+                    </span>
+                  </div>
+                )}
+                
+                {/* Gantt Bar */}
+                <div className="bg-slate-900/60 border border-slate-800/50 h-8 rounded-md relative overflow-hidden">
+                  <div 
+                    className={`absolute h-full rounded-md bg-gradient-to-r ${colorClass} flex items-center justify-center transition-all duration-500 ease-out shadow-lg`}
+                    style={{
+                      left: `${Math.min(100, Math.max(0, leftPercent))}%`,
+                      width: `${Math.min(100 - leftPercent, Math.max(1, widthPercent))}%`,
+                      ...(sec.color ? { background: sec.color } : {})
+                    }}
+                  >
+                    <span className="text-[10px] font-extrabold text-white drop-shadow-md whitespace-nowrap px-2">
+                      {sec.duration} يوم
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Add Phase Button in Edit Mode */}
+        {isEditingTimeline && (
+          <div className="mt-6 flex justify-center gap-3">
+            <button 
+              onClick={addTimelineStage}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-slate-600 text-slate-400 hover:text-white hover:border-slate-400 transition text-xs font-bold"
+            >
+              <Plus className="h-4 w-4" />
+              إضافة مرحلة حرة
+            </button>
+          </div>
+        )}
+
+        {/* Footer Summary */}
+        <div className="border-t border-[#222634] pt-4 mt-6 flex flex-col sm:flex-row justify-between gap-3">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-sm bg-gradient-to-r from-blue-500 to-blue-600"></div>
+              <span className="text-[10px] text-slate-400">أعمال مختلفة</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-sm bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
+              <span className="text-[10px] text-slate-400">يمكن التداخل</span>
+            </div>
+          </div>
+          <div className="flex gap-6 text-xs font-bold">
+            <span className="text-slate-500">إجمالي المدة: <span className="text-[#c5a880]">{projectTotalDays} يوم عمل</span></span>
+            <span className="text-slate-500">مراحل العمل: <span className="text-white">{displaySchedule.length} مرحلة</span></span>
           </div>
         </div>
-      )}
+      </div>
 
     </div>
   );

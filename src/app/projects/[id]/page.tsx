@@ -15,7 +15,8 @@ import ProjectSharingTab from '@/components/project/ProjectSharingTab';
 import ProjectTeamTab from '@/components/project/ProjectTeamTab';
 import ProjectSuppliersTab from '@/components/project/ProjectSuppliersTab';
 import ProjectAccountingTab from '@/components/project/ProjectAccountingTab';
-import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign } from 'lucide-react';
+import ProjectInspectionTab from '@/components/project/ProjectInspectionTab';
+import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign, ClipboardCheck } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectPageProps {
@@ -35,7 +36,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
   const loadingProject = useProjectStore((state) => state.loading);
   const projectError = useProjectStore((state) => state.error);
 
-  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting'>('boq');
+  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting' | 'inspection'>('boq');
 
   useEffect(() => {
     if (!loadingAuth && !user) {
@@ -96,6 +97,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
     { id: 'zones', label: 'المساحات والحيّز', icon: Layers },
     { id: 'suppliers', label: 'الموردين والصناعية', icon: Package },
     { id: 'accounting', label: 'الحسابات والدفعات', icon: DollarSign },
+    { id: 'inspection', label: 'استلام الأعمال', icon: ClipboardCheck },
     { id: 'attachments', label: 'المرفقات', icon: Paperclip },
     { id: 'sharing', label: 'مشاركة العميل', icon: Share2 }
   ] as const;
@@ -179,6 +181,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
           {activeTab === 'team' && <ProjectTeamTab />}
           {activeTab === 'suppliers' && <ProjectSuppliersTab />}
           {activeTab === 'accounting' && <ProjectAccountingTab />}
+          {activeTab === 'inspection' && <ProjectInspectionTab />}
           {activeTab === 'attachments' && <ProjectAttachmentsTab />}
           {activeTab === 'sharing' && <ProjectSharingTab />}
         </div>

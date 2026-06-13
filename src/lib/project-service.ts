@@ -49,6 +49,9 @@ export interface ScheduleOverride {
   title: string;
   startDay: number;
   duration: number;
+  sourceSectionId?: string;
+  color?: string;
+  phase?: number;
 }
 
 export interface ProjectHeader {
@@ -80,6 +83,8 @@ export interface Supplier {
   name: string;
   phone: string;
   specialty: string;
+  governorate?: string;
+  address?: string;
   notes: string;
 }
 
@@ -90,6 +95,8 @@ export interface Worker {
   trade: string;
   assignedItems: string[];
   dailyRate: number;
+  governorate?: string;
+  address?: string;
   notes: string;
 }
 

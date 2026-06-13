@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useProjectStore } from '@/store/projectStore';
-import { LogOut, Home, PlusCircle, Settings, Users, Database, User } from 'lucide-react';
+import { LogOut, Home, PlusCircle, Settings, Users, Database, User, BookOpen } from 'lucide-react';
 
 export default function Navbar() {
   const user = useAuthStore((state) => state.user);
@@ -67,6 +67,17 @@ export default function Navbar() {
               <span className="flex items-center gap-1.5">
                 <PlusCircle className="h-4 w-4" />
                 مشروع جديد
+              </span>
+            </Link>
+            <Link 
+              href="/dashboard/directory" 
+              className={`px-3 py-1.5 rounded-lg transition ${
+                isActive('/dashboard/directory') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <BookOpen className="h-4 w-4" />
+                دليل الموردين
               </span>
             </Link>
 

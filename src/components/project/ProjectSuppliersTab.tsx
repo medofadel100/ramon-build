@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { Supplier, Worker } from '@/lib/project-service';
-import { Package, Hammer, Plus, Trash2, Edit3, Save, X, Phone, MessageCircle } from 'lucide-react';
+import { Package, Hammer, Plus, Trash2, Edit3, Save, X, Phone, MessageCircle, MapPin } from 'lucide-react';
 
 const SUPPLIER_SPECIALTIES = [
   'مورد سيراميك وبلاط', 'مورد أدوات صحية', 'مورد كهرباء', 'مورد دهانات',
@@ -16,6 +16,14 @@ const WORKER_TRADES = [
   'سباك', 'كهربائي', 'نقاش (دهانات)', 'مبلّط (سيراميك)', 'نجار',
   'حداد', 'عامل محارة', 'فني تكييف', 'فني ألومنيوم', 'فني جبس بورد',
   'عامل عام', 'أخرى'
+];
+
+const GOVERNORATES = [
+  'القاهرة', 'الجيزة', 'الإسكندرية', 'الدقهلية', 'البحيرة', 'المنوفية',
+  'الغربية', 'الشرقية', 'القليوبية', 'كفر الشيخ', 'دمياط', 'بورسعيد',
+  'الإسماعيلية', 'السويس', 'شمال سيناء', 'جنوب سيناء', 'بني سويف',
+  'الفيوم', 'المنيا', 'أسيوط', 'سوهاج', 'قنا', 'الأقصر', 'أسوان',
+  'البحر الأحمر', 'الوادي الجديد', 'مطروح'
 ];
 
 export default function ProjectSuppliersTab() {
@@ -36,6 +44,8 @@ export default function ProjectSuppliersTab() {
   const [formName, setFormName] = useState('');
   const [formPhone, setFormPhone] = useState('');
   const [formSpecialty, setFormSpecialty] = useState('');
+  const [formGovernorate, setFormGovernorate] = useState('');
+  const [formAddress, setFormAddress] = useState('');
   const [formNotes, setFormNotes] = useState('');
   const [formDailyRate, setFormDailyRate] = useState(0);
 
@@ -46,29 +56,29 @@ export default function ProjectSuppliersTab() {
   const canEdit = user?.role === 'admin' || currentProject.header.assignedEngineers.includes(user?.uid || '');
 
   const resetForm = () => {
-    setFormName(''); setFormPhone(''); setFormSpecialty(''); setFormNotes(''); setFormDailyRate(0);
+    setFormName(''); setFormPhone(''); setFormSpecialty(''); setFormGovernorate(''); setFormAddress(''); setFormNotes(''); setFormDailyRate(0);
     setShowAddForm(false); setEditingId(null);
   };
 
   const handleAddSupplier = async () => {
     if (!formName) return;
-    await addSupplier({ name: formName, phone: formPhone, specialty: formSpecialty, notes: formNotes });
+    await addSupplier({ name: formName, phone: formPhone, specialty: formSpecialty, governorate: formGovernorate, address: formAddress, notes: formNotes });
     resetForm();
   };
 
   const handleAddWorker = async () => {
     if (!formName) return;
-    await addWorker({ name: formName, phone: formPhone, trade: formSpecialty, assignedItems: [], dailyRate: formDailyRate, notes: formNotes });
+    await addWorker({ name: formName, phone: formPhone, trade: formSpecialty, assignedItems: [], dailyRate: formDailyRate, governorate: formGovernorate, address: formAddress, notes: formNotes });
     resetForm();
   };
 
   const handleUpdateSupplier = async (supplier: Supplier) => {
-    await updateSupplier({ ...supplier, name: formName, phone: formPhone, specialty: formSpecialty, notes: formNotes });
+    await updateSupplier({ ...supplier, name: formName, phone: formPhone, specialty: formSpecialty, governorate: formGovernorate, address: formAddress, notes: formNotes });
     resetForm();
   };
 
   const handleUpdateWorker = async (worker: Worker) => {
-    await updateWorkerData({ ...worker, name: formName, phone: formPhone, trade: formSpecialty, dailyRate: formDailyRate, notes: formNotes });
+    await updateWorkerData({ ...worker, name: formName, phone: formPhone, trade: formSpecialty, dailyRate: formDailyRate, governorate: formGovernorate, address: formAddress, notes: formNotes });
     resetForm();
   };
 
@@ -77,6 +87,8 @@ export default function ProjectSuppliersTab() {
     setFormName(person.name);
     setFormPhone(person.phone);
     setFormSpecialty(activeSection === 'suppliers' ? (person as Supplier).specialty : (person as Worker).trade);
+    setFormGovernorate(person.governorate || '');
+    setFormAddress(person.address || '');
     setFormNotes(person.notes);
     if (activeSection === 'workers') setFormDailyRate((person as Worker).dailyRate);
     setShowAddForm(true);
@@ -168,6 +180,26 @@ export default function ProjectSuppliersTab() {
                 />
               </div>
             )}
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">المحافظة</label>
+              <select
+                value={formGovernorate} onChange={(e) => setFormGovernorate(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              >
+                <option value="">اختر المحافظة...</option>
+                {GOVERNORATES.map(g => (
+                  <option key={g} value={g}>{g}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">العنوان التفصيلي</label>
+              <input
+                type="text" value={formAddress} onChange={(e) => setFormAddress(e.target.value)}
+                placeholder="مثال: شارع التحرير - الدور الثالث"
+                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
+              />
+            </div>
             <div className="md:col-span-2">
               <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">ملاحظات</label>
               <textarea
@@ -238,6 +270,12 @@ export default function ProjectSuppliersTab() {
                         </a>
                       </>
                     )}
+                    {supplier.governorate && (
+                      <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                        <MapPin className="h-3 w-3" /> {supplier.governorate}
+                      </span>
+                    )}
+                    {supplier.address && <span className="text-[10px] text-slate-500">• {supplier.address}</span>}
                     {supplier.notes && <span className="text-[10px] text-slate-500">• {supplier.notes}</span>}
                   </div>
                 </div>
@@ -294,6 +332,12 @@ export default function ProjectSuppliersTab() {
                         </a>
                       </>
                     )}
+                    {worker.governorate && (
+                      <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                        <MapPin className="h-3 w-3" /> {worker.governorate}
+                      </span>
+                    )}
+                    {worker.address && <span className="text-[10px] text-slate-500">• {worker.address}</span>}
                     {worker.notes && <span className="text-[10px] text-slate-500">• {worker.notes}</span>}
                   </div>
                 </div>
