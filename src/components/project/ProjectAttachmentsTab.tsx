@@ -299,7 +299,7 @@ export default function ProjectAttachmentsTab() {
               ) : previewAttachment.name.match(/\.(doc|docx|xls|xlsx|ppt|pptx)$/i) ? (
                 <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(previewAttachment.url)}`} className="w-full h-full border-0 bg-white" title="Office Preview" />
               ) : previewAttachment.name.match(/\.(dwg|dxf)$/i) ? (
-                <iframe src={`https://sharecad.org/cadframe/load?url=${encodeURIComponent(previewAttachment.url)}`} className="w-full h-full border-0 bg-white" title="CAD Preview" />
+                <iframe src={`https://iframe.sharecad.org/cadframe/load?url=${encodeURIComponent(previewAttachment.url)}`} className="w-full h-full border-0 bg-white" title="CAD Preview" />
               ) : (
                 <div className="text-center p-8 max-w-sm">
                   <FileText className="h-16 w-16 text-slate-700 mx-auto mb-4" />
