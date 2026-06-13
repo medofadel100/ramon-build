@@ -602,20 +602,14 @@ export async function deleteProject(projectId: string): Promise<void> {
   
   for (const sub of subcollections) {
     const subSnapshot = await getDocs(collection(db, 'projects', projectId, sub));
-    const batch = writeBatch(db);
-    subSnapshot.docs.forEach(d => batch.delete(d.ref));
-    if (!subSnapshot.empty) await batch.commit();
+    await Promise.all(subSnapshot.docs.map(d => deleteDoc(d.ref)));
   }
 
   // Delete sections and their items
   const sectionsSnapshot = await getDocs(collection(db, 'projects', projectId, 'sections'));
   for (const secDoc of sectionsSnapshot.docs) {
     const itemsSnapshot = await getDocs(collection(db, 'projects', projectId, 'sections', secDoc.id, 'items'));
-    if (!itemsSnapshot.empty) {
-      const itemBatch = writeBatch(db);
-      itemsSnapshot.docs.forEach(d => itemBatch.delete(d.ref));
-      await itemBatch.commit();
-    }
+    await Promise.all(itemsSnapshot.docs.map(d => deleteDoc(d.ref)));
     await deleteDoc(secDoc.ref);
   }
 
