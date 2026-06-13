@@ -3,14 +3,16 @@
 import { useState } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
-import { ProjectHeader } from '@/lib/project-service';
-import { Save, Info, User, Phone, MapPin, Calendar, CheckSquare, Eye } from 'lucide-react';
+import { ProjectHeader, deleteProject, formatDate } from '@/lib/project-service';
+import { Save, Info, User, Phone, MapPin, Calendar, CheckSquare, Eye, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function ProjectHeaderTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
   const updateHeader = useProjectStore((state) => state.updateHeader);
   const user = useAuthStore((state) => state.user);
+  const router = useRouter();
 
   const [name, setName] = useState(currentProject?.header.name || '');
   const [ownerName, setOwnerName] = useState(currentProject?.header.ownerName || '');
@@ -22,7 +24,7 @@ export default function ProjectHeaderTab() {
   const [issueDate, setIssueDate] = useState(currentProject?.header.issueDate || '');
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState(currentProject?.header.expectedDeliveryDate || '');
   const [actualDeliveryDate, setActualDeliveryDate] = useState(currentProject?.header.actualDeliveryDate || '');
-  const [status, setStatus] = useState<ProjectHeader['status']>(currentProject?.header.status || 'draft');
+  const [status, setStatus] = useState<ProjectHeader['status']>(currentProject?.header.status || 'quantity_prep');
   const [isEditing, setIsEditing] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -50,12 +52,28 @@ export default function ProjectHeaderTab() {
 
   const getStatusLabel = (s: string) => {
     switch (s) {
-      case 'draft': return 'مسودة';
-      case 'review': return 'تحت المراجعة';
-      case 'approved': return 'معتمد فنيًا';
-      case 'sent_to_client': return 'مرسل للعميل';
-      case 'closed': return 'مغلق/منتهي';
+      case 'quantity_prep': return 'تجهيز الكميات';
+      case 'pricing_prep': return 'تجهيز الأسعار';
+      case 'review': return 'المراجعة';
+      case 'client_approval': return 'موافقة العميل';
+      case 'execution': return 'التنفيذ';
+      case 'executed': return 'تم التنفيذ';
+      case 'handover': return 'التسليم';
       default: return s;
+    }
+  };
+
+  const handleDeleteProject = async () => {
+    if (!currentProject) return;
+    const confirmDelete = window.confirm('هل أنت متأكد من حذف هذا المشروع بالكامل؟ لا يمكن التراجع عن هذا الإجراء.');
+    if (confirmDelete) {
+      try {
+        await deleteProject(currentProject.id);
+        router.push('/dashboard');
+      } catch (err) {
+        console.error("Error deleting project", err);
+        alert('حدث خطأ أثناء محاولة حذف المشروع.');
+      }
     }
   };
 
@@ -253,13 +271,18 @@ export default function ProjectHeaderTab() {
                 <Calendar className="h-3.5 w-3.5 text-slate-500" />
                 تاريخ الإصدار (بدء المشروع)
               </label>
-              <input
-                type="date"
-                disabled={!isEditing}
-                value={issueDate}
-                onChange={(e) => setIssueDate(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
-              />
+              {isEditing ? (
+                <input
+                  type="date"
+                  value={issueDate}
+                  onChange={(e) => setIssueDate(e.target.value)}
+                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                />
+              ) : (
+                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                  {formatDate(issueDate)}
+                </div>
+              )}
             </div>
 
             {/* Expected Delivery Date */}
@@ -268,13 +291,18 @@ export default function ProjectHeaderTab() {
                 <Calendar className="h-3.5 w-3.5 text-slate-500" />
                 تاريخ التسليم المتوقع
               </label>
-              <input
-                type="date"
-                disabled={!isEditing}
-                value={expectedDeliveryDate}
-                onChange={(e) => setExpectedDeliveryDate(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
-              />
+              {isEditing ? (
+                <input
+                  type="date"
+                  value={expectedDeliveryDate}
+                  onChange={(e) => setExpectedDeliveryDate(e.target.value)}
+                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                />
+              ) : (
+                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                  {formatDate(expectedDeliveryDate)}
+                </div>
+              )}
             </div>
 
             {/* Actual Delivery Date */}
@@ -283,13 +311,18 @@ export default function ProjectHeaderTab() {
                 <Calendar className="h-3.5 w-3.5 text-emerald-500" />
                 تاريخ التسليم الفعلي
               </label>
-              <input
-                type="date"
-                disabled={!isEditing}
-                value={actualDeliveryDate}
-                onChange={(e) => setActualDeliveryDate(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
-              />
+              {isEditing ? (
+                <input
+                  type="date"
+                  value={actualDeliveryDate}
+                  onChange={(e) => setActualDeliveryDate(e.target.value)}
+                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                />
+              ) : (
+                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                  {formatDate(actualDeliveryDate)}
+                </div>
+              )}
             </div>
 
             {/* Status */}
@@ -298,18 +331,25 @@ export default function ProjectHeaderTab() {
                 <Eye className="h-3.5 w-3.5 text-slate-500" />
                 حالة المستند
               </label>
-              <select
-                disabled={!isEditing}
-                value={status}
-                onChange={(e) => setStatus(e.target.value as any)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
-              >
-                <option value="draft">مسودة</option>
-                <option value="review">تحت المراجعة</option>
-                <option value="approved">معتمد فنيًا</option>
-                <option value="sent_to_client">مرسل للعميل</option>
-                <option value="closed">مغلق/منتهي</option>
-              </select>
+              {isEditing ? (
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as any)}
+                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                >
+                  <option value="quantity_prep">تجهيز الكميات</option>
+                  <option value="pricing_prep">تجهيز الأسعار</option>
+                  <option value="review">المراجعة</option>
+                  <option value="client_approval">موافقة العميل</option>
+                  <option value="execution">التنفيذ</option>
+                  <option value="executed">تم التنفيذ</option>
+                  <option value="handover">التسليم</option>
+                </select>
+              ) : (
+                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                  {getStatusLabel(status)}
+                </div>
+              )}
             </div>
 
           </div>
@@ -349,6 +389,24 @@ export default function ProjectHeaderTab() {
           )}
         </form>
       </div>
+
+      {user?.role === 'admin' && (
+        <div className="rounded-xl border border-rose-900/30 bg-rose-950/10 p-6 shadow-xl mt-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-bold text-rose-500">منطقة الخطر (Danger Zone)</h3>
+              <p className="text-xs text-slate-400 mt-1">حذف المشروع سيؤدي إلى مسح جميع البيانات المتعلقة به بشكل نهائي (الأسعار، الحصر، الموردين، إلخ).</p>
+            </div>
+            <button
+              onClick={handleDeleteProject}
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-rose-900/50 border border-rose-800 text-sm font-bold text-rose-200 hover:bg-rose-600 hover:text-white transition"
+            >
+              <Trash2 className="h-4 w-4" />
+              حذف المشروع بالكامل
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

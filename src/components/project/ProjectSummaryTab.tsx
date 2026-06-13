@@ -2,11 +2,15 @@
 
 import { useProjectStore } from '@/store/projectStore';
 import { calculateProjectSummary, calculateItemTotal } from '@/lib/calculations';
-import { DollarSign, Clock, Layout, Hammer } from 'lucide-react';
-import { useMemo } from 'react';
+import { DollarSign, Clock, Layout, Hammer, Percent, Save } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 export default function ProjectSummaryTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
+  const updateHeader = useProjectStore((state) => state.updateHeader);
+
+  const [supervisionPercentage, setSupervisionPercentage] = useState(currentProject?.header.supervisionPercentage || 0);
+  const [isSaving, setIsSaving] = useState(false);
 
   if (!currentProject) return null;
 
@@ -15,9 +19,16 @@ export default function ProjectSummaryTab() {
     return calculateProjectSummary(
       currentProject.items,
       currentProject.sections,
-      currentProject.zones
+      currentProject.zones,
+      currentProject.header.supervisionPercentage || 0
     );
-  }, [currentProject.items, currentProject.sections, currentProject.zones]);
+  }, [currentProject.items, currentProject.sections, currentProject.zones, currentProject.header.supervisionPercentage]);
+
+  const handleSaveSupervision = async () => {
+    setIsSaving(true);
+    await updateHeader({ supervisionPercentage });
+    setIsSaving(false);
+  };
 
   // Generate cumulative timeline schedules
   const sectionSchedules = useMemo(() => {
@@ -57,10 +68,10 @@ export default function ProjectSummaryTab() {
         
         <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <span className="block text-xs font-semibold text-slate-500">التكلفة الإجمالية للمشروع</span>
-            <p className="text-xl font-extrabold text-[#c5a880] tracking-wide">{summary.grandTotal.toLocaleString()} ج.م</p>
+            <span className="block text-xs font-semibold text-slate-500">التكلفة الصافية للمشروع</span>
+            <p className="text-xl font-extrabold text-white tracking-wide">{summary.grandTotal.toLocaleString()} ج.م</p>
           </div>
-          <div className="p-3 rounded-lg bg-[#c5a880]/15 text-[#c5a880]">
+          <div className="p-3 rounded-lg bg-slate-800 text-slate-400">
             <DollarSign className="h-5 w-5" />
           </div>
         </div>
@@ -97,7 +108,42 @@ export default function ProjectSummaryTab() {
 
       </div>
 
-      {/* 2. Financial Aggregation Table */}
+      {/* Supervision Fee Setting */}
+      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
+            <Percent className="h-4 w-4 text-[#c5a880]" />
+            نسبة الإشراف الهندسي والإدارة
+          </h3>
+          <p className="text-xs text-slate-400">
+            أدخل نسبة الأرباح أو الإشراف الهندسي ليتم إضافتها تلقائياً للإجمالي النهائي المعروض للعميل.
+          </p>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              value={supervisionPercentage}
+              onChange={(e) => setSupervisionPercentage(parseFloat(e.target.value) || 0)}
+              className="w-24 rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+            />
+            <span className="absolute left-4 top-2.5 text-slate-500 font-bold">%</span>
+          </div>
+          <button
+            onClick={handleSaveSupervision}
+            disabled={isSaving || supervisionPercentage === currentProject.header.supervisionPercentage}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSaving ? 'جاري الحفظ...' : <><Save className="h-4 w-4" /> حفظ النسبة</>}
+          </button>
+        </div>
+      </div>
+
+      {/* Financial Aggregation Table */}
       <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
         <h3 className="text-base font-bold text-white mb-4">الملخص المالي التفصيلي للأقسام</h3>
         
@@ -125,11 +171,23 @@ export default function ProjectSummaryTab() {
                 </tr>
               ))}
               <tr className="bg-[#1a1c24]/50 border-t border-[#222634] text-white font-bold text-sm">
-                <td className="p-3" colSpan={2}>الإجمالي الكلي النهائي</td>
+                <td className="p-3" colSpan={2}>التكلفة الصافية</td>
                 <td className="p-3 text-center">{summary.grandMaterialCost.toLocaleString()} ج.م</td>
-                <td className="p-3 text-center">{summary.grandLaborCost.toLocaleString()} ج.m</td>
-                <td className="p-3 text-center bg-[#c5a880]/10 text-[#c5a880] font-black">
+                <td className="p-3 text-center">{summary.grandLaborCost.toLocaleString()} ج.م</td>
+                <td className="p-3 text-center font-black">
                   {summary.grandTotal.toLocaleString()} ج.م
+                </td>
+              </tr>
+              <tr className="bg-[#1a1c24]/80 border-t border-slate-800 text-[#c5a880] font-bold text-sm">
+                <td className="p-3" colSpan={4}>قيمة الإشراف الهندسي والإدارة ({currentProject.header.supervisionPercentage || 0}%)</td>
+                <td className="p-3 text-center font-black">
+                  + {summary.supervisionValue.toLocaleString()} ج.م
+                </td>
+              </tr>
+              <tr className="bg-[#c5a880]/10 border-t-2 border-[#c5a880]/30 text-white font-extrabold text-base">
+                <td className="p-4" colSpan={4}>الإجمالي الكلي النهائي (المعروض للعميل)</td>
+                <td className="p-4 text-center text-[#c5a880] font-black drop-shadow-md">
+                  {summary.grandTotalWithSupervision.toLocaleString()} ج.م
                 </td>
               </tr>
             </tbody>

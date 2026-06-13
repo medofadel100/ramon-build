@@ -209,12 +209,15 @@ export interface ProjectSummaryResult {
   grandLaborCost: number;
   grandTotal: number;
   totalDays: number;
+  supervisionValue: number;
+  grandTotalWithSupervision: number;
 }
 
 export function calculateProjectSummary(
   items: BOQItem[],
   sections: Array<{ id: string; title: string; enabled: boolean }>,
-  zones: Zone[]
+  zones: Zone[],
+  supervisionPercentage: number = 0
 ): ProjectSummaryResult {
   const bySection: Record<string, SectionSummary> = {};
   let grandMaterialCost = 0;
@@ -250,12 +253,17 @@ export function calculateProjectSummary(
     }
   });
 
+  const supervisionValue = grandTotal * ((supervisionPercentage || 0) / 100);
+  const grandTotalWithSupervision = grandTotal + supervisionValue;
+
   return {
     bySection,
     grandMaterialCost,
     grandLaborCost,
     grandTotal,
-    totalDays
+    totalDays,
+    supervisionValue,
+    grandTotalWithSupervision
   };
 }
 

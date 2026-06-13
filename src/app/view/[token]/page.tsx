@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Zone, BOQItem, calculateProjectSummary, calculateItemTotal } from '@/lib/calculations';
+import { formatDate } from '@/lib/project-service';
 import { 
   MapPin, Calendar, User, Layers, ClipboardCheck, Info, FileSpreadsheet, Lock, 
   ChevronUp, ChevronDown, Shield, Users, Zap, Wrench, Building2, Paintbrush, HardHat, Ruler, Phone
@@ -105,7 +106,7 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
 
   const summary = useMemo(() => {
     if (!project) return null;
-    return calculateProjectSummary(items, sections, zones);
+    return calculateProjectSummary(items, sections, zones, project.header.supervisionPercentage || 0);
   }, [project, items, sections, zones]);
 
   if (loading) {
@@ -182,7 +183,15 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
                   {project.header.projectCode}
                 </span>
                 <span className="text-[11px] font-bold text-slate-400 border border-slate-700 bg-slate-800/50 px-3 py-1 rounded-full shadow-sm">
-                  حالة الملف: {project.header.status === 'approved' ? 'معتمد ومصدق فنيًا' : project.header.status === 'closed' ? 'منتهي/مغلق' : 'تحت المراجعة'}
+                  حالة الملف: {
+                    project.header.status === 'quantity_prep' ? 'تجهيز الكميات' :
+                    project.header.status === 'pricing_prep' ? 'تجهيز الأسعار' :
+                    project.header.status === 'review' ? 'المراجعة' :
+                    project.header.status === 'client_approval' ? 'موافقة العميل' :
+                    project.header.status === 'execution' ? 'قيد التنفيذ' :
+                    project.header.status === 'executed' ? 'تم التنفيذ' :
+                    project.header.status === 'handover' ? 'تم التسليم' : project.header.status
+                  }
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white leading-tight drop-shadow-md">
@@ -235,7 +244,7 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
             </div>
             <div>
               <span className="block text-[10px] text-slate-500 font-bold mb-1">تاريخ الإصدار</span>
-              <p className="text-sm font-bold text-white leading-tight">{project.header.issueDate}</p>
+              <p className="text-sm font-bold text-white leading-tight">{formatDate(project.header.issueDate)}</p>
               <p className="text-[11px] text-slate-400 mt-1">مدة التنفيذ التقديرية: <span className="font-semibold text-white">{summary?.totalDays || 0} يوم</span></p>
             </div>
           </div>
@@ -450,13 +459,23 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
                           <td className="p-6 text-left font-bold text-white bg-slate-900/30 border-r border-[#222634] text-base">{sec.totalCost.toLocaleString()} ج.م</td>
                         </tr>
                       ))}
+                      <tr className="bg-[#1a1c24]/50 text-white font-bold text-sm border-t border-[#222634]">
+                        <td className="p-6" colSpan={2}>إجمالي التكلفة الصافية</td>
+                        <td className="p-6 text-left font-bold text-white">{summary.grandTotal.toLocaleString()} ج.م</td>
+                      </tr>
+                      {project.header.supervisionPercentage > 0 && (
+                        <tr className="bg-[#1a1c24]/80 text-[#c5a880] font-bold text-sm border-t border-slate-800">
+                          <td className="p-6" colSpan={2}>نسبة الإشراف الهندسي والإدارة ({project.header.supervisionPercentage}%)</td>
+                          <td className="p-6 text-left font-black">+ {summary.supervisionValue.toLocaleString()} ج.م</td>
+                        </tr>
+                      )}
                       <tr className="bg-gradient-to-l from-emerald-950/40 to-emerald-900/10 text-white font-extrabold text-lg border-t-2 border-emerald-900/50">
                         <td className="p-8" colSpan={2}>
                           الإجمالي الكلي التقديري للمقايسة 
-                          <span className="block text-sm font-semibold text-emerald-500/80 mt-1.5">شامل حسابات المواد والمصنعيات ومصاريف النقل</span>
+                          <span className="block text-sm font-semibold text-emerald-500/80 mt-1.5">شامل حسابات المواد والمصنعيات والإشراف</span>
                         </td>
                         <td className="p-8 text-left text-emerald-400 font-black text-2xl drop-shadow-md">
-                          {summary.grandTotal.toLocaleString()} ج.م
+                          {summary.grandTotalWithSupervision.toLocaleString()} ج.م
                         </td>
                       </tr>
                     </tbody>

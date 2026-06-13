@@ -17,6 +17,20 @@ import { db } from './firebase';
 import { DEFAULT_SECTIONS, DEFAULT_ITEMS } from './default-items';
 import { Zone, BOQItem } from './calculations';
 
+export function formatDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return 'غير متوفر';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  } catch {
+    return dateStr;
+  }
+}
+
 // ==========================================
 // Interfaces
 // ==========================================
@@ -42,7 +56,8 @@ export interface ProjectHeader {
   expectedDeliveryDate: string;
   actualDeliveryDate: string;
   consultantName: string;
-  status: 'draft' | 'review' | 'approved' | 'sent_to_client' | 'closed';
+  status: 'quantity_prep' | 'pricing_prep' | 'review' | 'client_approval' | 'execution' | 'executed' | 'handover';
+  supervisionPercentage?: number;
   projectType: {
     workType: 'new_build' | 'finishing_only' | 'renovation';
     hasArchModification: boolean;
@@ -157,6 +172,8 @@ export async function createProject(
     expectedDeliveryDate: '',
     actualDeliveryDate: '',
     consultantName: '',
+    status: 'quantity_prep',
+    supervisionPercentage: 0,
     assignedEngineers: [engineerId],
     engineersDetails: [{
       uid: engineerId,
@@ -316,12 +333,13 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
   const accountsSnapshot = await getDocs(collection(db, 'projects', projectId, 'accounts'));
   const accounts: AccountEntry[] = accountsSnapshot.docs.map(doc => doc.data() as AccountEntry);
 
-  // Ensure header has new fields (backward compatibility)
   const header: ProjectHeader = {
     ...pData.header,
     expectedDeliveryDate: pData.header?.expectedDeliveryDate || '',
     actualDeliveryDate: pData.header?.actualDeliveryDate || '',
     consultantName: pData.header?.consultantName || '',
+    status: pData.header?.status === 'draft' ? 'quantity_prep' : pData.header?.status || 'quantity_prep',
+    supervisionPercentage: pData.header?.supervisionPercentage || 0,
     engineersDetails: pData.header?.engineersDetails || []
   };
 

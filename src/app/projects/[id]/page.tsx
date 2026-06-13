@@ -90,10 +90,10 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
 
   const tabList = [
     { id: 'boq', label: 'حصر الكميات (BOQ)', icon: ClipboardList },
-    { id: 'zones', label: 'المساحات والحيّز', icon: Layers },
     { id: 'summary', label: 'الملخص المالي والزمني', icon: Layout },
-    { id: 'info', label: 'ملف المشروع', icon: Info },
-    { id: 'team', label: 'فريق العمل', icon: Users },
+    { id: 'info', label: 'ملف المشروع وحالته', icon: Info },
+    { id: 'team', label: 'فريق العمل (دعوات)', icon: Users },
+    { id: 'zones', label: 'المساحات والحيّز', icon: Layers },
     { id: 'suppliers', label: 'الموردين والصناعية', icon: Package },
     { id: 'accounting', label: 'الحسابات والدفعات', icon: DollarSign },
     { id: 'attachments', label: 'المرفقات', icon: Paperclip },
