@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useProjectStore } from '@/store/projectStore';
-import { useAuthStore } from '@/store/authStore';
 import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { upload } from '@vercel/blob/client';
+import { useProjectStore } from '@/store/projectStore';
+import { useAuthStore } from '@/store/authStore';
 import { FileText, Image as ImageIcon, Trash2, Upload, ExternalLink, Paperclip, Eye, Download } from 'lucide-react';
 
 export interface Attachment {
@@ -36,76 +37,51 @@ export default function ProjectAttachmentsTab() {
 
   const canEdit = user?.role === 'admin' || currentProject.header.assignedEngineers.includes(user?.uid || '');
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setLoading(true);
     setUploadProgress(0);
 
-    const xhr = new XMLHttpRequest();
-    
-    xhr.upload.addEventListener('progress', (event) => {
-      if (event.lengthComputable) {
-        const progress = (event.loaded / event.total) * 100;
-        setUploadProgress(Math.round(progress));
-      }
-    });
+    const uniqueName = `${Date.now()}_${file.name}`;
 
-    xhr.addEventListener('load', async () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          const response = JSON.parse(xhr.responseText);
-          const downloadURL = response.url;
-          
-          const newAttachment: Attachment = {
-            name: file.name,
-            url: downloadURL,
-            type: file.type,
-            uploadedAt: new Date().toISOString(),
-            size: file.size
-          };
-
-          const projectDocRef = doc(db, 'projects', currentProject.id);
-          await updateDoc(projectDocRef, {
-            attachments: arrayUnion(newAttachment)
-          });
-
-          setAttachments(prev => [...prev, newAttachment]);
-          
-          const storeLoad = useProjectStore.getState().loadProject;
-          storeLoad(currentProject.id);
-
-          setLoading(false);
-          setUploadProgress(null);
-        } catch (err) {
-          console.error('Error saving download URL:', err);
-          alert('حدث خطأ أثناء حفظ بيانات الملف.');
-          setLoading(false);
-          setUploadProgress(null);
+    try {
+      const newBlob = await upload(uniqueName, file, {
+        access: 'public',
+        handleUploadUrl: '/api/upload',
+        onUploadProgress: (progressEvent) => {
+          setUploadProgress(Math.round((progressEvent.loaded / progressEvent.total) * 100));
         }
-      } else {
-        let errorMsg = 'Unknown error';
-        try {
-          const response = JSON.parse(xhr.responseText);
-          errorMsg = response.error || errorMsg;
-        } catch (e) {}
-        console.error('Upload failed with status:', xhr.status, errorMsg);
-        alert(`حدث خطأ أثناء تحميل الملف: ${errorMsg}`);
-        setLoading(false);
-        setUploadProgress(null);
-      }
-    });
+      });
+      
+      const newAttachment: Attachment = {
+        name: file.name,
+        url: newBlob.url,
+        type: file.type,
+        uploadedAt: new Date().toISOString(),
+        size: file.size
+      };
 
-    xhr.addEventListener('error', () => {
-      alert('حدث خطأ في الاتصال بالخادم أثناء التحميل.');
+      const projectDocRef = doc(db, 'projects', currentProject.id);
+      await updateDoc(projectDocRef, {
+        attachments: arrayUnion(newAttachment)
+      });
+
+      setAttachments(prev => [...prev, newAttachment]);
+      
+      const storeLoad = useProjectStore.getState().loadProject;
+      storeLoad(currentProject.id);
+
       setLoading(false);
       setUploadProgress(null);
-    });
 
-    const uniqueName = `${Date.now()}_${file.name}`;
-    xhr.open('POST', `/api/upload?filename=${encodeURIComponent(uniqueName)}`);
-    xhr.send(file);
+    } catch (err: any) {
+      console.error('Upload failed:', err);
+      alert(`حدث خطأ أثناء تحميل الملف: ${err.message || 'غير معروف'}`);
+      setLoading(false);
+      setUploadProgress(null);
+    }
   };
 
   const handleDeleteAttachment = async (att: Attachment) => {
