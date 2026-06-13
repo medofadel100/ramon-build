@@ -5,7 +5,7 @@ import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { FileText, Image, Trash2, Upload, ExternalLink, Paperclip } from 'lucide-react';
+import { FileText, Image as ImageIcon, Trash2, Upload, ExternalLink, Paperclip, Eye, Download } from 'lucide-react';
 
 interface Attachment {
   name: string;
@@ -22,6 +22,7 @@ export default function ProjectAttachmentsTab() {
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [previewAttachment, setPreviewAttachment] = useState<Attachment | null>(null);
 
   useEffect(() => {
     if (currentProject) {
@@ -229,14 +230,22 @@ export default function ProjectAttachmentsTab() {
 
                 {/* Controls */}
                 <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setPreviewAttachment(att)}
+                    className="p-1.5 rounded hover:bg-slate-800 text-[#c5a880] hover:text-white transition"
+                    title="معاينة الملف"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </button>
                   <a
                     href={att.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    download
                     className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition"
-                    title="فتح الملف/تحميل"
+                    title="تحميل"
                   >
-                    <ExternalLink className="h-4 w-4" />
+                    <Download className="h-4 w-4" />
                   </a>
                   {canEdit && (
                     <button
@@ -251,6 +260,60 @@ export default function ProjectAttachmentsTab() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* File Preview Modal */}
+      {previewAttachment && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 sm:p-8">
+          <div className="w-full max-w-6xl h-full max-h-[90vh] flex flex-col bg-[#13151c] rounded-2xl border border-[#222634] shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-[#222634] bg-[#1a1c24]">
+              <h3 className="text-sm font-bold text-white truncate max-w-[70%]" dir="ltr">{previewAttachment.name}</h3>
+              <div className="flex items-center gap-3">
+                <a
+                  href={previewAttachment.url}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c5a880]/10 text-[#c5a880] text-xs font-bold hover:bg-[#c5a880] hover:text-[#0d0e12] transition"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  تحميل
+                </a>
+                <button
+                  onClick={() => setPreviewAttachment(null)}
+                  className="px-4 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition"
+                >
+                  إغلاق (X)
+                </button>
+              </div>
+            </div>
+            
+            {/* Modal Body / Viewer */}
+            <div className="flex-1 bg-[#0d0e12] overflow-auto flex items-center justify-center relative">
+              {previewAttachment.type.startsWith('image/') ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={previewAttachment.url} alt={previewAttachment.name} className="max-w-full max-h-full object-contain p-4" />
+              ) : previewAttachment.type === 'application/pdf' ? (
+                <iframe src={`${previewAttachment.url}#toolbar=0`} className="w-full h-full border-0 bg-white" title="PDF Preview" />
+              ) : previewAttachment.name.match(/\.(doc|docx|xls|xlsx|ppt|pptx)$/i) ? (
+                <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(previewAttachment.url)}`} className="w-full h-full border-0 bg-white" title="Office Preview" />
+              ) : previewAttachment.name.match(/\.(dwg|dxf)$/i) ? (
+                <iframe src={`https://sharecad.org/cadframe/load?url=${encodeURIComponent(previewAttachment.url)}`} className="w-full h-full border-0 bg-white" title="CAD Preview" />
+              ) : (
+                <div className="text-center p-8 max-w-sm">
+                  <FileText className="h-16 w-16 text-slate-700 mx-auto mb-4" />
+                  <p className="text-slate-300 font-bold mb-2">لا يمكن معاينة هذا النوع من الملفات داخل المتصفح</p>
+                  <p className="text-xs text-slate-500 mb-6">يرجى تحميل الملف لفتحه باستخدام البرنامج المناسب على جهازك.</p>
+                  <a href={previewAttachment.url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold hover:brightness-110 transition shadow-lg">
+                    <Download className="h-4 w-4" />
+                    تحميل الملف
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
