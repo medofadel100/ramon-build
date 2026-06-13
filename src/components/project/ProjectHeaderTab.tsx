@@ -390,7 +390,7 @@ export default function ProjectHeaderTab() {
         </form>
       </div>
 
-      {user?.role === 'admin' && (
+      {canEdit && (
         <div className="rounded-xl border border-rose-900/30 bg-rose-950/10 p-6 shadow-xl mt-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
