@@ -726,6 +726,94 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     }
 
     // ==========================================
+    // 2.8.1 - مفاتيح ووشوش نهائية
+    // ==========================================
+    case '2.8.1': {
+      const platePrice = getMaterialPrice('plateMaterial', 'price_plate_legrand', 25);
+      const switchPrice = getMaterialPrice('switchMaterial', 'price_switch_legrand', 35);
+
+      matList.push({
+        key: 'cover_plate',
+        name: 'وش علبة كهرباء خارجي (شاسيه ووش)',
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: platePrice,
+        totalCost: Math.ceil(qty) * platePrice,
+        packagingDetails: 'وش شامل الشاسيه'
+      });
+
+      matList.push({
+        key: 'switch_pieces',
+        name: 'لقمة مفتاح/بريزة إنارة',
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: switchPrice,
+        totalCost: Math.ceil(qty) * switchPrice,
+        packagingDetails: 'معدل تقديري للقم لكل وش'
+      });
+      break;
+    }
+
+    // ==========================================
+    // 2.8.2 - وحدات الإنارة (سبوتات)
+    // ==========================================
+    case '2.8.2': {
+      const lightPrice = getMaterialPrice('lightMaterial', 'price_spot_led_7w', 75);
+      const colorTemp = getSpecStr('colorTemp', '3000K (أصفر دافئ)');
+
+      matList.push({
+        key: 'lighting_units',
+        name: `وحدة إنارة / سبوت ليد (${colorTemp})`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: lightPrice,
+        totalCost: Math.ceil(qty) * lightPrice,
+        packagingDetails: 'وحدة لكل مخرج سقف'
+      });
+      break;
+    }
+
+    // ==========================================
+    // 2.8.3 - شرائط إضاءة LED Strip
+    // ==========================================
+    case '2.8.3': {
+      const stripRollLength = getSpecNum('stripRollLength', 50); // Default 50m per roll
+      const stripRollPrice = getMaterialPrice('stripMaterial', 'price_led_strip_m', 60);
+      const rolls = stripRollLength > 0 ? Math.ceil(qty / stripRollLength) : qty; // If 0, assume price is per meter
+      const unitType = stripRollLength > 0 ? 'لفة' : 'متر';
+
+      matList.push({
+        key: 'led_strip',
+        name: 'شريط ليد إضاءة مخفية',
+        qtyRequired: qty,
+        qtyRounded: rolls,
+        unit: unitType,
+        unitPrice: stripRollPrice,
+        totalCost: rolls * stripRollPrice,
+        packagingDetails: stripRollLength > 0 ? `لفة ${stripRollLength} متر` : 'متر طولي'
+      });
+
+      const driverBrand = getSpecStr('driverBrand', 'مين ويل Mean Well');
+      const driversNeeded = Math.ceil(qty / 10); // Assume 1 driver per 10 meters
+      const driverPrice = 350; // Estimated driver price
+
+      matList.push({
+        key: 'led_driver',
+        name: `محول طاقة ليد (Driver - ${driverBrand})`,
+        qtyRequired: qty / 10,
+        qtyRounded: driversNeeded,
+        unit: 'عدد',
+        unitPrice: driverPrice,
+        totalCost: driversNeeded * driverPrice,
+        packagingDetails: 'محول لكل 10 متر تقريباً'
+      });
+      break;
+    }
+
+    // ==========================================
     // 2.10.1 - دهان الحوائط والأسقف (الوجه النهائي)
     // ==========================================
     case '2.10.1': {
