@@ -44,6 +44,7 @@ export interface BOQItem {
     unitPrice: number;
     constantKey?: string;
     multiplier?: number;
+    packageSize?: number;
   }[];
 }
 
@@ -552,9 +553,9 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       const rollLength = getSpecNum('rollLength', 100);
       const wireRollPrice = getMaterialPrice('wireRollPrice', 'price_wire_1_5_roll', 1200);
       const boxPrice = getSpecNum('boxPrice', 15);
-      const chassisPrice = getSpecNum('chassisPrice', 20);
-      const platePrice = getSpecNum('platePrice', 25);
-      const switchPrice = getSpecNum('switchPrice', 35);
+      const chassisPrice = getMaterialPrice('chassisPrice', 'price_chassis_plastic', 20);
+      const platePrice = getMaterialPrice('platePrice', 'price_plate_legrand', 25);
+      const switchPrice = getMaterialPrice('switchPrice', 'price_switch_legrand', 35);
 
       const totalWireLength = qty * wirePerPoint;
       const wireRolls = Math.ceil(totalWireLength / rollLength);
@@ -616,6 +617,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       break;
     }
 
+
     // ==========================================
     // 1.3.2 - نقاط بريز (فيش كهرباء)
     // ==========================================
@@ -624,10 +626,10 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       const rollLength = getSpecNum('rollLength', 100);
       const wireRollPrice = getMaterialPrice('wireRollPrice', 'price_wire_2_5_roll', 1800);
       const boxPrice = getSpecNum('boxPrice', 15);
-      const chassisPrice = getSpecNum('chassisPrice', 20);
-      const platePrice = getSpecNum('platePrice', 25);
+      const chassisPrice = getMaterialPrice('chassisPrice', 'price_chassis_plastic', 20);
+      const platePrice = getMaterialPrice('platePrice', 'price_plate_legrand', 25);
       const socketPerPoint = getSpecNum('socketPerPoint', 2); // default double socket
-      const socketPrice = getSpecNum('socketPrice', 45);
+      const socketPrice = getMaterialPrice('socketPrice', 'price_socket_legrand', 45);
 
       const totalWireLength = qty * wirePerPoint;
       const wireRolls = Math.ceil(totalWireLength / rollLength);
@@ -696,7 +698,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     case '1.3.3': {
       const boardPrice = getMaterialPrice('boardPrice', 'price_db_12_way_venus', 1200);
       const breakersCount = getSpecNum('breakersCount', 24);
-      const breakerPrice = getSpecNum('breakerPrice', 250);
+      const breakerPrice = getMaterialPrice('breakerPrice', 'price_breaker_schneider_1p', 250);
 
       matList.push({
         key: 'distribution_board',
@@ -731,9 +733,9 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       const rollLength = getSpecNum('rollLength', 305); // standard LAN box is 305m (1000ft)
       const dataRollPrice = getMaterialPrice('dataRollPrice', 'price_data_roll', 3200);
       const boxPrice = getSpecNum('boxPrice', 15);
-      const chassisPrice = getSpecNum('chassisPrice', 20);
-      const platePrice = getSpecNum('platePrice', 25);
-      const keystonePrice = getSpecNum('keystonePrice', 80);
+      const chassisPrice = getMaterialPrice('chassisPrice', 'price_chassis_plastic', 20);
+      const platePrice = getMaterialPrice('platePrice', 'price_plate_legrand', 25);
+      const keystonePrice = getMaterialPrice('keystonePrice', 'price_keystone_rj45', 80);
 
       const totalWireLength = qty * wirePerPoint;
       const dataBoxes = Math.ceil(totalWireLength / rollLength);
@@ -831,6 +833,47 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
         unitPrice: sandCubicPrice,
         totalCost: sandRounded * sandCubicPrice,
         packagingDetails: `معدل استهلاك: ${sandPerSqm.toFixed(3)} م³ للمتر المربع`
+      });
+      break;
+    }
+
+    // ==========================================
+    // 2.1.1 & 2.1.2 - أسقف معلقة (جبسون بورد)
+    // ==========================================
+    case '2.1.1':
+    case '2.1.2': {
+      const isFlat = itemId === '2.1.1';
+      const gypsumPrice = getMaterialPrice('gypsumType', 'price_gypsum_board_sqm', isFlat ? 140 : 110);
+      
+      matList.push({
+        key: 'gypsum_board',
+        name: `ألواح جبسوم بورد والتوريد (${getSpecStr('gypsumType', 'كناوف عادي')})`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: isFlat ? 'م²' : 'متر طولي',
+        unitPrice: gypsumPrice,
+        totalCost: qty * gypsumPrice,
+        packagingDetails: `النظام: ${getSpecStr('suspensionSystem', 'صاج محمل')}`
+      });
+      break;
+    }
+
+    // ==========================================
+    // 2.4.2 - شبابيك الألمنيوم
+    // ==========================================
+    case '2.4.2': {
+      const isJumbo = getSpecStr('profileSystem', '').includes('جامبو') || getSpecStr('profileSystem', '').toLowerCase().includes('jumbo');
+      const alumPrice = getMaterialPrice('profileSystem', isJumbo ? 'price_alum_jumbo' : 'price_alum_tango', isJumbo ? 3500 : 2800);
+      
+      matList.push({
+        key: 'aluminum_window',
+        name: `شباك ألوميتال (${getSpecStr('profileSystem', 'جامبو')})`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'م²',
+        unitPrice: alumPrice,
+        totalCost: qty * alumPrice,
+        packagingDetails: `الزجاج: ${getSpecStr('glassType', 'دبل جلاس')}`
       });
       break;
     }
@@ -974,10 +1017,10 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     // 3.1.2 - وحدات تكييف سبليت (داخلية + خارجية)
     // ==========================================
     case '3.1.2': {
-      const unitPrice = getSpecNum('unitPrice', 22000);
-      const bracketPrice = getSpecNum('bracketPrice', 350);
+      const unitPrice = getMaterialPrice('unitPrice', 'price_ac_split_2_25', 22000);
+      const bracketPrice = getMaterialPrice('bracketPrice', 'price_ac_bracket', 350);
       const copperLength = getSpecNum('copperLength', 5);
-      const copperPricePerMeter = getSpecNum('copperPricePerMeter', 180);
+      const copperPricePerMeter = getMaterialPrice('copperPricePerMeter', 'price_copper_roll_5_8', 180);
 
       matList.push({
         key: 'ac_unit',
@@ -1021,9 +1064,9 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     case '3.1.3': {
       const wirePerPoint = getSpecNum('wirePerPoint', 20);
       const rollLength = getSpecNum('rollLength', 100);
-      const wireRollPrice = getSpecNum('wireRollPrice', 3500);
-      const breakerPrice = getSpecNum('breakerPrice', 280);
-      const isolatorPrice = getSpecNum('isolatorPrice', 150);
+      const wireRollPrice = getMaterialPrice('wireRollPrice', 'price_wire_4_roll', 3500);
+      const breakerPrice = getMaterialPrice('breakerPrice', 'price_breaker_schneider_1p', 280);
+      const isolatorPrice = getMaterialPrice('isolatorPrice', 'price_isolator', 150);
 
       const totalWireLength = qty * wirePerPoint;
       const wireRolls = Math.ceil(totalWireLength / rollLength);
@@ -1067,7 +1110,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     // 3.2.3 - دكتات تهوية (مجاري الهواء)
     // ==========================================
     case '3.2.3': {
-      const ductPricePerMeter = getSpecNum('ductPricePerMeter', 120);
+      const ductPricePerMeter = getMaterialPrice('ductPricePerMeter', 'price_duct_pvc', 120);
       const fittingsPercent = getSpecNum('fittingsPercent', 15);
 
       matList.push({
@@ -1091,6 +1134,51 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
         unitPrice: fittingsCost,
         totalCost: fittingsCost,
         packagingDetails: `${fittingsPercent}% من تكلفة الدكتات`
+      });
+      break;
+    }
+
+    case '3.2.1': {
+      const hoodPrice = getMaterialPrice('hoodPrice', 'price_hood_90', 4500);
+      matList.push({
+        key: 'hood_unit',
+        name: `شفاط مطبخ هرمي/مسطح`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: hoodPrice,
+        totalCost: Math.ceil(qty) * hoodPrice,
+        packagingDetails: `شفاط ${getSpecStr('size', '90 سم')}`
+      });
+      break;
+    }
+
+    case '3.2.2': {
+      const fanPrice = getMaterialPrice('fanPrice', 'price_fan_15', 350);
+      matList.push({
+        key: 'exhaust_fan',
+        name: `شفاط حمام/غرفة`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: fanPrice,
+        totalCost: Math.ceil(qty) * fanPrice,
+        packagingDetails: `شفاط ${getSpecStr('fanSize', '20x20 سم')}`
+      });
+      break;
+    }
+
+    case '3.2.4': {
+      const grillePrice = getMaterialPrice('grillePrice', 'price_grille_30x30', 180);
+      matList.push({
+        key: 'air_grille',
+        name: `فتحة تهوية / ديفيوزر`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: grillePrice,
+        totalCost: Math.ceil(qty) * grillePrice,
+        packagingDetails: `ديفيوزر مقاس ${getSpecStr('grilleSize', '30x30 سم')}`
       });
       break;
     }
@@ -1238,7 +1326,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       break;
     }
     case '2.9.1': {
-      const sanitaryMaterialPrice = getMaterialPrice('sanitaryMaterial', 'price_wc_duravit', 6500);
+      const sanitaryMaterialPrice = getMaterialPrice('sanitaryMaterial', 'price_toilet_duravit', 6500);
       matList.push({
         key: 'sanitary_ware',
         name: `أطقم الحمامات (قاعدة وحوض)`,
@@ -1274,7 +1362,15 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
   if (item.customMaterials && item.customMaterials.length > 0) {
     item.customMaterials.forEach(cmat => {
       // If a multiplier is set, the quantity is dynamic based on item quantity
-      const calcQty = cmat.multiplier ? qty * cmat.multiplier : cmat.quantity;
+      let calcQty = cmat.multiplier ? qty * cmat.multiplier : cmat.quantity;
+      let packagingText = cmat.multiplier ? `الكمية بناءً على نسبة (${cmat.multiplier}) من إجمالي البند` : 'كمية مخصصة';
+      
+      // If a packageSize is set (e.g. roll length 100m, can size 18L), divide the quantity by the package size
+      if (cmat.packageSize && cmat.packageSize > 0) {
+        calcQty = Math.ceil(calcQty / cmat.packageSize);
+        packagingText = `الكمية المطلوبة تغطي معدل ${cmat.packageSize} للوحدة (${cmat.unit})`;
+      }
+
       matList.push({
         key: cmat.id,
         name: cmat.name,
@@ -1283,7 +1379,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
         unit: cmat.unit,
         unitPrice: cmat.unitPrice,
         totalCost: Math.ceil(calcQty) * cmat.unitPrice,
-        packagingDetails: cmat.multiplier ? `الكمية بناءً على نسبة (${cmat.multiplier}) من إجمالي البند` : 'كمية مخصصة'
+        packagingDetails: packagingText
       });
     });
   } else if (item.pricing.mode === 'materials_labor_split' && matList.length === 0) {

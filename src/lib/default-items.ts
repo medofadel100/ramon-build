@@ -219,10 +219,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'wirePerPoint', label: 'سلك للنقطة (متر)', type: 'number', defaultValue: 10 },
       { key: 'rollLength', label: 'طول لفة السلك (متر)', type: 'number', defaultValue: 100 },
       { key: 'wireRollPrice', label: 'نوع السلك الرئيسي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_1_5_roll' },
-      { key: 'boxPrice', label: 'سعر علبة الماجيك (ج.م)', type: 'number', defaultValue: 15 },
-      { key: 'chassisPrice', label: 'سعر الشاسيه (ج.م)', type: 'number', defaultValue: 20 },
-      { key: 'platePrice', label: 'سعر الوش (ج.م)', type: 'number', defaultValue: 25 },
-      { key: 'switchPrice', label: 'سعر لقمة المفتاح (ج.م)', type: 'number', defaultValue: 35 }
+      { key: 'boxPrice', label: 'علبة الماجيك', type: 'number', defaultValue: 15 },
+      { key: 'chassisPrice', label: 'الشاسيه', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_chassis_plastic' },
+      { key: 'platePrice', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_plate_legrand' },
+      { key: 'switchPrice', label: 'لقمة المفتاح', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_switch_legrand' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 45, laborUnitPrice: 35, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود التركيبات الكهربائية في المباني السكنية'
@@ -240,11 +240,11 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'wirePerPoint', label: 'سلك للنقطة (متر)', type: 'number', defaultValue: 15 },
       { key: 'rollLength', label: 'طول لفة السلك (متر)', type: 'number', defaultValue: 100 },
       { key: 'wireRollPrice', label: 'نوع السلك الرئيسي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_2_5_roll' },
-      { key: 'boxPrice', label: 'سعر علبة الماجيك (ج.م)', type: 'number', defaultValue: 15 },
-      { key: 'chassisPrice', label: 'سعر الشاسيه (ج.م)', type: 'number', defaultValue: 20 },
-      { key: 'platePrice', label: 'سعر الوش (ج.م)', type: 'number', defaultValue: 25 },
+      { key: 'boxPrice', label: 'علبة الماجيك', type: 'number', defaultValue: 15 },
+      { key: 'chassisPrice', label: 'الشاسيه', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_chassis_plastic' },
+      { key: 'platePrice', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_plate_legrand' },
       { key: 'socketPerPoint', label: 'عدد اللقم لكل نقطة', type: 'number', defaultValue: 2 },
-      { key: 'socketPrice', label: 'سعر لقمة البريزة (ج.م)', type: 'number', defaultValue: 45 }
+      { key: 'socketPrice', label: 'لقمة البريزة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_socket_legrand' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 55, laborUnitPrice: 40, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
   },
@@ -275,10 +275,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'wirePerPoint', label: 'طول السلك للنقطة (متر)', type: 'number', defaultValue: 25 },
       { key: 'rollLength', label: 'طول لفة كابل الداتا (متر)', type: 'number', defaultValue: 305 },
       { key: 'dataRollPrice', label: 'كابل الداتا المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_data_roll' },
-      { key: 'boxPrice', label: 'سعر علبة الماجيك (ج.م)', type: 'number', defaultValue: 15 },
-      { key: 'chassisPrice', label: 'سعر الشاسيه (ج.م)', type: 'number', defaultValue: 20 },
-      { key: 'platePrice', label: 'سعر الوش (ج.م)', type: 'number', defaultValue: 25 },
-      { key: 'keystonePrice', label: 'سعر لقمة RJ45 (ج.م)', type: 'number', defaultValue: 80 }
+      { key: 'boxPrice', label: 'علبة الماجيك', type: 'number', defaultValue: 15 },
+      { key: 'chassisPrice', label: 'الشاسيه', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_chassis_plastic' },
+      { key: 'platePrice', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_plate_legrand' },
+      { key: 'keystonePrice', label: 'لقمة RJ45', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_keystone_rj45' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 140, laborUnitPrice: 80, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
   },
@@ -342,7 +342,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     calculationFormula: 'total.ceilingArea',
     perAreaOverride: true,
     specs: [
-      { key: 'gypsumType', label: 'نوع لوح الجبس', type: 'select', options: ['كناوف أبيض عادي 12.5 مم', 'كناوف أخضر مقاوم رطوبة', 'كناوف أحمر مقاوم حريق'], defaultValue: 'كناوف أبيض عادي 12.5 مم' },
+      { key: 'gypsumType', label: 'نوع لوح الجبس', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plastering', defaultValue: 'price_gypsum_board_sqm' },
       { key: 'suspensionSystem', label: 'نظام التعليق والصاج', type: 'select', options: ['صاج محمل 0.5 مم', 'صاج عادي 0.4 مم'], defaultValue: 'صاج محمل 0.5 مم' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 140, laborUnitPrice: 85, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 }
@@ -370,7 +370,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'calculated',
     calculationFormula: 'total.floorArea',
     specs: [
-      { key: 'adhesiveType', label: 'نوع مادة اللصق', type: 'select', options: ['لاصق أسمنتي عادي C1', 'لاصق مرن فلكسبل C2', 'مونة أسمنت ورمل تقليدية'], defaultValue: 'لاصق أسمنتي عادي C1' },
+      { key: 'adhesiveType', label: 'نوع مادة اللصق', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'flooring', defaultValue: 'price_tile_adhesive_bag' },
       { key: 'mortarThickness', label: 'سُمك المونة (سم)', type: 'number', defaultValue: 1.5 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 40, laborUnitPrice: 20, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
@@ -385,7 +385,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'calculated',
     calculationFormula: 'total.wallArea',
     specs: [
-      { key: 'sealerBrand', label: 'ماركة السيلر المائي', type: 'select', options: ['جوتن Jotun سيلر', 'سايبس Sipes', 'GLC سيلر مائي'], defaultValue: 'جوتن Jotun سيلر' },
+      { key: 'sealerBrand', label: 'ماركة السيلر المائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plastering', defaultValue: 'price_sealer_gallon' },
       { key: 'primingCoats', label: 'عدد أوجه السيلر', type: 'number', defaultValue: 1 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 15, laborUnitPrice: 10, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
@@ -398,7 +398,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'calculated',
     calculationFormula: 'total.wallArea',
     specs: [
-      { key: 'puttyBrand', label: 'نوع المعجون والشركة', type: 'select', options: ['معجون أكريليك جوتن', 'معجون بودرة سايبس', 'GLC معجون داخلي جاهز'], defaultValue: 'معجون أكريليك جوتن' },
+      { key: 'puttyBrand', label: 'نوع المعجون والشركة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plastering', defaultValue: 'price_putty_bag' },
       { key: 'puttyCoats', label: 'عدد سكاكين المعجون', type: 'number', defaultValue: 2 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 25, laborUnitPrice: 30, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 }
@@ -485,8 +485,8 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'عدد',
     quantitySource: 'manual', // or matched to points count
     specs: [
-      { key: 'plateMaterial', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_plate_legrand' },
-      { key: 'switchMaterial', label: 'لقمة المفتاح', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_switch_legrand' }
+      { key: 'plateMaterial', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_plate_legrand' },
+      { key: 'switchMaterial', label: 'لقمة المفتاح', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_switch_legrand' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 45, laborUnitPrice: 15, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
   },
@@ -498,7 +498,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'manual',
     perAreaOverride: true,
     specs: [
-      { key: 'lightMaterial', label: 'وحدة الإنارة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_spot_led_7w' },
+      { key: 'lightMaterial', label: 'وحدة الإنارة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_lighting', defaultValue: 'price_spot_led_7w' },
       { key: 'colorTemp', label: 'درجة حرارة اللون (كلفن)', type: 'select', options: ['3000K (أصفر دافئ)', '4000K (ورم إضاءة نهارية)', '6500K (أبيض بارد)'], defaultValue: '3000K (أصفر دافئ)' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 75, laborUnitPrice: 15, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
@@ -511,7 +511,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'manual',
     perAreaOverride: true,
     specs: [
-      { key: 'stripMaterial', label: 'شريط الليد', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_led_strip_m' },
+      { key: 'stripMaterial', label: 'شريط الليد', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_lighting', defaultValue: 'price_led_strip_m' },
       { key: 'driverBrand', label: 'ماركة المحول (Driver)', type: 'select', options: ['مين ويل Mean Well الأصلي', 'محول صيني تجاري'], defaultValue: 'مين ويل Mean Well الأصلي' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 60, laborUnitPrice: 20, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
@@ -525,7 +525,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'عدد طقم',
     quantitySource: 'manual',
     specs: [
-      { key: 'sanitaryMaterial', label: 'طقم الحمام', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_wc_duravit' },
+      { key: 'sanitaryMaterial', label: 'طقم الحمام', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'sanitary', defaultValue: 'price_toilet_duravit' },
       { key: 'cisternType', label: 'نوع صندوق الطرد والكرسي', type: 'select', options: ['معلق بصندوق مدفون (Geberit)', 'عادي ملاصق للحائط'], defaultValue: 'معلق بصندوق مدفون (Geberit)' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 6500, laborUnitPrice: 450, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
@@ -537,7 +537,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'عدد خلاط',
     quantitySource: 'manual',
     specs: [
-      { key: 'mixerMaterial', label: 'طقم الخلاطات', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_mixer_grohe' }
+      { key: 'mixerMaterial', label: 'طقم الخلاطات', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'sanitary', defaultValue: 'price_mixer_grohe' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 3500, laborUnitPrice: 150, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
   },
@@ -613,10 +613,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'installationType', label: 'طريقة التركيب', type: 'select', options: ['مدفون في الحائط', 'مدفون في السقف', 'ظاهر مع تغطية'], defaultValue: 'مدفون في الحائط' },
       { key: 'drainPipe', label: 'ماسورة صرف المكثفات', type: 'select', options: ['PVC 3/4 بوصة', 'خرطوم مرن'], defaultValue: 'PVC 3/4 بوصة' },
       { key: 'copperRollLength', label: 'طول لفة النحاس (متر)', type: 'number', defaultValue: 15 },
-      { key: 'copperRollPrice', label: 'سعر لفة النحاس (ج.م)', type: 'number', defaultValue: 5500 },
-      { key: 'armaflexPrice', label: 'سعر المتر عزل أرماكفلكس (ج.م)', type: 'number', defaultValue: 35 },
-      { key: 'controlWirePrice', label: 'سعر المتر سلك كنترول (ج.م)', type: 'number', defaultValue: 15 },
-      { key: 'drainPipePrice', label: 'سعر المتر ماسورة صرف (ج.م)', type: 'number', defaultValue: 25 }
+      { key: 'copperRollPrice', label: 'سعر لفة النحاس', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_copper_roll_5_8' },
+      { key: 'armaflexPrice', label: 'عزل أرماكفلكس', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_armaflex_m' },
+      { key: 'controlWirePrice', label: 'سلك كنترول', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_control_wire_m' },
+      { key: 'drainPipePrice', label: 'ماسورة صرف', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_drain_pipe_m' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 200, laborUnitPrice: 80, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود MEP المصري - أعمال التكييف',
@@ -635,10 +635,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'acType', label: 'نوع التشغيل', type: 'select', options: ['بارد فقط (Cool Only)', 'بارد وساخن (Hot & Cold)'], defaultValue: 'بارد وساخن (Hot & Cold)' },
       { key: 'technology', label: 'تكنولوجيا الضاغط', type: 'select', options: ['انفرتر (Inverter) موفر للطاقة', 'عادي (Fixed Speed)'], defaultValue: 'انفرتر (Inverter) موفر للطاقة' },
       { key: 'mountType', label: 'نوع التركيب', type: 'select', options: ['حائطي (Wall Mounted)', 'سقفي كاسيت (Cassette)', 'كونسيلد مخفي (Concealed Ducted)', 'أرضي (Floor Standing)'], defaultValue: 'حائطي (Wall Mounted)' },
-      { key: 'unitPrice', label: 'سعر الوحدة كاملة (ج.م)', type: 'number', defaultValue: 22000 },
-      { key: 'bracketPrice', label: 'سعر الحامل الخارجي (ج.م)', type: 'number', defaultValue: 350 },
+      { key: 'unitPrice', label: 'سعر الوحدة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_ac_split_2_25' },
+      { key: 'bracketPrice', label: 'الحامل الخارجي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_ac_bracket' },
       { key: 'copperLength', label: 'طول مواسير النحاس المقدّر (متر)', type: 'number', defaultValue: 5 },
-      { key: 'copperPricePerMeter', label: 'سعر متر النحاس المعزول (ج.م)', type: 'number', defaultValue: 180 }
+      { key: 'copperPricePerMeter', label: 'النحاس الإضافي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_copper_roll_5_8' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 22000, laborUnitPrice: 1500, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
     egyptianCodeRef: 'كود MEP المصري - معدات التكييف',
@@ -657,9 +657,9 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'wireGauge', label: 'سُمك السلك', type: 'select', options: ['4 مم (حتى 2.25 حصان)', '6 مم (3 حصان فأكثر)'], defaultValue: '4 مم (حتى 2.25 حصان)' },
       { key: 'wirePerPoint', label: 'طول السلك للنقطة (متر)', type: 'number', defaultValue: 20 },
       { key: 'rollLength', label: 'طول اللفة (متر)', type: 'number', defaultValue: 100 },
-      { key: 'wireRollPrice', label: 'سعر لفة السلك (ج.م)', type: 'number', defaultValue: 3500 },
-      { key: 'breakerPrice', label: 'سعر القاطع (ج.م)', type: 'number', defaultValue: 280 },
-      { key: 'isolatorPrice', label: 'سعر مفتاح الأيزوليتور (ج.م)', type: 'number', defaultValue: 150 }
+      { key: 'wireRollPrice', label: 'سلك التغذية', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_4_roll' },
+      { key: 'breakerPrice', label: 'سعر القاطع', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_boards', defaultValue: 'price_breaker_schneider_1p' },
+      { key: 'isolatorPrice', label: 'مفتاح الأيزوليتور', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_isolator' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 450, laborUnitPrice: 120, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
     egyptianCodeRef: 'كود التركيبات الكهربائية - تغذية معدات التكييف',
@@ -696,7 +696,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'brand', label: 'الماركة', type: 'select', options: ['فريش Fresh', 'تورنيدو Tornado', 'بوش Bosch', 'إلكتا Electa', 'أريستون Ariston', 'بيكو Beko'], defaultValue: 'فريش Fresh' },
       { key: 'size', label: 'المقاس (عرض)', type: 'select', options: ['60 سم', '90 سم', '120 سم'], defaultValue: '90 سم' },
       { key: 'color', label: 'لون الهيكل', type: 'select', options: ['ستانلس ستيل', 'أسود', 'أبيض', 'سيلفر'], defaultValue: 'ستانلس ستيل' },
-      { key: 'hoodPrice', label: 'سعر الشفاط (ج.م)', type: 'number', defaultValue: 4500 }
+      { key: 'hoodPrice', label: 'سعر الشفاط', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_hood_90' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 4500, laborUnitPrice: 350, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
     codeReferences: { egyptian: 'كود التهوية الميكانيكية - شفاطات المطابخ', saudiSBC: 'SBC 501 - Kitchen Ventilation', uaeUBC: 'UBC - Kitchen Exhaust' }
@@ -712,7 +712,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'fanSize', label: 'المقاس', type: 'select', options: ['15x15 سم (6 بوصة)', '20x20 سم (8 بوصة)', '25x25 سم (10 بوصة)', '30x30 سم (12 بوصة)'], defaultValue: '20x20 سم (8 بوصة)' },
       { key: 'operationType', label: 'نوع التشغيل', type: 'select', options: ['بمفتاح عادي', 'بسنسور حركة PIR', 'بتايمر تأخير', 'مع إضاءة مدمجة'], defaultValue: 'بمفتاح عادي' },
       { key: 'brand', label: 'الماركة', type: 'select', options: ['تورنيدو Tornado', 'فريش Fresh', 'ستاندرد Standard', 'باناسونيك Panasonic'], defaultValue: 'تورنيدو Tornado' },
-      { key: 'fanPrice', label: 'سعر الشفاط (ج.م)', type: 'number', defaultValue: 350 }
+      { key: 'fanPrice', label: 'سعر الشفاط', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_fan_15' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 350, laborUnitPrice: 80, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
     codeReferences: { egyptian: 'كود التهوية الميكانيكية - الحمامات', saudiSBC: 'SBC 501 - Bathroom Ventilation' }
@@ -727,7 +727,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'ductMaterial', label: 'خامة الدكت', type: 'select', options: ['صاج مجلفن (Galvanized)', 'فليكسبل PVC مرن', 'ألومنيوم مرن', 'فايبر جلاس معزول'], defaultValue: 'فليكسبل PVC مرن' },
       { key: 'ductDiameter', label: 'القطر/المقاس', type: 'select', options: ['4 بوصة (100 مم)', '6 بوصة (150 مم)', '8 بوصة (200 مم)', '10 بوصة (250 مم)', '12 بوصة (300 مم)'], defaultValue: '6 بوصة (150 مم)' },
       { key: 'insulated', label: 'عزل حراري', type: 'select', options: ['نعم - معزول حرارياً', 'لا - بدون عزل'], defaultValue: 'لا - بدون عزل' },
-      { key: 'ductPricePerMeter', label: 'سعر المتر دكت (ج.م)', type: 'number', defaultValue: 120 },
+      { key: 'ductPricePerMeter', label: 'دكت التهوية', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_duct_pvc' },
       { key: 'fittingsPercent', label: 'نسبة الوصلات والأكواع (%)', type: 'number', defaultValue: 15 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 120, laborUnitPrice: 60, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
@@ -744,7 +744,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'grilleType', label: 'نوع الفتحة', type: 'select', options: ['شبك تهوية عادي (Grille)', 'ديفيوزر مربع (Square Diffuser)', 'ديفيوزر خطي (Linear Diffuser)', 'فتحة ريتيرن (Return Air Grille)'], defaultValue: 'ديفيوزر مربع (Square Diffuser)' },
       { key: 'grilleSize', label: 'المقاس', type: 'select', options: ['20x20 سم', '30x30 سم', '40x40 سم', '60x15 سم (خطي)', '120x15 سم (خطي)'], defaultValue: '30x30 سم' },
       { key: 'color', label: 'اللون', type: 'select', options: ['أبيض', 'سيلفر', 'أسود مطفي', 'لون حسب التصميم'], defaultValue: 'أبيض' },
-      { key: 'grillePrice', label: 'سعر الفتحة الواحدة (ج.م)', type: 'number', defaultValue: 180 }
+      { key: 'grillePrice', label: 'الفتحة/الديفيوزر', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'hvac', defaultValue: 'price_grille_30x30' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 180, laborUnitPrice: 40, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 },
     codeReferences: { egyptian: 'كود التهوية - فتحات التوزيع', saudiSBC: 'SBC 501 - Air Distribution' }

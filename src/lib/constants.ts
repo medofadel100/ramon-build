@@ -4,7 +4,7 @@ export interface ConstantDefinition {
   key: string;
   label: string;
   group: 'materials' | 'rates';
-  subgroup: 'general' | 'masonry' | 'plastering' | 'flooring' | 'electrical' | 'plumbing' | 'hvac' | 'woodwork' | 'cladding' | 'kitchens';
+  subgroup: 'general' | 'masonry' | 'plastering' | 'flooring' | 'electrical' | 'electrical_switches' | 'electrical_lighting' | 'electrical_boards' | 'plumbing' | 'sanitary' | 'hvac' | 'woodwork' | 'cladding' | 'kitchens' | 'aluminum';
   defaultValue: number;
   unit: string;
   supplierId?: string;
@@ -65,6 +65,17 @@ export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   { key: 'price_ppr_pipe_3_4', label: 'سعر ماسورة تغذية PPR (3/4 بوصة)', group: 'materials', subgroup: 'plumbing', defaultValue: 180, unit: 'ج.م' },
   { key: 'price_ppr_pipe_1', label: 'سعر ماسورة تغذية PPR (1 بوصة)', group: 'materials', subgroup: 'plumbing', defaultValue: 250, unit: 'ج.م' },
 
+  // Sanitary Fixtures (الأجهزة الصحية والخلطات)
+  { key: 'price_toilet_duravit', label: 'طقم حمام ديورافيت (قاعدة وحوض)', group: 'materials', subgroup: 'sanitary', defaultValue: 6500, unit: 'ج.م' },
+  { key: 'price_toilet_ideal', label: 'طقم حمام إيديال ستاندرد', group: 'materials', subgroup: 'sanitary', defaultValue: 5800, unit: 'ج.م' },
+  { key: 'price_mixer_grohe', label: 'طقم خلاطات جروهي (حوض/دش/بيديه)', group: 'materials', subgroup: 'sanitary', defaultValue: 12000, unit: 'ج.م' },
+  { key: 'price_mixer_ideal', label: 'طقم خلاطات إيديال ستاندرد', group: 'materials', subgroup: 'sanitary', defaultValue: 8500, unit: 'ج.م' },
+  { key: 'price_mixer_sarrdesign', label: 'طقم خلاطات سارديزاين', group: 'materials', subgroup: 'sanitary', defaultValue: 4500, unit: 'ج.م' },
+  { key: 'price_bathtub_acrylic', label: 'بانيو أكريليك (170x70) الطيب', group: 'materials', subgroup: 'sanitary', defaultValue: 4500, unit: 'ج.م' },
+  { key: 'price_shower_cabin', label: 'كابينة شاور سيكوريت 10مم', group: 'materials', subgroup: 'sanitary', defaultValue: 8000, unit: 'ج.م' },
+  { key: 'price_kitchen_sink_franke', label: 'حلة مطبخ فرانكي استانلس 2 عين', group: 'materials', subgroup: 'sanitary', defaultValue: 5500, unit: 'ج.م' },
+  { key: 'price_kitchen_sink_korea', label: 'حلة مطبخ كوري 1 عين', group: 'materials', subgroup: 'sanitary', defaultValue: 2500, unit: 'ج.م' },
+
   // Electrical (الكهرباء)
   { key: 'price_wire_1_roll', label: 'سعر لفة سلك السويدي 1 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 900, unit: 'ج.م' },
   { key: 'price_wire_1_5_roll', label: 'سعر لفة سلك السويدي 1.5 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 1200, unit: 'ج.م' },
@@ -78,18 +89,21 @@ export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   { key: 'price_aladdin_hose_roll', label: 'سعر لفة خرطوم علاء الدين (50م)', group: 'materials', subgroup: 'electrical', defaultValue: 250, unit: 'ج.م' },
   { key: 'price_flexible_hose_roll', label: 'سعر لفة خرطوم سوستة (فليكسيبل)', group: 'materials', subgroup: 'electrical', defaultValue: 150, unit: 'ج.م' },
   { key: 'price_magic_box', label: 'سعر العلبة الماجيك المعتمدة', group: 'materials', subgroup: 'electrical', defaultValue: 15, unit: 'ج.م' },
-  { key: 'price_db_12_way_venus', label: 'لوحة توزيع فينوس 12 خط', group: 'materials', subgroup: 'electrical', defaultValue: 800, unit: 'ج.م' },
-  { key: 'price_db_18_way_venus', label: 'لوحة توزيع فينوس 18 خط', group: 'materials', subgroup: 'electrical', defaultValue: 1100, unit: 'ج.م' },
-  { key: 'price_db_24_way_venus', label: 'لوحة توزيع فينوس 24 خط', group: 'materials', subgroup: 'electrical', defaultValue: 1500, unit: 'ج.م' },
-  { key: 'price_db_36_way_venus', label: 'لوحة توزيع فينوس 36 خط', group: 'materials', subgroup: 'electrical', defaultValue: 2100, unit: 'ج.م' },
-  { key: 'price_db_12_way_schneider', label: 'لوحة توزيع شنايدر 12 خط', group: 'materials', subgroup: 'electrical', defaultValue: 1400, unit: 'ج.م' },
-  { key: 'price_db_18_way_schneider', label: 'لوحة توزيع شنايدر 18 خط', group: 'materials', subgroup: 'electrical', defaultValue: 2000, unit: 'ج.م' },
-  { key: 'price_db_24_way_schneider', label: 'لوحة توزيع شنايدر 24 خط', group: 'materials', subgroup: 'electrical', defaultValue: 2600, unit: 'ج.م' },
-  { key: 'price_db_36_way_schneider', label: 'لوحة توزيع شنايدر 36 خط', group: 'materials', subgroup: 'electrical', defaultValue: 3800, unit: 'ج.م' },
-  { key: 'price_db_12_way_hager', label: 'لوحة توزيع هاجر 12 خط', group: 'materials', subgroup: 'electrical', defaultValue: 1200, unit: 'ج.م' },
-  { key: 'price_db_18_way_hager', label: 'لوحة توزيع هاجر 18 خط', group: 'materials', subgroup: 'electrical', defaultValue: 1800, unit: 'ج.م' },
-  { key: 'price_db_24_way_hager', label: 'لوحة توزيع هاجر 24 خط', group: 'materials', subgroup: 'electrical', defaultValue: 2300, unit: 'ج.م' },
-  { key: 'price_db_36_way_hager', label: 'لوحة توزيع هاجر 36 خط', group: 'materials', subgroup: 'electrical', defaultValue: 3400, unit: 'ج.م' },
+  { key: 'price_db_12_way_venus', label: 'لوحة توزيع فينوس 12 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 800, unit: 'ج.م' },
+  { key: 'price_db_18_way_venus', label: 'لوحة توزيع فينوس 18 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 1100, unit: 'ج.م' },
+  { key: 'price_db_24_way_venus', label: 'لوحة توزيع فينوس 24 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 1500, unit: 'ج.م' },
+  { key: 'price_db_36_way_venus', label: 'لوحة توزيع فينوس 36 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 2100, unit: 'ج.م' },
+  { key: 'price_db_12_way_schneider', label: 'لوحة توزيع شنايدر 12 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 1400, unit: 'ج.م' },
+  { key: 'price_db_18_way_schneider', label: 'لوحة توزيع شنايدر 18 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 2000, unit: 'ج.م' },
+  { key: 'price_db_24_way_schneider', label: 'لوحة توزيع شنايدر 24 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 2600, unit: 'ج.م' },
+  { key: 'price_db_36_way_schneider', label: 'لوحة توزيع شنايدر 36 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 3800, unit: 'ج.م' },
+  { key: 'price_db_12_way_hager', label: 'لوحة توزيع هاجر 12 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 1200, unit: 'ج.م' },
+  { key: 'price_db_18_way_hager', label: 'لوحة توزيع هاجر 18 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 1800, unit: 'ج.م' },
+  { key: 'price_db_24_way_hager', label: 'لوحة توزيع هاجر 24 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 2300, unit: 'ج.م' },
+  { key: 'price_db_36_way_hager', label: 'لوحة توزيع هاجر 36 خط', group: 'materials', subgroup: 'electrical_boards', defaultValue: 3400, unit: 'ج.م' },
+  { key: 'price_breaker_schneider_1p', label: 'قاطع شنايدر 1 فاز (10-32A)', group: 'materials', subgroup: 'electrical_boards', defaultValue: 250, unit: 'ج.م' },
+  { key: 'price_breaker_hager_1p', label: 'قاطع هاجر 1 فاز (10-32A)', group: 'materials', subgroup: 'electrical_boards', defaultValue: 220, unit: 'ج.م' },
+  { key: 'price_breaker_legrand_1p', label: 'قاطع ليجراند 1 فاز (10-32A)', group: 'materials', subgroup: 'electrical_boards', defaultValue: 280, unit: 'ج.م' },
 
   // HVAC (التكييف)
   { key: 'price_copper_roll_1_4', label: 'سعر متر النحاس (1/4 بوصة)', group: 'materials', subgroup: 'hvac', defaultValue: 250, unit: 'ج.م' },
@@ -98,6 +112,14 @@ export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   { key: 'price_copper_roll_5_8', label: 'سعر متر النحاس (5/8 بوصة)', group: 'materials', subgroup: 'hvac', defaultValue: 550, unit: 'ج.م' },
   { key: 'price_armaflex_m', label: 'سعر متر عزل أرمافليكس', group: 'materials', subgroup: 'hvac', defaultValue: 35, unit: 'ج.م' },
   { key: 'price_ac_bracket', label: 'سعر كابولي تكييف (جوز)', group: 'materials', subgroup: 'hvac', defaultValue: 450, unit: 'ج.م' },
+  { key: 'price_control_wire_m', label: 'سعر متر سلك كنترول', group: 'materials', subgroup: 'hvac', defaultValue: 15, unit: 'ج.م' },
+  { key: 'price_drain_pipe_m', label: 'سعر متر ماسورة صرف تكييف PVC', group: 'materials', subgroup: 'hvac', defaultValue: 25, unit: 'ج.م' },
+  { key: 'price_isolator', label: 'مفتاح أيزوليتور (تكييف)', group: 'materials', subgroup: 'hvac', defaultValue: 150, unit: 'ج.م' },
+  { key: 'price_fan_15', label: 'شفاط حمام 15 سم', group: 'materials', subgroup: 'hvac', defaultValue: 350, unit: 'ج.م' },
+  { key: 'price_duct_pvc', label: 'دكت فليكسبل PVC (متر)', group: 'materials', subgroup: 'hvac', defaultValue: 120, unit: 'ج.م' },
+  { key: 'price_grille_30x30', label: 'ديفيوزر/جريل 30x30 سم', group: 'materials', subgroup: 'hvac', defaultValue: 180, unit: 'ج.م' },
+  { key: 'price_ac_split_2_25', label: 'تكييف سبليت 2.25 حصان', group: 'materials', subgroup: 'hvac', defaultValue: 22000, unit: 'ج.م' },
+  { key: 'price_hood_90', label: 'شفاط مطبخ هرمي 90 سم', group: 'materials', subgroup: 'hvac', defaultValue: 4500, unit: 'ج.م' },
   // Woodwork & Doors (النجارة والأبواب)
   { key: 'price_wood_mosky_m3', label: 'سعر متر مكعب خشب موسكي', group: 'materials', subgroup: 'woodwork', defaultValue: 22000, unit: 'ج.م' },
   { key: 'price_wood_aziz_m3', label: 'سعر متر مكعب خشب عزيزي', group: 'materials', subgroup: 'woodwork', defaultValue: 45000, unit: 'ج.م' },
@@ -116,23 +138,42 @@ export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   { key: 'price_kitchen_hinge_blum', label: 'سعر مفصلة بلوم Blum', group: 'materials', subgroup: 'kitchens', defaultValue: 120, unit: 'ج.م' },
   { key: 'price_kitchen_hinge_normal', label: 'سعر مفصلة عادية/صيني', group: 'materials', subgroup: 'kitchens', defaultValue: 35, unit: 'ج.م' },
 
+  // Aluminum (الألوميتال والزجاج)
+  { key: 'price_alum_jumbo', label: 'سعر متر ألوميتال جامبو شريف علي حسن', group: 'materials', subgroup: 'aluminum', defaultValue: 3500, unit: 'ج.م' },
+  { key: 'price_alum_tango', label: 'سعر متر ألوميتال تانجو', group: 'materials', subgroup: 'aluminum', defaultValue: 2800, unit: 'ج.م' },
+  { key: 'price_alum_thermal_break', label: 'سعر متر ألوميتال قطاع حراري', group: 'materials', subgroup: 'aluminum', defaultValue: 5500, unit: 'ج.م' },
+
   // Cladding & Wall Decor (التجليدات وبديل الرخام والخشب)
   { key: 'price_wpc_panel', label: 'سعر شريحة بديل الخشب WPC', group: 'materials', subgroup: 'cladding', defaultValue: 450, unit: 'ج.م' },
   { key: 'price_pvc_marble_panel', label: 'سعر لوح بديل الرخام PVC', group: 'materials', subgroup: 'cladding', defaultValue: 1200, unit: 'ج.م' },
   { key: 'price_mdf_veneer_panel', label: 'سعر لوح تجليد قشرة أرو', group: 'materials', subgroup: 'cladding', defaultValue: 1800, unit: 'ج.م' },
   { key: 'price_cladding_adhesive', label: 'سعر عبوة سيليكون عظم', group: 'materials', subgroup: 'cladding', defaultValue: 150, unit: 'ج.م' },
 
-  // Electrical Finishes (تشطيب الكهرباء والإنارة)
-  { key: 'price_switch_legrand', label: 'سعر مفتاح/لقمة ليجراند ساسي', group: 'materials', subgroup: 'electrical', defaultValue: 65, unit: 'ج.م' },
-  { key: 'price_switch_schneider', label: 'سعر لقمة شنايدر ديسنت', group: 'materials', subgroup: 'electrical', defaultValue: 55, unit: 'ج.م' },
-  { key: 'price_switch_venus', label: 'سعر لقمة فينوس', group: 'materials', subgroup: 'electrical', defaultValue: 30, unit: 'ج.م' },
-  { key: 'price_socket_legrand', label: 'سعر بريزة ليجراند ساسي', group: 'materials', subgroup: 'electrical', defaultValue: 80, unit: 'ج.م' },
-  { key: 'price_plate_legrand', label: 'سعر وش ليجراند ساسي', group: 'materials', subgroup: 'electrical', defaultValue: 45, unit: 'ج.م' },
-  { key: 'price_spot_led_7w', label: 'سعر سبوت LED 7 وات', group: 'materials', subgroup: 'electrical', defaultValue: 120, unit: 'ج.م' },
-  { key: 'price_spot_led_cob', label: 'سعر سبوت غاطس COB', group: 'materials', subgroup: 'electrical', defaultValue: 250, unit: 'ج.م' },
-  { key: 'price_led_strip_m', label: 'سعر متر شريط ليد بروفايل', group: 'materials', subgroup: 'electrical', defaultValue: 45, unit: 'ج.م' },
-  { key: 'price_chandelier_modern', label: 'سعر نجفة مودرن متوسطة', group: 'materials', subgroup: 'electrical', defaultValue: 3500, unit: 'ج.م' },
-  { key: 'price_applique', label: 'سعر أبليك/أباجورة حائط', group: 'materials', subgroup: 'electrical', defaultValue: 450, unit: 'ج.م' },
+  // Electrical Switches & Plates (وشوش ومفاتيح وبرايز)
+  { key: 'price_switch_legrand', label: 'لقمة مفتاح ليجراند ساسي', group: 'materials', subgroup: 'electrical_switches', defaultValue: 65, unit: 'ج.م' },
+  { key: 'price_switch_schneider', label: 'لقمة مفتاح شنايدر ديسنت', group: 'materials', subgroup: 'electrical_switches', defaultValue: 55, unit: 'ج.م' },
+  { key: 'price_switch_venus', label: 'لقمة مفتاح فينوس', group: 'materials', subgroup: 'electrical_switches', defaultValue: 30, unit: 'ج.م' },
+  { key: 'price_socket_legrand', label: 'بريزة ليجراند ساسي', group: 'materials', subgroup: 'electrical_switches', defaultValue: 80, unit: 'ج.م' },
+  { key: 'price_socket_schneider', label: 'بريزة شنايدر ديسنت', group: 'materials', subgroup: 'electrical_switches', defaultValue: 70, unit: 'ج.م' },
+  { key: 'price_socket_venus', label: 'بريزة فينوس', group: 'materials', subgroup: 'electrical_switches', defaultValue: 25, unit: 'ج.م' },
+  { key: 'price_plate_legrand', label: 'وش ليجراند ساسي', group: 'materials', subgroup: 'electrical_switches', defaultValue: 45, unit: 'ج.م' },
+  { key: 'price_plate_schneider', label: 'وش شنايدر ديسنت', group: 'materials', subgroup: 'electrical_switches', defaultValue: 40, unit: 'ج.م' },
+  { key: 'price_plate_venus', label: 'وش فينوس', group: 'materials', subgroup: 'electrical_switches', defaultValue: 15, unit: 'ج.م' },
+  { key: 'price_chassis_plastic', label: 'شاسيه بلاستيك', group: 'materials', subgroup: 'electrical_switches', defaultValue: 20, unit: 'ج.م' },
+  { key: 'price_chassis_metal', label: 'شاسيه معدني', group: 'materials', subgroup: 'electrical_switches', defaultValue: 30, unit: 'ج.م' },
+  { key: 'price_keystone_rj45', label: 'لقمة RJ45 كيستون', group: 'materials', subgroup: 'electrical_switches', defaultValue: 80, unit: 'ج.م' },
+
+  // Electrical Lighting (إنارة وسبوتات)
+  { key: 'price_spot_led_7w', label: 'سبوت LED 7 وات عادي', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 120, unit: 'ج.م' },
+  { key: 'price_spot_led_cob', label: 'سبوت غاطس COB عالي الجودة', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 250, unit: 'ج.م' },
+  { key: 'price_spot_panel_18w', label: 'بانل لايت 18 وات سقفي', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 180, unit: 'ج.م' },
+  { key: 'price_led_strip_m', label: 'شريط ليد COB بروفايل (متر)', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 45, unit: 'ج.م' },
+  { key: 'price_led_strip_smd', label: 'شريط ليد SMD عادي (متر)', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 25, unit: 'ج.م' },
+  { key: 'price_chandelier_modern', label: 'نجفة مودرن متوسطة', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 3500, unit: 'ج.م' },
+  { key: 'price_chandelier_classic', label: 'نجفة كلاسيك كريستال', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 5000, unit: 'ج.م' },
+  { key: 'price_applique', label: 'أبليك/أباجورة حائط', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 450, unit: 'ج.م' },
+  { key: 'price_driver_meanwell', label: 'محول Mean Well أصلي', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 350, unit: 'ج.م' },
+  { key: 'price_driver_chinese', label: 'محول صيني تجاري', group: 'materials', subgroup: 'electrical_lighting', defaultValue: 120, unit: 'ج.م' },
 
   // Plumbing Finishes (التشطيبات الصحية والخلاطات)
   { key: 'price_wc_duravit', label: 'سعر طقم حمام ديورافيت Duravit', group: 'materials', subgroup: 'plumbing', defaultValue: 6500, unit: 'ج.م' },

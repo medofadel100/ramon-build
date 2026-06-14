@@ -12,7 +12,8 @@ import {
   limit, 
   writeBatch,
   serverTimestamp,
-  addDoc
+  addDoc,
+  arrayUnion
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { DEFAULT_SECTIONS, DEFAULT_ITEMS } from './default-items';
@@ -611,18 +612,7 @@ export async function acceptEngineerInvite(
   }
 
   const inviteData = inviteSnap.data();
-  
-  // Update project header to add engineer
   const projectRef = doc(db, 'projects', projectId);
-  const projectSnap = await getDoc(projectRef);
-  if (!projectSnap.exists()) return false;
-
-  const pData = projectSnap.data();
-  const existingEngineers: string[] = pData.header?.assignedEngineers || [];
-  const existingDetails: AssignedEngineer[] = pData.header?.engineersDetails || [];
-
-  // Check if already added
-  if (existingEngineers.includes(userId)) return true;
 
   const newEngineer: AssignedEngineer = {
     uid: userId,
@@ -634,13 +624,16 @@ export async function acceptEngineerInvite(
   };
 
   await updateDoc(projectRef, {
-    'header.assignedEngineers': [...existingEngineers, userId],
-    'header.engineersDetails': [...existingDetails, newEngineer],
+    'header.assignedEngineers': arrayUnion(userId),
+    'header.engineersDetails': arrayUnion(newEngineer),
     updatedAt: serverTimestamp()
   });
 
-  // Mark invite as used
-  await updateDoc(inviteRef, { used: true, usedBy: userId });
+  await updateDoc(inviteRef, {
+    used: true,
+    usedBy: userId,
+    usedAt: serverTimestamp()
+  });
 
   return true;
 }

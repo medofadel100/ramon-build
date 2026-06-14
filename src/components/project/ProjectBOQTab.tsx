@@ -660,90 +660,112 @@ export default function ProjectBOQTab() {
                                     </div>
 
                                     {/* Sub inputs depending on mode */}
-                                    <div className="grid grid-cols-2 gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                       {item.pricing.mode === 'materials_labor_split' && (
                                         <>
-                                          <div>
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">سعر الوحدة خامات (ج.م)</label>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-emerald-400 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                              سعر الوحدة (خامات فقط) ج.م
+                                            </label>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
                                               value={item.pricing.materialUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'materialUnitPrice', e.target.value)}
-                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-emerald-500/50 transition"
                                             />
                                           </div>
-                                          <div>
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">سعر الوحدة مصنعية (ج.م)</label>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-amber-400 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-amber-500"></span>
+                                              سعر الوحدة (مصنعية فقط) ج.م
+                                            </label>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
                                               value={item.pricing.laborUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'laborUnitPrice', e.target.value)}
-                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-amber-500/50 transition"
                                             />
                                           </div>
                                         </>
                                       )}
 
                                       {item.pricing.mode === 'lump_sum' && (
-                                        <div className="col-span-2">
-                                          <label className="block text-right text-[9px] text-slate-400 mb-0.5">سعر المقطوعية المعتمد (ج.م)</label>
+                                        <div className="col-span-1 sm:col-span-2 bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <label className="block text-right text-[10px] font-bold text-purple-400 mb-2 flex items-center gap-1.5">
+                                            <span className="h-2 w-2 rounded-full bg-purple-500"></span>
+                                            سعر المقطوعية المعتمد (إجمالي شامل) ج.م
+                                          </label>
                                           <input
                                             type="number"
                                             disabled={!canEdit}
                                             value={item.pricing.lumpSumPrice}
                                             onChange={(e) => handlePricingChange(item, 'lumpSumPrice', e.target.value)}
-                                            className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                            className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-2 text-center text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition"
                                           />
                                         </div>
                                       )}
 
                                       {item.pricing.mode === 'daily_rate' && (
                                         <>
-                                          <div>
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">يومية الصنايعي (ج.م)</label>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-sky-400 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-sky-500"></span>
+                                              يومية الصنايعي المعتمدة ج.م
+                                            </label>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
                                               value={item.pricing.dailyRate}
                                               onChange={(e) => handlePricingChange(item, 'dailyRate', e.target.value)}
-                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-sky-500/50 transition"
                                             />
                                           </div>
-                                          <div>
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">أيام التنفيذ التقديرية</label>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-slate-300 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-slate-400"></span>
+                                              أيام التنفيذ التقديرية
+                                            </label>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
                                               value={item.pricing.estimatedDays}
                                               onChange={(e) => handlePricingChange(item, 'estimatedDays', e.target.value)}
-                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none transition"
                                             />
                                           </div>
-                                          <div className="col-span-2">
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">سعر الوحدة خامات (إذا كنت من سيورد الخامات)</label>
+                                          <div className="col-span-1 sm:col-span-2 bg-[#13151c] p-3 rounded-lg border border-dashed border-[#222634]">
+                                            <label className="block text-right text-[10px] font-bold text-slate-400 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full border border-slate-500"></span>
+                                              إجمالي الخامات لليومية (إن وجدت) ج.م
+                                            </label>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
                                               value={item.pricing.materialUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'materialUnitPrice', e.target.value)}
-                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none transition"
                                             />
+                                            <p className="text-[9px] text-slate-500 mt-2 text-center">أدخل تكلفة الخامات الإجمالية المطلوبة مع الصنايعي</p>
                                           </div>
                                         </>
                                       )}
                                     </div>
                                     
                                     {item.pricing.mode !== 'daily_rate' && (
-                                      <div>
-                                        <label className="block text-right text-[9px] text-slate-400 mb-0.5">مدة التنفيذ التقديرية (يوم)</label>
+                                      <div className="bg-slate-900/50 p-3 rounded-lg border border-[#222634] shadow-inner mt-4">
+                                        <label className="block text-right text-[10px] font-bold text-slate-300 mb-2 flex items-center gap-1.5">
+                                          <span className="h-2 w-2 rounded-full bg-slate-500"></span>
+                                          مدة التنفيذ التقديرية (يوم)
+                                        </label>
                                         <input
                                           type="number"
                                           disabled={!canEdit}
                                           value={item.pricing.estimatedDays}
                                           onChange={(e) => handlePricingChange(item, 'estimatedDays', e.target.value)}
-                                          className="w-24 bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                          className="w-full sm:w-1/3 bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-slate-500/50 transition"
                                         />
                                       </div>
                                     )}
@@ -872,15 +894,26 @@ export default function ProjectBOQTab() {
                                                       />
                                                     </div>
                                                   </td>
-                                                  <td className="py-2 px-1">
-                                                    <input
-                                                      type="text"
-                                                      disabled={!canEdit || !!mat.constantKey}
-                                                      value={mat.unit}
-                                                      placeholder="الوحدة"
-                                                      onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unit: e.target.value })}
-                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-2 text-center text-xs text-slate-400 focus:outline-none disabled:bg-[#13151c]"
-                                                    />
+                                                  <td className="py-2 px-1 align-top">
+                                                    <div className="flex flex-col gap-1">
+                                                      <input
+                                                        type="text"
+                                                        disabled={!canEdit || !!mat.constantKey}
+                                                        value={mat.unit}
+                                                        placeholder="الوحدة (لفة/بستلة..)"
+                                                        onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unit: e.target.value })}
+                                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-slate-400 focus:outline-none disabled:bg-[#13151c]"
+                                                      />
+                                                      <input
+                                                        type="number"
+                                                        disabled={!canEdit}
+                                                        value={mat.packageSize || ''}
+                                                        placeholder="سعة العبوة (اختياري)"
+                                                        title="مثال: إذا كانت الوحدة 'لفة' وطولها 100 متر، اكتب هنا 100 ليتم قسمة إجمالي الأمتار عليها"
+                                                        onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { packageSize: parseFloat(e.target.value) || 0 })}
+                                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-1 py-1 text-center text-[10px] text-slate-400 placeholder:text-slate-600 focus:outline-none"
+                                                      />
+                                                    </div>
                                                   </td>
                                                   <td className="py-2 px-1">
                                                     <input
@@ -891,10 +924,13 @@ export default function ProjectBOQTab() {
                                                       className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-2 text-center text-xs text-white focus:outline-none disabled:bg-[#13151c]"
                                                     />
                                                   </td>
-                                                  <td className="py-2 pl-1 text-center font-bold text-[#c5a880]">
+                                                  <td className="py-2 pl-1 text-center font-bold text-[#c5a880] align-top">
                                                     {(() => {
-                                                      const calcQty = mat.multiplier ? (item.quantity || 0) * mat.multiplier : (mat.quantity || 0);
-                                                      return (calcQty * (mat.unitPrice || 0)).toLocaleString();
+                                                      let calcQty = mat.multiplier ? (item.quantity || 0) * mat.multiplier : (mat.quantity || 0);
+                                                      if (mat.packageSize && mat.packageSize > 0) {
+                                                        calcQty = Math.ceil(calcQty / mat.packageSize);
+                                                      }
+                                                      return (Math.ceil(calcQty) * (mat.unitPrice || 0)).toLocaleString();
                                                     })()} ج.م
                                                   </td>
                                                   <td className="py-2 text-center">

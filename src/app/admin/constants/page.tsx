@@ -251,10 +251,17 @@ export default function AdminConstantsPage() {
             {renderGroup('خامات عامة (أسمنت، رمل، حديد)', materials, 'general')}
             {renderGroup('أعمال المباني', materials, 'masonry')}
             {renderGroup('أعمال المحارة والدهانات والجبس', materials, 'plastering')}
-            {renderGroup('أعمال السيراميك', materials, 'flooring')}
+            {renderGroup('أعمال السيراميك والأرضيات', materials, 'flooring')}
             {renderGroup('تأسيس السباكة والعزل', materials, 'plumbing')}
-            {renderGroup('تأسيس الكهرباء والشبكات', materials, 'electrical')}
+            {renderGroup('الأجهزة الصحية والخلطات', materials, 'sanitary')}
+            {renderGroup('تأسيس الكهرباء (أسلاك وخراطيم)', materials, 'electrical')}
+            {renderGroup('لوحات التوزيع والقواطع', materials, 'electrical_boards')}
+            {renderGroup('وشوش ومفاتيح وبرايز', materials, 'electrical_switches')}
+            {renderGroup('إنارة وسبوتات ونجف', materials, 'electrical_lighting')}
             {renderGroup('تأسيس التكييف', materials, 'hvac')}
+            {renderGroup('النجارة والأبواب', materials, 'woodwork')}
+            {renderGroup('المطابخ والرخام', materials, 'kitchens')}
+            {renderGroup('التجليدات وبديل الرخام', materials, 'cladding')}
           </div>
         )}
 
@@ -299,8 +306,15 @@ export default function AdminConstantsPage() {
                     <option value="plastering">المحارة والدهانات</option>
                     <option value="flooring">أعمال السيراميك</option>
                     <option value="plumbing">السباكة والعزل</option>
-                    <option value="electrical">الكهرباء والتيار الخفيف</option>
+                    <option value="sanitary">الأجهزة الصحية والخلطات</option>
+                    <option value="electrical">أسلاك وخراطيم كهرباء</option>
+                    <option value="electrical_boards">لوحات توزيع وقواطع</option>
+                    <option value="electrical_switches">وشوش ومفاتيح وبرايز</option>
+                    <option value="electrical_lighting">إنارة وسبوتات</option>
                     <option value="hvac">التكييف المركزي</option>
+                    <option value="woodwork">النجارة والأبواب</option>
+                    <option value="kitchens">المطابخ والرخام</option>
+                    <option value="cladding">التجليدات</option>
                   </select>
                 </div>
                 <div>

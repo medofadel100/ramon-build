@@ -179,7 +179,7 @@ export default function ProjectConstantsTab() {
           <div className="h-1.5 w-1.5 rounded-full bg-[#c5a880]"></div>
           {title}
         </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-3">
           {items.map(renderConstantRow)}
         </div>
       </div>

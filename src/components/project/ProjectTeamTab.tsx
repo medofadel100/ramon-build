@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { generateEngineerInviteToken, removeEngineerFromProject, AssignedEngineer } from '@/lib/project-service';
-import { Users, UserPlus, Copy, CheckCircle, Trash2, Shield, Wrench, Zap, Paintbrush, Building2, Ruler, HardHat, Edit2, Save, X } from 'lucide-react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { Users, UserPlus, Copy, CheckCircle, Trash2, Shield, Wrench, Zap, Paintbrush, Building2, Ruler, HardHat, Edit2, Save, X, Loader2 } from 'lucide-react';
 
 const SPECIALTIES: { value: AssignedEngineer['specialty']; label: string; icon: any }[] = [
   { value: 'electrical', label: 'مهندس كهرباء', icon: Zap },
@@ -37,9 +39,39 @@ export default function ProjectTeamTab() {
   const [editName, setEditName] = useState('');
   const [editSpecialty, setEditSpecialty] = useState<AssignedEngineer['specialty']>('other');
 
-  // Manual Add State
-  const [inviteMode, setInviteMode] = useState<'link' | 'manual'>('link');
+  // Add State
+  const [inviteMode, setInviteMode] = useState<'link' | 'manual' | 'existing'>('link');
   const [manualName, setManualName] = useState('');
+  
+  // Existing Users State
+  const [systemUsers, setSystemUsers] = useState<any[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [selectedUserUid, setSelectedUserUid] = useState<string>('');
+
+  useEffect(() => {
+    if (inviteMode === 'existing' && systemUsers.length === 0) {
+      loadSystemUsers();
+    }
+  }, [inviteMode]);
+
+  const loadSystemUsers = async () => {
+    setLoadingUsers(true);
+    try {
+      const snap = await getDocs(collection(db, 'users'));
+      const list: any[] = [];
+      snap.forEach(d => {
+        const u = d.data();
+        if (u.role !== 'admin' && !currentProject.header.assignedEngineers.includes(d.id)) {
+          list.push({ uid: d.id, ...u });
+        }
+      });
+      setSystemUsers(list);
+    } catch (err) {
+      console.error('Failed to load users:', err);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
 
   const handleGenerateInvite = async () => {
     if (!currentProject) return;
@@ -98,6 +130,32 @@ export default function ProjectTeamTab() {
     
     await updateHeader({ engineersDetails: updatedDetails });
     setEditingEngineer(null);
+  };
+
+  const handleAddExistingUser = async () => {
+    if (!selectedUserUid) return;
+    const selectedUser = systemUsers.find(u => u.uid === selectedUserUid);
+    if (!selectedUser) return;
+
+    const spec = SPECIALTIES.find(s => s.value === selectedSpecialty);
+    
+    const newEngineer: AssignedEngineer = {
+      uid: selectedUserUid,
+      name: selectedUser.name || 'مهندس',
+      email: selectedUser.email || '',
+      specialty: selectedSpecialty,
+      specialtyLabel: selectedUser.jobTitle || spec?.label || 'مهندس',
+      joinedAt: new Date().toISOString()
+    };
+
+    await updateHeader({
+      assignedEngineers: [...currentProject.header.assignedEngineers, selectedUserUid],
+      engineersDetails: [...engineers, newEngineer]
+    });
+    
+    setShowInviteModal(false);
+    setSelectedUserUid('');
+    setSystemUsers(prev => prev.filter(u => u.uid !== selectedUserUid));
   };
 
   const handleManualAdd = async () => {
@@ -283,6 +341,14 @@ export default function ProjectTeamTab() {
                 توليد رابط دعوة
               </button>
               <button
+                onClick={() => setInviteMode('existing')}
+                className={`flex-1 py-2 rounded-lg text-xs font-semibold transition border ${
+                  inviteMode === 'existing' ? 'bg-[#c5a880]/10 border-[#c5a880] text-[#c5a880]' : 'border-[#222634] text-slate-400 hover:text-white'
+                }`}
+              >
+                من المسجلين
+              </button>
+              <button
                 onClick={() => setInviteMode('manual')}
                 className={`flex-1 py-2 rounded-lg text-xs font-semibold transition border ${
                   inviteMode === 'manual' ? 'bg-[#c5a880]/10 border-[#c5a880] text-[#c5a880]' : 'border-[#222634] text-slate-400 hover:text-white'
@@ -333,6 +399,41 @@ export default function ProjectTeamTab() {
                   >
                     إضافة المهندس فوراً
                   </button>
+                </div>
+              ) : inviteMode === 'existing' ? (
+                <div className="space-y-3 pt-2">
+                  <label className="block text-right text-xs font-semibold text-slate-400">اختر المهندس</label>
+                  {loadingUsers ? (
+                    <div className="flex justify-center py-4">
+                      <Loader2 className="h-6 w-6 text-[#c5a880] animate-spin" />
+                    </div>
+                  ) : systemUsers.length === 0 ? (
+                    <div className="text-center py-4 border border-dashed border-[#222634] rounded-lg">
+                      <p className="text-xs text-slate-400">لا يوجد مهندسون متاحون للإضافة</p>
+                    </div>
+                  ) : (
+                    <>
+                      <select
+                        value={selectedUserUid}
+                        onChange={(e) => setSelectedUserUid(e.target.value)}
+                        className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-xs text-white text-right focus:border-[#c5a880] focus:outline-none"
+                      >
+                        <option value="">-- اضغط لاختيار مهندس مسجل --</option>
+                        {systemUsers.map(u => (
+                          <option key={u.uid} value={u.uid}>
+                            {u.name} {u.jobTitle ? `(${u.jobTitle})` : ''} - {u.email}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={handleAddExistingUser}
+                        disabled={!selectedUserUid}
+                        className="w-full py-2.5 mt-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+                      >
+                        إضافة المهندس فوراً
+                      </button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <>
