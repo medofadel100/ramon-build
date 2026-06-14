@@ -7,7 +7,7 @@ import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { deleteProject } from '@/lib/project-service';
 import Navbar from '@/components/Navbar';
-import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X, BookOpen } from 'lucide-react';
+import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X, BookOpen, Activity, LayoutDashboard, CheckCircle2, Clock } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectListItem {
@@ -204,6 +204,57 @@ export default function DashboardPage() {
             </Link>
           </div>
         </div>
+
+        {/* --- Analytics Board --- */}
+        {!loadingProjects && filteredProjects.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5 flex items-center gap-4">
+              <div className="p-3 bg-blue-900/20 text-blue-400 rounded-lg">
+                <LayoutDashboard className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400">إجمالي المشاريع</p>
+                <p className="text-2xl font-bold text-white mt-1">{filteredProjects.length}</p>
+              </div>
+            </div>
+            
+            <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5 flex items-center gap-4">
+              <div className="p-3 bg-amber-900/20 text-[#c5a880] rounded-lg">
+                <Activity className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400">قيد التسعير (مسودة)</p>
+                <p className="text-2xl font-bold text-white mt-1">
+                  {filteredProjects.filter(p => p.header.status === 'draft').length}
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5 flex items-center gap-4">
+              <div className="p-3 bg-sky-900/20 text-sky-400 rounded-lg">
+                <Clock className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400">تحت المراجعة</p>
+                <p className="text-2xl font-bold text-white mt-1">
+                  {filteredProjects.filter(p => p.header.status === 'review' || p.header.status === 'sent_to_client').length}
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5 flex items-center gap-4">
+              <div className="p-3 bg-emerald-900/20 text-emerald-400 rounded-lg">
+                <CheckCircle2 className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400">معتمد فنيًا (جاري التنفيذ)</p>
+                <p className="text-2xl font-bold text-white mt-1">
+                  {filteredProjects.filter(p => p.header.status === 'approved').length}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Filters and Search Bar */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">

@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { dbGetMasterConstants, dbUpdateMasterConstants } from '@/lib/project-service';
 import { ConstantDefinition } from '@/lib/constants';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import Navbar from '@/components/Navbar';
-import { Save, AlertTriangle, Plus, X, Globe, RefreshCw } from 'lucide-react';
+import { Save, AlertTriangle, Plus, X, Globe, RefreshCw, Package } from 'lucide-react';
 
 export default function AdminConstantsPage() {
   const user = useAuthStore((state) => state.user);
@@ -16,6 +18,7 @@ export default function AdminConstantsPage() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [constants, setConstants] = useState<ConstantDefinition[]>([]);
+  const [suppliers, setSuppliers] = useState<{ id: string, name: string }[]>([]);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newConst, setNewConst] = useState<Partial<ConstantDefinition> & { value: number }>({
@@ -42,25 +45,37 @@ export default function AdminConstantsPage() {
   useEffect(() => {
     if (user?.role !== 'admin') return;
     
-    async function fetchConstants() {
+    async function fetchData() {
       setLoading(true);
       try {
-        const data = await dbGetMasterConstants();
+        const [data, suppSnap] = await Promise.all([
+          dbGetMasterConstants(),
+          getDocs(collection(db, 'globalSuppliers'))
+        ]);
         setConstants(data);
+        setSuppliers(suppSnap.docs.map(d => ({ id: d.id, name: d.data().name })));
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     }
-    fetchConstants();
+    fetchData();
   }, [user]);
 
-  const handleConstantChange = (key: string, value: string) => {
-    const numValue = parseFloat(value);
-    setConstants(prev => prev.map(c => 
-      c.key === key ? { ...c, defaultValue: isNaN(numValue) ? 0 : numValue } : c
-    ));
+  const handleConstantChange = (key: string, field: 'defaultValue' | 'supplierId', value: any) => {
+    setConstants(prev => prev.map(c => {
+      if (c.key !== key) return c;
+      if (field === 'defaultValue') {
+        const numValue = parseFloat(value);
+        return { ...c, defaultValue: isNaN(numValue) ? 0 : numValue };
+      }
+      if (field === 'supplierId') {
+        const supp = suppliers.find(s => s.id === value);
+        return { ...c, supplierId: value, supplierName: supp?.name || '' };
+      }
+      return c;
+    }));
   };
 
   const handleSave = async () => {
@@ -138,13 +153,28 @@ export default function AdminConstantsPage() {
                     <span className="text-[9px] px-1.5 py-0.5 rounded bg-sky-900/30 text-sky-400 border border-sky-800/40">مضاف يدوياً</span>
                   )}
                 </h4>
+                {c.group === 'materials' && (
+                  <div className="mt-3 flex items-center gap-2">
+                    <Package className="h-3.5 w-3.5 text-slate-500" />
+                    <select
+                      value={c.supplierId || ''}
+                      onChange={(e) => handleConstantChange(c.key, 'supplierId', e.target.value)}
+                      className="bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-[#c5a880] w-48"
+                    >
+                      <option value="">-- لم يتم ربط مورد --</option>
+                      {suppliers.map(s => (
+                        <option key={s.id} value={s.id}>{s.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <div className="relative w-32">
                   <input
                     type="number"
                     value={c.defaultValue}
-                    onChange={(e) => handleConstantChange(c.key, e.target.value)}
+                    onChange={(e) => handleConstantChange(c.key, 'defaultValue', e.target.value)}
                     className="w-full bg-[#13151c] border border-[#222634] rounded-lg px-3 py-2 text-left text-sm font-bold text-emerald-400 focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 pointer-events-none">

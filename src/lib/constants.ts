@@ -7,6 +7,8 @@ export interface ConstantDefinition {
   subgroup: 'general' | 'masonry' | 'plastering' | 'flooring' | 'electrical' | 'plumbing' | 'hvac';
   defaultValue: number;
   unit: string;
+  supplierId?: string;
+  supplierName?: string;
 }
 
 export const DEFAULT_CONSTANTS: ConstantDefinition[] = [

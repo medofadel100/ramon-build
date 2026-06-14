@@ -802,6 +802,12 @@ export default function ProjectBOQTab() {
                                                         <option key={m.key} value={m.key}>{m.label}</option>
                                                       ))}
                                                     </select>
+                                                    {mat.constantKey && allMaterials.find(c => c.key === mat.constantKey)?.supplierName && (
+                                                      <div className="mt-1 flex items-center gap-1 text-[9px] text-[#c5a880]/70 bg-amber-950/20 px-1.5 py-0.5 rounded w-max">
+                                                        <span>📦 متاح لدى:</span>
+                                                        <span className="font-bold text-[#c5a880]">{allMaterials.find(c => c.key === mat.constantKey)?.supplierName}</span>
+                                                      </div>
+                                                    )}
                                                     {!mat.constantKey && (
                                                       <input
                                                         type="text"
