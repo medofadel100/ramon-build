@@ -31,6 +31,7 @@ export default function ProjectBOQTab() {
   const [customUnit, setCustomUnit] = useState('م²');
 
   // Constants mapping
+  const projectConstantsMap = currentProject?.projectConstants || {};
   const allMaterials = [...DEFAULT_CONSTANTS, ...(currentProject?.customConstantsDefinitions || [])].filter(c => c.group === 'materials');
 
   if (!currentProject) return null;
