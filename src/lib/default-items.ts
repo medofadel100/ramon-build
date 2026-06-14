@@ -210,45 +210,49 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
   {
     id: '1.3.1',
     sectionId: '1.3',
-    title: 'نقاط إنارة (مخارج سقف وحوائط)',
+    title: 'تأسيس مخارج إنارة وسبوتات (علب ومواسير)',
     unit: 'نقطة',
     quantitySource: 'calculated',
     calculationFormula: 'total.ceilingArea', // or manually overridden per area
     perAreaOverride: true,
     specs: [
-      { key: 'wireGauge', label: 'سُمك السلك', type: 'select', options: ['1.5 مم السويدي', '2 مم السويدي'], defaultValue: '1.5 مم السويدي' },
       { key: 'lightType', label: 'نوع المخرج', type: 'select', options: ['إنارة سقف عادية', 'مخرج سبوت', 'مخرج إضاءة مخفية LED'], defaultValue: 'مخرج سبوت' },
-      { key: 'wirePerPoint', label: 'سلك للنقطة (متر)', type: 'number', defaultValue: 10 },
-      { key: 'rollLength', label: 'طول لفة السلك (متر)', type: 'number', defaultValue: 100 },
-      { key: 'wireRollPrice', label: 'نوع السلك الرئيسي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_1_5_roll' },
-      { key: 'boxPrice', label: 'علبة الماجيك', type: 'number', defaultValue: 15 },
-      { key: 'chassisPrice', label: 'الشاسيه', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_chassis_plastic' },
-      { key: 'platePrice', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_plate_legrand' },
-      { key: 'switchPrice', label: 'لقمة المفتاح', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_switch_legrand' }
+      { key: 'boxPrice', label: 'سعر العلبة الماجيك', type: 'number', defaultValue: 15 },
+      { key: 'hosePerPoint', label: 'مواسير/خراطيم للنقطة (متر)', type: 'number', defaultValue: 3 },
+      { key: 'hoseRollPrice', label: 'لفة الخراطيم (50م)', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_aladdin_hose_roll' }
     ],
-    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 45, laborUnitPrice: 35, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 30, laborUnitPrice: 20, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود التركيبات الكهربائية في المباني السكنية'
   },
   {
     id: '1.3.2',
     sectionId: '1.3',
-    title: 'نقاط بريز (فيش كهرباء)',
+    title: 'تأسيس مخارج برايز وفيش (علب ومواسير)',
     unit: 'نقطة',
     quantitySource: 'manual',
     perAreaOverride: true,
     specs: [
       { key: 'socketType', label: 'شدة التيار والاستخدام', type: 'select', options: ['16 أمبير عادي', '20 أمبير تكييف/سخان', 'مزدوج للمطبخ'], defaultValue: '16 أمبير عادي' },
       { key: 'heightFromFloor', label: 'الارتفاع عن التشطيب (سم)', type: 'number', defaultValue: 45 },
-      { key: 'wirePerPoint', label: 'سلك للنقطة (متر)', type: 'number', defaultValue: 15 },
-      { key: 'rollLength', label: 'طول لفة السلك (متر)', type: 'number', defaultValue: 100 },
-      { key: 'wireRollPrice', label: 'نوع السلك الرئيسي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_2_5_roll' },
-      { key: 'boxPrice', label: 'علبة الماجيك', type: 'number', defaultValue: 15 },
-      { key: 'chassisPrice', label: 'الشاسيه', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_chassis_plastic' },
-      { key: 'platePrice', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_plate_legrand' },
-      { key: 'socketPerPoint', label: 'عدد اللقم لكل نقطة', type: 'number', defaultValue: 2 },
-      { key: 'socketPrice', label: 'لقمة البريزة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_socket_legrand' }
+      { key: 'boxPrice', label: 'سعر العلبة الماجيك', type: 'number', defaultValue: 15 },
+      { key: 'hosePerPoint', label: 'مواسير/خراطيم للنقطة (متر)', type: 'number', defaultValue: 4 },
+      { key: 'hoseRollPrice', label: 'لفة الخراطيم (50م)', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_aladdin_hose_roll' }
     ],
-    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 55, laborUnitPrice: 40, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 35, laborUnitPrice: 25, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
+  },
+  {
+    id: '1.3.5',
+    sectionId: '1.3',
+    title: 'سحب أسلاك الكهرباء (السويدي الأصلي)',
+    unit: 'متر طولي',
+    quantitySource: 'manual',
+    perAreaOverride: true,
+    specs: [
+      { key: 'wireGauge', label: 'سُمك السلك', type: 'select', options: ['1.5 مم (إنارة)', '2.5 مم (برايز)', '3 مم (برايز قوة)', '4 مم (تكييف 2.25ح)', '6 مم (تكييف 3ح)'], defaultValue: '1.5 مم (إنارة)' },
+      { key: 'rollLength', label: 'طول لفة السلك (متر)', type: 'number', defaultValue: 100 },
+      { key: 'wireRollPrice', label: 'نوع السلك الرئيسي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_1_5_roll' }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 12, laborUnitPrice: 8, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 }
   },
   {
     id: '1.3.3',

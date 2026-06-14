@@ -549,27 +549,12 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     // 1.3.1 - نقاط إنارة (سقف/حائط)
     // ==========================================
     case '1.3.1': {
-      const wirePerPoint = getSpecNum('wirePerPoint', 10); // meters of 1.5mm wire per point
-      const rollLength = getSpecNum('rollLength', 100);
-      const wireRollPrice = getMaterialPrice('wireRollPrice', 'price_wire_1_5_roll', 1200);
       const boxPrice = getSpecNum('boxPrice', 15);
-      const chassisPrice = getMaterialPrice('chassisPrice', 'price_chassis_plastic', 20);
-      const platePrice = getMaterialPrice('platePrice', 'price_plate_legrand', 25);
-      const switchPrice = getMaterialPrice('switchPrice', 'price_switch_legrand', 35);
-
-      const totalWireLength = qty * wirePerPoint;
-      const wireRolls = Math.ceil(totalWireLength / rollLength);
-
-      matList.push({
-        key: 'wire_1.5',
-        name: 'سلك كهرباء السويدي ١.٥ مم',
-        qtyRequired: totalWireLength,
-        qtyRounded: wireRolls,
-        unit: 'لفة',
-        unitPrice: wireRolls > 0 ? wireRollPrice : 0,
-        totalCost: wireRolls * wireRollPrice,
-        packagingDetails: `لفة ${rollLength} متر (مجموع الاحتياج: ${totalWireLength.toFixed(1)} م)`
-      });
+      const hosePerPoint = getSpecNum('hosePerPoint', 3);
+      const hoseRollPrice = getMaterialPrice('hoseRollPrice', 'price_aladdin_hose_roll', 250);
+      
+      const totalHose = qty * hosePerPoint;
+      const hoseRolls = Math.ceil(totalHose / 50);
 
       matList.push({
         key: 'magic_box',
@@ -579,115 +564,53 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
         unit: 'عدد',
         unitPrice: boxPrice,
         totalCost: Math.ceil(qty) * boxPrice,
-        packagingDetails: 'علبة لكل مخرج/نقطة'
+        packagingDetails: 'علبة لكل مخرج/نقطة إنارة'
       });
 
       matList.push({
-        key: 'chassis',
-        name: 'شاسيه معدني/بلاستيك لتركيب المفاتيح',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: chassisPrice,
-        totalCost: Math.ceil(qty) * chassisPrice,
-        packagingDetails: 'شاسيه لكل علبة'
-      });
-
-      matList.push({
-        key: 'cover_plate',
-        name: 'وش علبة كهرباء خارجي (غطاء)',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: platePrice,
-        totalCost: Math.ceil(qty) * platePrice,
-        packagingDetails: 'وش لكل شاسيه'
-      });
-
-      matList.push({
-        key: 'switch_pieces',
-        name: 'لقمة مفتاح إنارة',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: switchPrice,
-        totalCost: Math.ceil(qty) * switchPrice,
-        packagingDetails: 'مفتاح لكل نقطة إنارة'
+        key: 'electrical_hose',
+        name: 'مواسير وخراطيم تأسيس (50م)',
+        qtyRequired: totalHose,
+        qtyRounded: hoseRolls,
+        unit: 'لفة',
+        unitPrice: hoseRollPrice,
+        totalCost: hoseRolls * hoseRollPrice,
+        packagingDetails: `لفة 50 متر (مجموع الأمتار: ${totalHose.toFixed(1)} م)`
       });
       break;
     }
-
 
     // ==========================================
     // 1.3.2 - نقاط بريز (فيش كهرباء)
     // ==========================================
     case '1.3.2': {
-      const wirePerPoint = getSpecNum('wirePerPoint', 15); // meters of 2.5mm wire per point
-      const rollLength = getSpecNum('rollLength', 100);
-      const wireRollPrice = getMaterialPrice('wireRollPrice', 'price_wire_2_5_roll', 1800);
       const boxPrice = getSpecNum('boxPrice', 15);
-      const chassisPrice = getMaterialPrice('chassisPrice', 'price_chassis_plastic', 20);
-      const platePrice = getMaterialPrice('platePrice', 'price_plate_legrand', 25);
-      const socketPerPoint = getSpecNum('socketPerPoint', 2); // default double socket
-      const socketPrice = getMaterialPrice('socketPrice', 'price_socket_legrand', 45);
-
-      const totalWireLength = qty * wirePerPoint;
-      const wireRolls = Math.ceil(totalWireLength / rollLength);
+      const hosePerPoint = getSpecNum('hosePerPoint', 4);
+      const hoseRollPrice = getMaterialPrice('hoseRollPrice', 'price_aladdin_hose_roll', 250);
+      
+      const totalHose = qty * hosePerPoint;
+      const hoseRolls = Math.ceil(totalHose / 50);
 
       matList.push({
-        key: 'wire_2.5',
-        name: 'سلك كهرباء السويدي ٢.٥ مم',
-        qtyRequired: totalWireLength,
-        qtyRounded: wireRolls,
-        unit: 'لفة',
-        unitPrice: wireRollPrice,
-        totalCost: wireRolls * wireRollPrice,
-        packagingDetails: `لفة ${rollLength} متر (مجموع الاحتياج: ${totalWireLength.toFixed(1)} م)`
-      });
-
-      matList.push({
-        key: 'magic_box',
-        name: 'علبة ماجيك بلاستيك (تأسيس)',
+        key: 'magic_box_socket',
+        name: 'علبة ماجيك بلاستيك للبرايز',
         qtyRequired: qty,
         qtyRounded: Math.ceil(qty),
         unit: 'عدد',
         unitPrice: boxPrice,
         totalCost: Math.ceil(qty) * boxPrice,
-        packagingDetails: 'علبة لكل مخرج/نقطة'
+        packagingDetails: 'علبة لكل مخرج بريزة'
       });
 
       matList.push({
-        key: 'chassis',
-        name: 'شاسيه معدني/بلاستيك لتركيب البرايز',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: chassisPrice,
-        totalCost: Math.ceil(qty) * chassisPrice,
-        packagingDetails: 'شاسيه لكل علبة'
-      });
-
-      matList.push({
-        key: 'cover_plate',
-        name: 'وش علبة كهرباء خارجي (غطاء)',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: platePrice,
-        totalCost: Math.ceil(qty) * platePrice,
-        packagingDetails: 'وش لكل شاسيه'
-      });
-
-      const totalSockets = qty * socketPerPoint;
-      matList.push({
-        key: 'socket_pieces',
-        name: 'لقمة بريزة كهرباء (فيشة)',
-        qtyRequired: totalSockets,
-        qtyRounded: Math.ceil(totalSockets),
-        unit: 'عدد',
-        unitPrice: socketPrice,
-        totalCost: Math.ceil(totalSockets) * socketPrice,
-        packagingDetails: `عدد ${socketPerPoint} لقمة لكل نقطة`
+        key: 'electrical_hose',
+        name: 'مواسير وخراطيم تأسيس (50م)',
+        qtyRequired: totalHose,
+        qtyRounded: hoseRolls,
+        unit: 'لفة',
+        unitPrice: hoseRollPrice,
+        totalCost: hoseRolls * hoseRollPrice,
+        packagingDetails: `لفة 50 متر (مجموع الأمتار: ${totalHose.toFixed(1)} م)`
       });
       break;
     }

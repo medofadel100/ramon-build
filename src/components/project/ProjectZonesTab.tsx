@@ -255,6 +255,7 @@ export default function ProjectZonesTab() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-right text-xs font-semibold text-slate-400 mb-1">مساحة الأرضية (م²)</label>
+                  <p className="text-[10px] text-slate-500 mb-1.5 leading-tight">حاصل ضرب الطول × العرض. تُستخدم لحصر سيراميك الأرضيات والأسقف.</p>
                   <input
                     type="number"
                     step="any"
@@ -265,6 +266,7 @@ export default function ProjectZonesTab() {
                 </div>
                 <div>
                   <label className="block text-right text-xs font-semibold text-slate-400 mb-1">محيط الغرفة (متر طولي)</label>
+                  <p className="text-[10px] text-slate-500 mb-1.5 leading-tight">مجموع أطوال حوائط الغرفة الدائرية. تُستخدم لحصر دهانات ومحارة الحوائط والوزرات.</p>
                   <input
                     type="number"
                     step="any"
