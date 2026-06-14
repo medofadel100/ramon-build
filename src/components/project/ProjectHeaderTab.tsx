@@ -65,7 +65,10 @@ export default function ProjectHeaderTab() {
 
   const handleDeleteProject = async () => {
     if (!currentProject) return;
-    const confirmDelete = window.confirm('هل أنت متأكد من حذف هذا المشروع بالكامل؟ لا يمكن التراجع عن هذا الإجراء.');
+    
+    window.alert('مش قولت ليك مش تدوس يا غبي 😂');
+    
+    const confirmDelete = window.confirm('بعيداً عن الهزار.. هل أنت متأكد من حذف هذا المشروع بالكامل؟ لا يمكن التراجع عن هذا الإجراء.');
     if (confirmDelete) {
       try {
         await deleteProject(currentProject.id);
