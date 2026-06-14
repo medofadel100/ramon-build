@@ -1095,6 +1095,177 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       break;
     }
 
+    // ==========================================
+    // Finishes (النجارة, تجاليد, مطابخ, كهرباء, صحي)
+    // ==========================================
+    case '2.4.1': {
+      const woodMaterialPrice = getMaterialPrice('woodMaterial', 'price_wood_mosky_m3', 22000);
+      const lockMaterialPrice = getMaterialPrice('lockMaterial', 'price_door_lock_kale', 650);
+      
+      // Assume 0.05 m3 of wood per door
+      const woodCost = woodMaterialPrice * 0.05;
+      
+      matList.push({
+        key: 'door_wood',
+        name: `خشب الباب والحلوق`,
+        qtyRequired: qty * 0.05,
+        qtyRounded: qty * 0.05,
+        unit: 'م³',
+        unitPrice: woodMaterialPrice,
+        totalCost: qty * woodCost,
+        packagingDetails: `0.05 متر مكعب لكل باب`
+      });
+      matList.push({
+        key: 'door_lock',
+        name: `الكالون والمقابض`,
+        qtyRequired: qty,
+        qtyRounded: qty,
+        unit: 'عدد',
+        unitPrice: lockMaterialPrice,
+        totalCost: qty * lockMaterialPrice,
+        packagingDetails: `كالون ومقبض لكل باب`
+      });
+      break;
+    }
+    case '2.5.1': {
+      const claddingMaterialPrice = getMaterialPrice('claddingMaterial', 'price_wpc_panel', 450);
+      matList.push({
+        key: 'wall_cladding',
+        name: `خامات تجليد الحوائط`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'م²',
+        unitPrice: claddingMaterialPrice,
+        totalCost: Math.ceil(qty) * claddingMaterialPrice,
+        packagingDetails: `ألواح/شرائح التجليد المحددة`
+      });
+      break;
+    }
+    case '2.6.1': {
+      const cabinetMaterialPrice = getMaterialPrice('cabinetMaterial', 'price_kitchen_board_acrylic', 3500);
+      const hingesMaterialPrice = getMaterialPrice('hingesMaterial', 'price_kitchen_hinge_blum', 120);
+      
+      // Assume 5 hinges per meter of cabinet
+      const hingesCostPerMeter = 5 * hingesMaterialPrice;
+      
+      matList.push({
+        key: 'kitchen_cabinet',
+        name: `وحدات المطبخ الخشبية/الأكريليك`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'متر طولي',
+        unitPrice: cabinetMaterialPrice,
+        totalCost: Math.ceil(qty) * cabinetMaterialPrice,
+        packagingDetails: `وحدات شاملة التقطيع والتجميع`
+      });
+      matList.push({
+        key: 'kitchen_hinges',
+        name: `المفصلات والإكسسوارات`,
+        qtyRequired: qty * 5,
+        qtyRounded: Math.ceil(qty * 5),
+        unit: 'عدد',
+        unitPrice: hingesMaterialPrice,
+        totalCost: Math.ceil(qty * 5) * hingesMaterialPrice,
+        packagingDetails: `بمتوسط 5 مفصلات للمتر الطولي`
+      });
+      break;
+    }
+    case '2.7.1': {
+      const marbleMaterialPrice = getMaterialPrice('marbleMaterial', 'price_kitchen_granite_galaxy', 1800);
+      matList.push({
+        key: 'kitchen_marble',
+        name: `رخام/جرانيت أسطح المطبخ`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'متر طولي',
+        unitPrice: marbleMaterialPrice,
+        totalCost: Math.ceil(qty) * marbleMaterialPrice,
+        packagingDetails: `ألواح الرخام مع الشطف والتشطيب`
+      });
+      break;
+    }
+    case '2.8.1': {
+      const plateMaterialPrice = getMaterialPrice('plateMaterial', 'price_plate_legrand', 45);
+      const switchMaterialPrice = getMaterialPrice('switchMaterial', 'price_switch_legrand', 65);
+      matList.push({
+        key: 'elec_plates',
+        name: `وشوش ومفاتيح الكهرباء النهائية`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: plateMaterialPrice,
+        totalCost: Math.ceil(qty) * plateMaterialPrice,
+        packagingDetails: `وش لكل نقطة`
+      });
+      matList.push({
+        key: 'elec_switches',
+        name: `لقم المفاتيح / البرايز`,
+        qtyRequired: qty * 2, // Assume 2 switches/sockets per point
+        qtyRounded: Math.ceil(qty * 2),
+        unit: 'عدد',
+        unitPrice: switchMaterialPrice,
+        totalCost: Math.ceil(qty * 2) * switchMaterialPrice,
+        packagingDetails: `متوسط 2 لقمة لكل نقطة`
+      });
+      break;
+    }
+    case '2.8.2': {
+      const lightMaterialPrice = getMaterialPrice('lightMaterial', 'price_spot_led_7w', 120);
+      matList.push({
+        key: 'light_units',
+        name: `وحدات الإنارة والسبوتات`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'عدد',
+        unitPrice: lightMaterialPrice,
+        totalCost: Math.ceil(qty) * lightMaterialPrice,
+        packagingDetails: `وحدة إضاءة لكل نقطة`
+      });
+      break;
+    }
+    case '2.8.3': {
+      const stripMaterialPrice = getMaterialPrice('stripMaterial', 'price_led_strip_m', 45);
+      matList.push({
+        key: 'led_strips',
+        name: `شرائط الإضاءة المخفية LED`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'متر طولي',
+        unitPrice: stripMaterialPrice,
+        totalCost: Math.ceil(qty) * stripMaterialPrice,
+        packagingDetails: `شريط ليد مع الوصلات`
+      });
+      break;
+    }
+    case '2.9.1': {
+      const sanitaryMaterialPrice = getMaterialPrice('sanitaryMaterial', 'price_wc_duravit', 6500);
+      matList.push({
+        key: 'sanitary_ware',
+        name: `أطقم الحمامات (قاعدة وحوض)`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'طقم',
+        unitPrice: sanitaryMaterialPrice,
+        totalCost: Math.ceil(qty) * sanitaryMaterialPrice,
+        packagingDetails: `طقم صحي كامل لكل حمام`
+      });
+      break;
+    }
+    case '2.9.2': {
+      const mixerMaterialPrice = getMaterialPrice('mixerMaterial', 'price_mixer_grohe', 12000);
+      matList.push({
+        key: 'mixers_set',
+        name: `أطقم الخلاطات`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'طقم',
+        unitPrice: mixerMaterialPrice,
+        totalCost: Math.ceil(qty) * mixerMaterialPrice,
+        packagingDetails: `طقم خلاطات 3 قطع (بانيو، حوض، مطبخ)`
+      });
+      break;
+    }
+
     default:
       break;
   }

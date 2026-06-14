@@ -412,8 +412,9 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'عدد',
     quantitySource: 'manual',
     specs: [
-      { key: 'doorFinish', label: 'خامة الكسوة ولون الباب', type: 'select', options: ['HDF مغلف بقشرة طبيعية', 'خشب طبيعي أرو دهان أستر', 'دهان دوكو فرن مقاوم للمياه'], defaultValue: 'HDF مغلف بقشرة طبيعية' },
-      { key: 'locksBrand', label: 'ماركة المقابض والكوالين', type: 'select', options: ['إيطالي ييل Yale', 'كالي تركي Kale', 'صيني نخب أول'], defaultValue: 'كالي تركي Kale' }
+      { key: 'woodMaterial', label: 'نوع خشب الباب', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'woodwork', defaultValue: 'price_wood_mosky_m3' },
+      { key: 'doorFinish', label: 'خامة الكسوة والدهان', type: 'select', options: ['HDF مغلف بقشرة طبيعية', 'خشب طبيعي أرو دهان أستر', 'دهان دوكو فرن مقاوم للمياه'], defaultValue: 'HDF مغلف بقشرة طبيعية' },
+      { key: 'lockMaterial', label: 'الكالون والمقابض', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'woodwork', defaultValue: 'price_door_lock_kale' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 2800, laborUnitPrice: 250, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
   },
@@ -441,7 +442,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'manual',
     perAreaOverride: true,
     specs: [
-      { key: 'woodType', label: 'نوع خشب التجليد', type: 'select', options: ['شرائح خشب طبيعي أرو', 'بديل الخشب WPC', 'MDF قشرة أرو دهان أستر'], defaultValue: 'بديل الخشب WPC' },
+      { key: 'claddingMaterial', label: 'خامة التجليد', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'cladding', defaultValue: 'price_wpc_panel' },
       { key: 'direction', label: 'اتجاه التركيب', type: 'select', options: ['رأسي', 'أفقي', 'تصميم هندسي متقاطع'], defaultValue: 'رأسي' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 650, laborUnitPrice: 120, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
@@ -455,8 +456,8 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'متر طولي',
     quantitySource: 'manual',
     specs: [
-      { key: 'material', label: 'الخامة والواجهة', type: 'select', options: ['أكريليك مستورد على MDF', 'هايجلوس High-Gloss التركي', 'HPL مقاوم للرطوبة والخدش', 'خشب طبيعي بلوط'], defaultValue: 'هايجلوس High-Gloss التركي' },
-      { key: 'hingesType', label: 'نوع المفصلات والملحقات', type: 'select', options: ['سوفت كلوز بلوم بلس Blum', 'عادي صيني نخب أول'], defaultValue: 'سوفت كلوز بلوم بلس Blum' }
+      { key: 'cabinetMaterial', label: 'خامة وواجهة المطبخ', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'kitchens', defaultValue: 'price_kitchen_board_acrylic' },
+      { key: 'hingesMaterial', label: 'نوع المفصلات', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'kitchens', defaultValue: 'price_kitchen_hinge_blum' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 3200, laborUnitPrice: 300, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 }
   },
@@ -469,7 +470,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'متر طولي',
     quantitySource: 'manual',
     specs: [
-      { key: 'stoneType', label: 'نوع الخامة والجرانيت', type: 'select', options: ['كوارتز Quartz مستورد', 'كوريان Corian أسطح صلبة', 'جرانيت جلاكسي أسود هندي', 'جرانيت حلايب محلي'], defaultValue: 'جرانيت جلاكسي أسود هندي' },
+      { key: 'marbleMaterial', label: 'نوع الخامة والجرانيت', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'kitchens', defaultValue: 'price_kitchen_granite_galaxy' },
       { key: 'thicknessCm', label: 'السُمك (سم)', type: 'select', options: ['2 سم', '3 سم', 'دبل شفة 4 سم'], defaultValue: '2 سم' },
       { key: 'edgeProfile', label: 'شطف وتشطيب الحرف', type: 'select', options: ['حرف مستقيم مستوي', 'شطف نصف دائرة Bullnose', 'شطف دبل شفة'], defaultValue: 'حرف مستقيم مستوي' }
     ],
@@ -484,8 +485,8 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'عدد',
     quantitySource: 'manual', // or matched to points count
     specs: [
-      { key: 'brandModel', label: 'الماركة والموديل', type: 'select', options: ['ليجراند ساسي Legrand', 'شنايدر ديسنت Schneider', 'فينوس Venus'], defaultValue: 'ليجراند ساسي Legrand' },
-      { key: 'finishColor', label: 'لون الأغطية والوشوش', type: 'select', options: ['أبيض ناصع', 'أسود مطفي شيك', 'رمادي سيلفر'], defaultValue: 'أسود مطفي شيك' }
+      { key: 'plateMaterial', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_plate_legrand' },
+      { key: 'switchMaterial', label: 'لقمة المفتاح', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_switch_legrand' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 45, laborUnitPrice: 15, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
   },
@@ -497,7 +498,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'manual',
     perAreaOverride: true,
     specs: [
-      { key: 'spotType', label: 'نوع الإضاءة', type: 'select', options: ['سبوت لايت LED COB 7 وات', 'نجف سقف كلاسيك/مودرن', 'أباليك حوائط'], defaultValue: 'سبوت لايت LED COB 7 وات' },
+      { key: 'lightMaterial', label: 'وحدة الإنارة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_spot_led_7w' },
       { key: 'colorTemp', label: 'درجة حرارة اللون (كلفن)', type: 'select', options: ['3000K (أصفر دافئ)', '4000K (ورم إضاءة نهارية)', '6500K (أبيض بارد)'], defaultValue: '3000K (أصفر دافئ)' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 75, laborUnitPrice: 15, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
@@ -510,7 +511,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'manual',
     perAreaOverride: true,
     specs: [
-      { key: 'stripType', label: 'نوع الشريط والجهد', type: 'select', options: ['LED COB 24 فولت عالي الكثافة', 'SMD 120 ليد/متر 12 فولت'], defaultValue: 'LED COB 24 فولت عالي الكثافة' },
+      { key: 'stripMaterial', label: 'شريط الليد', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_led_strip_m' },
       { key: 'driverBrand', label: 'ماركة المحول (Driver)', type: 'select', options: ['مين ويل Mean Well الأصلي', 'محول صيني تجاري'], defaultValue: 'مين ويل Mean Well الأصلي' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 60, laborUnitPrice: 20, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
@@ -524,7 +525,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'عدد طقم',
     quantitySource: 'manual',
     specs: [
-      { key: 'brand', label: 'الماركة والمصنع', type: 'select', options: ['إيديال ستاندرد Ideal Standard', 'ديورافيت Duravit', 'جرافيت Graphite'], defaultValue: 'ديورافيت Duravit' },
+      { key: 'sanitaryMaterial', label: 'طقم الحمام', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_wc_duravit' },
       { key: 'cisternType', label: 'نوع صندوق الطرد والكرسي', type: 'select', options: ['معلق بصندوق مدفون (Geberit)', 'عادي ملاصق للحائط'], defaultValue: 'معلق بصندوق مدفون (Geberit)' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 6500, laborUnitPrice: 450, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
@@ -536,7 +537,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'عدد خلاط',
     quantitySource: 'manual',
     specs: [
-      { key: 'brand', label: 'ماركة الخلاطات', type: 'select', options: ['جروهي Grohe الماني', 'إيديال ستاندرد', 'خلاط دفن التركي'], defaultValue: 'جروهي Grohe الماني' }
+      { key: 'mixerMaterial', label: 'طقم الخلاطات', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_mixer_grohe' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 3500, laborUnitPrice: 150, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
   },

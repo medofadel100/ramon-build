@@ -4,7 +4,7 @@ export interface ConstantDefinition {
   key: string;
   label: string;
   group: 'materials' | 'rates';
-  subgroup: 'general' | 'masonry' | 'plastering' | 'flooring' | 'electrical' | 'plumbing' | 'hvac';
+  subgroup: 'general' | 'masonry' | 'plastering' | 'flooring' | 'electrical' | 'plumbing' | 'hvac' | 'woodwork' | 'cladding' | 'kitchens';
   defaultValue: number;
   unit: string;
   supplierId?: string;
@@ -87,7 +87,49 @@ export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   { key: 'price_copper_roll_5_8', label: 'سعر متر النحاس (5/8 بوصة)', group: 'materials', subgroup: 'hvac', defaultValue: 550, unit: 'ج.م' },
   { key: 'price_armaflex_m', label: 'سعر متر عزل أرمافليكس', group: 'materials', subgroup: 'hvac', defaultValue: 35, unit: 'ج.م' },
   { key: 'price_ac_bracket', label: 'سعر كابولي تكييف (جوز)', group: 'materials', subgroup: 'hvac', defaultValue: 450, unit: 'ج.م' },
+  // Woodwork & Doors (النجارة والأبواب)
+  { key: 'price_wood_mosky_m3', label: 'سعر متر مكعب خشب موسكي', group: 'materials', subgroup: 'woodwork', defaultValue: 22000, unit: 'ج.م' },
+  { key: 'price_wood_aziz_m3', label: 'سعر متر مكعب خشب عزيزي', group: 'materials', subgroup: 'woodwork', defaultValue: 45000, unit: 'ج.م' },
+  { key: 'price_mdf_board', label: 'سعر لوح MDF عادي', group: 'materials', subgroup: 'woodwork', defaultValue: 1500, unit: 'ج.م' },
+  { key: 'price_door_lock_kale', label: 'سعر كالون كالي تركي', group: 'materials', subgroup: 'woodwork', defaultValue: 650, unit: 'ج.م' },
+  { key: 'price_door_lock_yale', label: 'سعر كالون ييل إيطالي', group: 'materials', subgroup: 'woodwork', defaultValue: 1200, unit: 'ج.م' },
+  { key: 'price_door_handle', label: 'سعر طقم أكر مقابض أبواب', group: 'materials', subgroup: 'woodwork', defaultValue: 350, unit: 'ج.م' },
 
+  // Kitchens & Marble (المطابخ ورخام المطبخ)
+  { key: 'price_kitchen_marble_galala', label: 'سعر متر رخام جلالة مطابخ', group: 'materials', subgroup: 'kitchens', defaultValue: 1500, unit: 'ج.م' },
+  { key: 'price_kitchen_granite_galaxy', label: 'سعر متر جرانيت جلاكسي', group: 'materials', subgroup: 'kitchens', defaultValue: 1800, unit: 'ج.م' },
+  { key: 'price_kitchen_quartz', label: 'سعر متر كوارتز مستورد', group: 'materials', subgroup: 'kitchens', defaultValue: 4500, unit: 'ج.م' },
+  { key: 'price_kitchen_corian', label: 'سعر متر كوريان', group: 'materials', subgroup: 'kitchens', defaultValue: 3800, unit: 'ج.م' },
+  { key: 'price_kitchen_board_hpl', label: 'سعر لوح مطابخ HPL', group: 'materials', subgroup: 'kitchens', defaultValue: 2800, unit: 'ج.م' },
+  { key: 'price_kitchen_board_acrylic', label: 'سعر لوح مطابخ أكريليك', group: 'materials', subgroup: 'kitchens', defaultValue: 3500, unit: 'ج.م' },
+  { key: 'price_kitchen_hinge_blum', label: 'سعر مفصلة بلوم Blum', group: 'materials', subgroup: 'kitchens', defaultValue: 120, unit: 'ج.م' },
+  { key: 'price_kitchen_hinge_normal', label: 'سعر مفصلة عادية/صيني', group: 'materials', subgroup: 'kitchens', defaultValue: 35, unit: 'ج.م' },
+
+  // Cladding & Wall Decor (التجليدات وبديل الرخام والخشب)
+  { key: 'price_wpc_panel', label: 'سعر شريحة بديل الخشب WPC', group: 'materials', subgroup: 'cladding', defaultValue: 450, unit: 'ج.م' },
+  { key: 'price_pvc_marble_panel', label: 'سعر لوح بديل الرخام PVC', group: 'materials', subgroup: 'cladding', defaultValue: 1200, unit: 'ج.م' },
+  { key: 'price_mdf_veneer_panel', label: 'سعر لوح تجليد قشرة أرو', group: 'materials', subgroup: 'cladding', defaultValue: 1800, unit: 'ج.م' },
+  { key: 'price_cladding_adhesive', label: 'سعر عبوة سيليكون عظم', group: 'materials', subgroup: 'cladding', defaultValue: 150, unit: 'ج.م' },
+
+  // Electrical Finishes (تشطيب الكهرباء والإنارة)
+  { key: 'price_switch_legrand', label: 'سعر مفتاح/لقمة ليجراند ساسي', group: 'materials', subgroup: 'electrical', defaultValue: 65, unit: 'ج.م' },
+  { key: 'price_switch_schneider', label: 'سعر لقمة شنايدر ديسنت', group: 'materials', subgroup: 'electrical', defaultValue: 55, unit: 'ج.م' },
+  { key: 'price_switch_venus', label: 'سعر لقمة فينوس', group: 'materials', subgroup: 'electrical', defaultValue: 30, unit: 'ج.م' },
+  { key: 'price_socket_legrand', label: 'سعر بريزة ليجراند ساسي', group: 'materials', subgroup: 'electrical', defaultValue: 80, unit: 'ج.م' },
+  { key: 'price_plate_legrand', label: 'سعر وش ليجراند ساسي', group: 'materials', subgroup: 'electrical', defaultValue: 45, unit: 'ج.م' },
+  { key: 'price_spot_led_7w', label: 'سعر سبوت LED 7 وات', group: 'materials', subgroup: 'electrical', defaultValue: 120, unit: 'ج.م' },
+  { key: 'price_spot_led_cob', label: 'سعر سبوت غاطس COB', group: 'materials', subgroup: 'electrical', defaultValue: 250, unit: 'ج.م' },
+  { key: 'price_led_strip_m', label: 'سعر متر شريط ليد بروفايل', group: 'materials', subgroup: 'electrical', defaultValue: 45, unit: 'ج.م' },
+  { key: 'price_chandelier_modern', label: 'سعر نجفة مودرن متوسطة', group: 'materials', subgroup: 'electrical', defaultValue: 3500, unit: 'ج.م' },
+  { key: 'price_applique', label: 'سعر أبليك/أباجورة حائط', group: 'materials', subgroup: 'electrical', defaultValue: 450, unit: 'ج.م' },
+
+  // Plumbing Finishes (التشطيبات الصحية والخلاطات)
+  { key: 'price_wc_duravit', label: 'سعر طقم حمام ديورافيت Duravit', group: 'materials', subgroup: 'plumbing', defaultValue: 6500, unit: 'ج.م' },
+  { key: 'price_wc_ideal', label: 'سعر طقم حمام إيديال ستاندرد', group: 'materials', subgroup: 'plumbing', defaultValue: 7200, unit: 'ج.م' },
+  { key: 'price_wc_geberit', label: 'سعر صندوق طرد مدفون (جروهي/جبريت)', group: 'materials', subgroup: 'plumbing', defaultValue: 4500, unit: 'ج.م' },
+  { key: 'price_mixer_grohe', label: 'سعر طقم خلاطات جروهي Grohe (3 قطع)', group: 'materials', subgroup: 'plumbing', defaultValue: 12000, unit: 'ج.م' },
+  { key: 'price_mixer_ideal', label: 'سعر طقم خلاطات إيديال (3 قطع)', group: 'materials', subgroup: 'plumbing', defaultValue: 8500, unit: 'ج.م' },
+  { key: 'price_mixer_turk', label: 'سعر طقم خلاطات تركي (3 قطع)', group: 'materials', subgroup: 'plumbing', defaultValue: 3500, unit: 'ج.م' },
   // =====================
   // Consumption Rates (معدلات الاستهلاك ونسب الهدر)
   // =====================
