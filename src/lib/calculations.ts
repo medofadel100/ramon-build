@@ -1099,35 +1099,3 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
 
   return matList;
 }
-
-// Internal raw calculator to prevent circular dependency
-function calculateItemTotalRaw(item: BOQItem, zones: Zone[]) {
-  if (!item.isActive) {
-    return { quantity: 0, materialCost: 0, laborCost: 0, total: 0, estimatedDays: 0 };
-  }
-
-  let quantity = 0;
-
-  if (item.quantitySource === 'calculated') {
-    if (item.perAreaOverrides && Object.keys(item.perAreaOverrides).length > 0) {
-      quantity = Object.values(item.perAreaOverrides).reduce((acc, curr) => acc + (curr.quantity || 0), 0);
-    } else {
-      const formula = item.calculationFormula || '';
-      if (formula === 'total.floorArea') {
-        quantity = zones.reduce((acc, z) => acc + z.floorArea, 0);
-      } else if (formula === 'total.wallArea') {
-        quantity = zones.reduce((acc, z) => acc + z.wallArea, 0);
-      } else if (formula === 'total.ceilingArea') {
-        quantity = zones.reduce((acc, z) => acc + z.ceilingArea, 0);
-      } else if (formula === 'total.perimeter') {
-        quantity = zones.reduce((acc, z) => acc + z.perimeter, 0);
-      } else {
-        quantity = Number(item.quantity) || 0;
-      }
-    }
-  } else {
-    quantity = Number(item.quantity) || 0;
-  }
-
-  return { quantity };
-}
