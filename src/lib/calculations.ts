@@ -310,6 +310,20 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     return def;
   };
 
+  // Helper to fetch price when the user selects a material from the catalog via the new material_selector
+  const getMaterialPrice = (specKey: string, fallbackConstKey: string, defValue: number): number => {
+    const selectedKey = specs[specKey];
+    if (selectedKey && typeof selectedKey === 'string' && selectedKey.startsWith('price_')) {
+      if (projectConstants && projectConstants[selectedKey] !== undefined) return projectConstants[selectedKey];
+      if (defaultConsts[selectedKey] !== undefined) return defaultConsts[selectedKey];
+    } else if (selectedKey !== undefined && !isNaN(Number(selectedKey))) {
+      return Number(selectedKey);
+    }
+    if (projectConstants && projectConstants[fallbackConstKey] !== undefined) return projectConstants[fallbackConstKey];
+    if (defaultConsts[fallbackConstKey] !== undefined) return defaultConsts[fallbackConstKey];
+    return defValue;
+  };
+
   // Helper to get spec value with fallback
   const getSpecNum = (key: string, def: number): number => {
     return getConst(key, def); // Redirect to getConst for backwards compatibility
@@ -332,9 +346,9 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       const cementKgPerSqm = getConst('rate_cement_kg_per_sqm_masonry', 15) * (isFullBrick ? 2 : 1);
       const sandCubicPerSqm = isFullBrick ? 0.05 : 0.025;
 
-      const bricksPrice = getConst('price_brick_1000', 1500);
-      const cementBagPrice = getConst('price_cement_bag', 130);
-      const sandCubicPrice = getConst('price_sand_m3', 250);
+      const bricksPrice = getMaterialPrice('bricksPrice', 'price_brick_1000', 1500);
+      const cementBagPrice = getMaterialPrice('cementBagPrice', 'price_cement_bag', 130);
+      const sandCubicPrice = getMaterialPrice('sandCubicPrice', 'price_sand_m3', 250);
 
       const totalBricks = qty * bricksPerSqm;
       const bricksThousands = Math.ceil((totalBricks / 1000) * 10) / 10;
@@ -386,7 +400,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     case '1.2.1':
     case '1.2.2': {
       const pipeLength = getSpecNum('pipeLength', 4);
-      const pipePrice = getSpecNum('pipePrice', itemId === '1.2.1' ? 450 : 180);
+      const pipePrice = getMaterialPrice('pipePrice', itemId === '1.2.1' ? 'price_pvc_pipe_4' : 'price_ppr_pipe_3_4', itemId === '1.2.1' ? 450 : 180);
       const fittingsPercent = getSpecNum('fittingsPercent', itemId === '1.2.1' ? 15 : 25);
 
       const totalPipes = Math.ceil(qty / pipeLength);
@@ -427,7 +441,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       const hasProtection = getSpecStr('protectionLayer', 'مطلوب') === 'مطلوب';
 
       if (isMembrane) {
-        const rollPrice = getConst('price_membrane_roll', 1200);
+        const rollPrice = getMaterialPrice('membraneRollPrice', 'price_membrane_roll', 1200);
         const netRoll = getConst('rate_membrane_net_sqm', 8.5);
         const rolls = Math.ceil(qty / netRoll);
         matList.push({
@@ -441,7 +455,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
           packagingDetails: `بمعدل لفة لكل ${netRoll} م² صافي (بعد الركوب)`
         });
       } else {
-        const bagPrice = getConst('price_cement_insulation_bag', 450);
+        const bagPrice = getMaterialPrice('cementCoatBagPrice', 'price_cement_insulation_bag', 450);
         const sqmPerBag = getConst('rate_cement_insulation_sqm_per_bag', 8);
         const coveragePerBag = sqmPerBag / (coatsCount || 1); 
         const bags = Math.ceil(qty / coveragePerBag);
@@ -536,7 +550,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     case '1.3.1': {
       const wirePerPoint = getSpecNum('wirePerPoint', 10); // meters of 1.5mm wire per point
       const rollLength = getSpecNum('rollLength', 100);
-      const wireRollPrice = getSpecNum('wireRollPrice', 1200);
+      const wireRollPrice = getMaterialPrice('wireRollPrice', 'price_wire_1_5_roll', 1200);
       const boxPrice = getSpecNum('boxPrice', 15);
       const chassisPrice = getSpecNum('chassisPrice', 20);
       const platePrice = getSpecNum('platePrice', 25);
@@ -787,8 +801,8 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     case '1.5.1': {
       const cementPerSqm = getSpecNum('cementPerSqm', 0.25); // sacks (12.5kg) per m2
       const sandPerSqm = getSpecNum('sandPerSqm', 0.02); // m3 per m2
-      const cementBagPrice = getSpecNum('cementBagPrice', 130);
-      const sandCubicPrice = getSpecNum('sandCubicPrice', 250);
+      const cementBagPrice = getMaterialPrice('cementBagPrice', 'price_cement_bag', 130);
+      const sandCubicPrice = getMaterialPrice('sandCubicPrice', 'price_sand_m3', 250);
 
       const totalCementSacks = qty * cementPerSqm;
       const cementSacksRounded = Math.ceil(totalCementSacks);

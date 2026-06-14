@@ -9,8 +9,10 @@ export interface SectionTemplate {
 export interface SpecFieldTemplate {
   key: string;
   label: string;
-  type: 'select' | 'number' | 'text' | 'color' | 'checkbox';
+  type: 'select' | 'number' | 'text' | 'color' | 'checkbox' | 'material_selector';
   options?: string[];
+  materialGroup?: string;
+  materialSubgroup?: string;
   unit?: string;
   defaultValue?: any;
 }
@@ -106,9 +108,9 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'brickType', label: 'نوع الطوب', type: 'select', options: ['أحمر مفرغ', 'أحمر مصمت', 'خفان', 'بلوك أسمنتي'], defaultValue: 'أحمر مفرغ' },
       { key: 'wallThickness', label: 'سمك الحائط', type: 'select', options: ['12 سم', '20 سم', '25 سم'], defaultValue: '12 سم' },
       { key: 'mortarRatio', label: 'نسبة الأسمنت للمونة', type: 'select', options: ['1:4 (350 كجم)', '1:5 (300 كجم)'], defaultValue: '1:4 (350 كجم)' },
-      { key: 'bricksPrice', label: 'سعر الألف طوبة (ج.م)', type: 'number', defaultValue: 1500 },
-      { key: 'cementBagPrice', label: 'سعر شيكارة الأسمنت (ج.م)', type: 'number', defaultValue: 130 },
-      { key: 'sandCubicPrice', label: 'سعر متر الرمل (ج.م)', type: 'number', defaultValue: 250 }
+      { key: 'bricksPrice', label: 'نوع الطوب المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'masonry', defaultValue: 'price_brick_1000' },
+      { key: 'cementBagPrice', label: 'نوع الأسمنت المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'general', defaultValue: 'price_cement_bag' },
+      { key: 'sandCubicPrice', label: 'نوع الرمل المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'general', defaultValue: 'price_sand_m3' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 85, laborUnitPrice: 60, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود مباني الطوب - الجزء الرابع'
@@ -136,9 +138,8 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'manual',
     specs: [
       { key: 'diameter', label: 'القطر', type: 'select', options: ['4 بوصة', '6 بوصة'], defaultValue: '4 بوصة' },
-      { key: 'material', label: 'الخامة والشركة', type: 'select', options: ['الشريف PVC', 'كيسل PVC', 'نيوبروبلاست'], defaultValue: 'الشريف PVC' },
+      { key: 'pipePrice', label: 'مواسير PVC المستخدمة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_pvc_pipe_4' },
       { key: 'pipeLength', label: 'طول الماسورة الواحدة (متر)', type: 'number', defaultValue: 4 },
-      { key: 'pipePrice', label: 'سعر الماسورة (ج.م)', type: 'number', defaultValue: 450 },
       { key: 'fittingsPercent', label: 'نسبة الإكسسوارات من المواسير (%)', type: 'number', defaultValue: 15 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 110, laborUnitPrice: 50, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
@@ -151,11 +152,9 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     unit: 'متر طولي',
     quantitySource: 'manual',
     specs: [
-      { key: 'material', label: 'الخامة والماركة', type: 'select', options: ['BR (مقاوم للحرارة)', 'الشريف PPR', 'باننجر الماني'], defaultValue: 'BR (مقاوم للحرارة)' },
-      { key: 'diameter', label: 'القطر', type: 'select', options: ['20 مم (1/2")', '25 مم (3/4")', '32 مم (1")'], defaultValue: '25 مم (3/4")' },
-      { key: 'pipeColorCode', label: 'كود تمييز الألوان', type: 'select', options: ['أحمر/أزرق معتمد', 'ألوان قياسية'], defaultValue: 'أحمر/أزرق معتمد' },
+      { key: 'diameter', label: 'القطر', type: 'select', options: ['3/4 بوصة', '1 بوصة'], defaultValue: '3/4 بوصة' },
+      { key: 'pipePrice', label: 'مواسير التغذية المستخدمة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_ppr_pipe_3_4' },
       { key: 'pipeLength', label: 'طول الماسورة الواحدة (متر)', type: 'number', defaultValue: 4 },
-      { key: 'pipePrice', label: 'سعر الماسورة (ج.م)', type: 'number', defaultValue: 180 },
       { key: 'fittingsPercent', label: 'نسبة الإكسسوارات من المواسير (%)', type: 'number', defaultValue: 25 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 90, laborUnitPrice: 45, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
@@ -197,8 +196,8 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'coatsCount', label: 'عدد الأوجه / الطبقات', type: 'number', defaultValue: 2 },
       { key: 'waterTestHrs', label: 'اختبار غمر بالماء (ساعة)', type: 'number', defaultValue: 48 },
       { key: 'protectionLayer', label: 'طبقة لياسة حماية (سكريد)', type: 'select', options: ['مطلوب', 'غير مطلوب'], defaultValue: 'مطلوب' },
-      { key: 'membraneRollPrice', label: 'سعر لفة الممبرين (ج.م)', type: 'number', defaultValue: 1200 },
-      { key: 'cementCoatBagPrice', label: 'سعر شيكارة العزل الأسمنتي (ج.م)', type: 'number', defaultValue: 450 },
+      { key: 'membraneRollPrice', label: 'نوع الممبرين', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_membrane_roll' },
+      { key: 'cementCoatBagPrice', label: 'نوع العزل الأسمنتي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_cement_insulation_bag' },
       { key: 'protectionScreedPrice', label: 'سعر متر لياسة الحماية (خامات ج.م)', type: 'number', defaultValue: 30 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 65, laborUnitPrice: 45, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 },
@@ -219,7 +218,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'lightType', label: 'نوع المخرج', type: 'select', options: ['إنارة سقف عادية', 'مخرج سبوت', 'مخرج إضاءة مخفية LED'], defaultValue: 'مخرج سبوت' },
       { key: 'wirePerPoint', label: 'سلك للنقطة (متر)', type: 'number', defaultValue: 10 },
       { key: 'rollLength', label: 'طول لفة السلك (متر)', type: 'number', defaultValue: 100 },
-      { key: 'wireRollPrice', label: 'سعر لفة السلك (ج.م)', type: 'number', defaultValue: 1200 },
+      { key: 'wireRollPrice', label: 'نوع السلك الرئيسي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_1_5_roll' },
       { key: 'boxPrice', label: 'سعر علبة الماجيك (ج.م)', type: 'number', defaultValue: 15 },
       { key: 'chassisPrice', label: 'سعر الشاسيه (ج.م)', type: 'number', defaultValue: 20 },
       { key: 'platePrice', label: 'سعر الوش (ج.م)', type: 'number', defaultValue: 25 },
@@ -313,8 +312,8 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'finishMethod', label: 'طريقة التشطيب', type: 'select', options: ['بؤج وأوتار (ميزان)', 'قدي دراع (عادي)'], defaultValue: 'بؤج وأوتار (ميزان)' },
       { key: 'cementPerSqm', label: 'استهلاك الأسمنت (شكارة/م²)', type: 'number', defaultValue: 0.25 },
       { key: 'sandPerSqm', label: 'استهلاك الرمل (م³/م²)', type: 'number', defaultValue: 0.02 },
-      { key: 'cementBagPrice', label: 'سعر شكارة الأسمنت (ج.م)', type: 'number', defaultValue: 130 },
-      { key: 'sandCubicPrice', label: 'سعر متر الرمل (ج.م)', type: 'number', defaultValue: 250 }
+      { key: 'cementBagPrice', label: 'نوع الأسمنت المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'general', defaultValue: 'price_cement_bag' },
+      { key: 'sandCubicPrice', label: 'نوع الرمل المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'general', defaultValue: 'price_sand_m3' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 30, laborUnitPrice: 45, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 4 },
     egyptianCodeRef: 'كود أعمال البياض والمحارة - الباب الخامس'
