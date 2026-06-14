@@ -524,6 +524,44 @@ export default function ProjectBOQTab() {
                                 </div>
                               )}
 
+                              {/* 2.5 Quantities Editor */}
+                              <div className="space-y-4">
+                                <h5 className="text-xs font-bold text-slate-400 border-b border-[#222634] pb-1.5 flex items-center gap-1.5">
+                                  <LayoutGrid className="h-3.5 w-3.5 text-[#c5a880]" />
+                                  تعديل الكمية الإجمالية
+                                </h5>
+                                
+                                <div className="flex flex-col md:flex-row gap-5">
+                                  <div className="flex-1 bg-slate-900/30 border border-[#222634] p-4 rounded-lg space-y-3.5">
+                                    <div>
+                                      <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1">مصدر حساب الكمية</label>
+                                      <select
+                                        disabled={!canEdit}
+                                        value={item.quantitySource || 'calculated'}
+                                        onChange={(e) => handleItemPropChange(item, 'quantitySource', e.target.value)}
+                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-xs text-white focus:outline-none"
+                                      >
+                                        <option value="calculated">حساب تلقائي من الغرف والمساحات</option>
+                                        <option value="manual">تعديل وإدخال يدوي مباشر</option>
+                                      </select>
+                                    </div>
+                                    
+                                    {item.quantitySource === 'manual' && (
+                                      <div>
+                                        <label className="block text-right text-[9px] text-slate-400 mb-0.5">الكمية الإجمالية المعتمدة ({item.unit})</label>
+                                        <input
+                                          type="number"
+                                          disabled={!canEdit}
+                                          value={item.quantity || 0}
+                                          onChange={(e) => handleItemPropChange(item, 'quantity', parseFloat(e.target.value) || 0)}
+                                          className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:border-[#c5a880] focus:outline-none"
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
                               {/* 3. Pricing Editor */}
                               <div className="space-y-4">
                                 <h5 className="text-xs font-bold text-slate-400 border-b border-[#222634] pb-1.5 flex items-center gap-1.5">
