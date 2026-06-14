@@ -622,7 +622,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     case '1.3.2': {
       const wirePerPoint = getSpecNum('wirePerPoint', 15); // meters of 2.5mm wire per point
       const rollLength = getSpecNum('rollLength', 100);
-      const wireRollPrice = getSpecNum('wireRollPrice', 1800);
+      const wireRollPrice = getMaterialPrice('wireRollPrice', 'price_wire_2_5_roll', 1800);
       const boxPrice = getSpecNum('boxPrice', 15);
       const chassisPrice = getSpecNum('chassisPrice', 20);
       const platePrice = getSpecNum('platePrice', 25);
@@ -694,7 +694,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     // 1.3.3 - لوحة التوزيع الرئيسية ومفاتيح الأمان
     // ==========================================
     case '1.3.3': {
-      const boardPrice = getSpecNum('boardPrice', 1200);
+      const boardPrice = getMaterialPrice('boardPrice', 'price_db_12_way', 1200);
       const breakersCount = getSpecNum('breakersCount', 24);
       const breakerPrice = getSpecNum('breakerPrice', 250);
 
@@ -729,7 +729,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     case '1.3.4': {
       const wirePerPoint = getSpecNum('wirePerPoint', 25);
       const rollLength = getSpecNum('rollLength', 305); // standard LAN box is 305m (1000ft)
-      const dataRollPrice = getSpecNum('dataRollPrice', 3200);
+      const dataRollPrice = getMaterialPrice('dataRollPrice', 'price_data_roll', 3200);
       const boxPrice = getSpecNum('boxPrice', 15);
       const chassisPrice = getSpecNum('chassisPrice', 20);
       const platePrice = getSpecNum('platePrice', 25);
@@ -842,14 +842,14 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       const coatsCount = getSpecNum('coatsCount', 2);
       const coverageRate = getSpecNum('coverageRate', 10); // m2 per L per coat
       const canSize = getSpecNum('canSize', 18); // L per can
-      const paintCanPrice = getSpecNum('paintCanPrice', 1800);
+      const paintCanPrice = getMaterialPrice('paintCanPrice', 'price_paint_can', 1800);
 
       const puttyCoats = getSpecNum('puttyCoats', 2);
       const puttyCoverageSqm = getSpecNum('puttyCoverageSqm', 20); // m2 per sack
-      const puttyBagPrice = getSpecNum('puttyBagPrice', 350);
+      const puttyBagPrice = getMaterialPrice('puttyBagPrice', 'price_putty_bag', 350);
 
       const sealerCoverageSqm = getSpecNum('sealerCoverageSqm', 30); // m2 per gallon
-      const sealerGallonPrice = getSpecNum('sealerGallonPrice', 250);
+      const sealerGallonPrice = getMaterialPrice('sealerGallonPrice', 'price_sealer_gallon', 250);
 
       // 1. Final paint can calculation
       const totalLiters = (qty * coatsCount) / (coverageRate > 0 ? coverageRate : 10);
@@ -906,10 +906,10 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       const tileBoxPrice = getSpecNum('tileBoxPrice', 350);
 
       const adhesiveCoverageSqm = getSpecNum('adhesiveCoverageSqm', 5); // m2 per bag
-      const adhesiveBagPrice = getSpecNum('adhesiveBagPrice', 180);
+      const adhesiveBagPrice = getMaterialPrice('adhesiveBagPrice', 'price_tile_adhesive_bag', 180);
 
       const groutCoverageSqm = getSpecNum('groutCoverageSqm', 15); // m2 per bag
-      const groutBagPrice = getSpecNum('groutBagPrice', 40);
+      const groutBagPrice = getMaterialPrice('groutBagPrice', 'price_grout_bag', 40);
 
       // Area with wastage
       const floorAreaWithWastage = qty * (1 + wastagePercent / 100);

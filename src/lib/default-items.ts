@@ -239,7 +239,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'heightFromFloor', label: 'الارتفاع عن التشطيب (سم)', type: 'number', defaultValue: 45 },
       { key: 'wirePerPoint', label: 'سلك للنقطة (متر)', type: 'number', defaultValue: 15 },
       { key: 'rollLength', label: 'طول لفة السلك (متر)', type: 'number', defaultValue: 100 },
-      { key: 'wireRollPrice', label: 'سعر لفة السلك (ج.م)', type: 'number', defaultValue: 1800 },
+      { key: 'wireRollPrice', label: 'نوع السلك الرئيسي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_wire_2_5_roll' },
       { key: 'boxPrice', label: 'سعر علبة الماجيك (ج.م)', type: 'number', defaultValue: 15 },
       { key: 'chassisPrice', label: 'سعر الشاسيه (ج.م)', type: 'number', defaultValue: 20 },
       { key: 'platePrice', label: 'سعر الوش (ج.م)', type: 'number', defaultValue: 25 },
@@ -257,7 +257,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     specs: [
       { key: 'linesCount', label: 'عدد الخطوط', type: 'select', options: ['12 خط', '18 خط', '24 خط', '36 خط'], defaultValue: '24 خط' },
       { key: 'breakerBrand', label: 'ماركة المفاتيح', type: 'select', options: ['شنايدر Schneider', 'هاجر Hager', 'ليجراند Legrand'], defaultValue: 'شنايدر Schneider' },
-      { key: 'boardPrice', label: 'سعر اللوحة فارغة (ج.م)', type: 'number', defaultValue: 1200 },
+      { key: 'boardPrice', label: 'نوع لوحة التوزيع', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_db_12_way' },
       { key: 'breakersCount', label: 'عدد القواطع المعبأة', type: 'number', defaultValue: 24 },
       { key: 'breakerPrice', label: 'سعر القاطع الأوتوماتيك (ج.م)', type: 'number', defaultValue: 250 }
     ],
@@ -274,7 +274,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'rackProvision', label: 'تجهيز راك مركزي', type: 'select', options: ['نعم - 6U', 'نعم - 9U', 'لا يوجد'], defaultValue: 'لا يوجد' },
       { key: 'wirePerPoint', label: 'طول السلك للنقطة (متر)', type: 'number', defaultValue: 25 },
       { key: 'rollLength', label: 'طول لفة كابل الداتا (متر)', type: 'number', defaultValue: 305 },
-      { key: 'dataRollPrice', label: 'سعر لفة الداتا (ج.م)', type: 'number', defaultValue: 3200 },
+      { key: 'dataRollPrice', label: 'كابل الداتا المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_data_roll' },
       { key: 'boxPrice', label: 'سعر علبة الماجيك (ج.م)', type: 'number', defaultValue: 15 },
       { key: 'chassisPrice', label: 'سعر الشاسيه (ج.م)', type: 'number', defaultValue: 20 },
       { key: 'platePrice', label: 'سعر الوش (ج.م)', type: 'number', defaultValue: 25 },
@@ -556,12 +556,12 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'coverageRate', label: 'معدل الفرد (م²/لتر/وجه)', type: 'number', defaultValue: 10.0 },
       { key: 'coatsCount', label: 'عدد أوجه الدهان الملون', type: 'number', defaultValue: 2 },
       { key: 'canSize', label: 'سعة بستلة الدهان (لتر)', type: 'number', defaultValue: 18 },
-      { key: 'paintCanPrice', label: 'سعر بستلة الدهان (ج.م)', type: 'number', defaultValue: 1800 },
+      { key: 'paintCanPrice', label: 'نوع دهان التشطيب', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plastering', defaultValue: 'price_paint_can' },
       { key: 'puttyCoats', label: 'عدد سكاكين المعجون', type: 'number', defaultValue: 2 },
       { key: 'puttyCoverageSqm', label: 'معدل فرد المعجون (م²/شكارة/وجه)', type: 'number', defaultValue: 20 },
-      { key: 'puttyBagPrice', label: 'سعر شيكارة المعجون (ج.م)', type: 'number', defaultValue: 350 },
+      { key: 'puttyBagPrice', label: 'نوع المعجون المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plastering', defaultValue: 'price_putty_bag' },
       { key: 'sealerCoverageSqm', label: 'معدل فرد السيلر (م²/جالون)', type: 'number', defaultValue: 30 },
-      { key: 'sealerGallonPrice', label: 'سعر جالون السيلر (ج.م)', type: 'number', defaultValue: 250 }
+      { key: 'sealerGallonPrice', label: 'نوع السيلر المائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plastering', defaultValue: 'price_sealer_gallon' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 45, laborUnitPrice: 35, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 },
     egyptianCodeRef: 'كود أعمال النقاشة والدهانات الداخلية'
@@ -588,9 +588,9 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'tilesPerBox', label: 'عدد البلاطات في الكرتونة', type: 'number', defaultValue: 4 },
       { key: 'tileBoxPrice', label: 'سعر كرتونة البلاط (ج.م)', type: 'number', defaultValue: 350 },
       { key: 'adhesiveCoverageSqm', label: 'معدل فرد الغراء (م²/شكارة)', type: 'number', defaultValue: 5 },
-      { key: 'adhesiveBagPrice', label: 'سعر شيكارة الغراء (ج.م)', type: 'number', defaultValue: 180 },
+      { key: 'adhesiveBagPrice', label: 'نوع غراء السيراميك', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'flooring', defaultValue: 'price_tile_adhesive_bag' },
       { key: 'groutCoverageSqm', label: 'معدل فرد الترويبة (م²/كيس)', type: 'number', defaultValue: 15 },
-      { key: 'groutBagPrice', label: 'سعر كيس الترويبة (ج.م)', type: 'number', defaultValue: 40 }
+      { key: 'groutBagPrice', label: 'نوع سقية الفواصل', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'flooring', defaultValue: 'price_grout_bag' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 250, laborUnitPrice: 95, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 },
     egyptianCodeRef: 'كود تكسية الأرضيات والحوائط بالبلاط والرخام',
