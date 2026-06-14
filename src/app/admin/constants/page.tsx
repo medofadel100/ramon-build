@@ -35,15 +35,12 @@ export default function AdminConstantsPage() {
     if (!loadingAuth) {
       if (!user) {
         router.push('/login');
-      } else if (user.role !== 'admin') {
-        alert('صلاحية مقيدة. هذه الصفحة مخصصة لمدراء النظام فقط.');
-        router.push('/dashboard');
       }
     }
   }, [user, loadingAuth, router]);
 
   useEffect(() => {
-    if (user?.role !== 'admin') return;
+    if (!user) return;
     
     async function fetchData() {
       setLoading(true);
@@ -123,7 +120,7 @@ export default function AdminConstantsPage() {
     }
   };
 
-  if (loadingAuth || !user || user.role !== 'admin') {
+  if (loadingAuth || !user) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12]">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>

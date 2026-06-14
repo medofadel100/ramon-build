@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useProjectStore } from '@/store/projectStore';
-import { LogOut, Home, PlusCircle, Settings, Users, Database, User, BookOpen } from 'lucide-react';
+import { LogOut, Home, PlusCircle, Settings, Users, Database, User, BookOpen, Package } from 'lucide-react';
 
 export default function Navbar() {
   const user = useAuthStore((state) => state.user);
@@ -81,6 +81,18 @@ export default function Navbar() {
               </span>
             </Link>
 
+            <Link 
+              href="/admin/constants" 
+              className={`px-3 py-1.5 rounded-lg transition ${
+                isActive('/admin/constants') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <Package className="h-4 w-4" />
+                المعدلات الهندسية والخامات
+              </span>
+            </Link>
+
             {user?.role === 'admin' && (
               <>
                 <Link 
@@ -92,17 +104,6 @@ export default function Navbar() {
                   <span className="flex items-center gap-1.5">
                     <Database className="h-4 w-4" />
                     مصنعيات البنود
-                  </span>
-                </Link>
-                <Link 
-                  href="/admin/constants" 
-                  className={`px-3 py-1.5 rounded-lg transition ${
-                    isActive('/admin/constants') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                  }`}
-                >
-                  <span className="flex items-center gap-1.5">
-                    <BookOpen className="h-4 w-4" />
-                    الكتالوج المركزي
                   </span>
                 </Link>
                 <Link 
