@@ -180,14 +180,37 @@ export async function generateProjectCode(): Promise<string> {
 // ==========================================
 export async function dbGetMasterConstants(): Promise<ConstantDefinition[]> {
   const docRef = doc(db, 'settings', 'masterConstants');
-  const snap = await getDoc(docRef);
-  if (!snap.exists()) return DEFAULT_CONSTANTS;
-  
-  const dbConsts = snap.data().constants as ConstantDefinition[];
-  const dbKeys = new Set(dbConsts.map(c => c.key));
-  const newDefaults = DEFAULT_CONSTANTS.filter(c => !dbKeys.has(c.key));
-  
-  return [...dbConsts, ...newDefaults];
+  try {
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) return DEFAULT_CONSTANTS;
+    
+    const data = snap.data();
+    const dbConsts = Array.isArray(data?.constants) ? data.constants : [];
+    
+    const defaultMap = new Map(DEFAULT_CONSTANTS.map(c => [c.key, c]));
+    
+    const fixedDbConsts = dbConsts.map((c: any) => {
+      if (!c) return null;
+      const def = defaultMap.get(c.key);
+      if (def) {
+        return {
+          ...def,
+          ...c,
+          group: c.group || def.group,
+          subgroup: c.subgroup || def.subgroup
+        };
+      }
+      return c;
+    }).filter(Boolean);
+
+    const dbKeys = new Set(fixedDbConsts.map((c: any) => c.key));
+    const newDefaults = DEFAULT_CONSTANTS.filter(c => !dbKeys.has(c.key));
+    
+    return [...fixedDbConsts, ...newDefaults];
+  } catch (err) {
+    console.error("Error fetching master constants:", err);
+    return DEFAULT_CONSTANTS;
+  }
 }
 
 export async function dbUpdateMasterConstants(constants: ConstantDefinition[]): Promise<void> {
