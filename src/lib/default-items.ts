@@ -105,7 +105,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     specs: [
       { key: 'brickType', label: 'نوع الطوب', type: 'select', options: ['أحمر مفرغ', 'أحمر مصمت', 'خفان', 'بلوك أسمنتي'], defaultValue: 'أحمر مفرغ' },
       { key: 'wallThickness', label: 'سمك الحائط', type: 'select', options: ['12 سم', '20 سم', '25 سم'], defaultValue: '12 سم' },
-      { key: 'mortarRatio', label: 'نسبة الأسمنت للمونة', type: 'select', options: ['1:4 (350 كجم)', '1:5 (300 كجم)'], defaultValue: '1:4 (350 كجم)' }
+      { key: 'mortarRatio', label: 'نسبة الأسمنت للمونة', type: 'select', options: ['1:4 (350 كجم)', '1:5 (300 كجم)'], defaultValue: '1:4 (350 كجم)' },
+      { key: 'bricksPrice', label: 'سعر الألف طوبة (ج.م)', type: 'number', defaultValue: 1500 },
+      { key: 'cementBagPrice', label: 'سعر شيكارة الأسمنت (ج.م)', type: 'number', defaultValue: 130 },
+      { key: 'sandCubicPrice', label: 'سعر متر الرمل (ج.م)', type: 'number', defaultValue: 250 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 85, laborUnitPrice: 60, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود مباني الطوب - الجزء الرابع'
@@ -133,7 +136,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     quantitySource: 'manual',
     specs: [
       { key: 'diameter', label: 'القطر', type: 'select', options: ['4 بوصة', '6 بوصة'], defaultValue: '4 بوصة' },
-      { key: 'material', label: 'الخامة والشركة', type: 'select', options: ['الشريف PVC', 'كيسل PVC', 'نيوبروبلاست'], defaultValue: 'الشريف PVC' }
+      { key: 'material', label: 'الخامة والشركة', type: 'select', options: ['الشريف PVC', 'كيسل PVC', 'نيوبروبلاست'], defaultValue: 'الشريف PVC' },
+      { key: 'pipeLength', label: 'طول الماسورة الواحدة (متر)', type: 'number', defaultValue: 4 },
+      { key: 'pipePrice', label: 'سعر الماسورة (ج.م)', type: 'number', defaultValue: 450 },
+      { key: 'fittingsPercent', label: 'نسبة الإكسسوارات من المواسير (%)', type: 'number', defaultValue: 15 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 110, laborUnitPrice: 50, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود التركيبات الصحية - الصرف الخارجي'
@@ -147,7 +153,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     specs: [
       { key: 'material', label: 'الخامة والماركة', type: 'select', options: ['BR (مقاوم للحرارة)', 'الشريف PPR', 'باننجر الماني'], defaultValue: 'BR (مقاوم للحرارة)' },
       { key: 'diameter', label: 'القطر', type: 'select', options: ['20 مم (1/2")', '25 مم (3/4")', '32 مم (1")'], defaultValue: '25 مم (3/4")' },
-      { key: 'pipeColorCode', label: 'كود تمييز الألوان', type: 'select', options: ['أحمر/أزرق معتمد', 'ألوان قياسية'], defaultValue: 'أحمر/أزرق معتمد' }
+      { key: 'pipeColorCode', label: 'كود تمييز الألوان', type: 'select', options: ['أحمر/أزرق معتمد', 'ألوان قياسية'], defaultValue: 'أحمر/أزرق معتمد' },
+      { key: 'pipeLength', label: 'طول الماسورة الواحدة (متر)', type: 'number', defaultValue: 4 },
+      { key: 'pipePrice', label: 'سعر الماسورة (ج.م)', type: 'number', defaultValue: 180 },
+      { key: 'fittingsPercent', label: 'نسبة الإكسسوارات من المواسير (%)', type: 'number', defaultValue: 25 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 90, laborUnitPrice: 45, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود تغذية المياه ومكافحة الحريق'
@@ -187,7 +196,10 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'insulationType', label: 'نوع العزل المائي', type: 'select', options: ['لفائف ممبرين (Membrane)', 'عزل أسمنتي دهان', 'عزل بيتومين ساخن', 'كيمابوكسي (Kemapoxy)'], defaultValue: 'عزل أسمنتي دهان' },
       { key: 'coatsCount', label: 'عدد الأوجه / الطبقات', type: 'number', defaultValue: 2 },
       { key: 'waterTestHrs', label: 'اختبار غمر بالماء (ساعة)', type: 'number', defaultValue: 48 },
-      { key: 'protectionLayer', label: 'طبقة لياسة حماية (سكريد)', type: 'select', options: ['مطلوب', 'غير مطلوب'], defaultValue: 'مطلوب' }
+      { key: 'protectionLayer', label: 'طبقة لياسة حماية (سكريد)', type: 'select', options: ['مطلوب', 'غير مطلوب'], defaultValue: 'مطلوب' },
+      { key: 'membraneRollPrice', label: 'سعر لفة الممبرين (ج.م)', type: 'number', defaultValue: 1200 },
+      { key: 'cementCoatBagPrice', label: 'سعر شيكارة العزل الأسمنتي (ج.م)', type: 'number', defaultValue: 450 },
+      { key: 'protectionScreedPrice', label: 'سعر متر لياسة الحماية (خامات ج.م)', type: 'number', defaultValue: 30 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 65, laborUnitPrice: 45, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 },
     egyptianCodeRef: 'كود العزل المائي في المباني'
@@ -600,8 +612,11 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'pipeDiameter', label: 'مقاس الماسورة (بوصة)', type: 'select', options: ['1/4" + 1/2" (1.5 حصان)', '1/4" + 5/8" (2.25 حصان)', '3/8" + 3/4" (3 حصان)', '3/8" + 7/8" (4-5 حصان)'], defaultValue: '1/4" + 5/8" (2.25 حصان)' },
       { key: 'installationType', label: 'طريقة التركيب', type: 'select', options: ['مدفون في الحائط', 'مدفون في السقف', 'ظاهر مع تغطية'], defaultValue: 'مدفون في الحائط' },
       { key: 'drainPipe', label: 'ماسورة صرف المكثفات', type: 'select', options: ['PVC 3/4 بوصة', 'خرطوم مرن'], defaultValue: 'PVC 3/4 بوصة' },
-      { key: 'pipePrice', label: 'سعر المتر ماسورة نحاس (ج.م)', type: 'number', defaultValue: 180 },
-      { key: 'insulationPrice', label: 'سعر المتر عزل أرماكفلكس (ج.م)', type: 'number', defaultValue: 25 }
+      { key: 'copperRollLength', label: 'طول لفة النحاس (متر)', type: 'number', defaultValue: 15 },
+      { key: 'copperRollPrice', label: 'سعر لفة النحاس (ج.م)', type: 'number', defaultValue: 5500 },
+      { key: 'armaflexPrice', label: 'سعر المتر عزل أرماكفلكس (ج.م)', type: 'number', defaultValue: 35 },
+      { key: 'controlWirePrice', label: 'سعر المتر سلك كنترول (ج.م)', type: 'number', defaultValue: 15 },
+      { key: 'drainPipePrice', label: 'سعر المتر ماسورة صرف (ج.م)', type: 'number', defaultValue: 25 }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 200, laborUnitPrice: 80, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
     egyptianCodeRef: 'كود MEP المصري - أعمال التكييف',

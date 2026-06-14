@@ -326,6 +326,212 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[]): MaterialRe
 
   switch (itemId) {
     // ==========================================
+    // 1.1.3 - بناء حوائط جديدة
+    // ==========================================
+    case '1.1.3': {
+      const thickness = getSpecStr('wallThickness', '12 سم');
+      const isFullBrick = thickness.includes('25') || thickness.includes('20');
+      const bricksPerSqm = isFullBrick ? 115 : 58;
+      const cementKgPerSqm = isFullBrick ? 30 : 15;
+      const sandCubicPerSqm = isFullBrick ? 0.05 : 0.025;
+
+      const bricksPrice = getSpecNum('bricksPrice', 1500);
+      const cementBagPrice = getSpecNum('cementBagPrice', 130);
+      const sandCubicPrice = getSpecNum('sandCubicPrice', 250);
+
+      const totalBricks = qty * bricksPerSqm;
+      const bricksThousands = Math.ceil((totalBricks / 1000) * 10) / 10;
+
+      const totalCementKg = qty * cementKgPerSqm;
+      const cementBags = Math.ceil(totalCementKg / 50);
+
+      const totalSand = qty * sandCubicPerSqm;
+      const sandRounded = Math.ceil(totalSand * 2) / 2;
+
+      matList.push({
+        key: 'bricks',
+        name: `طوب بناء (${getSpecStr('brickType', 'أحمر مفرغ')})`,
+        qtyRequired: totalBricks,
+        qtyRounded: bricksThousands,
+        unit: 'ألف طوبة',
+        unitPrice: bricksPrice,
+        totalCost: bricksThousands * bricksPrice,
+        packagingDetails: `معدل الاستهلاك: ${bricksPerSqm} طوبة/م² (السمك: ${thickness})`
+      });
+
+      matList.push({
+        key: 'cement_bags',
+        name: 'أسمنت بورتلاندي عادي (شيكارة ٥٠ كجم)',
+        qtyRequired: totalCementKg / 50,
+        qtyRounded: cementBags,
+        unit: 'شكارة',
+        unitPrice: cementBagPrice,
+        totalCost: cementBags * cementBagPrice,
+        packagingDetails: `معدل الاستهلاك: ${cementKgPerSqm} كجم/م²`
+      });
+
+      matList.push({
+        key: 'sand_cubic',
+        name: 'رمل مباني',
+        qtyRequired: totalSand,
+        qtyRounded: sandRounded,
+        unit: 'م³',
+        unitPrice: sandCubicPrice,
+        totalCost: sandRounded * sandCubicPrice,
+        packagingDetails: `معدل الاستهلاك: ${sandCubicPerSqm} م³/م²`
+      });
+      break;
+    }
+
+    // ==========================================
+    // 1.2.1 & 1.2.2 - مواسير السباكة
+    // ==========================================
+    case '1.2.1':
+    case '1.2.2': {
+      const pipeLength = getSpecNum('pipeLength', 4);
+      const pipePrice = getSpecNum('pipePrice', itemId === '1.2.1' ? 450 : 180);
+      const fittingsPercent = getSpecNum('fittingsPercent', itemId === '1.2.1' ? 15 : 25);
+
+      const totalPipes = Math.ceil(qty / pipeLength);
+      const pipesCost = totalPipes * pipePrice;
+      const fittingsCost = pipesCost * (fittingsPercent / 100);
+
+      matList.push({
+        key: 'pipes',
+        name: `مواسير ${getSpecStr('material', 'PVC')} قطر ${getSpecStr('diameter', '4 بوصة')}`,
+        qtyRequired: qty,
+        qtyRounded: totalPipes,
+        unit: `ماسورة (${pipeLength}م)`,
+        unitPrice: pipePrice,
+        totalCost: pipesCost,
+        packagingDetails: `مجموع الطول: ${qty.toFixed(1)} متر طولي`
+      });
+
+      matList.push({
+        key: 'fittings',
+        name: 'إكسسوارات وقطع السباكة (أكواع، تيهات، غراء)',
+        qtyRequired: 1,
+        qtyRounded: 1,
+        unit: 'مقطوعية',
+        unitPrice: fittingsCost,
+        totalCost: fittingsCost,
+        packagingDetails: `تم تقديرها بنسبة ${fittingsPercent}% من قيمة المواسير`
+      });
+      break;
+    }
+
+    // ==========================================
+    // 1.2.5 - العزل المائي
+    // ==========================================
+    case '1.2.5': {
+      const type = getSpecStr('insulationType', 'عزل أسمنتي دهان');
+      const isMembrane = type.includes('ممبرين');
+      const coatsCount = getSpecNum('coatsCount', 2);
+      const hasProtection = getSpecStr('protectionLayer', 'مطلوب') === 'مطلوب';
+
+      if (isMembrane) {
+        const rollPrice = getSpecNum('membraneRollPrice', 1200);
+        const rolls = Math.ceil(qty / 8.5);
+        matList.push({
+          key: 'membrane_rolls',
+          name: 'لفائف ممبرين عزل مائي (10 متر)',
+          qtyRequired: qty / 8.5,
+          qtyRounded: rolls,
+          unit: 'لفة',
+          unitPrice: rollPrice,
+          totalCost: rolls * rollPrice,
+          packagingDetails: `بمعدل لفة لكل 8.5 م² صافي (بعد الركوب)`
+        });
+      } else {
+        const bagPrice = getSpecNum('cementCoatBagPrice', 450);
+        const coveragePerBag = 16 / (coatsCount || 1); 
+        const bags = Math.ceil(qty / coveragePerBag);
+        matList.push({
+          key: 'cement_insulation',
+          name: 'عزل أسمنتي مطاطي (شيكارة 20 كجم)',
+          qtyRequired: qty / coveragePerBag,
+          qtyRounded: bags,
+          unit: 'شكارة',
+          unitPrice: bagPrice,
+          totalCost: bags * bagPrice,
+          packagingDetails: `بمعدل شيكارة لكل ${coveragePerBag} م² لعدد ${coatsCount} أوجه`
+        });
+      }
+
+      if (hasProtection) {
+        const screedPrice = getSpecNum('protectionScreedPrice', 30);
+        matList.push({
+          key: 'protection_screed',
+          name: 'خامات لياسة أسمنتية لحماية العزل (سكريد)',
+          qtyRequired: qty,
+          qtyRounded: Math.ceil(qty),
+          unit: 'م²',
+          unitPrice: screedPrice,
+          totalCost: Math.ceil(qty) * screedPrice,
+          packagingDetails: 'أسمنت ورمل بطبقة 3-5 سم لحماية العزل'
+        });
+      }
+      break;
+    }
+
+    // ==========================================
+    // 3.1.1 - تأسيس مواسير النحاس (التكييف)
+    // ==========================================
+    case '3.1.1': {
+      const copperRollLength = getSpecNum('copperRollLength', 15);
+      const copperRollPrice = getSpecNum('copperRollPrice', 5500);
+      const armaflexPrice = getSpecNum('armaflexPrice', 35);
+      const controlWirePrice = getSpecNum('controlWirePrice', 15);
+      const drainPipePrice = getSpecNum('drainPipePrice', 25);
+
+      const copperRolls = Math.ceil(qty / copperRollLength);
+      
+      matList.push({
+        key: 'copper_pipes',
+        name: `مواسير نحاس تكييف مقاس ${getSpecStr('pipeDiameter', '1/4" + 5/8"')}`,
+        qtyRequired: qty / copperRollLength,
+        qtyRounded: copperRolls,
+        unit: 'لفة (15م)',
+        unitPrice: copperRollPrice,
+        totalCost: copperRolls * copperRollPrice,
+        packagingDetails: `مجموع الأطوال المطلوبة: ${qty.toFixed(1)} متر طولي`
+      });
+
+      matList.push({
+        key: 'armaflex',
+        name: 'عزل أرماكفلكس للمواسير',
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'متر',
+        unitPrice: armaflexPrice,
+        totalCost: Math.ceil(qty) * armaflexPrice,
+        packagingDetails: 'عزل حراري للنحاس'
+      });
+
+      matList.push({
+        key: 'control_wire',
+        name: 'سلك كنترول تحكم للتكييف',
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'متر',
+        unitPrice: controlWirePrice,
+        totalCost: Math.ceil(qty) * controlWirePrice,
+        packagingDetails: 'يمتد مع مواسير النحاس'
+      });
+
+      matList.push({
+        key: 'drain_pipe',
+        name: `مواسير صرف مكثفات (${getSpecStr('drainPipe', 'PVC 3/4 بوصة')})`,
+        qtyRequired: qty,
+        qtyRounded: Math.ceil(qty),
+        unit: 'متر',
+        unitPrice: drainPipePrice,
+        totalCost: Math.ceil(qty) * drainPipePrice,
+        packagingDetails: 'لتصريف مياه الوحدة الداخلية'
+      });
+      break;
+    }
+    // ==========================================
     // 1.3.1 - نقاط إنارة (سقف/حائط)
     // ==========================================
     case '1.3.1': {
