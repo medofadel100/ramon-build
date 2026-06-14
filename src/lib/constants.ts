@@ -11,6 +11,7 @@ export interface ConstantDefinition {
   supplierName?: string;
 }
 
+export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   // =====================
   // Master Material Prices (أسعار خامات مركزية)
   // =====================
