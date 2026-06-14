@@ -117,6 +117,7 @@ export interface AccountEntry {
   personId: string;
   personName: string;
   totalAgreedAmount: number;
+  retentionPercentage?: number;
   installments: PaymentInstallment[];
   notes: string;
 }

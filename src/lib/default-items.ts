@@ -175,6 +175,23 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     ],
     defaultPricing: { mode: 'lump_sum', materialUnitPrice: 0, laborUnitPrice: 0, lumpSumPrice: 600, dailyRate: 0, estimatedDays: 1 }
   },
+  {
+    id: '1.2.5',
+    sectionId: '1.2',
+    title: 'عزل مائي أرضيات وحوائط (حمامات/مطابخ)',
+    unit: 'م²',
+    quantitySource: 'calculated',
+    calculationFormula: 'total.floorArea',
+    perAreaOverride: true,
+    specs: [
+      { key: 'insulationType', label: 'نوع العزل المائي', type: 'select', options: ['لفائف ممبرين (Membrane)', 'عزل أسمنتي دهان', 'عزل بيتومين ساخن', 'كيمابوكسي (Kemapoxy)'], defaultValue: 'عزل أسمنتي دهان' },
+      { key: 'coatsCount', label: 'عدد الأوجه / الطبقات', type: 'number', defaultValue: 2 },
+      { key: 'waterTestHrs', label: 'اختبار غمر بالماء (ساعة)', type: 'number', defaultValue: 48 },
+      { key: 'protectionLayer', label: 'طبقة لياسة حماية (سكريد)', type: 'select', options: ['مطلوب', 'غير مطلوب'], defaultValue: 'مطلوب' }
+    ],
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 65, laborUnitPrice: 45, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 },
+    egyptianCodeRef: 'كود العزل المائي في المباني'
+  },
 
   // 1.3 تأسيس الكهرباء والتيار الخفيف
   {

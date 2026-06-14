@@ -25,6 +25,7 @@ export default function ProjectAccountingTab() {
   const [formPersonId, setFormPersonId] = useState('');
   const [formPersonName, setFormPersonName] = useState('');
   const [formTotalAmount, setFormTotalAmount] = useState(0);
+  const [formRetentionPercentage, setFormRetentionPercentage] = useState(0);
   const [formNotes, setFormNotes] = useState('');
 
   // Add installment form
@@ -91,7 +92,7 @@ export default function ProjectAccountingTab() {
   }
 
   const resetForm = () => {
-    setFormPersonType('supplier'); setFormPersonId(''); setFormPersonName(''); setFormTotalAmount(0); setFormNotes('');
+    setFormPersonType('supplier'); setFormPersonId(''); setFormPersonName(''); setFormTotalAmount(0); setFormRetentionPercentage(0); setFormNotes('');
     setShowAddForm(false);
   };
 
@@ -102,6 +103,7 @@ export default function ProjectAccountingTab() {
       personId: formPersonId,
       personName: formPersonName,
       totalAgreedAmount: formTotalAmount,
+      retentionPercentage: formPersonType !== 'client' ? formRetentionPercentage : 0,
       installments: [],
       notes: formNotes
     });
@@ -358,6 +360,19 @@ export default function ProjectAccountingTab() {
                 className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
               />
             </div>
+            {formPersonType !== 'client' && (
+              <div>
+                <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">استقطاع تأمين أعمال / ضمان (%)</label>
+                <div className="relative">
+                  <input
+                    type="number" value={formRetentionPercentage} onChange={(e) => setFormRetentionPercentage(Number(e.target.value))}
+                    min="0" max="100"
+                    className="w-full rounded-lg border border-[#222634] bg-[#13151c] pl-8 pr-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                  />
+                  <Percent className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
+                </div>
+              </div>
+            )}
             <div className="md:col-span-2">
               <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">ملاحظات</label>
               <input
@@ -388,7 +403,8 @@ export default function ProjectAccountingTab() {
         ) : (
           filteredAccounts.map(account => {
             const paid = account.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0);
-            const remaining = account.totalAgreedAmount - paid;
+            const retentionAmount = account.retentionPercentage ? (account.totalAgreedAmount * account.retentionPercentage) / 100 : 0;
+            const remaining = account.totalAgreedAmount - paid - retentionAmount;
             const progress = getPaymentProgress(account);
             const isExpanded = expandedAccountId === account.id;
             const hasOverdue = account.installments.some(i => !i.isPaid && new Date(i.dueDate) < new Date());
@@ -417,9 +433,16 @@ export default function ProjectAccountingTab() {
                       )}
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-slate-400">
-                        {paid.toLocaleString('ar-EG')} / {account.totalAgreedAmount.toLocaleString('ar-EG')} ج.م
-                      </span>
+                      <div className="flex flex-col text-left">
+                        <span className="text-xs text-slate-400">
+                          {paid.toLocaleString('ar-EG')} / {account.totalAgreedAmount.toLocaleString('ar-EG')} ج.م
+                        </span>
+                        {retentionAmount > 0 && (
+                          <span className="text-[10px] text-amber-500 font-bold">
+                            تأمين أعمال محتجز: {retentionAmount.toLocaleString('ar-EG')} ج.م
+                          </span>
+                        )}
+                      </div>
                       {isExpanded ? <ChevronUp className="h-4 w-4 text-slate-500" /> : <ChevronDown className="h-4 w-4 text-slate-500" />}
                     </div>
                   </div>
