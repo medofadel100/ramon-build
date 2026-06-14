@@ -1,3 +1,5 @@
+import { getDefaultConstantsMap } from './constants';
+
 export interface Zone {
   id: string;
   name: string;
@@ -117,65 +119,55 @@ export interface ItemTotalResult {
   estimatedDays: number;
 }
 
-export function calculateItemTotal(item: BOQItem, zones: Zone[]): ItemTotalResult {
-  if (!item.isActive) {
-    return { quantity: 0, materialCost: 0, laborCost: 0, total: 0, estimatedDays: 0 };
-  }
-
+export function calculateItemTotalRaw(item: BOQItem, zones: Zone[], projectConstants?: Record<string, number>): { quantity: number; estimatedDays: number } {
   let quantity = 0;
-
-  // Resolve quantity based on its source
   if (item.quantitySource === 'calculated') {
-    // If it has per-area overrides, sum up those quantities
     if (item.perAreaOverrides && Object.keys(item.perAreaOverrides).length > 0) {
       quantity = Object.values(item.perAreaOverrides).reduce((acc, curr) => acc + (curr.quantity || 0), 0);
     } else {
-      // Map standard formula types
       const formula = item.calculationFormula || '';
-      if (formula === 'total.floorArea') {
-        quantity = zones.reduce((acc, z) => acc + z.floorArea, 0);
-      } else if (formula === 'total.wallArea') {
-        quantity = zones.reduce((acc, z) => acc + z.wallArea, 0);
-      } else if (formula === 'total.ceilingArea') {
-        quantity = zones.reduce((acc, z) => acc + z.ceilingArea, 0);
-      } else if (formula === 'total.perimeter') {
-        quantity = zones.reduce((acc, z) => acc + z.perimeter, 0);
-      } else {
-        quantity = Number(item.quantity) || 0;
-      }
+      if (formula === 'total.floorArea') quantity = zones.reduce((acc, z) => acc + z.floorArea, 0);
+      else if (formula === 'total.wallArea') quantity = zones.reduce((acc, z) => acc + z.wallArea, 0);
+      else if (formula === 'total.ceilingArea') quantity = zones.reduce((acc, z) => acc + z.ceilingArea, 0);
+      else if (formula === 'total.perimeter') quantity = zones.reduce((acc, z) => acc + z.perimeter, 0);
+      else quantity = Number(item.quantity) || 0;
     }
   } else {
     quantity = Number(item.quantity) || 0;
   }
+  return { quantity, estimatedDays: Number(item.pricing.estimatedDays) || 0 };
+}
+
+export function calculateItemTotal(item: BOQItem, zones: Zone[], projectConstants?: Record<string, number>): ItemTotalResult {
+  if (!item.isActive) {
+    return { quantity: 0, materialCost: 0, laborCost: 0, total: 0, estimatedDays: 0 };
+  }
+
+  const { quantity, estimatedDays } = calculateItemTotalRaw(item, zones, projectConstants);
 
   let materialCost = 0;
   let laborCost = 0;
   let total = 0;
-  let estimatedDays = Number(item.pricing.estimatedDays) || 0;
 
-  // Check Renovation logic
   const isRenovation = item.renovationAction !== undefined;
   const isKeep = isRenovation && item.renovationAction === 'keep';
   const isRemoveOnly = isRenovation && item.renovationAction === 'remove_only';
-  const isReplace = isRenovation && item.renovationAction === 'remove_and_replace';
 
   if (isKeep) {
     return { quantity, materialCost: 0, laborCost: 0, total: 0, estimatedDays: 0 };
   }
 
   const pricing = item.pricing;
+  const materials = calculateItemMaterials(item, zones, projectConstants);
+  const hasDetailedMaterials = materials.length > 0 && !item.id.includes('_custom_') && materials[0].key !== 'general_material';
 
   if (pricing.mode === 'materials_labor_split') {
     let matUnitPrice = pricing.materialUnitPrice || 0;
     let labUnitPrice = pricing.laborUnitPrice || 0;
 
-    const materials = calculateItemMaterials(item, zones);
-    const hasDetailedMaterials = materials.length > 0 && !item.id.includes('_custom_') && materials[0].key !== 'general_material';
-
     if (isRemoveOnly) {
       materialCost = 0;
     } else if (item.customMaterials && item.customMaterials.length > 0) {
-      // User defined specific materials, sum their costs
       materialCost = item.customMaterials.reduce((sum, mat) => sum + ((mat.quantity || 0) * (mat.unitPrice || 0)), 0);
     } else if (hasDetailedMaterials) {
       materialCost = materials.reduce((sum, mat) => sum + mat.totalCost, 0);
@@ -187,20 +179,15 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[]): ItemTotalResul
     total = materialCost + laborCost;
   } else if (pricing.mode === 'lump_sum') {
     total = pricing.lumpSumPrice || 0;
-    // Split it 50/50 for internal reports if needed, or put everything in labor
     laborCost = total;
   } else if (pricing.mode === 'daily_rate') {
     const rate = pricing.dailyRate || 0;
     laborCost = rate * estimatedDays;
-
     let matUnitPrice = pricing.materialUnitPrice || 0;
-    const materials = calculateItemMaterials(item, zones);
-    const hasDetailedMaterials = materials.length > 0 && !item.id.includes('_custom_') && materials[0].key !== 'general_material';
 
     if (isRemoveOnly) {
       materialCost = 0;
     } else if (item.customMaterials && item.customMaterials.length > 0) {
-      // User defined specific materials, sum their costs
       materialCost = item.customMaterials.reduce((sum, mat) => sum + ((mat.quantity || 0) * (mat.unitPrice || 0)), 0);
     } else if (hasDetailedMaterials) {
       materialCost = materials.reduce((sum, mat) => sum + mat.totalCost, 0);
@@ -243,7 +230,8 @@ export function calculateProjectSummary(
   items: BOQItem[],
   sections: Array<{ id: string; title: string; enabled: boolean }>,
   zones: Zone[],
-  supervisionPercentage: number = 0
+  supervisionPercentage: number = 0,
+  projectConstants?: Record<string, number>
 ): ProjectSummaryResult {
   const bySection: Record<string, SectionSummary> = {};
   let grandMaterialCost = 0;
@@ -251,7 +239,6 @@ export function calculateProjectSummary(
   let grandTotal = 0;
   let totalDays = 0;
 
-  // Initialize summary map for enabled sections
   sections.forEach((sec) => {
     if (sec.enabled) {
       bySection[sec.id] = {
@@ -264,10 +251,9 @@ export function calculateProjectSummary(
     }
   });
 
-  // Aggregate costs from all active items
   items.forEach((item) => {
     if (item.isActive && bySection[item.sectionId]) {
-      const res = calculateItemTotal(item, zones);
+      const res = calculateItemTotal(item, zones, projectConstants);
       bySection[item.sectionId].materialCost += res.materialCost;
       bySection[item.sectionId].laborCost += res.laborCost;
       bySection[item.sectionId].totalCost += res.total;
@@ -304,18 +290,27 @@ export interface MaterialRequirement {
   packagingDetails: string;
 }
 
-export function calculateItemMaterials(item: BOQItem, zones: Zone[]): MaterialRequirement[] {
+export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectConstants?: Record<string, number>): MaterialRequirement[] {
   if (!item.isActive) return [];
 
-  const totalRes = calculateItemTotalRaw(item, zones);
+  const totalRes = calculateItemTotalRaw(item, zones, projectConstants);
   const qty = totalRes.quantity;
   const matList: MaterialRequirement[] = [];
   const specs = item.specs || {};
 
+  const defaultConsts = getDefaultConstantsMap();
+
+  // Helper to get constant from projectConstants -> specs -> defaults -> fallback
+  const getConst = (key: string, def: number): number => {
+    if (projectConstants && projectConstants[key] !== undefined) return projectConstants[key];
+    if (specs[key] !== undefined) return Number(specs[key]);
+    if (defaultConsts[key] !== undefined) return defaultConsts[key];
+    return def;
+  };
+
   // Helper to get spec value with fallback
   const getSpecNum = (key: string, def: number): number => {
-    const val = specs[key];
-    return val !== undefined ? Number(val) : def;
+    return getConst(key, def); // Redirect to getConst for backwards compatibility
   };
   const getSpecStr = (key: string, def: string): string => {
     const val = specs[key];
@@ -331,13 +326,13 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[]): MaterialRe
     case '1.1.3': {
       const thickness = getSpecStr('wallThickness', '12 سم');
       const isFullBrick = thickness.includes('25') || thickness.includes('20');
-      const bricksPerSqm = isFullBrick ? 115 : 58;
-      const cementKgPerSqm = isFullBrick ? 30 : 15;
+      const bricksPerSqm = isFullBrick ? getConst('rate_bricks_per_sqm_full', 115) : getConst('rate_bricks_per_sqm_half', 58);
+      const cementKgPerSqm = getConst('rate_cement_kg_per_sqm_masonry', 15) * (isFullBrick ? 2 : 1);
       const sandCubicPerSqm = isFullBrick ? 0.05 : 0.025;
 
-      const bricksPrice = getSpecNum('bricksPrice', 1500);
-      const cementBagPrice = getSpecNum('cementBagPrice', 130);
-      const sandCubicPrice = getSpecNum('sandCubicPrice', 250);
+      const bricksPrice = getConst('price_brick_1000', 1500);
+      const cementBagPrice = getConst('price_cement_bag', 130);
+      const sandCubicPrice = getConst('price_sand_m3', 250);
 
       const totalBricks = qty * bricksPerSqm;
       const bricksThousands = Math.ceil((totalBricks / 1000) * 10) / 10;
@@ -430,21 +425,23 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[]): MaterialRe
       const hasProtection = getSpecStr('protectionLayer', 'مطلوب') === 'مطلوب';
 
       if (isMembrane) {
-        const rollPrice = getSpecNum('membraneRollPrice', 1200);
-        const rolls = Math.ceil(qty / 8.5);
+        const rollPrice = getConst('price_membrane_roll', 1200);
+        const netRoll = getConst('rate_membrane_net_sqm', 8.5);
+        const rolls = Math.ceil(qty / netRoll);
         matList.push({
           key: 'membrane_rolls',
           name: 'لفائف ممبرين عزل مائي (10 متر)',
-          qtyRequired: qty / 8.5,
+          qtyRequired: qty / netRoll,
           qtyRounded: rolls,
           unit: 'لفة',
           unitPrice: rollPrice,
           totalCost: rolls * rollPrice,
-          packagingDetails: `بمعدل لفة لكل 8.5 م² صافي (بعد الركوب)`
+          packagingDetails: `بمعدل لفة لكل ${netRoll} م² صافي (بعد الركوب)`
         });
       } else {
-        const bagPrice = getSpecNum('cementCoatBagPrice', 450);
-        const coveragePerBag = 16 / (coatsCount || 1); 
+        const bagPrice = getConst('price_cement_insulation_bag', 450);
+        const sqmPerBag = getConst('rate_cement_insulation_sqm_per_bag', 8);
+        const coveragePerBag = sqmPerBag / (coatsCount || 1); 
         const bags = Math.ceil(qty / coveragePerBag);
         matList.push({
           key: 'cement_insulation',
@@ -478,11 +475,11 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[]): MaterialRe
     // 3.1.1 - تأسيس مواسير النحاس (التكييف)
     // ==========================================
     case '3.1.1': {
-      const copperRollLength = getSpecNum('copperRollLength', 15);
-      const copperRollPrice = getSpecNum('copperRollPrice', 5500);
-      const armaflexPrice = getSpecNum('armaflexPrice', 35);
-      const controlWirePrice = getSpecNum('controlWirePrice', 15);
-      const drainPipePrice = getSpecNum('drainPipePrice', 25);
+      const copperRollLength = getConst('copperRollLength', 15);
+      const copperRollPrice = getConst('price_copper_roll_15m', 5500);
+      const armaflexPrice = getConst('price_armaflex_m', 35);
+      const controlWirePrice = getConst('controlWirePrice', 15);
+      const drainPipePrice = getConst('drainPipePrice', 25);
 
       const copperRolls = Math.ceil(qty / copperRollLength);
       

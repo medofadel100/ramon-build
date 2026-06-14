@@ -23,7 +23,8 @@ import {
   dbAddAccount,
   dbUpdateAccount,
   dbDeleteAccount,
-  deleteProject
+  deleteProject,
+  dbUpdateProjectConstants
 } from '@/lib/project-service';
 import { Zone, BOQItem, calculateWallArea } from '@/lib/calculations';
 
@@ -39,6 +40,9 @@ interface ProjectState {
   // Header operations
   updateHeader: (headerUpdates: Partial<ProjectHeader>) => Promise<void>;
   
+  // Project-wide operations
+  updateProject: (updates: Partial<ProjectData>) => Promise<void>;
+
   // Sharing operations
   updateSharing: (settings: { showPrices: boolean; showDetailedPricing: boolean }) => Promise<void>;
 
@@ -135,6 +139,30 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       set({ saving: false });
     } catch (err: any) {
       console.error('Failed to save sharing updates:', err);
+      set({ saving: false });
+    }
+  },
+
+  updateProject: async (updates: Partial<ProjectData>) => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    set({
+      currentProject: {
+        ...currentProject,
+        ...updates
+      },
+      saving: true
+    });
+
+    try {
+      if (updates.projectConstants) {
+        await dbUpdateProjectConstants(currentProject.id, updates.projectConstants);
+      }
+      // Add other partial updates here if needed
+      set({ saving: false });
+    } catch (err: any) {
+      console.error('Failed to update project:', err);
       set({ saving: false });
     }
   },

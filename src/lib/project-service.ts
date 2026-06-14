@@ -134,6 +134,7 @@ export interface ProjectData {
   workers?: Worker[];
   accounts?: AccountEntry[];
   attachments?: Attachment[];
+  projectConstants?: Record<string, number>;
 }
 
 // ==========================================
@@ -374,7 +375,8 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
     suppliers,
     workers,
     accounts,
-    attachments: pData.attachments || []
+    attachments: pData.attachments || [],
+    projectConstants: pData.projectConstants || {}
   };
 }
 
@@ -626,4 +628,13 @@ export async function deleteProject(projectId: string): Promise<void> {
 
   // Delete the project document itself
   await deleteDoc(doc(db, 'projects', projectId));
+}
+// 13. Update Constants
+// ==========================================
+export async function dbUpdateProjectConstants(projectId: string, constants: Record<string, number>): Promise<void> {
+  const projectRef = doc(db, 'projects', projectId);
+  await updateDoc(projectRef, {
+    projectConstants: constants,
+    updatedAt: serverTimestamp()
+  });
 }
