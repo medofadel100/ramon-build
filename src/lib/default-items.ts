@@ -257,7 +257,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     specs: [
       { key: 'linesCount', label: 'عدد الخطوط', type: 'select', options: ['12 خط', '18 خط', '24 خط', '36 خط'], defaultValue: '24 خط' },
       { key: 'breakerBrand', label: 'ماركة المفاتيح', type: 'select', options: ['شنايدر Schneider', 'هاجر Hager', 'ليجراند Legrand'], defaultValue: 'شنايدر Schneider' },
-      { key: 'boardPrice', label: 'نوع لوحة التوزيع', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_db_12_way' },
+      { key: 'boardPrice', label: 'نوع لوحة التوزيع', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_db_12_way_venus' },
       { key: 'breakersCount', label: 'عدد القواطع المعبأة', type: 'number', defaultValue: 24 },
       { key: 'breakerPrice', label: 'سعر القاطع الأوتوماتيك (ج.م)', type: 'number', defaultValue: 250 }
     ],

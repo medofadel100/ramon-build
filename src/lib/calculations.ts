@@ -694,7 +694,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     // 1.3.3 - لوحة التوزيع الرئيسية ومفاتيح الأمان
     // ==========================================
     case '1.3.3': {
-      const boardPrice = getMaterialPrice('boardPrice', 'price_db_12_way', 1200);
+      const boardPrice = getMaterialPrice('boardPrice', 'price_db_12_way_venus', 1200);
       const breakersCount = getSpecNum('breakersCount', 24);
       const breakerPrice = getSpecNum('breakerPrice', 250);
 
