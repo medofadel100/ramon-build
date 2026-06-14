@@ -394,7 +394,10 @@ export default function ProjectHeaderTab() {
         <div className="rounded-xl border border-rose-900/30 bg-rose-950/10 p-6 shadow-xl mt-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h3 className="text-lg font-bold text-rose-500">منطقة الخطر (Danger Zone)</h3>
+              <h3 className="text-lg font-bold text-rose-500">
+                منطقة الخطر (Danger Zone) 
+                <span className="text-sm font-normal text-rose-400 mr-2 opacity-80">- اوعى تدوس هنا يا عزازي ابوس ايدك 😂</span>
+              </h3>
               <p className="text-xs text-slate-400 mt-1">حذف المشروع سيؤدي إلى مسح جميع البيانات المتعلقة به بشكل نهائي (الأسعار، الحصر، الموردين، إلخ).</p>
             </div>
             <button
