@@ -196,7 +196,9 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
       { key: 'coatsCount', label: 'عدد الأوجه / الطبقات', type: 'number', defaultValue: 2 },
       { key: 'waterTestHrs', label: 'اختبار غمر بالماء (ساعة)', type: 'number', defaultValue: 48 },
       { key: 'protectionLayer', label: 'طبقة لياسة حماية (سكريد)', type: 'select', options: ['مطلوب', 'غير مطلوب'], defaultValue: 'مطلوب' },
+      { key: 'membraneNetRollSqm', label: 'تغطية لفة الممبرين (م² صافي)', type: 'number', defaultValue: 8.5 },
       { key: 'membraneRollPrice', label: 'نوع الممبرين', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_membrane_roll' },
+      { key: 'sqmPerBag', label: 'معدل فرد العزل الأسمنتي (م²/شيكارة)', type: 'number', defaultValue: 8 },
       { key: 'cementCoatBagPrice', label: 'نوع العزل الأسمنتي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'plumbing', defaultValue: 'price_cement_insulation_bag' },
       { key: 'protectionScreedPrice', label: 'سعر متر لياسة الحماية (خامات ج.م)', type: 'number', defaultValue: 30 }
     ],
@@ -512,6 +514,7 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     perAreaOverride: true,
     specs: [
       { key: 'stripMaterial', label: 'شريط الليد', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_lighting', defaultValue: 'price_led_strip_m' },
+      { key: 'stripRollLength', label: 'طول لفة الليد (لو السعر للفة)', type: 'number', defaultValue: 0 },
       { key: 'driverBrand', label: 'ماركة المحول (Driver)', type: 'select', options: ['مين ويل Mean Well الأصلي', 'محول صيني تجاري'], defaultValue: 'مين ويل Mean Well الأصلي' }
     ],
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 60, laborUnitPrice: 20, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }

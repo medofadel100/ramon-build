@@ -443,7 +443,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
 
       if (isMembrane) {
         const rollPrice = getMaterialPrice('membraneRollPrice', 'price_membrane_roll', 1200);
-        const netRoll = getConst('rate_membrane_net_sqm', 8.5);
+        const netRoll = getSpecNum('membraneNetRollSqm', 8.5);
         const rolls = Math.ceil(qty / netRoll);
         matList.push({
           key: 'membrane_rolls',
@@ -457,7 +457,7 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
         });
       } else {
         const bagPrice = getMaterialPrice('cementCoatBagPrice', 'price_cement_insulation_bag', 450);
-        const sqmPerBag = getConst('rate_cement_insulation_sqm_per_bag', 8);
+        const sqmPerBag = getSpecNum('sqmPerBag', 8);
         const coveragePerBag = sqmPerBag / (coatsCount || 1); 
         const bags = Math.ceil(qty / coveragePerBag);
         matList.push({
@@ -492,11 +492,11 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     // 3.1.1 - تأسيس مواسير النحاس (التكييف)
     // ==========================================
     case '3.1.1': {
-      const copperRollLength = getConst('copperRollLength', 15);
-      const copperRollPrice = getConst('price_copper_roll_15m', 5500);
-      const armaflexPrice = getConst('price_armaflex_m', 35);
-      const controlWirePrice = getConst('controlWirePrice', 15);
-      const drainPipePrice = getConst('drainPipePrice', 25);
+      const copperRollLength = getSpecNum('copperRollLength', 15);
+      const copperRollPrice = getMaterialPrice('copperRollPrice', 'price_copper_roll_5_8', 5500);
+      const armaflexPrice = getMaterialPrice('armaflexPrice', 'price_armaflex_m', 35);
+      const controlWirePrice = getMaterialPrice('controlWirePrice', 'price_control_wire_m', 15);
+      const drainPipePrice = getMaterialPrice('drainPipePrice', 'price_drain_pipe_m', 25);
 
       const copperRolls = Math.ceil(qty / copperRollLength);
       
@@ -1313,15 +1313,27 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     }
     case '2.8.3': {
       const stripMaterialPrice = getMaterialPrice('stripMaterial', 'price_led_strip_m', 45);
+      const stripRollLength = getSpecNum('stripRollLength', 0);
+      
+      let calcQty = qty;
+      let unit = 'متر طولي';
+      let details = `شريط ليد مع الوصلات`;
+      
+      if (stripRollLength > 0) {
+        calcQty = Math.ceil(qty / stripRollLength);
+        unit = 'لفة';
+        details = `اللفة ${stripRollLength} متر`;
+      }
+
       matList.push({
         key: 'led_strips',
         name: `شرائط الإضاءة المخفية LED`,
         qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'متر طولي',
+        qtyRounded: calcQty,
+        unit: unit,
         unitPrice: stripMaterialPrice,
-        totalCost: Math.ceil(qty) * stripMaterialPrice,
-        packagingDetails: `شريط ليد مع الوصلات`
+        totalCost: Math.ceil(calcQty) * stripMaterialPrice,
+        packagingDetails: details
       });
       break;
     }
