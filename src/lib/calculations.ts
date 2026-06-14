@@ -42,6 +42,8 @@ export interface BOQItem {
     unit: string;
     quantity: number;
     unitPrice: number;
+    constantKey?: string;
+    multiplier?: number;
   }[];
 }
 
@@ -1083,8 +1085,24 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       break;
   }
 
-  // Fallback for any other item using materials_labor_split
-  if (item.pricing.mode === 'materials_labor_split' && matList.length === 0) {
+  // Add User-defined Custom Materials (if any)
+  if (item.customMaterials && item.customMaterials.length > 0) {
+    item.customMaterials.forEach(cmat => {
+      // If a multiplier is set, the quantity is dynamic based on item quantity
+      const calcQty = cmat.multiplier ? qty * cmat.multiplier : cmat.quantity;
+      matList.push({
+        key: cmat.id,
+        name: cmat.name,
+        qtyRequired: calcQty,
+        qtyRounded: Math.ceil(calcQty),
+        unit: cmat.unit,
+        unitPrice: cmat.unitPrice,
+        totalCost: Math.ceil(calcQty) * cmat.unitPrice,
+        packagingDetails: cmat.multiplier ? `الكمية بناءً على نسبة (${cmat.multiplier}) من إجمالي البند` : 'كمية مخصصة'
+      });
+    });
+  } else if (item.pricing.mode === 'materials_labor_split' && matList.length === 0) {
+    // Fallback for any other item using materials_labor_split
     matList.push({
       key: 'general_material',
       name: `مواد ومستلزمات: ${item.title}`,

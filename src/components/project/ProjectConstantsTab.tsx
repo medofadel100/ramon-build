@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { DEFAULT_CONSTANTS, ConstantDefinition } from '@/lib/constants';
-import { Save, RefreshCw, AlertTriangle, Plus, X } from 'lucide-react';
+import { dbUpdateMasterConstants } from '@/lib/project-service';
+import { Save, RefreshCw, AlertTriangle, Plus, X, Globe, FileText } from 'lucide-react';
 
 export default function ProjectConstantsTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
@@ -20,6 +21,7 @@ export default function ProjectConstantsTab() {
   );
 
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showSaveOptionsModal, setShowSaveOptionsModal] = useState(false);
   const [newConst, setNewConst] = useState<Partial<ConstantDefinition> & { value: number }>({
     key: '',
     label: '',
@@ -50,15 +52,38 @@ export default function ProjectConstantsTab() {
     });
   };
 
-  const handleSave = async () => {
+  const handleSaveInit = () => {
     if (!canEdit) return;
+    if (user?.role === 'admin') {
+      setShowSaveOptionsModal(true);
+    } else {
+      handleSave('project_only');
+    }
+  };
+
+  const handleSave = async (scope: 'project_only' | 'global') => {
     setIsSaving(true);
+    setShowSaveOptionsModal(false);
     try {
       await updateProject({
         projectConstants: localConstants,
         customConstantsDefinitions: localDefinitions
       });
-      // Optionally show a success toast here
+
+      if (scope === 'global' && user?.role === 'admin') {
+        // Merge definitions and constants into a new global master list
+        const mergedDefs = [...DEFAULT_CONSTANTS, ...localDefinitions].map(c => {
+          return {
+            ...c,
+            defaultValue: localConstants[c.key] !== undefined ? localConstants[c.key] : c.defaultValue
+          };
+        });
+        await dbUpdateMasterConstants(mergedDefs);
+        alert('تم تحديث الكتالوج العالمي بنجاح. أي مشروع جديد سيعتمد هذه الأسعار.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('حدث خطأ أثناء الحفظ');
     } finally {
       setIsSaving(false);
     }
@@ -180,7 +205,7 @@ export default function ProjectConstantsTab() {
               إضافة خامة / معدل جديد
             </button>
             <button
-              onClick={handleSave}
+              onClick={handleSaveInit}
               disabled={isSaving}
               className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50"
             >
@@ -312,6 +337,57 @@ export default function ProjectConstantsTab() {
                   className="w-full py-3 rounded-xl bg-[#c5a880] text-[#0d0e12] font-bold shadow hover:brightness-110 transition disabled:opacity-50"
                 >
                   إضافة الخامة
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Save Options Modal */}
+      {showSaveOptionsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="bg-[#13151c] border border-[#222634] rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-5 border-b border-[#222634] bg-[#1a1c24]">
+              <h3 className="text-lg font-bold text-white">نطاق حفظ التعديلات</h3>
+              <button 
+                onClick={() => setShowSaveOptionsModal(false)}
+                className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                أنت على وشك حفظ تعديلات في أسعار وخامات المشروع. هل تريد أن يقتصر هذا التعديل على هذا المشروع فقط، أم تريد اعتماده كأسعار قياسية جديدة لكل المشاريع القادمة؟
+              </p>
+
+              <div className="grid grid-cols-1 gap-3">
+                <button
+                  onClick={() => handleSave('project_only')}
+                  className="flex items-center gap-4 p-4 rounded-xl border border-[#222634] bg-[#1a1c24] hover:bg-slate-800 transition text-right"
+                >
+                  <div className="p-3 bg-blue-900/20 text-blue-400 rounded-lg shrink-0">
+                    <FileText className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">للمشروع الحالي فقط</h4>
+                    <p className="text-xs text-slate-400 mt-1">المشاريع الأخرى والجديدة لن تتأثر بهذه التعديلات.</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleSave('global')}
+                  className="flex items-center gap-4 p-4 rounded-xl border border-[#c5a880]/30 bg-amber-950/10 hover:bg-amber-950/30 transition text-right"
+                >
+                  <div className="p-3 bg-amber-900/30 text-[#c5a880] rounded-lg shrink-0">
+                    <Globe className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-[#c5a880]">تحديث الكتالوج العالمي</h4>
+                    <p className="text-xs text-slate-400 mt-1">سيتم تعميم هذه الأسعار والخامات لتكون الافتراضية لأي مشروع جديد.</p>
+                  </div>
                 </button>
               </div>
             </div>

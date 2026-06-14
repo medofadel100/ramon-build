@@ -91,7 +91,18 @@ export default function Navbar() {
                 >
                   <span className="flex items-center gap-1.5">
                     <Database className="h-4 w-4" />
-                    قائمة الأسعار
+                    مصنعيات البنود
+                  </span>
+                </Link>
+                <Link 
+                  href="/admin/constants" 
+                  className={`px-3 py-1.5 rounded-lg transition ${
+                    isActive('/admin/constants') ? 'bg-[#c5a880]/15 text-[#c5a880]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <BookOpen className="h-4 w-4" />
+                    الكتالوج المركزي
                   </span>
                 </Link>
                 <Link 

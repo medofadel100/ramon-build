@@ -78,10 +78,6 @@ export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   { key: 'rate_grout_sqm_per_bag', label: 'معدل سقية الفواصل (متر مربع لكيس الترويبة)', group: 'rates', subgroup: 'flooring', defaultValue: 15, unit: 'م²' },
   { key: 'rate_wastage_percent_tiles', label: 'نسبة هالك السيراميك القياسية', group: 'rates', subgroup: 'flooring', defaultValue: 10, unit: '%' },
 
-  // Electrical
-  { key: 'rate_wire_m_per_light_point', label: 'أمتار سلك 1.5 مم لنقطة الإنارة', group: 'rates', subgroup: 'electrical', defaultValue: 10, unit: 'متر' },
-  { key: 'rate_wire_m_per_socket_point', label: 'أمتار سلك 2.5 مم لنقطة البريزة', group: 'rates', subgroup: 'electrical', defaultValue: 15, unit: 'متر' },
-  
   // Plumbing
   { key: 'rate_membrane_net_sqm', label: 'الصافي الفعلي للفة الممبرين (بعد الركوب)', group: 'rates', subgroup: 'plumbing', defaultValue: 8.5, unit: 'م²' },
   { key: 'rate_cement_insulation_sqm_per_bag', label: 'فرد العزل الأسمنتي للوجهين (متر للشيكارة)', group: 'rates', subgroup: 'plumbing', defaultValue: 8, unit: 'م²' }

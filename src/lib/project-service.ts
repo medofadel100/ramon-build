@@ -11,13 +11,14 @@ import {
   orderBy, 
   limit, 
   writeBatch,
-  serverTimestamp
+  serverTimestamp,
+  addDoc
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { DEFAULT_SECTIONS, DEFAULT_ITEMS } from './default-items';
 import { Zone, BOQItem } from './calculations';
 import { Attachment } from '@/components/project/ProjectAttachmentsTab';
-import { ConstantDefinition } from './constants';
+import { ConstantDefinition, DEFAULT_CONSTANTS } from './constants';
 
 export function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return 'غير متوفر';
@@ -175,6 +176,20 @@ export async function generateProjectCode(): Promise<string> {
 }
 
 // ==========================================
+// Master Constants
+// ==========================================
+export async function dbGetMasterConstants(): Promise<ConstantDefinition[]> {
+  const docRef = doc(db, 'settings', 'masterConstants');
+  const snap = await getDoc(docRef);
+  return snap.exists() ? (snap.data().constants as ConstantDefinition[]) : DEFAULT_CONSTANTS;
+}
+
+export async function dbUpdateMasterConstants(constants: ConstantDefinition[]): Promise<void> {
+  const docRef = doc(db, 'settings', 'masterConstants');
+  await setDoc(docRef, { constants });
+}
+
+// ==========================================
 // 1. Create a Project and Seed all Templates
 // ==========================================
 export async function createProject(
@@ -188,6 +203,7 @@ export async function createProject(
 ): Promise<string> {
   const projectId = doc(collection(db, 'projects')).id;
   const projectCode = await generateProjectCode();
+  const masterConsts = await dbGetMasterConstants();
   
   const header: ProjectHeader = {
     ...headerInput,
@@ -211,6 +227,11 @@ export async function createProject(
   const clientShareToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   const clientShareSettings = { showPrices: true, showDetailedPricing: true };
 
+  const projectConstantsMap: Record<string, number> = {};
+  masterConsts.forEach(c => {
+    projectConstantsMap[c.key] = c.defaultValue;
+  });
+
   // 1. Write Project document
   const projectDocRef = doc(db, 'projects', projectId);
   await setDoc(projectDocRef, {
@@ -218,6 +239,8 @@ export async function createProject(
     header,
     clientShareToken,
     clientShareSettings,
+    projectConstants: projectConstantsMap,
+    customConstantsDefinitions: masterConsts.filter(c => !DEFAULT_CONSTANTS.find(dc => dc.key === c.key)),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   });

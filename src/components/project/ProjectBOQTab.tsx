@@ -5,6 +5,7 @@ import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { calculateItemTotal, calculateItemMaterials, BOQItem, Zone } from '@/lib/calculations';
 import { DEFAULT_ITEMS, ItemTemplate } from '@/lib/default-items';
+import { DEFAULT_CONSTANTS } from '@/lib/constants';
 import { 
   ChevronDown, ChevronUp, CheckSquare, Square, ToggleLeft, ToggleRight, 
   Plus, Trash2, Edit2, Settings, FileText, CheckCircle2, MessageSquare, ShieldAlert,
@@ -28,6 +29,9 @@ export default function ProjectBOQTab() {
   const [targetSectionId, setTargetSectionId] = useState('');
   const [customTitle, setCustomTitle] = useState('');
   const [customUnit, setCustomUnit] = useState('م²');
+
+  // Constants mapping
+  const allMaterials = [...DEFAULT_CONSTANTS, ...(currentProject?.customConstantsDefinitions || [])].filter(c => c.group === 'materials');
 
   if (!currentProject) return null;
 
@@ -165,16 +169,18 @@ export default function ProjectBOQTab() {
   // Custom Materials logic
   const handleAddCustomMaterial = async (item: BOQItem) => {
     const customMaterials = item.customMaterials || [];
-    const newMaterial = {
-      id: Math.random().toString(36).substring(7),
+    const newMat = {
+      id: `mat_${Date.now()}`,
       name: '',
-      unit: 'قطعة',
+      unit: '',
       quantity: 1,
-      unitPrice: 0
+      unitPrice: 0,
+      constantKey: '',
+      multiplier: 0
     };
     await updateItem({
       ...item,
-      customMaterials: [...customMaterials, newMaterial]
+      customMaterials: [...customMaterials, newMat]
     });
   };
 
@@ -756,9 +762,9 @@ export default function ProjectBOQTab() {
                                           <table className="w-full text-right text-[10px] font-medium border-collapse">
                                             <thead>
                                               <tr className="text-slate-400 border-b border-[#222634]/60 pb-2 font-bold">
-                                                <th className="pb-2 text-right">الخامة / التوصيف</th>
+                                                <th className="pb-2 text-right">الخامة من الكتالوج المركزي</th>
+                                                <th className="pb-2 text-center w-24">الكمية / النسبة</th>
                                                 <th className="pb-2 text-center w-20">الوحدة</th>
-                                                <th className="pb-2 text-center w-20">الكمية</th>
                                                 <th className="pb-2 text-center w-24">سعر الوحدة</th>
                                                 <th className="pb-2 text-center w-24">الإجمالي</th>
                                                 <th className="pb-2 w-10"></th>
@@ -768,45 +774,89 @@ export default function ProjectBOQTab() {
                                               {item.customMaterials.map((mat) => (
                                                 <tr key={mat.id} className="hover:bg-slate-900/10 transition">
                                                   <td className="py-2 pr-1">
-                                                    <input
-                                                      type="text"
+                                                    <select
                                                       disabled={!canEdit}
-                                                      value={mat.name}
-                                                      placeholder="اسم الخامة (مثال: قاطع 20A)"
-                                                      onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { name: e.target.value })}
-                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-xs text-white focus:outline-none"
-                                                    />
+                                                      value={mat.constantKey || ''}
+                                                      onChange={(e) => {
+                                                        const key = e.target.value;
+                                                        if (!key) {
+                                                          handleUpdateCustomMaterial(item, mat.id, { constantKey: '', name: '', unit: '', unitPrice: 0 });
+                                                          return;
+                                                        }
+                                                        const constDef = allMaterials.find(c => c.key === key);
+                                                        if (constDef) {
+                                                          const pPrice = projectConstantsMap[key] !== undefined ? projectConstantsMap[key] : constDef.defaultValue;
+                                                          handleUpdateCustomMaterial(item, mat.id, { 
+                                                            constantKey: key, 
+                                                            name: constDef.label, 
+                                                            unit: constDef.unit, 
+                                                            unitPrice: pPrice 
+                                                          });
+                                                        }
+                                                      }}
+                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1.5 text-xs text-white focus:outline-none"
+                                                    >
+                                                      <option value="">-- اختر خامة من الكتالوج --</option>
+                                                      {allMaterials.map(m => (
+                                                        <option key={m.key} value={m.key}>{m.label}</option>
+                                                      ))}
+                                                    </select>
+                                                    {!mat.constantKey && (
+                                                      <input
+                                                        type="text"
+                                                        disabled={!canEdit}
+                                                        value={mat.name}
+                                                        placeholder="أو اكتب اسم خامة خارجية يدوياً"
+                                                        onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { name: e.target.value })}
+                                                        className="w-full mt-1 bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-xs text-white focus:outline-none"
+                                                      />
+                                                    )}
+                                                  </td>
+                                                  <td className="py-2 px-1">
+                                                    <div className="flex flex-col gap-1">
+                                                      <input
+                                                        type="number"
+                                                        disabled={!canEdit}
+                                                        value={mat.multiplier || ''}
+                                                        placeholder={`نسبة (من ${item.quantity || 0})`}
+                                                        title="استخدم هذه الخانة لربط الكمية بإجمالي كمية البند"
+                                                        onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { multiplier: parseFloat(e.target.value) || 0, quantity: 0 })}
+                                                        className="w-full bg-[#1a1c24] border border-[#c5a880]/30 rounded px-2 py-1 text-center text-[10px] text-amber-200 placeholder:text-[#c5a880]/50 focus:outline-none"
+                                                      />
+                                                      <input
+                                                        type="number"
+                                                        disabled={!canEdit || mat.multiplier > 0}
+                                                        value={mat.quantity || ''}
+                                                        placeholder="رقم ثابت"
+                                                        onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { quantity: parseFloat(e.target.value) || 0, multiplier: 0 })}
+                                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:outline-none disabled:opacity-30"
+                                                      />
+                                                    </div>
                                                   </td>
                                                   <td className="py-2 px-1">
                                                     <input
                                                       type="text"
-                                                      disabled={!canEdit}
+                                                      disabled={!canEdit || !!mat.constantKey}
                                                       value={mat.unit}
-                                                      placeholder="قطعة/لفة"
+                                                      placeholder="الوحدة"
                                                       onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unit: e.target.value })}
-                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-2 text-center text-xs text-slate-400 focus:outline-none disabled:bg-[#13151c]"
                                                     />
                                                   </td>
                                                   <td className="py-2 px-1">
                                                     <input
                                                       type="number"
-                                                      disabled={!canEdit}
-                                                      value={mat.quantity}
-                                                      onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { quantity: parseFloat(e.target.value) || 0 })}
-                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:outline-none"
-                                                    />
-                                                  </td>
-                                                  <td className="py-2 px-1">
-                                                    <input
-                                                      type="number"
-                                                      disabled={!canEdit}
+                                                      disabled={!canEdit || !!mat.constantKey}
                                                       value={mat.unitPrice}
                                                       onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unitPrice: parseFloat(e.target.value) || 0 })}
-                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-2 text-center text-xs text-white focus:outline-none disabled:bg-[#13151c]"
                                                     />
                                                   </td>
                                                   <td className="py-2 pl-1 text-center font-bold text-[#c5a880]">
-                                                    {((mat.quantity || 0) * (mat.unitPrice || 0)).toLocaleString()} ج.م
+                                                    {(() => {
+                                                      const calcQty = mat.multiplier ? (item.quantity || 0) * mat.multiplier : (mat.quantity || 0);
+                                                      return (calcQty * (mat.unitPrice || 0)).toLocaleString();
+                                                    })()} ج.م
                                                   </td>
                                                   <td className="py-2 text-center">
                                                     {canEdit && (
