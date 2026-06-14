@@ -826,7 +826,7 @@ export default function ProjectBOQTab() {
                                                       />
                                                       <input
                                                         type="number"
-                                                        disabled={!canEdit || mat.multiplier > 0}
+                                                        disabled={!canEdit || (mat.multiplier || 0) > 0}
                                                         value={mat.quantity || ''}
                                                         placeholder="رقم ثابت"
                                                         onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { quantity: parseFloat(e.target.value) || 0, multiplier: 0 })}
