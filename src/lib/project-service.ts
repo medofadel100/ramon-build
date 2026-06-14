@@ -181,7 +181,13 @@ export async function generateProjectCode(): Promise<string> {
 export async function dbGetMasterConstants(): Promise<ConstantDefinition[]> {
   const docRef = doc(db, 'settings', 'masterConstants');
   const snap = await getDoc(docRef);
-  return snap.exists() ? (snap.data().constants as ConstantDefinition[]) : DEFAULT_CONSTANTS;
+  if (!snap.exists()) return DEFAULT_CONSTANTS;
+  
+  const dbConsts = snap.data().constants as ConstantDefinition[];
+  const dbKeys = new Set(dbConsts.map(c => c.key));
+  const newDefaults = DEFAULT_CONSTANTS.filter(c => !dbKeys.has(c.key));
+  
+  return [...dbConsts, ...newDefaults];
 }
 
 export async function dbUpdateMasterConstants(constants: ConstantDefinition[]): Promise<void> {
