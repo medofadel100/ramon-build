@@ -34,6 +34,13 @@ export interface BOQItem {
   egyptianCodeRef: string;
   isActive: boolean;
   quantity?: number;
+  customMaterials?: {
+    id: string;
+    name: string;
+    unit: string;
+    quantity: number;
+    unitPrice: number;
+  }[];
 }
 
 // 1. Calculate Wall Area
@@ -167,6 +174,9 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[]): ItemTotalResul
 
     if (isRemoveOnly) {
       materialCost = 0;
+    } else if (item.customMaterials && item.customMaterials.length > 0) {
+      // User defined specific materials, sum their costs
+      materialCost = item.customMaterials.reduce((sum, mat) => sum + ((mat.quantity || 0) * (mat.unitPrice || 0)), 0);
     } else if (hasDetailedMaterials) {
       materialCost = materials.reduce((sum, mat) => sum + mat.totalCost, 0);
     } else {
@@ -189,6 +199,9 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[]): ItemTotalResul
 
     if (isRemoveOnly) {
       materialCost = 0;
+    } else if (item.customMaterials && item.customMaterials.length > 0) {
+      // User defined specific materials, sum their costs
+      materialCost = item.customMaterials.reduce((sum, mat) => sum + ((mat.quantity || 0) * (mat.unitPrice || 0)), 0);
     } else if (hasDetailedMaterials) {
       materialCost = materials.reduce((sum, mat) => sum + mat.totalCost, 0);
     } else {

@@ -162,6 +162,40 @@ export default function ProjectBOQTab() {
     });
   };
 
+  // Custom Materials logic
+  const handleAddCustomMaterial = async (item: BOQItem) => {
+    const customMaterials = item.customMaterials || [];
+    const newMaterial = {
+      id: Math.random().toString(36).substring(7),
+      name: '',
+      unit: 'قطعة',
+      quantity: 1,
+      unitPrice: 0
+    };
+    await updateItem({
+      ...item,
+      customMaterials: [...customMaterials, newMaterial]
+    });
+  };
+
+  const handleUpdateCustomMaterial = async (item: BOQItem, matId: string, updates: any) => {
+    const customMaterials = item.customMaterials || [];
+    const updated = customMaterials.map(mat => mat.id === matId ? { ...mat, ...updates } : mat);
+    await updateItem({
+      ...item,
+      customMaterials: updated
+    });
+  };
+
+  const handleDeleteCustomMaterial = async (item: BOQItem, matId: string) => {
+    const customMaterials = item.customMaterials || [];
+    const updated = customMaterials.filter(mat => mat.id !== matId);
+    await updateItem({
+      ...item,
+      customMaterials: updated
+    });
+  };
+
   // Section cost calculation
   const getSectionTotal = (sectionId: string) => {
     const secItems = currentProject.items.filter(it => it.sectionId === sectionId);
@@ -698,6 +732,102 @@ export default function ProjectBOQTab() {
                                       <span>المدة المقدرة للجدول الزمني: {itemResult.estimatedDays} أيام عمل متواصلة.</span>
                                     </div>
                                   </div>
+
+                                  {/* Custom Materials Editor */}
+                                  {(item.pricing.mode === 'materials_labor_split' || item.pricing.mode === 'daily_rate') && (
+                                    <div className="space-y-4 col-span-full md:col-span-1 mt-4 border-t border-[#222634] pt-4">
+                                      <div className="flex items-center justify-between border-b border-[#222634] pb-1.5">
+                                        <h5 className="text-xs font-bold text-[#c5a880] flex items-center gap-1.5">
+                                          <LayoutGrid className="h-3.5 w-3.5" />
+                                          تحليل أسعار الخامات والتوصيف التفصيلي (للتسعير الدقيق)
+                                        </h5>
+                                        {canEdit && (
+                                          <button
+                                            onClick={() => handleAddCustomMaterial(item)}
+                                            className="text-[10px] font-bold bg-[#c5a880]/10 px-2 py-1 rounded text-[#c5a880] hover:bg-[#c5a880]/20 transition"
+                                          >
+                                            + إضافة خامة فرعية
+                                          </button>
+                                        )}
+                                      </div>
+
+                                      {item.customMaterials && item.customMaterials.length > 0 ? (
+                                        <div className="overflow-x-auto bg-[#13151c]/60 p-3 rounded-lg border border-[#222634]">
+                                          <table className="w-full text-right text-[10px] font-medium border-collapse">
+                                            <thead>
+                                              <tr className="text-slate-400 border-b border-[#222634]/60 pb-2 font-bold">
+                                                <th className="pb-2 text-right">الخامة / التوصيف</th>
+                                                <th className="pb-2 text-center w-20">الوحدة</th>
+                                                <th className="pb-2 text-center w-20">الكمية</th>
+                                                <th className="pb-2 text-center w-24">سعر الوحدة</th>
+                                                <th className="pb-2 text-center w-24">الإجمالي</th>
+                                                <th className="pb-2 w-10"></th>
+                                              </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-[#222634]/30 text-slate-300">
+                                              {item.customMaterials.map((mat) => (
+                                                <tr key={mat.id} className="hover:bg-slate-900/10 transition">
+                                                  <td className="py-2 pr-1">
+                                                    <input
+                                                      type="text"
+                                                      disabled={!canEdit}
+                                                      value={mat.name}
+                                                      placeholder="اسم الخامة (مثال: قاطع 20A)"
+                                                      onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { name: e.target.value })}
+                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-xs text-white focus:outline-none"
+                                                    />
+                                                  </td>
+                                                  <td className="py-2 px-1">
+                                                    <input
+                                                      type="text"
+                                                      disabled={!canEdit}
+                                                      value={mat.unit}
+                                                      placeholder="قطعة/لفة"
+                                                      onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unit: e.target.value })}
+                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                                    />
+                                                  </td>
+                                                  <td className="py-2 px-1">
+                                                    <input
+                                                      type="number"
+                                                      disabled={!canEdit}
+                                                      value={mat.quantity}
+                                                      onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { quantity: parseFloat(e.target.value) || 0 })}
+                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:outline-none"
+                                                    />
+                                                  </td>
+                                                  <td className="py-2 px-1">
+                                                    <input
+                                                      type="number"
+                                                      disabled={!canEdit}
+                                                      value={mat.unitPrice}
+                                                      onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unitPrice: parseFloat(e.target.value) || 0 })}
+                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                                    />
+                                                  </td>
+                                                  <td className="py-2 pl-1 text-center font-bold text-[#c5a880]">
+                                                    {((mat.quantity || 0) * (mat.unitPrice || 0)).toLocaleString()} ج.م
+                                                  </td>
+                                                  <td className="py-2 text-center">
+                                                    {canEdit && (
+                                                      <button
+                                                        onClick={() => handleDeleteCustomMaterial(item, mat.id)}
+                                                        className="p-1 rounded text-rose-500 hover:bg-rose-950/20 transition"
+                                                      >
+                                                        <Trash2 className="h-3.5 w-3.5" />
+                                                      </button>
+                                                    )}
+                                                  </td>
+                                                </tr>
+                                              ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      ) : (
+                                        <p className="text-[10px] text-slate-500 text-center py-2">لم يتم إدخال خامات تفصيلية. سيتم الاعتماد على خانة سعر الوحدة خامات الأساسية المكتوبة بالأعلى.</p>
+                                      )}
+                                    </div>
+                                  )}
 
                                   {/* 3.5 Detailed Material Recipe Breakdown */}
                                   {(() => {
