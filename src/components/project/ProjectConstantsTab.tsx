@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { DEFAULT_CONSTANTS, ConstantDefinition } from '@/lib/constants';
-import { Save, RefreshCw, AlertTriangle } from 'lucide-react';
+import { Save, RefreshCw, AlertTriangle, Plus, X } from 'lucide-react';
 
 export default function ProjectConstantsTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
@@ -15,6 +15,20 @@ export default function ProjectConstantsTab() {
   const [localConstants, setLocalConstants] = useState<Record<string, number>>(
     currentProject?.projectConstants || {}
   );
+  const [localDefinitions, setLocalDefinitions] = useState<ConstantDefinition[]>(
+    currentProject?.customConstantsDefinitions || []
+  );
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newConst, setNewConst] = useState<Partial<ConstantDefinition> & { value: number }>({
+    key: '',
+    label: '',
+    group: 'materials',
+    subgroup: 'general',
+    defaultValue: 0,
+    unit: 'ج.م',
+    value: 0
+  });
 
   if (!currentProject) return null;
 
@@ -41,7 +55,8 @@ export default function ProjectConstantsTab() {
     setIsSaving(true);
     try {
       await updateProject({
-        projectConstants: localConstants
+        projectConstants: localConstants,
+        customConstantsDefinitions: localDefinitions
       });
       // Optionally show a success toast here
     } finally {
@@ -49,9 +64,37 @@ export default function ProjectConstantsTab() {
     }
   };
 
-  // Group constants
-  const materials = DEFAULT_CONSTANTS.filter(c => c.group === 'materials');
-  const rates = DEFAULT_CONSTANTS.filter(c => c.group === 'rates');
+  const handleAddCustomConstant = () => {
+    if (!newConst.label || !newConst.key) return;
+    
+    const key = `custom_${newConst.key.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`;
+    const def: ConstantDefinition = {
+      key,
+      label: newConst.label,
+      group: newConst.group as any,
+      subgroup: newConst.subgroup as any,
+      defaultValue: newConst.value,
+      unit: newConst.unit || ''
+    };
+
+    setLocalDefinitions(prev => [...prev, def]);
+    setLocalConstants(prev => ({ ...prev, [key]: newConst.value }));
+    setShowAddModal(false);
+    setNewConst({
+      key: '',
+      label: '',
+      group: 'materials',
+      subgroup: 'general',
+      defaultValue: 0,
+      unit: 'ج.م',
+      value: 0
+    });
+  };
+
+  // Group constants (Merge defaults with local customs)
+  const allConstants = [...DEFAULT_CONSTANTS, ...localDefinitions];
+  const materials = allConstants.filter(c => c.group === 'materials');
+  const rates = allConstants.filter(c => c.group === 'rates');
 
   const renderConstantRow = (c: ConstantDefinition) => {
     const hasOverride = localConstants[c.key] !== undefined;
@@ -128,14 +171,23 @@ export default function ProjectConstantsTab() {
           </p>
         </div>
         {canEdit && (
-          <button
-            onClick={handleSave}
-            disabled={isSaving}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50"
-          >
-            {isSaving ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            حفظ التعديلات
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm font-bold hover:bg-slate-700 transition"
+            >
+              <Plus className="h-4 w-4" />
+              إضافة خامة / معدل جديد
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50"
+            >
+              {isSaving ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              حفظ التعديلات
+            </button>
+          </div>
         )}
       </div>
 
@@ -174,6 +226,98 @@ export default function ProjectConstantsTab() {
           {renderGroup('أعمال الكهرباء', rates, 'electrical')}
         </div>
       </div>
+
+      {/* Add Custom Constant Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="bg-[#13151c] border border-[#222634] rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-5 border-b border-[#222634] bg-[#1a1c24]">
+              <h3 className="text-lg font-bold text-white">إضافة خامة / معدل مخصص</h3>
+              <button 
+                onClick={() => setShowAddModal(false)}
+                className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 mb-2">اسم الخامة أو المعدل (باللغة العربية)</label>
+                <input
+                  type="text"
+                  placeholder="مثال: سعر متر عزل فوم"
+                  value={newConst.label}
+                  onChange={(e) => setNewConst({...newConst, label: e.target.value, key: e.target.value})}
+                  className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 mb-2">النوع</label>
+                  <select
+                    value={newConst.group}
+                    onChange={(e) => setNewConst({...newConst, group: e.target.value as any})}
+                    className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  >
+                    <option value="materials">خامة مركزية (سعر)</option>
+                    <option value="rates">معدل استهلاك هندسي</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 mb-2">القسم الهندسي</label>
+                  <select
+                    value={newConst.subgroup}
+                    onChange={(e) => setNewConst({...newConst, subgroup: e.target.value as any})}
+                    className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  >
+                    <option value="general">خامات عامة</option>
+                    <option value="masonry">أعمال المباني</option>
+                    <option value="plastering">المحارة والدهانات</option>
+                    <option value="flooring">أعمال السيراميك</option>
+                    <option value="plumbing">السباكة والعزل</option>
+                    <option value="electrical">الكهرباء والتيار الخفيف</option>
+                    <option value="hvac">التكييف المركزي</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 mb-2">القيمة</label>
+                  <input
+                    type="number"
+                    value={newConst.value || ''}
+                    onChange={(e) => setNewConst({...newConst, value: parseFloat(e.target.value)})}
+                    className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 mb-2">وحدة القياس</label>
+                  <input
+                    type="text"
+                    placeholder="مثال: ج.م، متر، لتر"
+                    value={newConst.unit}
+                    onChange={(e) => setNewConst({...newConst, unit: e.target.value})}
+                    className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  onClick={handleAddCustomConstant}
+                  disabled={!newConst.label || !newConst.value}
+                  className="w-full py-3 rounded-xl bg-[#c5a880] text-[#0d0e12] font-bold shadow hover:brightness-110 transition disabled:opacity-50"
+                >
+                  إضافة الخامة
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

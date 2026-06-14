@@ -156,8 +156,12 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     });
 
     try {
-      if (updates.projectConstants) {
-        await dbUpdateProjectConstants(currentProject.id, updates.projectConstants);
+      if (updates.projectConstants || updates.customConstantsDefinitions) {
+        await dbUpdateProjectConstants(
+          currentProject.id, 
+          updates.projectConstants || currentProject.projectConstants || {},
+          updates.customConstantsDefinitions
+        );
       }
       // Add other partial updates here if needed
       set({ saving: false });

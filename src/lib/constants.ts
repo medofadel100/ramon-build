@@ -13,28 +13,49 @@ export const DEFAULT_CONSTANTS: ConstantDefinition[] = [
   // =====================
   // Master Material Prices (أسعار خامات مركزية)
   // =====================
-  { key: 'price_cement_bag', label: 'سعر شيكارة الأسمنت (50 كجم)', group: 'materials', subgroup: 'general', defaultValue: 130, unit: 'ج.م' },
+  { key: 'price_steel_ezz_ton', label: 'سعر طن حديد عز', group: 'materials', subgroup: 'general', defaultValue: 42000, unit: 'ج.م' },
+  { key: 'price_steel_beshay_ton', label: 'سعر طن حديد بشاي', group: 'materials', subgroup: 'general', defaultValue: 41500, unit: 'ج.م' },
+  { key: 'price_concrete_ready_m3', label: 'سعر متر الخرسانة الجاهزة (مجهاد 250)', group: 'materials', subgroup: 'general', defaultValue: 1400, unit: 'ج.م' },
+  
+  { key: 'price_cement_bag', label: 'سعر شيكارة الأسمنت (بورتلاندي عادي)', group: 'materials', subgroup: 'general', defaultValue: 130, unit: 'ج.م' },
+  { key: 'price_cement_seawater_bag', label: 'سعر شيكارة أسمنت مقاوم سي ووتر', group: 'materials', subgroup: 'general', defaultValue: 145, unit: 'ج.م' },
+  { key: 'price_cement_white_bag', label: 'سعر شيكارة أسمنت أبيض', group: 'materials', subgroup: 'general', defaultValue: 180, unit: 'ج.م' },
+  
   { key: 'price_sand_m3', label: 'سعر متر الرمل', group: 'materials', subgroup: 'general', defaultValue: 250, unit: 'ج.م' },
-  { key: 'price_brick_1000', label: 'سعر الألف طوبة (أحمر مفرغ)', group: 'materials', subgroup: 'masonry', defaultValue: 1500, unit: 'ج.م' },
+  { key: 'price_gravel_m3', label: 'سعر متر الزلط', group: 'materials', subgroup: 'general', defaultValue: 350, unit: 'ج.م' },
+
+  { key: 'price_brick_1000', label: 'سعر الألف طوبة (أحمر مفرغ نمطي)', group: 'materials', subgroup: 'masonry', defaultValue: 1500, unit: 'ج.م' },
+  { key: 'price_brick_solid_1000', label: 'سعر الألف طوبة (أحمر مصمت)', group: 'materials', subgroup: 'masonry', defaultValue: 2200, unit: 'ج.م' },
+  { key: 'price_brick_block_1000', label: 'سعر الألف بلوك أسمنتي', group: 'materials', subgroup: 'masonry', defaultValue: 7500, unit: 'ج.م' },
   
   { key: 'price_gypsum_bag', label: 'سعر شيكارة الجبس', group: 'materials', subgroup: 'plastering', defaultValue: 60, unit: 'ج.م' },
+  { key: 'price_gypsum_board_sqm', label: 'سعر متر الجبس بورد (خامات)', group: 'materials', subgroup: 'plastering', defaultValue: 250, unit: 'ج.م' },
+
   { key: 'price_tile_adhesive_bag', label: 'سعر شيكارة غراء السيراميك', group: 'materials', subgroup: 'flooring', defaultValue: 180, unit: 'ج.م' },
   { key: 'price_grout_bag', label: 'سعر كيس سقية (ترويبة)', group: 'materials', subgroup: 'flooring', defaultValue: 40, unit: 'ج.م' },
 
-  { key: 'price_membrane_roll', label: 'سعر لفة الممبرين (عزل مائي 10م)', group: 'materials', subgroup: 'plumbing', defaultValue: 1200, unit: 'ج.م' },
+  { key: 'price_membrane_roll', label: 'سعر لفة الممبرين أنسومات (10م)', group: 'materials', subgroup: 'plumbing', defaultValue: 1200, unit: 'ج.م' },
+  { key: 'price_bitumen_cold_barrel', label: 'سعر برميل البيتومين البارد', group: 'materials', subgroup: 'plumbing', defaultValue: 1800, unit: 'ج.م' },
+  { key: 'price_kemapoxy_can', label: 'سعر علبة كيمابوكسي 150', group: 'materials', subgroup: 'plumbing', defaultValue: 850, unit: 'ج.م' },
   { key: 'price_cement_insulation_bag', label: 'سعر شيكارة العزل الأسمنتي', group: 'materials', subgroup: 'plumbing', defaultValue: 450, unit: 'ج.م' },
-  { key: 'price_pvc_pipe_4', label: 'سعر ماسورة PVC (4 بوصة)', group: 'materials', subgroup: 'plumbing', defaultValue: 450, unit: 'ج.م' },
+  { key: 'price_pvc_pipe_4', label: 'سعر ماسورة الشريف PVC (4 بوصة)', group: 'materials', subgroup: 'plumbing', defaultValue: 450, unit: 'ج.م' },
+  { key: 'price_ppr_pipe_3_4', label: 'سعر ماسورة تغذية PPR (3/4 بوصة)', group: 'materials', subgroup: 'plumbing', defaultValue: 180, unit: 'ج.م' },
 
-  { key: 'price_wire_1_5_roll', label: 'سعر لفة سلك 1.5 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 1200, unit: 'ج.م' },
-  { key: 'price_wire_2_5_roll', label: 'سعر لفة سلك 2.5 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 1800, unit: 'ج.م' },
+  { key: 'price_wire_1_5_roll', label: 'سعر لفة سلك السويدي 1.5 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 1200, unit: 'ج.م' },
+  { key: 'price_wire_2_5_roll', label: 'سعر لفة سلك السويدي 2.5 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 1800, unit: 'ج.م' },
+  { key: 'price_wire_3_roll', label: 'سعر لفة سلك السويدي 3 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 2100, unit: 'ج.م' },
+  { key: 'price_wire_4_roll', label: 'سعر لفة سلك السويدي 4 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 2800, unit: 'ج.م' },
+  { key: 'price_wire_6_roll', label: 'سعر لفة سلك السويدي 6 مم (100م)', group: 'materials', subgroup: 'electrical', defaultValue: 4200, unit: 'ج.م' },
   { key: 'price_data_roll', label: 'سعر صندوق سلك داتا CAT6 (305م)', group: 'materials', subgroup: 'electrical', defaultValue: 3200, unit: 'ج.م' },
+  { key: 'price_aladdin_hose_roll', label: 'سعر لفة خرطوم علاء الدين (50م)', group: 'materials', subgroup: 'electrical', defaultValue: 250, unit: 'ج.م' },
+  { key: 'price_magic_box', label: 'سعر العلبة الماجيك المعتمدة', group: 'materials', subgroup: 'electrical', defaultValue: 15, unit: 'ج.م' },
 
   { key: 'price_copper_roll_15m', label: 'سعر لفة نحاس تكييف (15م)', group: 'materials', subgroup: 'hvac', defaultValue: 5500, unit: 'ج.م' },
   { key: 'price_armaflex_m', label: 'سعر متر عزل أرماكفلكس', group: 'materials', subgroup: 'hvac', defaultValue: 35, unit: 'ج.م' },
 
-  { key: 'price_paint_can', label: 'سعر بستلة الدهان النهائي', group: 'materials', subgroup: 'plastering', defaultValue: 1800, unit: 'ج.م' },
-  { key: 'price_putty_bag', label: 'سعر شيكارة معجون الدهانات', group: 'materials', subgroup: 'plastering', defaultValue: 350, unit: 'ج.م' },
-  { key: 'price_sealer_gallon', label: 'سعر جالون السيلر', group: 'materials', subgroup: 'plastering', defaultValue: 250, unit: 'ج.م' },
+  { key: 'price_paint_can', label: 'سعر بستلة دهان (جوتن / سايبس)', group: 'materials', subgroup: 'plastering', defaultValue: 1800, unit: 'ج.م' },
+  { key: 'price_putty_bag', label: 'سعر شيكارة معجون أكريليك دايتون', group: 'materials', subgroup: 'plastering', defaultValue: 350, unit: 'ج.م' },
+  { key: 'price_sealer_gallon', label: 'سعر جالون سيلر مائي', group: 'materials', subgroup: 'plastering', defaultValue: 250, unit: 'ج.م' },
 
   // =====================
   // Consumption Rates (معدلات الاستهلاك)

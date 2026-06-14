@@ -17,6 +17,7 @@ import { db } from './firebase';
 import { DEFAULT_SECTIONS, DEFAULT_ITEMS } from './default-items';
 import { Zone, BOQItem } from './calculations';
 import { Attachment } from '@/components/project/ProjectAttachmentsTab';
+import { ConstantDefinition } from './constants';
 
 export function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return 'غير متوفر';
@@ -135,6 +136,7 @@ export interface ProjectData {
   accounts?: AccountEntry[];
   attachments?: Attachment[];
   projectConstants?: Record<string, number>;
+  customConstantsDefinitions?: ConstantDefinition[];
 }
 
 // ==========================================
@@ -376,7 +378,8 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
     workers,
     accounts,
     attachments: pData.attachments || [],
-    projectConstants: pData.projectConstants || {}
+    projectConstants: pData.projectConstants || {},
+    customConstantsDefinitions: pData.customConstantsDefinitions || []
   };
 }
 
@@ -631,10 +634,21 @@ export async function deleteProject(projectId: string): Promise<void> {
 }
 // 13. Update Constants
 // ==========================================
-export async function dbUpdateProjectConstants(projectId: string, constants: Record<string, number>): Promise<void> {
+export async function dbUpdateProjectConstants(
+  projectId: string, 
+  constants: Record<string, number>,
+  customDefinitions?: ConstantDefinition[]
+): Promise<void> {
   const projectRef = doc(db, 'projects', projectId);
-  await updateDoc(projectRef, {
+  
+  const updates: any = {
     projectConstants: constants,
     updatedAt: serverTimestamp()
-  });
+  };
+
+  if (customDefinitions !== undefined) {
+    updates.customConstantsDefinitions = customDefinitions;
+  }
+
+  await updateDoc(projectRef, updates);
 }
