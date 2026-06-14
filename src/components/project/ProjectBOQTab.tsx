@@ -640,12 +640,22 @@ export default function ProjectBOQTab() {
                                             />
                                           </div>
                                           <div>
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">عدد أيام التنفيذ التقديرية</label>
+                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">أيام التنفيذ التقديرية</label>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
                                               value={item.pricing.estimatedDays}
                                               onChange={(e) => handlePricingChange(item, 'estimatedDays', e.target.value)}
+                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
+                                            />
+                                          </div>
+                                          <div className="col-span-2">
+                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">سعر الوحدة خامات (إذا كنت من سيورد الخامات)</label>
+                                            <input
+                                              type="number"
+                                              disabled={!canEdit}
+                                              value={item.pricing.materialUnitPrice}
+                                              onChange={(e) => handlePricingChange(item, 'materialUnitPrice', e.target.value)}
                                               className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white focus:outline-none"
                                             />
                                           </div>

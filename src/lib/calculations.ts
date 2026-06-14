@@ -181,8 +181,21 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[]): ItemTotalResul
     laborCost = total;
   } else if (pricing.mode === 'daily_rate') {
     const rate = pricing.dailyRate || 0;
-    total = rate * estimatedDays;
-    laborCost = total;
+    laborCost = rate * estimatedDays;
+
+    let matUnitPrice = pricing.materialUnitPrice || 0;
+    const materials = calculateItemMaterials(item, zones);
+    const hasDetailedMaterials = materials.length > 0 && !item.id.includes('_custom_') && materials[0].key !== 'general_material';
+
+    if (isRemoveOnly) {
+      materialCost = 0;
+    } else if (hasDetailedMaterials) {
+      materialCost = materials.reduce((sum, mat) => sum + mat.totalCost, 0);
+    } else {
+      materialCost = quantity * matUnitPrice;
+    }
+
+    total = laborCost + materialCost;
   }
 
   return {
