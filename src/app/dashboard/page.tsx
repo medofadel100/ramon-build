@@ -7,7 +7,7 @@ import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { deleteProject } from '@/lib/project-service';
 import Navbar from '@/components/Navbar';
-import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X } from 'lucide-react';
+import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectListItem {
@@ -185,13 +185,24 @@ export default function DashboardPage() {
               مرحباً بك {user.name}. إليك المشاريع التي تعمل عليها حالياً.
             </p>
           </div>
-          <Link
-            href="/projects/new"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] text-[#0d0e12] font-semibold text-sm shadow hover:brightness-110 active:scale-95 transition"
-          >
-            <Plus className="h-4 w-4" />
-            إنشاء مشروع جديد
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            {user?.role === 'admin' && (
+              <Link
+                href="/admin/constants"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#1a1c24] border border-[#222634] text-white font-semibold text-sm shadow hover:border-[#c5a880]/50 hover:bg-slate-800 transition"
+              >
+                <BookOpen className="h-4 w-4 text-[#c5a880]" />
+                المعدلات الهندسية والخامات
+              </Link>
+            )}
+            <Link
+              href="/projects/new"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] text-[#0d0e12] font-semibold text-sm shadow hover:brightness-110 active:scale-95 transition"
+            >
+              <Plus className="h-4 w-4" />
+              إنشاء مشروع جديد
+            </Link>
+          </div>
         </div>
 
         {/* Filters and Search Bar */}
