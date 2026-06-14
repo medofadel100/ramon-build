@@ -739,10 +739,11 @@ export default function ProjectBOQTab() {
                                       <span>المدة المقدرة للجدول الزمني: {itemResult.estimatedDays} أيام عمل متواصلة.</span>
                                     </div>
                                   </div>
+                                </div>
 
-                                  {/* Custom Materials Editor */}
-                                  {(item.pricing.mode === 'materials_labor_split' || item.pricing.mode === 'daily_rate') && (
-                                    <div className="space-y-4 col-span-full md:col-span-1 mt-4 border-t border-[#222634] pt-4">
+                                {/* Custom Materials Editor */}
+                                {(item.pricing.mode === 'materials_labor_split' || item.pricing.mode === 'daily_rate') && (
+                                  <div className="space-y-4 mt-6 border-t border-[#222634] pt-4">
                                       <div className="flex items-center justify-between border-b border-[#222634] pb-1.5">
                                         <h5 className="text-xs font-bold text-[#c5a880] flex items-center gap-1.5">
                                           <LayoutGrid className="h-3.5 w-3.5" />
@@ -886,12 +887,12 @@ export default function ProjectBOQTab() {
                                     </div>
                                   )}
 
-                                  {/* 3.5 Detailed Material Recipe Breakdown */}
-                                  {(() => {
-                                    const mats = calculateItemMaterials(item, currentProject.zones);
-                                    if (mats.length === 0) return null;
-                                    return (
-                                      <div className="space-y-3 bg-[#13151c]/60 border border-[#222634] p-4 rounded-lg">
+                                {/* 3.5 Detailed Material Recipe Breakdown */}
+                                {(() => {
+                                  const mats = calculateItemMaterials(item, currentProject.zones);
+                                  if (mats.length === 0) return null;
+                                  return (
+                                    <div className="space-y-3 bg-[#13151c]/60 border border-[#222634] p-4 rounded-lg mt-4">
                                         <h5 className="text-xs font-bold text-[#c5a880] flex items-center gap-1.5 border-b border-[#222634] pb-2">
                                           <LayoutGrid className="h-3.5 w-3.5" />
                                           تفاصيل وحصر الخامات المطلوبة للشراء والتسعير
@@ -930,9 +931,7 @@ export default function ProjectBOQTab() {
                                       </div>
                                     );
                                   })()}
-
                                 </div>
-                              </div>
 
                               {/* 4. Notes, Egyptian Code and Delete */}
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-[#222634] pt-4 mt-3">
