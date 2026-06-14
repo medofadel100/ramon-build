@@ -210,35 +210,28 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
   {
     id: '1.3.1',
     sectionId: '1.3',
-    title: 'تأسيس مخارج إنارة وسبوتات (علب ومواسير)',
-    unit: 'نقطة',
-    quantitySource: 'calculated',
-    calculationFormula: 'total.ceilingArea', // or manually overridden per area
-    perAreaOverride: true,
+    title: 'تركيب وتثبيت علب ماجيك تأسيس',
+    unit: 'عدد',
+    quantitySource: 'manual',
     specs: [
-      { key: 'lightType', label: 'نوع المخرج', type: 'select', options: ['إنارة سقف عادية', 'مخرج سبوت', 'مخرج إضاءة مخفية LED'], defaultValue: 'مخرج سبوت' },
-      { key: 'boxPrice', label: 'سعر العلبة الماجيك', type: 'number', defaultValue: 15 },
-      { key: 'hosePerPoint', label: 'مواسير/خراطيم للنقطة (متر)', type: 'number', defaultValue: 3 },
-      { key: 'hoseRollPrice', label: 'لفة الخراطيم (50م)', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_aladdin_hose_roll' }
+      { key: 'boxType', label: 'نوع العلبة', type: 'select', options: ['بلاستيك عميق', 'بلاستيك عادي', 'صاج'], defaultValue: 'بلاستيك عميق' },
+      { key: 'boxPrice', label: 'سعر العلبة الماجيك', type: 'number', defaultValue: 15 }
     ],
-    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 30, laborUnitPrice: 20, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
-    egyptianCodeRef: 'كود التركيبات الكهربائية في المباني السكنية'
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 15, laborUnitPrice: 10, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 },
+    egyptianCodeRef: 'كود التركيبات الكهربائية'
   },
   {
     id: '1.3.2',
     sectionId: '1.3',
-    title: 'تأسيس مخارج برايز وفيش (علب ومواسير)',
-    unit: 'نقطة',
+    title: 'تمديد خراطيم ومواسير كهرباء وتيار خفيف',
+    unit: 'متر طولي',
     quantitySource: 'manual',
-    perAreaOverride: true,
     specs: [
-      { key: 'socketType', label: 'شدة التيار والاستخدام', type: 'select', options: ['16 أمبير عادي', '20 أمبير تكييف/سخان', 'مزدوج للمطبخ'], defaultValue: '16 أمبير عادي' },
-      { key: 'heightFromFloor', label: 'الارتفاع عن التشطيب (سم)', type: 'number', defaultValue: 45 },
-      { key: 'boxPrice', label: 'سعر العلبة الماجيك', type: 'number', defaultValue: 15 },
-      { key: 'hosePerPoint', label: 'مواسير/خراطيم للنقطة (متر)', type: 'number', defaultValue: 4 },
-      { key: 'hoseRollPrice', label: 'لفة الخراطيم (50م)', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_aladdin_hose_roll' }
+      { key: 'hoseType', label: 'نوع الخرطوم', type: 'select', options: ['خرطوم علاء الدين', 'فليكسبل سوستة', 'مواسير PVC صلبة'], defaultValue: 'خرطوم علاء الدين' },
+      { key: 'rollLength', label: 'طول اللفة (متر)', type: 'number', defaultValue: 50 },
+      { key: 'hoseRollPrice', label: 'سعر اللفة/الماسورة', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_aladdin_hose_roll' }
     ],
-    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 35, laborUnitPrice: 25, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 5, laborUnitPrice: 8, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 3 }
   },
   {
     id: '1.3.5',
@@ -270,23 +263,17 @@ export const DEFAULT_ITEMS: ItemTemplate[] = [
     defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 1200, laborUnitPrice: 350, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
   },
   {
-    id: '1.3.4',
+    id: '1.3.6',
     sectionId: '1.3',
-    title: 'تأسيس شبكة بيانات تيار خفيف (Data Network)',
-    unit: 'نقطة',
+    title: 'سحب كابلات تيار خفيف (داتا/دش/تليفون)',
+    unit: 'متر طولي',
     quantitySource: 'manual',
     specs: [
-      { key: 'cableType', label: 'نوع الكابل', type: 'select', options: ['CAT6 UTP السويدي', 'CAT6A SFTP شيلد', 'مواسير فارغة فقط'], defaultValue: 'CAT6 UTP السويدي' },
-      { key: 'rackProvision', label: 'تجهيز راك مركزي', type: 'select', options: ['نعم - 6U', 'نعم - 9U', 'لا يوجد'], defaultValue: 'لا يوجد' },
-      { key: 'wirePerPoint', label: 'طول السلك للنقطة (متر)', type: 'number', defaultValue: 25 },
-      { key: 'rollLength', label: 'طول لفة كابل الداتا (متر)', type: 'number', defaultValue: 305 },
-      { key: 'dataRollPrice', label: 'كابل الداتا المستخدم', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_data_roll' },
-      { key: 'boxPrice', label: 'علبة الماجيك', type: 'number', defaultValue: 15 },
-      { key: 'chassisPrice', label: 'الشاسيه', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_chassis_plastic' },
-      { key: 'platePrice', label: 'الوش النهائي', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_plate_legrand' },
-      { key: 'keystonePrice', label: 'لقمة RJ45', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical_switches', defaultValue: 'price_keystone_rj45' }
+      { key: 'cableType', label: 'نوع الكابل', type: 'select', options: ['داتا CAT6 UTP السويدي', 'داتا CAT6A SFTP شيلد', 'دش RG6 السويدي', 'تليفون داخلي'], defaultValue: 'داتا CAT6 UTP السويدي' },
+      { key: 'rollLength', label: 'طول لفة الكابل (متر)', type: 'number', defaultValue: 305 },
+      { key: 'dataRollPrice', label: 'سعر لفة الكابل', type: 'material_selector', materialGroup: 'materials', materialSubgroup: 'electrical', defaultValue: 'price_data_roll' }
     ],
-    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 140, laborUnitPrice: 80, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 1 }
+    defaultPricing: { mode: 'materials_labor_split', materialUnitPrice: 10, laborUnitPrice: 7, lumpSumPrice: 0, dailyRate: 0, estimatedDays: 2 }
   },
 
   // 1.4 النجارة البدائية (تركيب الحلوق)

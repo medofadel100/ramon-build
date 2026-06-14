@@ -546,71 +546,44 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
       break;
     }
     // ==========================================
-    // 1.3.1 - نقاط إنارة (سقف/حائط)
+    // 1.3.1 - تركيب علب ماجيك تأسيس
     // ==========================================
     case '1.3.1': {
       const boxPrice = getSpecNum('boxPrice', 15);
-      const hosePerPoint = getSpecNum('hosePerPoint', 3);
-      const hoseRollPrice = getMaterialPrice('hoseRollPrice', 'price_aladdin_hose_roll', 250);
-      
-      const totalHose = qty * hosePerPoint;
-      const hoseRolls = Math.ceil(totalHose / 50);
+      const boxType = getSpecStr('boxType', 'بلاستيك عميق');
 
       matList.push({
         key: 'magic_box',
-        name: 'علبة ماجيك بلاستيك (تأسيس)',
+        name: `علب ماجيك تأسيس (${boxType})`,
         qtyRequired: qty,
         qtyRounded: Math.ceil(qty),
         unit: 'عدد',
         unitPrice: boxPrice,
         totalCost: Math.ceil(qty) * boxPrice,
-        packagingDetails: 'علبة لكل مخرج/نقطة إنارة'
-      });
-
-      matList.push({
-        key: 'electrical_hose',
-        name: 'مواسير وخراطيم تأسيس (50م)',
-        qtyRequired: totalHose,
-        qtyRounded: hoseRolls,
-        unit: 'لفة',
-        unitPrice: hoseRollPrice,
-        totalCost: hoseRolls * hoseRollPrice,
-        packagingDetails: `لفة 50 متر (مجموع الأمتار: ${totalHose.toFixed(1)} م)`
+        packagingDetails: 'علبة لكل مخرج/نقطة'
       });
       break;
     }
 
     // ==========================================
-    // 1.3.2 - نقاط بريز (فيش كهرباء)
+    // 1.3.2 - تمديد خراطيم ومواسير كهرباء
     // ==========================================
     case '1.3.2': {
-      const boxPrice = getSpecNum('boxPrice', 15);
-      const hosePerPoint = getSpecNum('hosePerPoint', 4);
       const hoseRollPrice = getMaterialPrice('hoseRollPrice', 'price_aladdin_hose_roll', 250);
+      const rollLength = getSpecNum('rollLength', 50);
+      const hoseType = getSpecStr('hoseType', 'خرطوم علاء الدين');
       
-      const totalHose = qty * hosePerPoint;
-      const hoseRolls = Math.ceil(totalHose / 50);
-
-      matList.push({
-        key: 'magic_box_socket',
-        name: 'علبة ماجيك بلاستيك للبرايز',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: boxPrice,
-        totalCost: Math.ceil(qty) * boxPrice,
-        packagingDetails: 'علبة لكل مخرج بريزة'
-      });
+      const hoseRolls = Math.ceil(qty / rollLength);
 
       matList.push({
         key: 'electrical_hose',
-        name: 'مواسير وخراطيم تأسيس (50م)',
-        qtyRequired: totalHose,
+        name: `مواسير وخراطيم تأسيس (${hoseType})`,
+        qtyRequired: qty,
         qtyRounded: hoseRolls,
         unit: 'لفة',
-        unitPrice: hoseRollPrice,
+        unitPrice: hoseRolls > 0 ? hoseRollPrice : 0,
         totalCost: hoseRolls * hoseRollPrice,
-        packagingDetails: `لفة 50 متر (مجموع الأمتار: ${totalHose.toFixed(1)} م)`
+        packagingDetails: `لفة ${rollLength} متر (مجموع الأمتار المطلوبة: ${qty.toFixed(1)} م)`
       });
       break;
     }
@@ -649,73 +622,24 @@ export function calculateItemMaterials(item: BOQItem, zones: Zone[], projectCons
     }
 
     // ==========================================
-    // 1.3.4 - تأسيس شبكة بيانات تيار خفيف
+    // 1.3.6 - سحب كابلات تيار خفيف
     // ==========================================
-    case '1.3.4': {
-      const wirePerPoint = getSpecNum('wirePerPoint', 25);
-      const rollLength = getSpecNum('rollLength', 305); // standard LAN box is 305m (1000ft)
+    case '1.3.6': {
+      const rollLength = getSpecNum('rollLength', 305);
       const dataRollPrice = getMaterialPrice('dataRollPrice', 'price_data_roll', 3200);
-      const boxPrice = getSpecNum('boxPrice', 15);
-      const chassisPrice = getMaterialPrice('chassisPrice', 'price_chassis_plastic', 20);
-      const platePrice = getMaterialPrice('platePrice', 'price_plate_legrand', 25);
-      const keystonePrice = getMaterialPrice('keystonePrice', 'price_keystone_rj45', 80);
-
-      const totalWireLength = qty * wirePerPoint;
-      const dataBoxes = Math.ceil(totalWireLength / rollLength);
+      const cableType = getSpecStr('cableType', 'داتا CAT6 UTP السويدي');
+      
+      const rolls = Math.ceil(qty / rollLength);
 
       matList.push({
         key: 'data_cable',
-        name: 'كابل بيانات شبكة CAT6 UTP السويدي',
-        qtyRequired: totalWireLength,
-        qtyRounded: dataBoxes,
-        unit: 'صندوق (٣٠٥م)',
-        unitPrice: dataRollPrice,
-        totalCost: dataBoxes * dataRollPrice,
-        packagingDetails: `صندوق ٣٠٥م (مجموع الاحتياج: ${totalWireLength.toFixed(1)} م)`
-      });
-
-      matList.push({
-        key: 'magic_box',
-        name: 'علبة ماجيك بلاستيك (تأسيس)',
+        name: `كابلات تيار خفيف (${cableType})`,
         qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: boxPrice,
-        totalCost: Math.ceil(qty) * boxPrice,
-        packagingDetails: 'علبة لكل مخرج شبكة'
-      });
-
-      matList.push({
-        key: 'chassis',
-        name: 'شاسيه معدني/بلاستيك لتركيب مخارج الداتا',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: chassisPrice,
-        totalCost: Math.ceil(qty) * chassisPrice,
-        packagingDetails: 'شاسيه لكل علبة'
-      });
-
-      matList.push({
-        key: 'cover_plate',
-        name: 'وش علبة كهرباء خارجي (داتا)',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: platePrice,
-        totalCost: Math.ceil(qty) * platePrice,
-        packagingDetails: 'وش لكل شاسيه داتا'
-      });
-
-      matList.push({
-        key: 'keystone_jack',
-        name: 'مخرج داتا RJ45 (Keystone Jack)',
-        qtyRequired: qty,
-        qtyRounded: Math.ceil(qty),
-        unit: 'عدد',
-        unitPrice: keystonePrice,
-        totalCost: Math.ceil(qty) * keystonePrice,
-        packagingDetails: 'مخرج لكل نقطة داتا'
+        qtyRounded: rolls,
+        unit: 'لفة',
+        unitPrice: rolls > 0 ? dataRollPrice : 0,
+        totalCost: rolls * dataRollPrice,
+        packagingDetails: `لفة ${rollLength} متر (مجموع الأمتار المطلوبة: ${qty.toFixed(1)} م)`
       });
       break;
     }
