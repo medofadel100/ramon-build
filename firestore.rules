@@ -118,5 +118,17 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow write: if isAdmin();
     }
+
+    // Master Constants Collection Rules
+    match /master_constants/{constantId} {
+      allow read: if true;
+      allow write: if isAdmin() || isTechOffice();
+    }
+
+    // Market Materials Collection Rules
+    match /market_materials/{materialId} {
+      allow read: if true;
+      allow write: if true; // Temporarily allow write for the seed data logic
+    }
   }
 }
