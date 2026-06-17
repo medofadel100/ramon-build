@@ -54,6 +54,7 @@ export type MarketPhase = 'تأسيس' | 'فنش' | 'إكسسوارات';
 export interface MarketMaterial {
   id: string;
   name: string;
+  brand?: string;
   description?: string;
   category: MarketCategory;
   subCategory: MarketSubCategory;

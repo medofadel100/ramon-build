@@ -12,6 +12,7 @@ export default function MaterialsMarketplacePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<MarketCategory | 'الكل'>('الكل');
   const [selectedPhase, setSelectedPhase] = useState<'الكل' | 'تأسيس' | 'فنش' | 'إكسسوارات'>('الكل');
+  const [selectedBrand, setSelectedBrand] = useState<string>('الكل');
   
   const categories: (MarketCategory | 'الكل')[] = [
     'الكل', 'بناء', 'كهرباء', 'سباكة', 'تكييف', 'دهانات', 'أرضيات', 'نجارة',
@@ -25,52 +26,33 @@ export default function MaterialsMarketplacePage() {
     fetchMaterials();
   }, [fetchMaterials]);
 
-  // Seed Dummy Data if empty (only for development testing)
+  // Reset selected brand when category changes
   useEffect(() => {
-    const seedDummyData = async () => {
-      if (!loading && materials.length === 0) {
-        const dummy: MarketMaterial = {
-          id: 'dummy_cement_1',
-          name: 'أسمنت بورتلاندي 50 كجم',
-          category: 'بناء',
-          subCategory: 'أسمنت',
-          phase: 'تأسيس',
-          unit: 'شكارة',
-          lowestPrice: 120,
-          sources: [
-            { storeName: 'Ahmed Elsallab', price: 125, isAvailable: true, url: '#', lastUpdated: Date.now() },
-            { storeName: 'Abdo Market', price: 120, isAvailable: true, url: '#', lastUpdated: Date.now() },
-          ]
-        };
-        const dummy2: MarketMaterial = {
-          id: 'dummy_wire_2',
-          name: 'لفة سلك نحاس 3 مم السويدي',
-          category: 'كهرباء',
-          subCategory: 'أسلاك نحاس',
-          phase: 'تأسيس',
-          unit: 'لفة',
-          lowestPrice: 1500,
-          sources: [
-            { storeName: 'Amazon.eg', price: 1500, isAvailable: true, url: '#', lastUpdated: Date.now() },
-            { storeName: 'LSweefi', price: 1550, isAvailable: true, url: '#', lastUpdated: Date.now() },
-          ]
-        };
-        await useMarketStore.getState().addOrUpdateMaterial(dummy);
-        await useMarketStore.getState().addOrUpdateMaterial(dummy2);
-      }
-    };
-    seedDummyData();
-  }, [materials.length, loading]);
+    setSelectedBrand('الكل');
+  }, [selectedCategory]);
+
+  const availableBrands = useMemo(() => {
+    // Only get brands for the current category to avoid a huge list
+    const currentCatMaterials = materials.filter(m => selectedCategory === 'الكل' || m.category === selectedCategory);
+    const brands = new Set<string>();
+    currentCatMaterials.forEach(m => {
+      if (m.brand) brands.add(m.brand);
+    });
+    return ['الكل', ...Array.from(brands).sort()];
+  }, [materials, selectedCategory]);
 
   const filteredMaterials = useMemo(() => {
     return materials.filter(m => {
       const matchSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          m.subCategory.toLowerCase().includes(searchTerm.toLowerCase());
+                          m.subCategory.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (m.brand && m.brand.toLowerCase().includes(searchTerm.toLowerCase()));
       const matchCat = selectedCategory === 'الكل' || m.category === selectedCategory;
       const matchPhase = selectedPhase === 'الكل' || m.phase === selectedPhase;
-      return matchSearch && matchCat && matchPhase;
+      const matchBrand = selectedBrand === 'الكل' || m.brand === selectedBrand;
+      
+      return matchSearch && matchCat && matchPhase && matchBrand;
     });
-  }, [materials, searchTerm, selectedCategory, selectedPhase]);
+  }, [materials, searchTerm, selectedCategory, selectedPhase, selectedBrand]);
 
   return (
     <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans p-6">
@@ -144,6 +126,26 @@ export default function MaterialsMarketplacePage() {
                   </button>
                 ))}
               </div>
+              
+              {/* Dynamic Brand Filters (Only show if there are brands) */}
+              {availableBrands.length > 1 && (
+                <div className="flex gap-2 flex-wrap pt-2 border-t border-[#222634]/50">
+                  <span className="text-sm text-slate-500 py-1.5 px-2">الماركات:</span>
+                  {availableBrands.map(brand => (
+                    <button
+                      key={brand}
+                      onClick={() => setSelectedBrand(brand)}
+                      className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                        selectedBrand === brand
+                          ? 'bg-indigo-500 text-white shadow-[0_0_10px_rgba(99,102,241,0.4)]'
+                          : 'bg-[#13151c] text-slate-400 border border-[#222634] hover:bg-slate-800'
+                      }`}
+                    >
+                      {brand}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Grid */}
@@ -176,6 +178,11 @@ export default function MaterialsMarketplacePage() {
                                 'bg-blue-500/10 text-blue-400 border-blue-500/30'
                               }`}>
                                 {material.phase}
+                              </span>
+                            )}
+                            {material.brand && (
+                              <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 backdrop-blur-sm shadow-sm">
+                                {material.brand}
                               </span>
                             )}
                           </div>
