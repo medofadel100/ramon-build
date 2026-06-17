@@ -55,9 +55,10 @@ export default function ProjectAccountingTab() {
       currentProject.items,
       currentProject.sections,
       currentProject.zones,
-      currentProject.header.supervisionPercentage || 0
+      currentProject.header.supervisionPercentage || 0,
+      currentProject.projectConstants
     );
-  }, [currentProject.items, currentProject.sections, currentProject.zones, currentProject.header.supervisionPercentage]);
+  }, [currentProject.items, currentProject.sections, currentProject.zones, currentProject.header.supervisionPercentage, currentProject.projectConstants]);
 
   const handleSaveSupervision = async () => {
     setIsSavingSupervision(true);

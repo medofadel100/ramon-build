@@ -31,9 +31,10 @@ export default function ProjectSummaryTab() {
       currentProject.items,
       currentProject.sections,
       currentProject.zones,
-      currentProject.header.supervisionPercentage || 0
+      currentProject.header.supervisionPercentage || 0,
+      currentProject.projectConstants
     );
-  }, [currentProject.items, currentProject.sections, currentProject.zones, currentProject.header.supervisionPercentage]);
+  }, [currentProject.items, currentProject.sections, currentProject.zones, currentProject.header.supervisionPercentage, currentProject.projectConstants]);
 
   const handleSaveSupervision = async () => {
     setIsSaving(true);
@@ -50,10 +51,7 @@ export default function ProjectSummaryTab() {
       .map(sec => {
         const secItems = currentProject.items.filter(it => it.sectionId === sec.id && it.isActive);
         const duration = secItems.reduce((acc, it) => {
-          const res = calculateItemTotal(it, currentProject.zones);
-          return acc + res.estimatedDays;
-        }, 0);
-
+            const res = calculateItemTotal(it, currentProject.zones, currentProject.projectConstants);
         const startDay = cumulativeDay;
         const endDay = cumulativeDay + duration;
         cumulativeDay = endDay;

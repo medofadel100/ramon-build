@@ -207,7 +207,7 @@ export default function ProjectBOQTab() {
   const getSectionTotal = (sectionId: string) => {
     const secItems = currentProject.items.filter(it => it.sectionId === sectionId);
     return secItems.reduce((acc, it) => {
-      const res = calculateItemTotal(it, currentProject.zones);
+      const res = calculateItemTotal(it, currentProject.zones, currentProject.projectConstants);
       return acc + res.total;
     }, 0);
   };
@@ -325,7 +325,7 @@ export default function ProjectBOQTab() {
                     <p className="text-center text-xs text-slate-500 py-4 font-semibold">لا يوجد بنود في هذا القسم حالياً.</p>
                   ) : (
                     sectionItems.map((item) => {
-                      const itemResult = calculateItemTotal(item, currentProject.zones);
+                      const itemResult = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
                       const isItemExpanded = expandedItems[item.id];
                       const template = getItemTemplate(item.id);
 
@@ -956,7 +956,7 @@ export default function ProjectBOQTab() {
 
                                 {/* 3.5 Detailed Material Recipe Breakdown */}
                                 {(() => {
-                                  const mats = calculateItemMaterials(item, currentProject.zones);
+                                  const mats = calculateItemMaterials(item, currentProject.zones, currentProject.projectConstants);
                                   if (mats.length === 0) return null;
                                   return (
                                     <div className="space-y-3 bg-[#13151c]/60 border border-[#222634] p-4 rounded-lg mt-4">

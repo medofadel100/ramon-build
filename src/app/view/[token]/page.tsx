@@ -106,7 +106,7 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
 
   const summary = useMemo(() => {
     if (!project) return null;
-    return calculateProjectSummary(items, sections, zones, project.header.supervisionPercentage || 0);
+    return calculateProjectSummary(items, sections, zones, project.header.supervisionPercentage || 0, project.projectConstants);
   }, [project, items, sections, zones]);
 
   if (loading) {
@@ -338,7 +338,7 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
               const secItems = items.filter(it => it.sectionId === sec.id && it.isActive);
               
               const sectionTotal = secItems.reduce((acc, it) => {
-                const res = calculateItemTotal(it, zones);
+                const res = calculateItemTotal(it, zones, project.projectConstants);
                 return acc + res.total;
               }, 0);
 
@@ -373,7 +373,7 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
                   {isExpanded && (
                     <div className="border-t border-[#222634] divide-y divide-[#222634] bg-slate-950/40">
                       {secItems.map((item) => {
-                        const res = calculateItemTotal(item, zones);
+                        const res = calculateItemTotal(item, zones, project.projectConstants);
 
                         return (
                           <div key={item.id} className="p-6 text-right hover:bg-slate-900/30 transition">

@@ -47,7 +47,9 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
     return calculateProjectSummary(
       currentProject.items,
       currentProject.sections,
-      currentProject.zones
+      currentProject.zones,
+      currentProject.header.supervisionPercentage || 0,
+      currentProject.projectConstants
     );
   }, [currentProject]);
 
@@ -59,7 +61,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
     currentProject.items.forEach(item => {
       if (!item.isActive) return;
       
-      const itemMats = calculateItemMaterials(item, currentProject.zones);
+      const itemMats = calculateItemMaterials(item, currentProject.zones, currentProject.projectConstants);
       itemMats.forEach(mat => {
         matList.push({
           itemId: item.id,
@@ -266,7 +268,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                               </td>
                             </tr>
                             {secItems.map((item) => {
-                              const res = calculateItemTotal(item, currentProject.zones);
+                              const res = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
                               return (
                                 <tr key={item.id}>
                                   <td className="p-2 border border-slate-300 text-center text-slate-400">{item.id}</td>
@@ -401,7 +403,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                               </td>
                             </tr>
                             {secItems.map((item) => {
-                              const res = calculateItemTotal(item, currentProject.zones);
+                              const res = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
                               return (
                                 <tr key={item.id}>
                                   <td className="p-2 border border-slate-300 text-slate-800">
