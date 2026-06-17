@@ -44,7 +44,7 @@ function determinePhase(material: MarketMaterial): 'تأسيس' | 'فنش' | 'إ
   // Fallback checks by category
   if (material.category === 'بناء') return 'تأسيس';
   if (material.category === 'أرضيات' || material.category === 'دهانات') return 'فنش';
-  if (material.category === 'سمارت هوم') return 'إكسسوارات';
+  if (material.category === 'التيار الخفيف والأنظمة') return 'إكسسوارات';
 
   // Default fallback
   return 'فنش';
