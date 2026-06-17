@@ -157,56 +157,60 @@ export default function MaterialsMarketplacePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {filteredMaterials.map(material => (
                   <Link href={`/materials/${material.id}`} key={material.id}>
-                    <Card className="bg-[#13151c]/60 border-[#222634] hover:border-cyan-500/30 hover:bg-[#13151c] transition-all duration-300 overflow-hidden group cursor-pointer h-full flex flex-col">
-                      <div className="p-5 flex-1">
-                        <div className="flex justify-between items-start mb-3">
-                          <div className="flex gap-2">
-                            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/50">
+                    <Card className="relative bg-[#13151c]/80 border-[#222634] hover:border-cyan-500/50 hover:bg-[#13151c] transition-all duration-500 overflow-hidden group cursor-pointer h-full flex flex-col hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:-translate-y-1">
+                      {/* Premium subtle gradient background */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                      
+                      <div className="p-6 flex-1 flex flex-col relative z-10">
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="flex flex-wrap gap-2">
+                            <span className="text-xs font-medium px-3 py-1 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/50 backdrop-blur-sm">
                               {material.subCategory}
                             </span>
                             {material.phase && (
-                              <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${
-                                material.phase === 'تأسيس' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
-                                material.phase === 'فنش' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
-                                'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                              <span className={`text-xs font-bold px-3 py-1 rounded-full border backdrop-blur-sm shadow-sm ${
+                                material.phase === 'تأسيس' ? 'bg-orange-500/10 text-orange-400 border-orange-500/30' :
+                                material.phase === 'فنش' ? 'bg-purple-500/10 text-purple-400 border-purple-500/30' :
+                                'bg-blue-500/10 text-blue-400 border-blue-500/30'
                               }`}>
                                 {material.phase}
                               </span>
                             )}
                           </div>
                           {material.sources.some(s => s.isAvailable) ? (
-                            <span className="flex items-center gap-1 text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
+                            <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full border border-emerald-400/20 shadow-[0_0_10px_rgba(52,211,153,0.1)]">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                               متوفر
                             </span>
                           ) : (
-                            <span className="text-xs font-medium text-rose-400 bg-rose-400/10 px-2 py-1 rounded-full">
+                            <span className="text-xs font-bold text-rose-400 bg-rose-400/10 px-3 py-1 rounded-full border border-rose-400/20">
                               غير متوفر
                             </span>
                           )}
                         </div>
-                        <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors mb-4 line-clamp-2">
+                        
+                        <h3 className="text-xl font-bold text-slate-100 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-emerald-400 transition-all duration-300 mb-4 leading-relaxed line-clamp-2">
                           {material.name}
                         </h3>
                         
-                        <div className="space-y-3 mt-auto">
-                           <div className="flex justify-between items-end border-t border-[#222634] pt-4">
-                              <p className="text-sm text-slate-400">أقل سعر:</p>
-                              <div className="text-right">
-                                <span className="text-2xl font-black text-emerald-400">{material.lowestPrice.toLocaleString()}</span>
-                                <span className="text-xs text-slate-500 mr-1">ج.م / {material.unit}</span>
+                        <div className="space-y-4 mt-auto">
+                           <div className="flex justify-between items-end border-t border-slate-800/60 pt-4">
+                              <p className="text-sm font-medium text-slate-400">أقل سعر بالسوق</p>
+                              <div className="text-right flex items-baseline gap-1.5">
+                                <span className="text-3xl font-black tracking-tight text-emerald-400 drop-shadow-sm">{material.lowestPrice.toLocaleString()}</span>
+                                <span className="text-sm font-medium text-slate-500">ج.م / {material.unit}</span>
                               </div>
                            </div>
                            
-                           <div className="flex items-center gap-2 pt-2">
+                           <div className="flex flex-wrap items-center gap-2 pt-2">
                               {material.sources.slice(0, 3).map((source, idx) => (
-                                 <div key={idx} className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/50 px-2 py-1 rounded border border-[#222634]">
-                                    <Store className="w-3 h-3" />
+                                 <div key={idx} className="flex items-center gap-1.5 text-[11px] font-medium text-slate-300 bg-slate-900/80 px-2.5 py-1.5 rounded-md border border-slate-800 shadow-sm group-hover:border-slate-700 transition-colors">
+                                    <Store className="w-3.5 h-3.5 text-cyan-500" />
                                     <span>{source.storeName}</span>
                                  </div>
                               ))}
                               {material.sources.length > 3 && (
-                                <span className="text-xs text-slate-500">+{material.sources.length - 3}</span>
+                                <span className="text-xs font-medium text-slate-500 bg-slate-900/50 px-2 py-1 rounded-md">+{material.sources.length - 3} متاجر</span>
                               )}
                            </div>
                         </div>
