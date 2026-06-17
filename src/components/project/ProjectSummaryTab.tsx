@@ -51,7 +51,10 @@ export default function ProjectSummaryTab() {
       .map(sec => {
         const secItems = currentProject.items.filter(it => it.sectionId === sec.id && it.isActive);
         const duration = secItems.reduce((acc, it) => {
-            const res = calculateItemTotal(it, currentProject.zones, currentProject.projectConstants);
+          const res = calculateItemTotal(it, currentProject.zones, currentProject.projectConstants);
+          return acc + res.estimatedDays;
+        }, 0);
+
         const startDay = cumulativeDay;
         const endDay = cumulativeDay + duration;
         cumulativeDay = endDay;
