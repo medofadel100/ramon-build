@@ -200,9 +200,12 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
             <div>
               {/* PRINT HEADER */}
               <div className="flex justify-between items-start border-b-2 border-slate-900 pb-5 mb-6">
-                <div>
-                  <h1 className="text-xl font-extrabold tracking-tight">مكتب رامون الفني للتشطيبات والمقاولات</h1>
-                  <p className="text-[10px] font-bold text-slate-500 mt-1">المكتب الهندسي الاستشاري للحصر والكميات والمواصفات</p>
+                <div className="flex items-center gap-4">
+                  <img src="/logo.jpeg" alt="Ramon Build Logo" className="w-16 h-16 object-contain rounded-md" />
+                  <div>
+                    <h1 className="text-xl font-extrabold tracking-tight">مكتب رامون الفني للتشطيبات والمقاولات</h1>
+                    <p className="text-[10px] font-bold text-slate-500 mt-1">المكتب الهندسي الاستشاري للحصر والكميات والمواصفات</p>
+                  </div>
                 </div>
                 <div className="text-left">
                   <span className="text-xs font-black tracking-wider block bg-slate-900 text-white px-2 py-0.5 rounded text-center">

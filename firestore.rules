@@ -128,7 +128,7 @@ service cloud.firestore {
     // Market Materials Collection Rules
     match /market_materials/{materialId} {
       allow read: if true;
-      allow write: if true; // Temporarily allow write for the seed data logic
+      allow write: if isAdmin() || isTechOffice();
     }
   }
 }

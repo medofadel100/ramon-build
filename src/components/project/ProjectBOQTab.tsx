@@ -11,6 +11,7 @@ import {
   Plus, Trash2, Edit2, Settings, FileText, CheckCircle2, MessageSquare, ShieldAlert,
   LayoutGrid, X
 } from 'lucide-react';
+import { MarketPricePicker } from './MarketPricePicker';
 
 export default function ProjectBOQTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
@@ -29,6 +30,9 @@ export default function ProjectBOQTab() {
   const [targetSectionId, setTargetSectionId] = useState('');
   const [customTitle, setCustomTitle] = useState('');
   const [customUnit, setCustomUnit] = useState('م²');
+
+  // Market Picker state
+  const [activeMarketTarget, setActiveMarketTarget] = useState<{ item: BOQItem, field: string } | null>(null);
 
   // Constants mapping
   const projectConstantsMap = currentProject?.projectConstants || {};
@@ -664,10 +668,20 @@ export default function ProjectBOQTab() {
                                       {item.pricing.mode === 'materials_labor_split' && (
                                         <>
                                           <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
-                                            <label className="block text-right text-[10px] font-bold text-emerald-400 mb-2 flex items-center gap-1.5">
-                                              <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-                                              سعر الوحدة (خامات فقط) ج.م
-                                            </label>
+                                            <div className="flex items-center justify-between mb-2">
+                                              <label className="text-right text-[10px] font-bold text-emerald-400 flex items-center gap-1.5">
+                                                <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                                سعر الوحدة (خامات فقط) ج.م
+                                              </label>
+                                              {canEdit && (
+                                                <button
+                                                  onClick={() => setActiveMarketTarget({ item, field: 'materialUnitPrice' })}
+                                                  className="text-[9px] bg-cyan-500/10 text-cyan-400 px-1.5 py-0.5 rounded border border-cyan-500/30 hover:bg-cyan-500/20 transition flex items-center gap-1"
+                                                >
+                                                  سحب من السوق
+                                                </button>
+                                              )}
+                                            </div>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
@@ -694,10 +708,20 @@ export default function ProjectBOQTab() {
 
                                       {item.pricing.mode === 'lump_sum' && (
                                         <div className="col-span-1 sm:col-span-2 bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
-                                          <label className="block text-right text-[10px] font-bold text-purple-400 mb-2 flex items-center gap-1.5">
-                                            <span className="h-2 w-2 rounded-full bg-purple-500"></span>
-                                            سعر المقطوعية المعتمد (إجمالي شامل) ج.م
-                                          </label>
+                                          <div className="flex items-center justify-between mb-2">
+                                            <label className="text-right text-[10px] font-bold text-purple-400 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-purple-500"></span>
+                                              سعر المقطوعية المعتمد (إجمالي شامل) ج.م
+                                            </label>
+                                            {canEdit && (
+                                              <button
+                                                onClick={() => setActiveMarketTarget({ item, field: 'lumpSumPrice' })}
+                                                className="text-[9px] bg-cyan-500/10 text-cyan-400 px-1.5 py-0.5 rounded border border-cyan-500/30 hover:bg-cyan-500/20 transition flex items-center gap-1"
+                                              >
+                                                سحب من السوق
+                                              </button>
+                                            )}
+                                          </div>
                                           <input
                                             type="number"
                                             disabled={!canEdit}
@@ -737,10 +761,20 @@ export default function ProjectBOQTab() {
                                             />
                                           </div>
                                           <div className="col-span-1 sm:col-span-2 bg-[#13151c] p-3 rounded-lg border border-dashed border-[#222634]">
-                                            <label className="block text-right text-[10px] font-bold text-slate-400 mb-2 flex items-center gap-1.5">
-                                              <span className="h-2 w-2 rounded-full border border-slate-500"></span>
-                                              إجمالي الخامات لليومية (إن وجدت) ج.م
-                                            </label>
+                                            <div className="flex items-center justify-between mb-2">
+                                              <label className="text-right text-[10px] font-bold text-slate-400 flex items-center gap-1.5">
+                                                <span className="h-2 w-2 rounded-full border border-slate-500"></span>
+                                                إجمالي الخامات لليومية (إن وجدت) ج.م
+                                              </label>
+                                              {canEdit && (
+                                                <button
+                                                  onClick={() => setActiveMarketTarget({ item, field: 'materialUnitPrice' })}
+                                                  className="text-[9px] bg-cyan-500/10 text-cyan-400 px-1.5 py-0.5 rounded border border-cyan-500/30 hover:bg-cyan-500/20 transition flex items-center gap-1"
+                                                >
+                                                  سحب من السوق
+                                                </button>
+                                              )}
+                                            </div>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
@@ -1122,6 +1156,17 @@ export default function ProjectBOQTab() {
             </form>
           </div>
         </div>
+      )}
+
+      {activeMarketTarget && (
+        <MarketPricePicker
+          onSelect={async (price, name) => {
+            const { item, field } = activeMarketTarget;
+            await handlePricingChange(item, field, price);
+            setActiveMarketTarget(null);
+          }}
+          onClose={() => setActiveMarketTarget(null)}
+        />
       )}
 
     </div>
