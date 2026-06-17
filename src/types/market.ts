@@ -35,12 +35,15 @@ export interface MarketSource {
   lastUpdated: number; // timestamp
 }
 
+export type MarketPhase = 'تأسيس' | 'فنش' | 'إكسسوارات';
+
 export interface MarketMaterial {
   id: string;
   name: string;
   description?: string;
   category: MarketCategory;
   subCategory: MarketSubCategory;
+  phase?: MarketPhase;
   unit: string;
   imageUrl?: string;
   sources: MarketSource[];

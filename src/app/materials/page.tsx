@@ -11,10 +11,13 @@ export default function MaterialsMarketplacePage() {
   const { materials, loading, fetchMaterials } = useMarketStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<MarketCategory | 'الكل'>('الكل');
+  const [selectedPhase, setSelectedPhase] = useState<'الكل' | 'تأسيس' | 'فنش' | 'إكسسوارات'>('الكل');
   
   const categories: (MarketCategory | 'الكل')[] = [
     'الكل', 'بناء', 'كهرباء', 'سباكة', 'تكييف', 'دهانات', 'أرضيات', 'نجارة', 'سمارت هوم', 'أخرى'
   ];
+
+  const phases = ['الكل', 'تأسيس', 'فنش', 'إكسسوارات'] as const;
 
   useEffect(() => {
     fetchMaterials();
@@ -29,6 +32,7 @@ export default function MaterialsMarketplacePage() {
           name: 'أسمنت بورتلاندي 50 كجم',
           category: 'بناء',
           subCategory: 'أسمنت',
+          phase: 'تأسيس',
           unit: 'شكارة',
           lowestPrice: 120,
           sources: [
@@ -41,6 +45,7 @@ export default function MaterialsMarketplacePage() {
           name: 'لفة سلك نحاس 3 مم السويدي',
           category: 'كهرباء',
           subCategory: 'أسلاك نحاس',
+          phase: 'تأسيس',
           unit: 'لفة',
           lowestPrice: 1500,
           sources: [
@@ -60,9 +65,10 @@ export default function MaterialsMarketplacePage() {
       const matchSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           m.subCategory.toLowerCase().includes(searchTerm.toLowerCase());
       const matchCat = selectedCategory === 'الكل' || m.category === selectedCategory;
-      return matchSearch && matchCat;
+      const matchPhase = selectedPhase === 'الكل' || m.phase === selectedPhase;
+      return matchSearch && matchCat && matchPhase;
     });
-  }, [materials, searchTerm, selectedCategory]);
+  }, [materials, searchTerm, selectedCategory, selectedPhase]);
 
   return (
     <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans p-6">
@@ -107,16 +113,35 @@ export default function MaterialsMarketplacePage() {
           </div>
 
           <div className="flex-1 space-y-6">
-            {/* Search Bar */}
-            <div className="relative group">
-              <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors" />
-              <input
-                type="text"
-                placeholder="ابحث عن خامة، أداة، أو علامة تجارية..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#13151c]/80 border border-[#222634] rounded-xl py-4 pr-12 pl-4 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all shadow-lg"
-              />
+            {/* Search Bar & Phase Filters */}
+            <div className="space-y-4">
+              <div className="relative group">
+                <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="ابحث عن خامة، أداة، أو علامة تجارية..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-[#13151c]/80 border border-[#222634] rounded-xl py-4 pr-12 pl-4 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all shadow-lg"
+                />
+              </div>
+
+              {/* Phase Filters */}
+              <div className="flex gap-2 flex-wrap">
+                {phases.map(phase => (
+                  <button
+                    key={phase}
+                    onClick={() => setSelectedPhase(phase)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      selectedPhase === phase
+                        ? 'bg-cyan-500 text-slate-900 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
+                        : 'bg-[#13151c]/80 text-slate-400 border border-[#222634] hover:bg-slate-800'
+                    }`}
+                  >
+                    {phase}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Grid */}
@@ -135,9 +160,20 @@ export default function MaterialsMarketplacePage() {
                     <Card className="bg-[#13151c]/60 border-[#222634] hover:border-cyan-500/30 hover:bg-[#13151c] transition-all duration-300 overflow-hidden group cursor-pointer h-full flex flex-col">
                       <div className="p-5 flex-1">
                         <div className="flex justify-between items-start mb-3">
-                          <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/50">
-                            {material.subCategory}
-                          </span>
+                          <div className="flex gap-2">
+                            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/50">
+                              {material.subCategory}
+                            </span>
+                            {material.phase && (
+                              <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${
+                                material.phase === 'تأسيس' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                                material.phase === 'فنش' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
+                                'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                              }`}>
+                                {material.phase}
+                              </span>
+                            )}
+                          </div>
                           {material.sources.some(s => s.isAvailable) ? (
                             <span className="flex items-center gap-1 text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
