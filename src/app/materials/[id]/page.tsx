@@ -1,0 +1,146 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useMarketStore } from '@/store/marketStore';
+import { MarketMaterial } from '@/types/market';
+import { Card } from '@/components/ui/card';
+import { ArrowRight, Store, ExternalLink, Activity, Clock, TrendingDown } from 'lucide-react';
+import Link from 'next/link';
+
+export default function MaterialDetailsPage() {
+  const params = useParams();
+  const router = useRouter();
+  const { materials, loading, fetchMaterials } = useMarketStore();
+  const [material, setMaterial] = useState<MarketMaterial | null>(null);
+
+  useEffect(() => {
+    if (materials.length === 0) {
+      fetchMaterials();
+    }
+  }, [fetchMaterials, materials.length]);
+
+  useEffect(() => {
+    if (!loading && materials.length > 0) {
+      const found = materials.find(m => m.id === params.id);
+      if (found) {
+        setMaterial(found);
+      }
+    }
+  }, [loading, materials, params.id]);
+
+  if (loading || (!material && materials.length === 0)) {
+    return (
+      <div className="min-h-screen bg-[#0b0e14] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!material) {
+    return (
+      <div className="min-h-screen bg-[#0b0e14] flex flex-col items-center justify-center text-slate-400 gap-4">
+        <p>الخامة غير موجودة.</p>
+        <button onClick={() => router.push('/materials')} className="text-cyan-400 hover:underline">العودة للسوق</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans p-6">
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Top Nav */}
+        <button 
+          onClick={() => router.push('/materials')}
+          className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+        >
+          <ArrowRight className="w-4 h-4" /> العودة لسوق الخامات
+        </button>
+
+        {/* Header Card */}
+        <div className="bg-[#13151c]/80 border border-[#222634] rounded-2xl p-8 backdrop-blur-xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent to-cyan-500/5 opacity-50"></div>
+          
+          <div className="relative z-10 flex flex-col md:flex-row justify-between gap-8">
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <span className="text-xs font-medium px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                  {material.category}
+                </span>
+                <span className="text-xs font-medium px-3 py-1 rounded-full bg-cyan-950/40 text-cyan-400 border border-cyan-900/50">
+                  {material.subCategory}
+                </span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                {material.name}
+              </h1>
+              <p className="text-slate-400 max-w-xl">
+                {material.description || 'لا يوجد وصف تفصيلي متاح حالياً لهذه الخامة.'}
+              </p>
+            </div>
+            
+            <div className="bg-[#0b0e14]/80 p-6 rounded-xl border border-[#222634] shrink-0 min-w-[200px] flex flex-col justify-center items-center text-center">
+              <p className="text-sm text-slate-400 mb-1">أقل سعر متاح</p>
+              <div className="flex items-baseline gap-1">
+                 <span className="text-4xl font-black text-emerald-400">{material.lowestPrice.toLocaleString()}</span>
+                 <span className="text-sm text-slate-500">ج.م/{material.unit}</span>
+              </div>
+              {material.sources.some(s => s.isAvailable) ? (
+                 <div className="mt-4 flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> متوفر في السوق
+                 </div>
+              ) : (
+                 <div className="mt-4 text-xs font-medium text-rose-400 bg-rose-400/10 px-3 py-1.5 rounded-full">
+                    غير متوفر حالياً
+                 </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Store Comparisons */}
+        <h2 className="text-xl font-bold text-white pt-4 flex items-center gap-2">
+          <TrendingDown className="w-5 h-5 text-cyan-400" /> مقارنة الأسعار في المتاجر
+        </h2>
+        
+        <div className="grid grid-cols-1 gap-4">
+          {material.sources.sort((a, b) => a.price - b.price).map((source, idx) => (
+            <Card key={idx} className={`bg-[#13151c]/60 border-[#222634] hover:bg-[#13151c] transition-colors p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${idx === 0 ? 'border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.05)]' : ''}`}>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-slate-900 border border-[#222634] flex items-center justify-center text-slate-400">
+                  <Store className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    {source.storeName}
+                    {idx === 0 && <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">الأرخص</span>}
+                  </h3>
+                  <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> تم التحديث: {new Date(source.lastUpdated).toLocaleDateString('ar-EG')}</span>
+                    {source.isAvailable ? (
+                      <span className="text-emerald-400">متوفر</span>
+                    ) : (
+                      <span className="text-rose-400">نفذت الكمية</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6 w-full sm:w-auto">
+                <div className="text-right flex-1 sm:flex-none">
+                  <div className="text-2xl font-bold text-white">{source.price.toLocaleString()} <span className="text-sm font-normal text-slate-500">ج.م</span></div>
+                </div>
+                {source.url !== '#' && (
+                  <Link href={source.url} target="_blank" rel="noopener noreferrer" className="bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shrink-0">
+                    شراء <ExternalLink className="w-4 h-4" />
+                  </Link>
+                )}
+              </div>
+            </Card>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}

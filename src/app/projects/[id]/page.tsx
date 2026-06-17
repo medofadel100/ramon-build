@@ -17,7 +17,8 @@ import ProjectSuppliersTab from '@/components/project/ProjectSuppliersTab';
 import ProjectAccountingTab from '@/components/project/ProjectAccountingTab';
 import ProjectInspectionTab from '@/components/project/ProjectInspectionTab';
 import ProjectConstantsTab from '@/components/project/ProjectConstantsTab';
-import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign, ClipboardCheck, Settings2 } from 'lucide-react';
+import ProjectMaterialsMarketTab from '@/components/project/ProjectMaterialsMarketTab';
+import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign, ClipboardCheck, Settings2, Store } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectPageProps {
@@ -37,7 +38,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
   const loadingProject = useProjectStore((state) => state.loading);
   const projectError = useProjectStore((state) => state.error);
 
-  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting' | 'inspection' | 'constants'>('boq');
+  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting' | 'inspection' | 'constants' | 'market'>('boq');
 
   useEffect(() => {
     if (!loadingAuth && !user) {
@@ -100,6 +101,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
     { id: 'accounting', label: 'الحسابات والدفعات', icon: DollarSign },
     { id: 'inspection', label: 'استلام الأعمال', icon: ClipboardCheck },
     { id: 'constants', label: 'الخامات والثوابت', icon: Settings2 },
+    { id: 'market', label: 'سوق الخامات', icon: Store },
     { id: 'attachments', label: 'المرفقات', icon: Paperclip },
     { id: 'sharing', label: 'مشاركة العميل', icon: Share2 }
   ] as const;
@@ -185,6 +187,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
           {activeTab === 'accounting' && <ProjectAccountingTab />}
           {activeTab === 'inspection' && <ProjectInspectionTab />}
           {activeTab === 'constants' && <ProjectConstantsTab />}
+          {activeTab === 'market' && <ProjectMaterialsMarketTab />}
           {activeTab === 'attachments' && <ProjectAttachmentsTab />}
           {activeTab === 'sharing' && <ProjectSharingTab />}
         </div>
