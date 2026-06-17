@@ -211,12 +211,20 @@ export default function MaterialsMarketplacePage() {
                               </div>
                            </div>
                            
-                           <div className="flex flex-wrap items-center gap-2 pt-2">
+                           <div className="flex flex-wrap items-center gap-2 pt-2 relative z-20">
                               {material.sources.slice(0, 3).map((source, idx) => (
-                                 <div key={idx} className="flex items-center gap-1.5 text-[11px] font-medium text-slate-300 bg-slate-900/80 px-2.5 py-1.5 rounded-md border border-slate-800 shadow-sm group-hover:border-slate-700 transition-colors">
+                                 <a 
+                                   key={idx} 
+                                   href={source.url !== '#' ? source.url : `https://www.google.com/search?q=${encodeURIComponent('شراء ' + material.name + ' من ' + source.storeName)}`}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   onClick={(e) => e.stopPropagation()}
+                                   className="flex items-center gap-1.5 text-[11px] font-medium text-slate-300 bg-slate-900/80 hover:bg-slate-800 px-2.5 py-1.5 rounded-md border border-slate-800 shadow-sm hover:border-cyan-500/50 hover:text-cyan-400 transition-all cursor-pointer"
+                                 >
                                     <Store className="w-3.5 h-3.5 text-cyan-500" />
                                     <span>{source.storeName}</span>
-                                 </div>
+                                    <ExternalLink className="w-2.5 h-2.5 opacity-50" />
+                                 </a>
                               ))}
                               {material.sources.length > 3 && (
                                 <span className="text-xs font-medium text-slate-500 bg-slate-900/50 px-2 py-1 rounded-md">+{material.sources.length - 3} متاجر</span>
