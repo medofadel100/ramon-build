@@ -1,0 +1,2 @@
+const fs=require('fs');const s=fs.readFileSync('src/store/projectStore.ts','utf8');const lines=s.split('\n');let depth=0;for(let i=0;i<lines.length;i++){const line=lines[i];for(const c of line){if(c==='{')depth++;else if(c==='}')depth--;}if(i>=0 && (i<120 || i>540) && (depth>0 || line.match(/create\</)))console.log((i+1).toString().padStart(4), 'depth', depth, line.trim());}
+console.log('final depth',depth);

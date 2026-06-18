@@ -8,7 +8,7 @@ import { Search, Filter, Store, Activity, ChevronRight, ExternalLink } from 'luc
 import Link from 'next/link';
 
 export default function MaterialsMarketplacePage() {
-  const { materials, loading, fetchMaterials } = useMarketStore();
+  const { materials, loading, startMaterialSync, stopMaterialSync } = useMarketStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<MarketCategory | 'الكل'>('الكل');
   const [selectedPhase, setSelectedPhase] = useState<'الكل' | 'تأسيس' | 'فنش' | 'إكسسوارات'>('الكل');
@@ -18,13 +18,17 @@ export default function MaterialsMarketplacePage() {
     'الكل', 'بناء', 'كهرباء', 'سباكة', 'تكييف', 'دهانات', 'أرضيات', 'نجارة',
     'العزل والمواد الخصوصية', 'الأسقف والجبسون بورد', 'الألوميتال والزجاج',
     'التيار الخفيف والأنظمة', 'المطابخ والرخام', 'الواجهات واللاند سكيب'
+    , 'أدوات ومعدات التنفيذ', 'ديكورات وتكسيات', 'أخرى'
   ];
 
   const phases = ['الكل', 'تأسيس', 'فنش', 'إكسسوارات'] as const;
 
   useEffect(() => {
-    fetchMaterials();
-  }, [fetchMaterials]);
+    startMaterialSync();
+    return () => {
+      stopMaterialSync();
+    };
+  }, [startMaterialSync, stopMaterialSync]);
 
   // Reset selected brand when category changes
   useEffect(() => {

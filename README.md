@@ -20,6 +20,46 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Add Environment Variables
+
+This project requires Firebase environment variables for the client app.
+
+1. Copy the example file locally:
+
+```bash
+cp .env.example .env
+```
+
+> On Windows PowerShell, use:
+>
+> ```powershell
+> copy .env.example .env
+> ```
+
+2. Fill in the Firebase values from your Firebase console.
+
+3. Start the dev server:
+
+```bash
+npm run dev
+```
+
+### Add variables in Vercel
+
+1. Open your project dashboard on Vercel.
+2. Go to `Settings` → `Environment Variables`.
+3. Add each key from `.env.example` with the corresponding value:
+   - `NEXT_PUBLIC_FIREBASE_API_KEY`
+   - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+   - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+   - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+   - `NEXT_PUBLIC_FIREBASE_APP_ID`
+   - `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`
+4. Set the environment to `Preview` and `Production` as needed.
+
+After adding them, redeploy your Vercel project.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

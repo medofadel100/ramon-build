@@ -11,14 +11,15 @@ import Link from 'next/link';
 export default function MaterialDetailsPage() {
   const params = useParams();
   const router = useRouter();
-  const { materials, loading, fetchMaterials } = useMarketStore();
+  const { materials, loading, startMaterialSync, stopMaterialSync } = useMarketStore();
   const [material, setMaterial] = useState<MarketMaterial | null>(null);
 
   useEffect(() => {
-    if (materials.length === 0) {
-      fetchMaterials();
-    }
-  }, [fetchMaterials, materials.length]);
+    startMaterialSync();
+    return () => {
+      stopMaterialSync();
+    };
+  }, [startMaterialSync, stopMaterialSync]);
 
   useEffect(() => {
     if (!loading && materials.length > 0) {

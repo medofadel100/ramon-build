@@ -1,0 +1,22 @@
+name: Market Price Sync
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # every day at 02:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install
+        run: |
+          npm ci
+      - name: Run market price updater
+        run: |
+          npm run update:market-prices

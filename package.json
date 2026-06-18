@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:market-defaults": "ts-node scripts/scraper/seed_default_market.ts"
+    ,
+    "update:market-prices": "ts-node scripts/scraper/update_market_prices.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -35,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "ts-node": "^10.9.1"
   }
 }

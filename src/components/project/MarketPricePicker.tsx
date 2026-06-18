@@ -9,14 +9,15 @@ interface MarketPricePickerProps {
 }
 
 export function MarketPricePicker({ onSelect, onClose }: MarketPricePickerProps) {
-  const { materials, fetchMaterials, loading } = useMarketStore();
+  const { materials, startMaterialSync, stopMaterialSync, loading } = useMarketStore();
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    if (materials.length === 0) {
-      fetchMaterials();
-    }
-  }, [materials.length, fetchMaterials]);
+    startMaterialSync();
+    return () => {
+      stopMaterialSync();
+    };
+  }, [startMaterialSync, stopMaterialSync]);
 
   const filteredMaterials = materials.filter(m => 
     m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
