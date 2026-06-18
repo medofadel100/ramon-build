@@ -10,6 +10,7 @@ import { db } from '@/lib/firebase';
 export default function ProjectSharingTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
   const updateSharing = useProjectStore((state) => state.updateSharing);
+  const loadProject = useProjectStore((state) => state.loadProject);
   const user = useAuthStore((state) => state.user);
 
   const [copied, setCopied] = useState(false);
@@ -61,9 +62,7 @@ export default function ProjectSharingTab() {
         updatedAt: serverTimestamp()
       });
 
-      // Reload project state locally
-      const storeLoad = useProjectStore.getState().loadProject;
-      await storeLoad(currentProject.id);
+      await loadProject(currentProject.id);
     } catch (err) {
       console.error(err);
       alert('خطأ أثناء تحديث الرابط.');

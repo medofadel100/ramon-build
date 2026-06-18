@@ -32,6 +32,7 @@ interface ProjectState {
   currentProject: ProjectData | null;
   loading: boolean;
   saving: boolean;
+  savingOperation: string | null;
   error: string | null;
   
   // Database actions
@@ -76,15 +77,21 @@ interface ProjectState {
 
   // Project deletion
   deleteCurrentProject: () => Promise<void>;
+  deleteProjectById: (projectId: string) => Promise<void>;
 }
 
-export const useProjectStore = create<ProjectState>((set, get) => ({
-  currentProject: null,
-  loading: false,
-  saving: false,
-  error: null,
+export const useProjectStore = create<ProjectState>((set, get) => {
+  const setSaving = (operation: string | null) => set({ saving: operation !== null, savingOperation: operation });
+
+  return {
+    currentProject: null,
+    loading: false,
+    saving: false,
+    savingOperation: null,
+    error: null,
 
   loadProject: async (projectId: string) => {
+    setSaving('loadProject');
     set({ loading: true, error: null });
     try {
       const data = await getProjectData(projectId);
@@ -95,6 +102,8 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       }
     } catch (err: any) {
       set({ error: err.message || 'خطأ أثناء تحميل البيانات', loading: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -109,16 +118,16 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         header: updatedHeader
-      },
-      saving: true
+      }
     });
+    setSaving('updateHeader');
 
     try {
       await updateProjectHeader(currentProject.id, updatedHeader);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to save header updates:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -130,16 +139,16 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         clientShareSettings: settings
-      },
-      saving: true
+      }
     });
+    setSaving('updateSharing');
 
     try {
       await updateProjectSharing(currentProject.id, settings);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to save sharing updates:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -151,23 +160,28 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         ...updates
-      },
-      saving: true
+      }
     });
+    setSaving('updateProject');
 
     try {
+      if (updates.header) {
+        await updateProjectHeader(currentProject.id, { ...currentProject.header, ...updates.header });
+      }
+      if (updates.clientShareSettings) {
+        await updateProjectSharing(currentProject.id, updates.clientShareSettings);
+      }
       if (updates.projectConstants || updates.customConstantsDefinitions) {
         await dbUpdateProjectConstants(
-          currentProject.id, 
+          currentProject.id,
           updates.projectConstants || currentProject.projectConstants || {},
           updates.customConstantsDefinitions
         );
       }
-      // Add other partial updates here if needed
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to update project:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -184,22 +198,21 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       ceilingArea: zoneInput.floorArea
     };
 
-    // Update locally
     const updatedZones = [...currentProject.zones, newZone];
     set({
       currentProject: {
         ...currentProject,
         zones: updatedZones
-      },
-      saving: true
+      }
     });
+    setSaving('addZone');
 
     try {
       await dbAddZone(currentProject.id, newZone);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to add zone:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -225,19 +238,22 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         zones: updatedZones
-      },
-      saving: true
+      }
     });
+    setSaving('updateZone');
 
     const targetZone = updatedZones.find(z => z.id === zoneId);
-    if (!targetZone) return;
+    if (!targetZone) {
+      setSaving(null);
+      return;
+    }
 
     try {
       await dbUpdateZone(currentProject.id, zoneId, targetZone);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to update zone:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -250,16 +266,16 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         zones: updatedZones
-      },
-      saving: true
+      }
     });
+    setSaving('deleteZone');
 
     try {
       await dbDeleteZone(currentProject.id, zoneId);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to delete zone:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -272,16 +288,16 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         items: updatedItems
-      },
-      saving: true
+      }
     });
+    setSaving('updateItem');
 
     try {
       await dbUpdateItem(currentProject.id, item);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to update item:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -302,16 +318,16 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         items: updatedItems
-      },
-      saving: true
+      }
     });
+    setSaving('addCustomItem');
 
     try {
       await dbUpdateItem(currentProject.id, newItem);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to add custom item:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -324,16 +340,16 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         items: updatedItems
-      },
-      saving: true
+      }
     });
+    setSaving('deleteItem');
 
     try {
       await dbDeleteItem(currentProject.id, sectionId, itemId);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to delete item:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -349,16 +365,16 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       currentProject: {
         ...currentProject,
         sections: updatedSections
-      },
-      saving: true
+      }
     });
+    setSaving('toggleSection');
 
     try {
       await dbToggleSection(currentProject.id, sectionId, enabled);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to toggle section:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -373,17 +389,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     const newSupplier: Supplier = { ...supplierInput, id };
     const updatedSuppliers = [...(currentProject.suppliers || []), newSupplier];
 
-    set({
-      currentProject: { ...currentProject, suppliers: updatedSuppliers },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, suppliers: updatedSuppliers } });
+    setSaving('addSupplier');
 
     try {
       await dbAddSupplier(currentProject.id, newSupplier);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to add supplier:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -392,17 +406,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     if (!currentProject) return;
 
     const updatedSuppliers = (currentProject.suppliers || []).map(s => s.id === supplier.id ? supplier : s);
-    set({
-      currentProject: { ...currentProject, suppliers: updatedSuppliers },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, suppliers: updatedSuppliers } });
+    setSaving('updateSupplier');
 
     try {
       await dbUpdateSupplier(currentProject.id, supplier);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to update supplier:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -411,17 +423,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     if (!currentProject) return;
 
     const updatedSuppliers = (currentProject.suppliers || []).filter(s => s.id !== supplierId);
-    set({
-      currentProject: { ...currentProject, suppliers: updatedSuppliers },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, suppliers: updatedSuppliers } });
+    setSaving('removeSupplier');
 
     try {
       await dbDeleteSupplier(currentProject.id, supplierId);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to delete supplier:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -436,17 +446,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     const newWorker: Worker = { ...workerInput, id };
     const updatedWorkers = [...(currentProject.workers || []), newWorker];
 
-    set({
-      currentProject: { ...currentProject, workers: updatedWorkers },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, workers: updatedWorkers } });
+    setSaving('addWorker');
 
     try {
       await dbAddWorker(currentProject.id, newWorker);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to add worker:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -455,17 +463,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     if (!currentProject) return;
 
     const updatedWorkers = (currentProject.workers || []).map(w => w.id === worker.id ? worker : w);
-    set({
-      currentProject: { ...currentProject, workers: updatedWorkers },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, workers: updatedWorkers } });
+    setSaving('updateWorkerData');
 
     try {
       await dbUpdateWorker(currentProject.id, worker);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to update worker:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -474,17 +480,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     if (!currentProject) return;
 
     const updatedWorkers = (currentProject.workers || []).filter(w => w.id !== workerId);
-    set({
-      currentProject: { ...currentProject, workers: updatedWorkers },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, workers: updatedWorkers } });
+    setSaving('removeWorker');
 
     try {
       await dbDeleteWorker(currentProject.id, workerId);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to delete worker:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -499,17 +503,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     const newAccount: AccountEntry = { ...accountInput, id };
     const updatedAccounts = [...(currentProject.accounts || []), newAccount];
 
-    set({
-      currentProject: { ...currentProject, accounts: updatedAccounts },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, accounts: updatedAccounts } });
+    setSaving('addAccount');
 
     try {
       await dbAddAccount(currentProject.id, newAccount);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to add account:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -518,17 +520,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     if (!currentProject) return;
 
     const updatedAccounts = (currentProject.accounts || []).map(a => a.id === account.id ? account : a);
-    set({
-      currentProject: { ...currentProject, accounts: updatedAccounts },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, accounts: updatedAccounts } });
+    setSaving('updateAccount');
 
     try {
       await dbUpdateAccount(currentProject.id, account);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to update account:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -537,17 +537,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     if (!currentProject) return;
 
     const updatedAccounts = (currentProject.accounts || []).filter(a => a.id !== accountId);
-    set({
-      currentProject: { ...currentProject, accounts: updatedAccounts },
-      saving: true
-    });
+    set({ currentProject: { ...currentProject, accounts: updatedAccounts } });
+    setSaving('removeAccount');
 
     try {
       await dbDeleteAccount(currentProject.id, accountId);
-      set({ saving: false });
     } catch (err: any) {
       console.error('Failed to delete account:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
     }
   },
 
@@ -558,14 +556,32 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     const { currentProject } = get();
     if (!currentProject) return;
 
-    set({ saving: true });
+    setSaving('deleteCurrentProject');
 
     try {
       await deleteProject(currentProject.id);
-      set({ currentProject: null, saving: false });
+      set({ currentProject: null });
     } catch (err: any) {
       console.error('Failed to delete project:', err);
-      set({ saving: false });
+    } finally {
+      setSaving(null);
+    }
+  },
+
+  deleteProjectById: async (projectId: string) => {
+    const { currentProject } = get();
+    setSaving('deleteCurrentProject');
+
+    try {
+      await deleteProject(projectId);
+      if (currentProject?.id === projectId) {
+        set({ currentProject: null });
+      }
+    } catch (err: any) {
+      console.error('Failed to delete project by id:', err);
+    } finally {
+      setSaving(null);
     }
   }
-}));
+  }
+});

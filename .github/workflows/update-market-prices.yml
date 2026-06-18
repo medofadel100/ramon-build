@@ -1,0 +1,28 @@
+name: Update Market Prices
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # daily at 02:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Run market price updater
+        env:
+          NODE_OPTIONS: '--unhandled-rejections=strict'
+        run: |
+          npx ts-node scripts/scraper/update_market_prices.ts

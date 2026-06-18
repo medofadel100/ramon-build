@@ -10,8 +10,33 @@ export default function Navbar() {
   const user = useAuthStore((state) => state.user);
   const signOut = useAuthStore((state) => state.signOut);
   const saving = useProjectStore((state) => state.saving);
+  const savingOperation = useProjectStore((state) => state.savingOperation);
   const pathname = usePathname();
   const router = useRouter();
+
+  const savingLabels: Record<string, string> = {
+    loadProject: 'تحميل المشروع...',
+    updateHeader: 'حفظ بيانات المشروع...',
+    updateSharing: 'حفظ إعدادات المشاركة...',
+    updateProject: 'حفظ إعدادات المشروع...',
+    addZone: 'إضافة مساحة...',
+    updateZone: 'تحديث المساحة...',
+    deleteZone: 'حذف المساحة...',
+    updateItem: 'حفظ بند...',
+    addCustomItem: 'إضافة بند مخصص...',
+    deleteItem: 'حذف بند...',
+    toggleSection: 'تحديث حالة القسم...',
+    addSupplier: 'حفظ مورد...',
+    updateSupplier: 'تحديث مورد...',
+    removeSupplier: 'حذف مورد...',
+    addWorker: 'حفظ عامل...',
+    updateWorkerData: 'تحديث عامل...',
+    removeWorker: 'حذف عامل...',
+    addAccount: 'حفظ حساب...',
+    updateAccount: 'تحديث حساب...',
+    removeAccount: 'حذف حساب...',
+    deleteCurrentProject: 'حذف المشروع...'
+  };
 
   const handleSignOut = async () => {
     try {
@@ -151,7 +176,7 @@ export default function Navbar() {
           {saving && (
             <div className="flex items-center gap-1.5 font-cairo text-xs text-[#c5a880]">
               <span className="h-2 w-2 rounded-full bg-[#c5a880] animate-pulse"></span>
-              <span>جاري الحفظ تلقائياً...</span>
+              <span>{savingLabels[savingOperation ?? ''] || 'جاري الحفظ تلقائياً...'}</span>
             </div>
           )}
 

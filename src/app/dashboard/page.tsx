@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
+import { useProjectStore } from '@/store/projectStore';
 import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { deleteProject } from '@/lib/project-service';
 import Navbar from '@/components/Navbar';
 import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X, BookOpen, Activity, LayoutDashboard, CheckCircle2, Clock } from 'lucide-react';
 import Link from 'next/link';
@@ -98,12 +98,14 @@ export default function DashboardPage() {
     fetchProjects();
   }, [user]);
 
+  const deleteProjectById = useProjectStore((state) => state.deleteProjectById);
+
   const handleDeleteProject = async () => {
     if (!projectToDelete || deleteInput !== projectToDelete.header.name) return;
     
     setIsDeleting(true);
     try {
-      await deleteProject(projectToDelete.id);
+      await deleteProjectById(projectToDelete.id);
       setProjects(prev => prev.filter(p => p.id !== projectToDelete.id));
       setProjectToDelete(null);
       setDeleteInput('');

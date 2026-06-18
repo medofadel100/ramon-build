@@ -657,24 +657,39 @@ export async function removeEngineerFromProject(projectId: string, engineerUid: 
 // ==========================================
 // 12. Delete Project (with all subcollections)
 // ==========================================
+async function deleteCollectionDocuments(projectId: string, collectionName: string): Promise<void> {
+  const collectionRef = collection(db, 'projects', projectId, collectionName);
+  const snapshot = await getDocs(collectionRef);
+  if (snapshot.empty) return;
+
+  const batch = writeBatch(db);
+  snapshot.docs.forEach((docSnap) => batch.delete(docSnap.ref));
+  await batch.commit();
+}
+
+async function deleteCollectionDocumentsPath(pathSegments: string[]): Promise<void> {
+  const collectionRef = collection(db, pathSegments.join('/'));
+  const snapshot = await getDocs(collectionRef);
+  if (snapshot.empty) return;
+
+  const batch = writeBatch(db);
+  snapshot.docs.forEach((docSnap) => batch.delete(docSnap.ref));
+  await batch.commit();
+}
+
 export async function deleteProject(projectId: string): Promise<void> {
-  // Delete subcollections first
-  const subcollections = ['areas', 'suppliers', 'workers', 'accounts', 'inviteTokens'];
-  
+  const subcollections = ['areas', 'suppliers', 'workers', 'accounts', 'inviteTokens', 'attachments'];
+
   for (const sub of subcollections) {
-    const subSnapshot = await getDocs(collection(db, 'projects', projectId, sub));
-    await Promise.all(subSnapshot.docs.map(d => deleteDoc(d.ref)));
+    await deleteCollectionDocuments(projectId, sub);
   }
 
-  // Delete sections and their items
   const sectionsSnapshot = await getDocs(collection(db, 'projects', projectId, 'sections'));
   for (const secDoc of sectionsSnapshot.docs) {
-    const itemsSnapshot = await getDocs(collection(db, 'projects', projectId, 'sections', secDoc.id, 'items'));
-    await Promise.all(itemsSnapshot.docs.map(d => deleteDoc(d.ref)));
+    await deleteCollectionDocumentsPath(['projects', projectId, 'sections', secDoc.id, 'items']);
     await deleteDoc(secDoc.ref);
   }
 
-  // Delete the project document itself
   await deleteDoc(doc(db, 'projects', projectId));
 }
 // 13. Update Constants

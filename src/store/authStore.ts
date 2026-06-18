@@ -30,7 +30,7 @@ interface AuthState {
   initialize: () => () => void; // Returns unsubscribe function
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   loading: true,
   initialized: false,
@@ -63,21 +63,22 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   updateProfile: async (data: Partial<UserProfile>) => {
-    // Cannot use 'get' directly in 'set' callback without adding 'get' to the create function signature.
-    // Instead we can use set with a callback.
-    set((state) => {
-      if (!state.user) return state;
-      // Optimistically update
-      const updatedUser = { ...state.user, ...data };
-      
-      // Update firestore asynchronously
-      const userRef = doc(db, 'users', state.user.uid);
-      setDoc(userRef, data, { merge: true }).catch((err) => {
-        console.error('Error updating profile in firestore:', err);
-      });
+    const state = get();
+    if (!state.user) return;
 
-      return { user: updatedUser };
-    });
+    const previousUser = state.user;
+    const updatedUser = { ...previousUser, ...data };
+    set({ user: updatedUser, loading: true, error: null });
+
+    try {
+      const userRef = doc(db, 'users', previousUser.uid);
+      await setDoc(userRef, data, { merge: true });
+      set({ loading: false });
+    } catch (err: any) {
+      console.error('Error updating profile in firestore:', err);
+      set({ user: previousUser, loading: false, error: 'فشل تحديث بيانات الملف الشخصي. يرجى المحاولة لاحقاً.' });
+      throw err;
+    }
   },
 
   initialize: () => {

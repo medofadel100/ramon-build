@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [jobTitle, setJobTitle] = useState('مهندس مكتب فني');
@@ -18,7 +19,30 @@ export default function LoginPage() {
   const [errorLocal, setErrorLocal] = useState('');
 
   const signIn = useAuthStore((state) => state.signIn);
+  const user = useAuthStore((state) => state.user);
+  const loadingAuth = useAuthStore((state) => state.loading);
   const router = useRouter();
+
+  const passwordStrength = useMemo(() => {
+    if (password.length === 0) return '';
+    if (password.length < 6) return 'ضعيفة جداً';
+    const score = [/[0-9]/, /[A-Z]/, /[a-z]/, /[^A-Za-z0-9]/].reduce((acc, re) => acc + (re.test(password) ? 1 : 0), 0);
+    if (score <= 1) return 'ضعيفة';
+    if (score === 2) return 'متوسطة';
+    if (score === 3) return 'جيدة';
+    return 'قوية';
+  }, [password]);
+
+  const isPhoneValid = (value: string) => {
+    const normalized = value.replace(/\s|\-|\(|\)/g, '');
+    return /^01[0-2,5][0-9]{8}$/.test(normalized) || normalized.length === 0;
+  };
+
+  useEffect(() => {
+    if (!loadingAuth && user) {
+      router.push('/dashboard');
+    }
+  }, [user, loadingAuth, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,14 +55,40 @@ export default function LoginPage() {
       return;
     }
 
+    if (isRegister) {
+      if (!name) {
+        setErrorLocal('يرجى إدخال اسم المهندس');
+        setLoadingLocal(false);
+        return;
+      }
+
+      if (!confirmPassword) {
+        setErrorLocal('يرجى تأكيد كلمة المرور');
+        setLoadingLocal(false);
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setErrorLocal('كلمتا المرور غير متطابقتين');
+        setLoadingLocal(false);
+        return;
+      }
+
+      if (password.length < 6) {
+        setErrorLocal('يجب أن تكون كلمة المرور 6 أحرف على الأقل');
+        setLoadingLocal(false);
+        return;
+      }
+
+      if (!isPhoneValid(phone)) {
+        setErrorLocal('يرجى إدخال رقم هاتف صحيح بصيغة مصرية');
+        setLoadingLocal(false);
+        return;
+      }
+    }
+
     try {
       if (isRegister) {
-        if (!name) {
-          setErrorLocal('يرجى إدخال اسم المهندس');
-          setLoadingLocal(false);
-          return;
-        }
-
         // 1. Create Firebase User
         const userCred = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(userCred.user, { displayName: name });
@@ -54,7 +104,6 @@ export default function LoginPage() {
           jobTitle,
           createdAt: new Date().toISOString()
         });
-
       } else {
         await signIn(email, password);
       }
@@ -186,7 +235,26 @@ export default function LoginPage() {
               className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
               placeholder="••••••••"
             />
+            {isRegister && password.length > 0 && (
+              <p className="mt-2 text-[11px] text-slate-400">قوة كلمة المرور: <span className="font-semibold text-white">{passwordStrength}</span></p>
+            )}
           </div>
+
+          {isRegister && (
+            <div>
+              <label className="block text-right text-xs font-cairo font-medium text-slate-400 mb-1.5">
+                تأكيد كلمة المرور *
+              </label>
+              <input
+                type="password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                placeholder="••••••••"
+              />
+            </div>
+          )}
 
           <button
             type="submit"

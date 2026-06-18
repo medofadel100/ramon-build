@@ -240,14 +240,14 @@ async function seedDocxMaterials() {
         storeName: STORES[0].name,
         price: lowestPrice,
         isAvailable: true,
-        url: STORES[0].url.replace('{query}', encodeURIComponent(material.name)),
+        url: (STORES[0].url ?? '').replace('{query}', encodeURIComponent(material.name || '')),
         lastUpdated: Date.now()
       },
       {
         storeName: STORES[2].name,
         price: lowestPrice + generatePrice(10, 50),
         isAvailable: true,
-        url: STORES[2].url.replace('{query}', encodeURIComponent(material.name)),
+        url: (STORES[2].url ?? '').replace('{query}', encodeURIComponent(material.name || '')),
         lastUpdated: Date.now()
       }
     ];

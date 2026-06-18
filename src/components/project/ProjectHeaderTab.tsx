@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
-import { ProjectHeader, deleteProject, formatDate } from '@/lib/project-service';
+import { ProjectHeader, formatDate } from '@/lib/project-service';
 import { Save, Info, User, Phone, MapPin, Calendar, CheckSquare, Eye, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 export default function ProjectHeaderTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
   const updateHeader = useProjectStore((state) => state.updateHeader);
+  const deleteCurrentProject = useProjectStore((state) => state.deleteCurrentProject);
   const user = useAuthStore((state) => state.user);
   const router = useRouter();
 
@@ -63,20 +64,31 @@ export default function ProjectHeaderTab() {
     }
   };
 
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleDeleteProject = async () => {
     if (!currentProject) return;
-    
-    window.alert('مش قولت ليك مش تدوس يا غبي 😂');
-    
-    const confirmDelete = window.confirm('بعيداً عن الهزار.. هل أنت متأكد من حذف هذا المشروع بالكامل؟ لا يمكن التراجع عن هذا الإجراء.');
-    if (confirmDelete) {
-      try {
-        await deleteProject(currentProject.id);
-        router.push('/dashboard');
-      } catch (err) {
-        console.error("Error deleting project", err);
-        alert('حدث خطأ أثناء محاولة حذف المشروع.');
-      }
+    const confirmDelete = window.prompt(
+      `لحذف المشروع نهائياً، اكتب اسم المشروع التالي: ${currentProject.header.name}`
+    );
+
+    if (confirmDelete !== currentProject.header.name) {
+      alert('لم يتم حذف المشروع. لم تتطابق الكتابة مع اسم المشروع.');
+      return;
+    }
+
+    const finalConfirm = window.confirm('هذا الإجراء سيحذف المشروع نهائياً ولا يمكن التراجع عنه. تابع؟');
+    if (!finalConfirm) return;
+
+    setIsDeleting(true);
+    try {
+      await deleteCurrentProject();
+      router.push('/dashboard');
+    } catch (err) {
+      console.error('Error deleting project', err);
+      alert('حدث خطأ أثناء محاولة حذف المشروع.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -405,10 +417,11 @@ export default function ProjectHeaderTab() {
             </div>
             <button
               onClick={handleDeleteProject}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-rose-900/50 border border-rose-800 text-sm font-bold text-rose-200 hover:bg-rose-600 hover:text-white transition"
+              disabled={isDeleting}
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-rose-900/50 border border-rose-800 text-sm font-bold text-rose-200 hover:bg-rose-600 hover:text-white transition disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Trash2 className="h-4 w-4" />
-              حذف المشروع بالكامل
+              {isDeleting ? 'جاري الحذف...' : 'حذف المشروع بالكامل'}
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { DEFAULT_CONSTANTS, ConstantDefinition } from '@/lib/constants';
@@ -31,6 +31,13 @@ export default function ProjectConstantsTab() {
     unit: 'ج.م',
     value: 0
   });
+
+  useEffect(() => {
+    if (currentProject) {
+      setLocalConstants(currentProject.projectConstants || {});
+      setLocalDefinitions(currentProject.customConstantsDefinitions || []);
+    }
+  }, [currentProject]);
 
   if (!currentProject) return null;
 
