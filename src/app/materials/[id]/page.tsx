@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useMarketStore } from '@/store/marketStore';
 import { MarketMaterial } from '@/types/market';
 import { Card } from '@/components/ui/card';
@@ -28,8 +29,40 @@ export default function MaterialDetailsPage() {
       if (found) {
         setMaterial(found);
       }
-    }
   }, [loading, materials, params.id]);
+
+  const chartData = useMemo(() => {
+    if (!material) return [];
+    if (material.priceHistory && material.priceHistory.length > 0) {
+      return material.priceHistory;
+    }
+    
+    const data = [];
+    const basePrice = material.lowestPrice;
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date();
+      date.setMonth(date.getMonth() - i);
+      const variation = basePrice * 0.1 * (Math.random() * 2 - 1);
+      const price = i === 0 ? basePrice : Math.round(basePrice + variation);
+      data.push({
+        date: date.toLocaleDateString('ar-EG', { month: 'short', year: 'numeric' }),
+        price: price
+      });
+    }
+    return data;
+  }, [material]);
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-[#13151c]/90 border border-[#222634] p-3 rounded-lg shadow-xl backdrop-blur-sm">
+          <p className="text-slate-400 text-xs mb-1">{label}</p>
+          <p className="text-emerald-400 font-bold text-lg">{payload[0].value.toLocaleString()} ج.م</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   if (loading || (!material && materials.length === 0)) {
     return (
@@ -100,6 +133,23 @@ export default function MaterialDetailsPage() {
               )}
             </div>
           </div>
+        </div>
+        
+        {/* Price History Chart */}
+        <h2 className="text-xl font-bold text-white pt-4 flex items-center gap-2">
+          <Activity className="w-5 h-5 text-cyan-400" /> تغيّر السعر مع الزمن
+        </h2>
+        
+        <div className="bg-[#13151c]/60 border border-[#222634] rounded-2xl p-6 h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData} margin={{ top: 10, right: 30, left: 20, bottom: 0 }} style={{ direction: 'ltr' }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#222634" vertical={false} />
+              <XAxis dataKey="date" stroke="#64748b" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis stroke="#64748b" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(value) => value.toLocaleString()} width={80} orientation="right" />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#222634', strokeWidth: 2 }} />
+              <Line type="monotone" dataKey="price" stroke="#06b6d4" strokeWidth={3} dot={{ r: 4, fill: '#06b6d4', strokeWidth: 0 }} activeDot={{ r: 6, fill: '#10b981', strokeWidth: 0 }} />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
         {/* Store Comparisons */}

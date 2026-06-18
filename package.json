@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:market-defaults": "ts-node scripts/scraper/seed_default_market.ts"
-    ,
+    "seed:market-defaults": "ts-node scripts/scraper/seed_default_market.ts",
     "update:market-prices": "ts-node scripts/scraper/update_market_prices.ts"
   },
   "dependencies": {
@@ -24,9 +23,11 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.79.0",
+    "recharts": "^3.8.1",
     "shadcn": "^4.11.0",
     "tailwind-merge": "^3.6.0",
     "tw-animate-css": "^1.4.0",
+    "xlsx": "^0.18.5",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
@@ -38,7 +39,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5"
   }
 }

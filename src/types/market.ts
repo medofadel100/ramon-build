@@ -147,4 +147,5 @@ export interface MarketMaterial {
   imageUrl?: string;
   sources: MarketSource[];
   lowestPrice: number;
+  priceHistory?: { date: string; price: number }[];
 }

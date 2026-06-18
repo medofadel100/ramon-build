@@ -14,7 +14,7 @@ export interface SpecFieldTemplate {
   materialGroup?: string;
   materialSubgroup?: string;
   unit?: string;
-  defaultValue?: any;
+  defaultValue?: string | number | boolean;
 }
 
 export interface CodeReferences {

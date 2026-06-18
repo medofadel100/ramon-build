@@ -100,7 +100,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       } else {
         set({ error: 'المشروع غير موجود', loading: false });
       }
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       set({ error: err.message || 'خطأ أثناء تحميل البيانات', loading: false });
     } finally {
       setSaving(null);
@@ -124,7 +125,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await updateProjectHeader(currentProject.id, updatedHeader);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to save header updates:', err);
     } finally {
       setSaving(null);
@@ -145,7 +147,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await updateProjectSharing(currentProject.id, settings);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to save sharing updates:', err);
     } finally {
       setSaving(null);
@@ -178,7 +181,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           updates.customConstantsDefinitions
         );
       }
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to update project:', err);
     } finally {
       setSaving(null);
@@ -209,7 +213,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbAddZone(currentProject.id, newZone);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to add zone:', err);
     } finally {
       setSaving(null);
@@ -250,7 +255,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbUpdateZone(currentProject.id, zoneId, targetZone);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to update zone:', err);
     } finally {
       setSaving(null);
@@ -272,7 +278,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbDeleteZone(currentProject.id, zoneId);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to delete zone:', err);
     } finally {
       setSaving(null);
@@ -294,7 +301,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbUpdateItem(currentProject.id, item);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to update item:', err);
     } finally {
       setSaving(null);
@@ -324,7 +332,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbUpdateItem(currentProject.id, newItem);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to add custom item:', err);
     } finally {
       setSaving(null);
@@ -346,7 +355,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbDeleteItem(currentProject.id, sectionId, itemId);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to delete item:', err);
     } finally {
       setSaving(null);
@@ -371,7 +381,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbToggleSection(currentProject.id, sectionId, enabled);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to toggle section:', err);
     } finally {
       setSaving(null);
@@ -394,7 +405,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbAddSupplier(currentProject.id, newSupplier);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to add supplier:', err);
     } finally {
       setSaving(null);
@@ -411,7 +423,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbUpdateSupplier(currentProject.id, supplier);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to update supplier:', err);
     } finally {
       setSaving(null);
@@ -428,7 +441,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbDeleteSupplier(currentProject.id, supplierId);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to delete supplier:', err);
     } finally {
       setSaving(null);
@@ -451,7 +465,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbAddWorker(currentProject.id, newWorker);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to add worker:', err);
     } finally {
       setSaving(null);
@@ -468,7 +483,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbUpdateWorker(currentProject.id, worker);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to update worker:', err);
     } finally {
       setSaving(null);
@@ -485,7 +501,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbDeleteWorker(currentProject.id, workerId);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to delete worker:', err);
     } finally {
       setSaving(null);
@@ -508,7 +525,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbAddAccount(currentProject.id, newAccount);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to add account:', err);
     } finally {
       setSaving(null);
@@ -525,7 +543,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbUpdateAccount(currentProject.id, account);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to update account:', err);
     } finally {
       setSaving(null);
@@ -542,7 +561,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     try {
       await dbDeleteAccount(currentProject.id, accountId);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to delete account:', err);
     } finally {
       setSaving(null);
@@ -561,7 +581,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     try {
       await deleteProject(currentProject.id);
       set({ currentProject: null });
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to delete project:', err);
     } finally {
       setSaving(null);
@@ -577,7 +598,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       if (currentProject?.id === projectId) {
         set({ currentProject: null });
       }
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Failed to delete project by id:', err);
     } finally {
       setSaving(null);

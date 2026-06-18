@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { db } from '@/lib/firebase';
-import { collection, getDocs, doc, setDoc, query, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, deleteDoc, query, onSnapshot } from 'firebase/firestore';
 import { DEFAULT_MARKET_MATERIALS } from '@/lib/market-default-materials';
 import { normalizeMarketMaterialSources } from '@/lib/market-sources';
 import { MarketMaterial } from '@/types/market';
@@ -14,6 +14,9 @@ interface MarketState {
   stopMaterialSync: () => void;
   fetchMaterials: () => Promise<void>;
   addOrUpdateMaterial: (material: MarketMaterial) => Promise<void>;
+  deleteMaterial: (id: string) => Promise<void>;
+  _materialSyncActive?: boolean;
+  _materialSyncUnsubscribe?: (() => void) | null;
 }
 
 export const useMarketStore = create<MarketState>((set, get) => ({
@@ -23,7 +26,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
   lastSync: null,
 
   startMaterialSync: () => {
-    const state = get() as any;
+    const state = get();
     if (state._materialSyncActive) return;
     set({ loading: true });
     const collectionRef = collection(db, 'market_materials');
@@ -39,18 +42,18 @@ export const useMarketStore = create<MarketState>((set, get) => ({
           merged.push(normalizedDefault);
         }
       });
-      set({ materials: merged, loading: false, error: null, lastSync: Date.now(), _materialSyncActive: true, _materialSyncUnsubscribe: unsubscribe } as any);
+      set({ materials: merged, loading: false, error: null, lastSync: Date.now(), _materialSyncActive: true, _materialSyncUnsubscribe: unsubscribe });
     }, (error) => {
       console.error('Market sync failed:', error);
-      set({ error: error.message, loading: false, _materialSyncActive: false } as any);
+      set({ error: error.message, loading: false, _materialSyncActive: false });
     });
   },
 
   stopMaterialSync: () => {
-    const state = get() as any;
+    const state = get();
     if (state._materialSyncUnsubscribe) {
       state._materialSyncUnsubscribe();
-      set({ _materialSyncUnsubscribe: null, _materialSyncActive: false } as any);
+      set({ _materialSyncUnsubscribe: null, _materialSyncActive: false });
     }
   },
 
@@ -71,7 +74,8 @@ export const useMarketStore = create<MarketState>((set, get) => ({
         }
       });
       set({ materials: merged, loading: false });
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error;
       console.error("Error fetching market materials:", error);
       set({ error: error.message, loading: false });
     }
@@ -89,8 +93,21 @@ export const useMarketStore = create<MarketState>((set, get) => ({
       } else {
         set({ materials: [...currentMaterials, material] });
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error;
       console.error("Error adding/updating material:", error);
+      throw error;
+    }
+  },
+
+  deleteMaterial: async (id: string) => {
+    try {
+      await deleteDoc(doc(db, 'market_materials', id));
+      const currentMaterials = get().materials;
+      set({ materials: currentMaterials.filter(m => m.id !== id) });
+    } catch (err) {
+      const error = err as Error;
+      console.error("Error deleting material:", error);
       throw error;
     }
   }

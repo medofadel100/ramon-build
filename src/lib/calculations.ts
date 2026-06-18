@@ -18,9 +18,9 @@ export interface BOQItem {
   unit: string;
   quantitySource: 'manual' | 'calculated';
   calculationFormula?: string;
-  specs: Record<string, any>;
+  specs: Record<string, string | number | boolean>;
   perAreaOverrides?: Record<string, {
-    specs: Record<string, any>;
+    specs: Record<string, string | number | boolean>;
     quantity: number;
   }>;
   pricing: {
@@ -122,7 +122,7 @@ export interface ItemTotalResult {
   estimatedDays: number;
 }
 
-export function calculateItemTotalRaw(item: BOQItem, zones: Zone[], projectConstants?: Record<string, number>): { quantity: number; estimatedDays: number } {
+export function calculateItemTotalRaw(item: BOQItem, zones: Zone[], _projectConstants?: Record<string, number>): { quantity: number; estimatedDays: number } {
   let quantity = 0;
   if (item.quantitySource === 'calculated') {
     if (item.perAreaOverrides && Object.keys(item.perAreaOverrides).length > 0) {
@@ -165,8 +165,8 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[], projectConstant
   const hasDetailedMaterials = materials.length > 0 && !item.id.includes('_custom_') && materials[0].key !== 'general_material';
 
   if (pricing.mode === 'materials_labor_split') {
-    let matUnitPrice = pricing.materialUnitPrice || 0;
-    let labUnitPrice = pricing.laborUnitPrice || 0;
+    const matUnitPrice = pricing.materialUnitPrice || 0;
+    const labUnitPrice = pricing.laborUnitPrice || 0;
 
     if (isRemoveOnly) {
       materialCost = 0;
@@ -186,7 +186,7 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[], projectConstant
   } else if (pricing.mode === 'daily_rate') {
     const rate = pricing.dailyRate || 0;
     laborCost = rate * estimatedDays;
-    let matUnitPrice = pricing.materialUnitPrice || 0;
+    const matUnitPrice = pricing.materialUnitPrice || 0;
 
     if (isRemoveOnly) {
       materialCost = 0;

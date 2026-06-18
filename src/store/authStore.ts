@@ -40,11 +40,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as Error & { code?: string };
       let arabicError = 'خطأ في تسجيل الدخول. يرجى التحقق من البيانات.';
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
         arabicError = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
-      } else if (err.code === 'auth/invalid-email') {
+      } else if (error.code === 'auth/invalid-email') {
         arabicError = 'البريد الإلكتروني غير صالح.';
       }
       set({ error: arabicError, loading: false });
@@ -57,8 +58,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       await fbSignOut(auth);
       set({ user: null, loading: false });
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
+    } catch (err) {
+      const error = err as Error;
+      set({ error: error.message, loading: false });
     }
   },
 
@@ -74,7 +76,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const userRef = doc(db, 'users', previousUser.uid);
       await setDoc(userRef, data, { merge: true });
       set({ loading: false });
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error updating profile in firestore:', err);
       set({ user: previousUser, loading: false, error: 'فشل تحديث بيانات الملف الشخصي. يرجى المحاولة لاحقاً.' });
       throw err;
@@ -106,7 +108,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             await setDoc(userDocRef, { ...defaultProfile, createdAt: new Date().toISOString() });
             set({ user: defaultProfile, loading: false, initialized: true });
           }
-        } catch (err: any) {
+        } catch (err) {
           console.error('Error fetching user profile:', err);
           // Fallback user if Firestore fetch fails
           set({ 

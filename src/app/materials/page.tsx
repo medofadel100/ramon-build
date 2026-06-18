@@ -4,7 +4,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { useMarketStore } from '@/store/marketStore';
 import { MarketCategory, MarketSubCategory, MarketMaterial } from '@/types/market';
 import { Card } from '@/components/ui/card';
-import { Search, Filter, Store, Activity, ChevronRight, ExternalLink } from 'lucide-react';
+import { Search, Filter, Store, Activity, ChevronRight, ExternalLink, Download } from 'lucide-react';
+import * as XLSX from 'xlsx';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
@@ -59,6 +60,32 @@ export default function MaterialsMarketplacePage() {
     });
   }, [materials, searchTerm, selectedCategory, selectedPhase, selectedBrand]);
 
+  const handleExportToExcel = () => {
+    const dataToExport = filteredMaterials.map(m => ({
+      'اسم المادة': m.name,
+      'التصنيف الأساسي': m.category,
+      'التصنيف الفرعي': m.subCategory,
+      'المرحلة': m.phase,
+      'الماركة / العلامة التجارية': m.brand || 'متعدد',
+      'أقل سعر (ج.م)': m.lowestPrice,
+      'الوحدة': m.unit,
+      'تاريخ آخر تحديث': new Date(m.lastUpdated).toLocaleDateString('ar-EG'),
+      'المتاجر المتوفرة': m.sources.filter(s => s.isAvailable).length,
+      'إجمالي المتاجر المقارنة': m.sources.length,
+      'كود المادة': m.id,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    
+    if(!worksheet['!views']) worksheet['!views'] = [];
+    worksheet['!views'].push({ rightToLeft: true });
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'سوق الخامات');
+    
+    XLSX.writeFile(workbook, `سوق_الخامات_${new Date().toISOString().split('T')[0]}.xlsx`);
+  };
+
   return (
     <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans flex flex-col">
       <Navbar />
@@ -70,7 +97,15 @@ export default function MaterialsMarketplacePage() {
             <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">سوق الخامات</h1>
             <p className="text-slate-400 mt-1">تابع أسعار مواد التشطيب والتأسيس من مختلف المتاجر أولاً بأول.</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+             <button
+               onClick={handleExportToExcel}
+               className="bg-slate-900/50 border border-[#222634] hover:bg-[#c5a880]/10 hover:border-[#c5a880]/50 hover:text-[#c5a880] transition-all rounded-lg p-2 flex items-center gap-2 cursor-pointer"
+               title="تصدير البيانات إلى Excel"
+             >
+                <Download className="w-5 h-5" />
+                <span className="text-sm font-medium">تصدير Excel</span>
+             </button>
              <div className="bg-slate-900/50 border border-[#222634] rounded-lg p-2 flex items-center gap-2">
                 <Activity className="w-5 h-5 text-emerald-400" />
                 <span className="text-sm font-medium">تحديث مباشر</span>

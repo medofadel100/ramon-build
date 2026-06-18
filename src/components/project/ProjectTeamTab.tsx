@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { generateEngineerInviteToken, removeEngineerFromProject, AssignedEngineer } from '@/lib/project-service';
@@ -44,21 +44,15 @@ export default function ProjectTeamTab() {
   const [manualName, setManualName] = useState('');
   
   // Existing Users State
-  const [systemUsers, setSystemUsers] = useState<any[]>([]);
+  const [systemUsers, setSystemUsers] = useState<Record<string, unknown>[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [selectedUserUid, setSelectedUserUid] = useState<string>('');
 
-  useEffect(() => {
-    if (inviteMode === 'existing' && systemUsers.length === 0) {
-      loadSystemUsers();
-    }
-  }, [inviteMode]);
-
-  const loadSystemUsers = async () => {
+  const loadSystemUsers = useCallback(async () => {
     setLoadingUsers(true);
     try {
       const snap = await getDocs(collection(db, 'users'));
-      const list: any[] = [];
+      const list: Record<string, unknown>[] = [];
       snap.forEach(d => {
         const u = d.data();
         if (u.role !== 'admin' && !currentProject.header.assignedEngineers.includes(d.id)) {
@@ -71,7 +65,13 @@ export default function ProjectTeamTab() {
     } finally {
       setLoadingUsers(false);
     }
-  };
+  }, [currentProject.header.assignedEngineers]);
+
+  useEffect(() => {
+    if (inviteMode === 'existing' && systemUsers.length === 0) {
+      loadSystemUsers();
+    }
+  }, [inviteMode, loadSystemUsers, systemUsers.length]);
 
   const handleGenerateInvite = async () => {
     if (!currentProject) return;
@@ -141,10 +141,10 @@ export default function ProjectTeamTab() {
     
     const newEngineer: AssignedEngineer = {
       uid: selectedUserUid,
-      name: selectedUser.name || 'مهندس',
-      email: selectedUser.email || '',
+      name: (selectedUser.name as string) || 'مهندس',
+      email: (selectedUser.email as string) || '',
       specialty: selectedSpecialty,
-      specialtyLabel: selectedUser.jobTitle || spec?.label || 'مهندس',
+      specialtyLabel: (selectedUser.jobTitle as string) || spec?.label || 'مهندس',
       joinedAt: new Date().toISOString()
     };
 
@@ -420,8 +420,8 @@ export default function ProjectTeamTab() {
                       >
                         <option value="">-- اضغط لاختيار مهندس مسجل --</option>
                         {systemUsers.map(u => (
-                          <option key={u.uid} value={u.uid}>
-                            {u.name} {u.jobTitle ? `(${u.jobTitle})` : ''} - {u.email}
+                          <option key={u.uid as string} value={u.uid as string}>
+                            {u.name as string} {u.jobTitle ? `(${u.jobTitle as string})` : ''} - {u.email as string}
                           </option>
                         ))}
                       </select>

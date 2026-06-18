@@ -1,0 +1,2687 @@
+[
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j0",
+    "name": "بلوك خرساني خفيف AAC (اسدريت / سيبور) 20×20×60 سم",
+    "category": "بناء",
+    "subCategory": "طوب خفيف",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "ألف بلوكة",
+    "lowestPrice": 2800,
+    "description": "بلوك خرساني خفيف العزل الحراري لأعمال المباني",
+    "sources": [
+      { "storeName": "بدر الدين للمواد", "price": 2850, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 2900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t0",
+    "name": "سلك رباط مجلفن 1 مم",
+    "category": "بناء",
+    "subCategory": "إكسسوارات تسليح",
+    "phase": "تأسيس",
+    "brand": "محلي",
+    "unit": "لفة 25 كجم",
+    "lowestPrice": 600,
+    "description": "سلك رباط صلب مجلفن لتربيط حديد التسليح",
+    "sources": [
+      { "storeName": "حدائد بشاي", "price": 620, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "أبو شقرة للحديد", "price": 650, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d0",
+    "name": "لياسة جاهزة (فبريلاس / ماستر فيل) بيضاء 25 كجم",
+    "category": "بناء",
+    "subCategory": "لياسة وملاط",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "شكارة",
+    "lowestPrice": 95,
+    "description": "مونة لياسة جاهزة للأسطح الداخلية والخارجية",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 110, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n0",
+    "name": "ملاط جاهز للطبطبة (البند 150) 25 كجم",
+    "category": "بناء",
+    "subCategory": "لياسة وملاط",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "شكارة",
+    "lowestPrice": 85,
+    "description": "ملاط طرطشة جاهز لزيادة التماسك",
+    "sources": [
+      { "storeName": "بدر الدين للمواد", "price": 90, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x0",
+    "name": "إضافة خرسانة مسرِّع تصلب (سيكا 3)",
+    "category": "بناء",
+    "subCategory": "كيماويات خرسانة",
+    "phase": "تأسيس",
+    "brand": "سيكا",
+    "unit": "جالون 20 لتر",
+    "lowestPrice": 350,
+    "description": "إضافة لسرعة الشك والتصلب للخرسانة والمونة",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 360, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 380, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h0",
+    "name": "مانع انكماش خرسانة (سيكا فيسكوكريت)",
+    "category": "بناء",
+    "subCategory": "كيماويات خرسانة",
+    "phase": "تأسيس",
+    "brand": "سيكا",
+    "unit": "جالون 20 لتر",
+    "lowestPrice": 480,
+    "description": "إضافة لتحسين تشغيلية الخرسانة وتقليل الانكماش",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 495, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة الهندسية", "price": 510, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r0",
+    "name": "حجر بازلت كسر 2-3 سم للردم والإحاطة",
+    "category": "بناء",
+    "subCategory": "زلط وسن",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "متر مكعب",
+    "lowestPrice": 250,
+    "description": "كسر حجر بازلت متدرج لأعمال الردم والأساسات",
+    "sources": [
+      { "storeName": "محاجر السويس", "price": 260, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 275, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b0",
+    "name": "أسمنت سريع التصلب (Rapid Set) 25 كجم",
+    "category": "بناء",
+    "subCategory": "أسمنت",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "شكارة",
+    "lowestPrice": 180,
+    "description": "أسمنت سريع التصلد للإصلاحات وأعمال الطوارئ",
+    "sources": [
+      { "storeName": "أبو شقرة للحديد", "price": 190, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 200, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l0",
+    "name": "شبك مجلفن 1×1 سم للتشطيب الداخلي",
+    "category": "بناء",
+    "subCategory": "شبك فيبر",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 25,
+    "description": "شبك معدني مجلفن لربط المباني وتلافي الشروخ",
+    "sources": [
+      { "storeName": "بدر الدين للمواد", "price": 30, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "حدائد بشاي", "price": 35, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v0",
+    "name": "لوح شبك BRC مجلفن 6 مم (2×3 متر)",
+    "category": "بناء",
+    "subCategory": "شبك فيبر",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "لوح",
+    "lowestPrice": 550,
+    "description": "شبك حديد تسليح مجلفن للأرضيات والخرسانة",
+    "sources": [
+      { "storeName": "حدائد بشاي", "price": 570, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "أبو شقرة للحديد", "price": 590, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f0",
+    "name": "فوجة بيضاء للفواصل بين البلاط (Grouting) 2 كجم",
+    "category": "بناء",
+    "subCategory": "لاصق بلاط",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "عبوة",
+    "lowestPrice": 65,
+    "description": "سقية بيضاء مقاومة للفطريات لملء فواصل السيراميك",
+    "sources": [
+      { "storeName": "المهندس للسيراميك", "price": 70, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مظلوم للسيراميك", "price": 75, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p0",
+    "name": "لاصق بلاط أبيض C2 فليكس 25 كجم",
+    "category": "بناء",
+    "subCategory": "لاصق بلاط",
+    "phase": "فنش",
+    "brand": "سيكا / دراي ميكس",
+    "unit": "شكارة",
+    "lowestPrice": 135,
+    "description": "لاصق بلاط وبورسلين عالي الجودة مرن",
+    "sources": [
+      { "storeName": "السلاب", "price": 145, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z0",
+    "name": "فوجة إيبوكسي ملونة (Epoxy Grout) 1 كجم",
+    "category": "بناء",
+    "subCategory": "لاصق بلاط",
+    "phase": "فنش",
+    "brand": "سيكا",
+    "unit": "عبوة",
+    "lowestPrice": 180,
+    "description": "سقية إيبوكسي مقاومة للأحماض والمياه للحمامات",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 190, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مظلوم للسيراميك", "price": 200, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j1",
+    "name": "حشوات بلاستيك تباعد بلاط 2 مم (كروسيز)",
+    "category": "بناء",
+    "subCategory": "إكسسوارات بلاط",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "علبة 500 قطعة",
+    "lowestPrice": 35,
+    "description": "صلبان بلاستيكية لضبط مسافات الفواصل بدقة",
+    "sources": [
+      { "storeName": "المهندس للسيراميك", "price": 40, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للمعدات", "price": 45, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t1",
+    "name": "سيليكون أسيتيت شفاف للحمامات (Silicone Sealant)",
+    "category": "بناء",
+    "subCategory": "مواد ختم",
+    "phase": "فنش",
+    "brand": "سودال / سيكا",
+    "unit": "أنبوب 280 مل",
+    "lowestPrice": 60,
+    "description": "سيليكون شفاف مقاوم للفطريات لتقفيل الحمامات",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 70, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d1",
+    "name": "لفة سلك نحاس 16 مم السويدي 100 متر",
+    "category": "كهرباء",
+    "subCategory": "أسلاك نحاس",
+    "phase": "تأسيس",
+    "brand": "السويدي",
+    "unit": "لفة (100م)",
+    "lowestPrice": 9800,
+    "description": "سلك نحاس 16 مم معتمد لأحمال اللوحات الرئيسية",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 9950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 10100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n1",
+    "name": "لفة سلك نحاس 25 مم السويدي 100 متر",
+    "category": "كهرباء",
+    "subCategory": "أسلاك نحاس",
+    "phase": "تأسيس",
+    "brand": "السويدي",
+    "unit": "لفة (100م)",
+    "lowestPrice": 15500,
+    "description": "سلك نحاس 25 مم لتغذية اللوحات والمواتير القوية",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 15700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 15900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x1",
+    "name": "مفتاح إنارة مزدوج سانشي (Sanchy)",
+    "category": "كهرباء",
+    "subCategory": "مفاتيح وفيش",
+    "phase": "فنش",
+    "brand": "سانشي",
+    "unit": "قطعة",
+    "lowestPrice": 55,
+    "description": "لقمة مفتاح إنارة مزدوجة عالية الجودة",
+    "sources": [
+      { "storeName": "محمود رجب", "price": 60, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h1",
+    "name": "مفتاح إنارة ثلاثي سانشي",
+    "category": "كهرباء",
+    "subCategory": "مفاتيح وفيش",
+    "phase": "فنش",
+    "brand": "سانشي",
+    "unit": "قطعة",
+    "lowestPrice": 75,
+    "description": "لقمة مفتاح إنارة ثلاثية للتحكم المستقل",
+    "sources": [
+      { "storeName": "محمود رجب", "price": 80, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 85, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r1",
+    "name": "بريزة مزدوجة 16 أمبير فينوس (2 بين)",
+    "category": "كهرباء",
+    "subCategory": "مفاتيح وفيش",
+    "phase": "فنش",
+    "brand": "فينوس",
+    "unit": "قطعة",
+    "lowestPrice": 75,
+    "description": "بريزة كهرباء مزدوجة فينوس للاستخدام المنزلي",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 80, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 85, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b1",
+    "name": "بريزة مؤرضة 16 أمبير 3 دبابيس (مؤرض) فينوس",
+    "category": "كهرباء",
+    "subCategory": "مفاتيح وفيش",
+    "phase": "فنش",
+    "brand": "فينوس",
+    "unit": "قطعة",
+    "lowestPrice": 55,
+    "description": "بريزة شيكو مؤرضة للأجهزة المنزلية",
+    "sources": [
+      { "storeName": "محمود رجب", "price": 60, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l1",
+    "name": "بريزة USB مزدوجة شحن 5V 2.4A فينوس",
+    "category": "كهرباء",
+    "subCategory": "مفاتيح وفيش",
+    "phase": "فنش",
+    "brand": "فينوس",
+    "unit": "قطعة",
+    "lowestPrice": 120,
+    "description": "لقمة شحن USB مزدوجة للشواحن الذكية المباشرة",
+    "sources": [
+      { "storeName": "النور للأدوات الكهربائية", "price": 130, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محمود رجب", "price": 140, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v1",
+    "name": "لمبة LED بالب 9 وات سادة بيضاء ناعمة",
+    "category": "كهرباء",
+    "subCategory": "كشافات وإضاءة",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 35,
+    "description": "لمبة ليد اقتصادية 9 وات للإضاءة العامة",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 40, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 45, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f1",
+    "name": "لمبة LED بالب 12 وات وورم وايت E27",
+    "category": "كهرباء",
+    "subCategory": "كشافات وإضاءة",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 45,
+    "description": "لمبة ليد 12 وات إضاءة دافئة (وورم)",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 50, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محمود رجب", "price": 55, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p1",
+    "name": "لمبة LED بالب 18 وات E27 بيضاء",
+    "category": "كهرباء",
+    "subCategory": "كشافات وإضاءة",
+    "phase": "فنش",
+    "brand": "فينوس",
+    "unit": "قطعة",
+    "lowestPrice": 60,
+    "description": "لمبة ليد 18 وات قوية للمساحات الواسعة",
+    "sources": [
+      { "storeName": "النور للأدوات الكهربائية", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 70, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z1",
+    "name": "تيوب LED فلوري 18 وات 120 سم T8 نهارية",
+    "category": "كهرباء",
+    "subCategory": "كشافات وإضاءة",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 65,
+    "description": "لمبة نيون ليد 120 سم للإضاءة غير المباشرة والمكاتب",
+    "sources": [
+      { "storeName": "محمود رجب", "price": 70, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 75, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j2",
+    "name": "قاطع تيار شنايدر 3 فاز 40 أمبير",
+    "category": "كهرباء",
+    "subCategory": "قواطع",
+    "phase": "تأسيس",
+    "brand": "Schneider",
+    "unit": "قطعة",
+    "lowestPrice": 850,
+    "description": "قاطع عمومي 3 فاز 40 أمبير للوحات التوزيع",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 870, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 890, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t2",
+    "name": "قاطع تيار شنايدر 2 فاز (بولار) 32 أمبير",
+    "category": "كهرباء",
+    "subCategory": "قواطع",
+    "phase": "تأسيس",
+    "brand": "Schneider",
+    "unit": "قطعة",
+    "lowestPrice": 280,
+    "description": "قاطع تيار مزدوج 32 أمبير للتكييفات والسخانات",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 290, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محمود رجب", "price": 310, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d2",
+    "name": "شريط LED COB 24 فولت 15 وات/متر وورم وايت",
+    "category": "كهرباء",
+    "subCategory": "كشافات وإضاءة",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر",
+    "lowestPrice": 85,
+    "description": "شريط ليد بدون تنقيط للإضاءة المخفية الراقية",
+    "sources": [
+      { "storeName": "النور للأدوات الكهربائية", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 105, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n2",
+    "name": "ديمر مفتاح تحكم في الإضاءة 600 وات Schneider",
+    "category": "كهرباء",
+    "subCategory": "مفاتيح وفيش",
+    "phase": "فنش",
+    "brand": "Schneider",
+    "unit": "قطعة",
+    "lowestPrice": 320,
+    "description": "مفتاح خفت إضاءة ديمر لتحكم بدرجات الضوء",
+    "sources": [
+      { "storeName": "محمود رجب", "price": 335, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x2",
+    "name": "محول تحويل 220V/12V 60 وات (Transformer)",
+    "category": "كهرباء",
+    "subCategory": "كشافات وإضاءة",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 220,
+    "description": "باور سبلاي ترانسفورمر لشريط الليد",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 235, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 250, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h2",
+    "name": "سلك أرضي (earthing) أصفر/أخضر 6 مم لفة 100 متر",
+    "category": "كهرباء",
+    "subCategory": "أسلاك نحاس",
+    "phase": "تأسيس",
+    "brand": "السويدي",
+    "unit": "لفة (100م)",
+    "lowestPrice": 3200,
+    "description": "سلك نحاس أصفر في أخضر معتمد لأعمال التأريض",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 3250, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محمود رجب", "price": 3350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r2",
+    "name": "علبة وصلات كهرباء بلاستيك (Junction Box) 10×10",
+    "category": "كهرباء",
+    "subCategory": "علب تأسيس",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 18,
+    "description": "بواط تجميع الأسلاك الكهربائية في الحوائط والأسقف",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 20, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 25, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b2",
+    "name": "كونيكتور ضغط (Crimp Lug) 16 مم نحاس",
+    "category": "كهرباء",
+    "subCategory": "إكسسوارات كهرباء",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "علبة 100 قطعة",
+    "lowestPrice": 85,
+    "description": "ترامل ضغط نحاس لتوصيل الكابلات في اللوحات",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محمود رجب", "price": 105, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l2",
+    "name": "شريط عازل كهرباء سيلفر (PVC Tape)",
+    "category": "كهرباء",
+    "subCategory": "إكسسوارات كهرباء",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "بكرة",
+    "lowestPrice": 15,
+    "description": "شريط لحام بلاستيك عالي الجودة لربط وعزل الأسلاك",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 18, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "النور للأدوات الكهربائية", "price": 20, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v2",
+    "name": "ماسورة PPR PN20 قطر 20 مم للتغذية بالحار والبارد",
+    "category": "سباكة",
+    "subCategory": "مواسير سباكة",
+    "phase": "تأسيس",
+    "brand": "Niron / Aquatherm",
+    "unit": "عود 4 متر",
+    "lowestPrice": 55,
+    "description": "مواسير تغذية مياه شرب حرارية تتحمل الضغط العالي والحرارة",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 60, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f2",
+    "name": "ماسورة PPR PN20 قطر 25 مم",
+    "category": "سباكة",
+    "subCategory": "مواسير سباكة",
+    "phase": "تأسيس",
+    "brand": "Niron / Aquatherm",
+    "unit": "عود 4 متر",
+    "lowestPrice": 80,
+    "description": "مواسير تغذية مياه أكبر قطراً للخطوط الرئيسية",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 85, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محجوب", "price": 90, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p2",
+    "name": "ماسورة PPR PN20 قطر 32 مم",
+    "category": "سباكة",
+    "subCategory": "مواسير سباكة",
+    "phase": "تأسيس",
+    "brand": "Niron / Aquatherm",
+    "unit": "عود 4 متر",
+    "lowestPrice": 120,
+    "description": "مواسير خطوط السباكة العمومية ذات الضغط العالي",
+    "sources": [
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 125, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محجوب", "price": 135, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z2",
+    "name": "كوع PPR 90 درجة 20 مم",
+    "category": "سباكة",
+    "subCategory": "وصلات PPR",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 8,
+    "description": "كوع لحام حراري 90 درجة للزوايا",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 10, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 12, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j3",
+    "name": "وصلة مباشرة PPR 20 مم",
+    "category": "سباكة",
+    "subCategory": "وصلات PPR",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 6,
+    "description": "جلبة لحام حراري لتوصيل المواسير مباشرة",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 8, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 10, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t3",
+    "name": "تيه (Tee) PPR 20 مم",
+    "category": "سباكة",
+    "subCategory": "وصلات PPR",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 10,
+    "description": "وصلة تيه ثلاثية للتفريعات لحام حراري",
+    "sources": [
+      { "storeName": "محجوب", "price": 12, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "El-Salmany", "price": 15, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d3",
+    "name": "محبس (Ball Valve) نحاس 1/2 بوصة",
+    "category": "سباكة",
+    "subCategory": "محابس وصمامات",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 85,
+    "description": "محبس زاوية أو بلي نحاس معتمد للتحكم بتدفق المياه",
+    "sources": [
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "El-Salmany", "price": 105, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n3",
+    "name": "محبس نحاس 3/4 بوصة",
+    "category": "سباكة",
+    "subCategory": "محابس وصمامات",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 130,
+    "description": "محبس دفن أو بلي نحاس للخطوط الرئيسية",
+    "sources": [
+      { "storeName": "محجوب", "price": 140, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "El-Salmany", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x3",
+    "name": "خلاط دش ساخن/بارد (Shower Mixer) سانيبيل",
+    "category": "سباكة",
+    "subCategory": "خلاطات وأحواض",
+    "phase": "فنش",
+    "brand": "سانيبيل",
+    "unit": "قطعة",
+    "lowestPrice": 850,
+    "description": "خلاط دش يثبت على الحائط، ضمان وتحمل جيد للماء الحار",
+    "sources": [
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 880, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محجوب", "price": 920, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h3",
+    "name": "رأس دش مطر ستانلس 25 سم (Rain Shower)",
+    "category": "سباكة",
+    "subCategory": "إكسسوارات حمام",
+    "phase": "إكسسوارات",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 650,
+    "description": "طاسة دش مربعة ستانلس لضخ المياه بشكل مطري",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 680, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محجوب", "price": 720, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r3",
+    "name": "بيديه يد بخرطوم 1.5 متر ستانلس",
+    "category": "سباكة",
+    "subCategory": "إكسسوارات حمام",
+    "phase": "إكسسوارات",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 320,
+    "description": "شطاف يدوي للحمام كامل بالخرطوم والحامل",
+    "sources": [
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 340, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "El-Salmany", "price": 360, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b3",
+    "name": "صرف أرضي ستانلس 10×10 بشبكة",
+    "category": "سباكة",
+    "subCategory": "صرف",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 120,
+    "description": "بيبة صرف أرضية بغطاء ستانلس مانع للروائح",
+    "sources": [
+      { "storeName": "محجوب", "price": 130, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 140, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l3",
+    "name": "ماسورة PVC صرف 1 بوصة (32 مم) عود 4 متر",
+    "category": "سباكة",
+    "subCategory": "صرف",
+    "phase": "تأسيس",
+    "brand": "سمارت هوم",
+    "unit": "قطعة",
+    "lowestPrice": 45,
+    "description": "ماسورة صرف بلاستيك لحوض المغسلة والتكييف",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 50, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 55, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v3",
+    "name": "كوع PVC 90 درجة 4 بوصة للصرف",
+    "category": "سباكة",
+    "subCategory": "وصلات صرف",
+    "phase": "تأسيس",
+    "brand": "سمارت هوم",
+    "unit": "قطعة",
+    "lowestPrice": 65,
+    "description": "كوع صرف 4 بوصة للخطوط الرئيسية وقاعدة الحمام",
+    "sources": [
+      { "storeName": "محجوب", "price": 70, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 75, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f3",
+    "name": "مضخة ضغط مياه (Pressure Booster) 20 لتر Grundfos",
+    "category": "سباكة",
+    "subCategory": "مواتير مياه",
+    "phase": "تأسيس",
+    "brand": "Grundfos",
+    "unit": "قطعة",
+    "lowestPrice": 6500,
+    "description": "موتور مياه بالبالونة لضمان ضغط قوي ومستمر للمياه",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 6700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للمعدات", "price": 6900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p3",
+    "name": "فلتر مياه 3 مراحل تحت الحوض (Under Sink)",
+    "category": "سباكة",
+    "subCategory": "معالجة مياه",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "طقم",
+    "lowestPrice": 1800,
+    "description": "نظام تنقية مياه الشرب 3 مراحل بشمعة كربونية",
+    "sources": [
+      { "storeName": "محجوب", "price": 1900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 1950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z3",
+    "name": "حوض حمام أكريليك مستطيل 150×70 سم",
+    "category": "سباكة",
+    "subCategory": "خلاطات وأحواض",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 4500,
+    "description": "بانيو أكريليك بجوانب مقاس 150*70 للحمامات",
+    "sources": [
+      { "storeName": "El-Salmany", "price": 4650, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محجوب", "price": 4800, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j4",
+    "name": "سخان مياه لا ضغط كهربائي 30 لتر",
+    "category": "سباكة",
+    "subCategory": "سخانات مياه",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "جهاز",
+    "lowestPrice": 3200,
+    "description": "سخان كهرباء اقتصادي لحمامات الضيوف والمطابخ",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 3300, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 3400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t4",
+    "name": "دهان أسفلتي للمنشآت (Bituminous Paint) أسود",
+    "category": "دهانات",
+    "subCategory": "عوازل ودهانات خاصة",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "جالون 4 لتر",
+    "lowestPrice": 280,
+    "description": "عزل بيتومين سائل لطلاء القواعد وأسفل الجدران للرطوبة",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 295, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "سيكا مصر", "price": 310, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d4",
+    "name": "دهان مضاد للصدأ (Anti-Rust) أكسيد الحديد الأحمر",
+    "category": "دهانات",
+    "subCategory": "دهانات حديد",
+    "phase": "تأسيس",
+    "brand": "باكين",
+    "unit": "جالون 4 لتر",
+    "lowestPrice": 250,
+    "description": "برايمر حديد أكسيد أحمر لمنع تآكل وصدأ المعادن",
+    "sources": [
+      { "storeName": "باكين مصر", "price": 265, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 280, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n4",
+    "name": "دهان إيبوكسي 2 مكون للحمامات والمطابخ (سيكا / Jotun)",
+    "category": "دهانات",
+    "subCategory": "إيبوكسي",
+    "phase": "فنش",
+    "brand": "سيكا / Jotun",
+    "unit": "مجموعة 4 كجم",
+    "lowestPrice": 850,
+    "description": "دهان إيبوكسي قوي شديد الالتصاق والمقاومة للماء والكيماويات",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 880, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "جوتن العبور", "price": 900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x4",
+    "name": "دهان لاستومريك للأسطح المفتوحة مائي (Elastomeric Roof Coating)",
+    "category": "دهانات",
+    "subCategory": "عوازل ودهانات خاصة",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "دلو 20 كجم",
+    "lowestPrice": 1200,
+    "description": "عازل مائي أكريليك مطاطي للأسطح المكشوفة",
+    "sources": [
+      { "storeName": "مركز تلوين GLC", "price": 1250, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 1300, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h4",
+    "name": "معجون داخلي أبيض بولي فيل (Poly Fill) جاهز 20 كجم",
+    "category": "دهانات",
+    "subCategory": "معجون",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "دلو 20 كجم",
+    "lowestPrice": 280,
+    "description": "معجون بلاستيكي جاهز لتسوية الحوائط الداخلية",
+    "sources": [
+      { "storeName": "باكين مصر", "price": 290, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 300, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r4",
+    "name": "برايمر زيتي (Oil Primer) عازل للرطوبة زيتي",
+    "category": "دهانات",
+    "subCategory": "بريمر",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "جالون 4 لتر",
+    "lowestPrice": 320,
+    "description": "أساس زيتي لغلق المسام وعزل الرطوبة قبل الدهان",
+    "sources": [
+      { "storeName": "جوتن العبور", "price": 335, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b4",
+    "name": "دهان خارجي أكريليك Kansai Paint (أكروشيلد)",
+    "category": "دهانات",
+    "subCategory": "خارجي",
+    "phase": "فنش",
+    "brand": "Kansai",
+    "unit": "بستلة 17 كجم",
+    "lowestPrice": 2400,
+    "description": "دهان خارجي عالي الجودة يقاوم العوامل الجوية والأشعة",
+    "sources": [
+      { "storeName": "مركز تلوين GLC", "price": 2450, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "باكين مصر", "price": 2500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l4",
+    "name": "ورنيش مائي شفاف للأخشاب (Aqua Varnish)",
+    "category": "دهانات",
+    "subCategory": "لاكيه",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "جالون 4 لتر",
+    "lowestPrice": 380,
+    "description": "ورنيش خالي من الروائح لحماية وتلميع الأخشاب الداخلية",
+    "sources": [
+      { "storeName": "مركز تلوين GLC", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "جوتن العبور", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v4",
+    "name": "دهان سقف أبيض مط اقتصادي بستلة",
+    "category": "دهانات",
+    "subCategory": "بلاستيك",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "بستلة 17 كجم",
+    "lowestPrice": 420,
+    "description": "بلاستيك مط ناصع البياض للأسقف بغير الحاجة للغسيل",
+    "sources": [
+      { "storeName": "باكين مصر", "price": 440, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 450, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f4",
+    "name": "شريط لاصق تيب أبيض للدهان (Masking Tape) 48 مم",
+    "category": "دهانات",
+    "subCategory": "مستلزمات دهان",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "لفة",
+    "lowestPrice": 45,
+    "description": "تيب ورق لاصق لحماية الحواف ومفاتيح الكهرباء",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 50, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 55, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p4",
+    "name": "فرشاة رول دهان بلاستيك 23 سم",
+    "category": "دهانات",
+    "subCategory": "مستلزمات دهان",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 55,
+    "description": "رولة دهان بجودة عالية لفرد الدهانات المائية",
+    "sources": [
+      { "storeName": "مركز تلوين GLC", "price": 60, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z4",
+    "name": "فرشاة دهان يد (Brush) 4 بوصة للحواف",
+    "category": "دهانات",
+    "subCategory": "مستلزمات دهان",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 40,
+    "description": "فرشاة يدوية 4 بوصة لدهان الأركان والزوايا",
+    "sources": [
+      { "storeName": "باكين مصر", "price": 45, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 50, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j5",
+    "name": "حمض هيدروكلوريك (HCL) لتنظيف البلاط والسيراميك",
+    "category": "دهانات",
+    "subCategory": "كيماويات وحماية",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "جالون 4 لتر",
+    "lowestPrice": 85,
+    "description": "مية نار مخففة لتنظيف بقع الأسمنت والترويبة",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للمعدات", "price": 105, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t5",
+    "name": "دهان جبس (Gypsum Paint) جاهز ناعم للأسقف",
+    "category": "دهانات",
+    "subCategory": "بلاستيك",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "دلو 20 كجم",
+    "lowestPrice": 350,
+    "description": "دهان ناعم خاص بتغطية تشققات الجبسون بورد",
+    "sources": [
+      { "storeName": "مركز تلوين GLC", "price": 365, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "باكين مصر", "price": 380, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d5",
+    "name": "أكريليك بلاستيك معتق (Sipes 500) 17 كجم",
+    "category": "دهانات",
+    "subCategory": "بلاستيك",
+    "phase": "فنش",
+    "brand": "سايبس",
+    "unit": "بستلة",
+    "lowestPrice": 580,
+    "description": "بلاستيك عالي الجودة للتشطيبات الراقية والديكور",
+    "sources": [
+      { "storeName": "باكين مصر", "price": 600, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 620, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n5",
+    "name": "سيراميك حمام 25×40 أبيض سادة فرز أول كليوباترا",
+    "category": "أرضيات",
+    "subCategory": "سيراميك",
+    "phase": "فنش",
+    "brand": "كليوباترا",
+    "unit": "متر مربع",
+    "lowestPrice": 120,
+    "description": "سيراميك جدران حمام لامع فرز أول",
+    "sources": [
+      { "storeName": "مظلوم للسيراميك", "price": 130, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المهندس للسيراميك", "price": 135, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x5",
+    "name": "سيراميك أرضيات 40×40 مصري ملون",
+    "category": "أرضيات",
+    "subCategory": "سيراميك",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 140,
+    "description": "سيراميك أرضيات اقتصادية مناسب للغرف والممرات",
+    "sources": [
+      { "storeName": "السلاب", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المهندس للسيراميك", "price": 155, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h5",
+    "name": "بورسلين 80×80 هندي مصقول",
+    "category": "أرضيات",
+    "subCategory": "بورسلين",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 680,
+    "description": "بورسلين ليزر مصقول لامع مقاس كبير هندي المنشأ",
+    "sources": [
+      { "storeName": "مظلوم للسيراميك", "price": 700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السلاب", "price": 720, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r5",
+    "name": "بورسلين 60×60 مصري جيما أبيض",
+    "category": "أرضيات",
+    "subCategory": "بورسلين",
+    "phase": "فنش",
+    "brand": "جيما",
+    "unit": "متر مربع",
+    "lowestPrice": 380,
+    "description": "بورسلين أبيض اقتصادي فرز أول",
+    "sources": [
+      { "storeName": "مظلوم للسيراميك", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المهندس للسيراميك", "price": 415, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b5",
+    "name": "رخام كرارة أبيض مصري مقاسات",
+    "category": "أرضيات",
+    "subCategory": "رخام طبيعي",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 380,
+    "description": "رخام طبيعي مقطوع حسب الطلب للأرضيات أو الدرج",
+    "sources": [
+      { "storeName": "شريف رخام", "price": 410, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة المصرية للحجر", "price": 430, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l5",
+    "name": "لاصق بلاط فليكس C2 بيضاء Ceresit 25 كجم",
+    "category": "أرضيات",
+    "subCategory": "إكسسوارات أرضيات",
+    "phase": "فنش",
+    "brand": "Ceresit",
+    "unit": "شكارة",
+    "lowestPrice": 145,
+    "description": "لاصق قوي فليكس للبورسلين والأحجام الكبيرة",
+    "sources": [
+      { "storeName": "مظلوم للسيراميك", "price": 155, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "سيكا مصر", "price": 165, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v5",
+    "name": "فوجة فواصل ملونة عادية (Grout) 2 كجم",
+    "category": "أرضيات",
+    "subCategory": "إكسسوارات أرضيات",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "عبوة",
+    "lowestPrice": 65,
+    "description": "سقية بأسمنت ملون لتعبئة الفواصل الصغيرة",
+    "sources": [
+      { "storeName": "السلاب", "price": 75, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المهندس للسيراميك", "price": 80, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f5",
+    "name": "فوجة إيبوكسي مقاومة للماء (Epoxy Grout) 1 كجم",
+    "category": "أرضيات",
+    "subCategory": "إكسسوارات أرضيات",
+    "phase": "فنش",
+    "brand": "سيكا",
+    "unit": "عبوة",
+    "lowestPrice": 180,
+    "description": "ترويبة إيبوكسي لعدم تسريب المياه ومقاومة البكتيريا",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 195, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مظلوم للسيراميك", "price": 210, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p5",
+    "name": "شريط ختم حمام (Silicone Sealant) أبيض أو بيج",
+    "category": "أرضيات",
+    "subCategory": "إكسسوارات أرضيات",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "أنبوب 280 مل",
+    "lowestPrice": 65,
+    "description": "سيليكون لختم الزوايا وتقاطعات الأرضية مع الجدار",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 75, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السلاب", "price": 80, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z5",
+    "name": "شريط ألومنيوم حافة أرضيات مقطع زاوية L",
+    "category": "أرضيات",
+    "subCategory": "إكسسوارات أرضيات",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر طولي",
+    "lowestPrice": 55,
+    "description": "زاوية ألومنيوم للحماية وتحديد نهاية البلاط أو الدرج",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مظلوم للسيراميك", "price": 70, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j6",
+    "name": "أرضية إيبوكسي ذاتية التسوية (Self-Leveling Epoxy)",
+    "category": "أرضيات",
+    "subCategory": "SPC",
+    "phase": "فنش",
+    "brand": "سيكا",
+    "unit": "متر مربع",
+    "lowestPrice": 650,
+    "description": "عازل إيبوكسي للأرضيات الصناعية والجراجات",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 680, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t6",
+    "name": "باركيه SPC مائي 5.5 مم مع لبادة مدمجة",
+    "category": "أرضيات",
+    "subCategory": "SPC",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 680,
+    "description": "أرضيات حجرية بلاستيكية SPC كليك تركب بدون غراء",
+    "sources": [
+      { "storeName": "مظلوم للسيراميك", "price": 710, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بيت الإباء الديكوري", "price": 730, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d6",
+    "name": "تكييف كاريير 2 حصان إنفرتر بارد/ساخن",
+    "category": "تكييف",
+    "subCategory": "تكييفات",
+    "phase": "فنش",
+    "brand": "كاريير",
+    "unit": "جهاز",
+    "lowestPrice": 38000,
+    "description": "جهاز تكييف سبليت إنفرتر موفر للكهرباء حتى 50%",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 38500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "B-Tech", "price": 39000, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n6",
+    "name": "تكييف كاسيت سقف 4 اتجاه 2 طن Carrier",
+    "category": "تكييف",
+    "subCategory": "تكييفات",
+    "phase": "فنش",
+    "brand": "كاريير",
+    "unit": "جهاز",
+    "lowestPrice": 95000,
+    "description": "مكيف كاسيت للسقف يوزع الهواء في 4 اتجاهات للمساحات التجارية",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 96500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "راية إلكترونيكس", "price": 98000, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x6",
+    "name": "ماسورة نحاس جنوب إفريقي 3/8 بوصة تكييف",
+    "category": "تكييف",
+    "subCategory": "مواسير تأسيس",
+    "phase": "تأسيس",
+    "brand": "مستورد",
+    "unit": "متر",
+    "lowestPrice": 380,
+    "description": "ماسورة نحاس أحمر معزول لتأسيس مواسير الفريون",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h6",
+    "name": "ماسورة نحاس 1/2 بوصة تكييف",
+    "category": "تكييف",
+    "subCategory": "مواسير تأسيس",
+    "phase": "تأسيس",
+    "brand": "مستورد",
+    "unit": "متر",
+    "lowestPrice": 480,
+    "description": "نحاس عالي الجودة للضغوط المرتفعة للتكييفات الكبيرة",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 520, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r6",
+    "name": "فريون R410A اسطوانة 11.3 كجم",
+    "category": "تكييف",
+    "subCategory": "فريون وكيماويات",
+    "phase": "تأسيس",
+    "brand": "مستورد",
+    "unit": "اسطوانة",
+    "lowestPrice": 4800,
+    "description": "غاز تبريد عالي الجودة صديق للبيئة لأجهزة الإنفرتر",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 4900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للمعدات", "price": 5000, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b6",
+    "name": "فريون R32 اسطوانة 10 كجم",
+    "category": "تكييف",
+    "subCategory": "فريون وكيماويات",
+    "phase": "تأسيس",
+    "brand": "مستورد",
+    "unit": "اسطوانة",
+    "lowestPrice": 4200,
+    "description": "غاز تبريد حديث لتكييفات الجيل الجديد ذو الكفاءة العالية",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 4350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للمعدات", "price": 4500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l6",
+    "name": "مادة عزل مواسير نحاس تكييف فلين 5/8 بوصة",
+    "category": "تكييف",
+    "subCategory": "دكت",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "متر",
+    "lowestPrice": 35,
+    "description": "عازل كاوتش حراري أسود لمنع تكثف المياه",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 40, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 45, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v6",
+    "name": "حامل وحدة خارجية تكييف برج معدني",
+    "category": "تكييف",
+    "subCategory": "إكسسوارات تكييف",
+    "phase": "تأسيس",
+    "brand": "محلي",
+    "unit": "قطعة",
+    "lowestPrice": 450,
+    "description": "كابولي حديد لتركيب الوحدة الخارجية على الحوائط",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 470, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للمعدات", "price": 490, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f6",
+    "name": "ترموستات رقمي ذكي واي فاي (Honeywell)",
+    "category": "تكييف",
+    "subCategory": "إكسسوارات تكييف",
+    "phase": "إكسسوارات",
+    "brand": "Honeywell",
+    "unit": "قطعة",
+    "lowestPrice": 1800,
+    "description": "شاشة تحكم بالحرارة ذكية للربط مع أنظمة السمارت هوم",
+    "sources": [
+      { "storeName": "سمارت هوم ستور", "price": 1850, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "تكنولوجي فالي", "price": 1900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p6",
+    "name": "جريلة سحب هواء مربعة 60×60 ألومنيوم",
+    "category": "تكييف",
+    "subCategory": "جريلات تهوية",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "قطعة",
+    "lowestPrice": 680,
+    "description": "فتحة تهوية لعودة الهواء للتكييف المخفي المركز",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 710, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرواد للألوميتال", "price": 730, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z6",
+    "name": "شريط لحام نحاس للمواسير (Brazing Rod)",
+    "category": "تكييف",
+    "subCategory": "إكسسوارات تكييف",
+    "phase": "تأسيس",
+    "brand": "مستورد",
+    "unit": "عود",
+    "lowestPrice": 45,
+    "description": "سلك فضة ونحاس للحام مواسير التبريد بالبوري",
+    "sources": [
+      { "storeName": "الأهلي تكييف", "price": 50, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 55, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j7",
+    "name": "باب ألوميتال دبل جلاس مفصلات 90×210 سم",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "ألوميتال",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 3800,
+    "description": "باب بلكونة ألوميتال مفصلي زجاج مزدوج كاتم للصوت",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 3950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السلام للزجاج", "price": 4100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t7",
+    "name": "باب ألوميتال منزلق (Sliding Door) دبل جلاس",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "ألوميتال",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 4200,
+    "description": "باب جرار ألوميتال قطاع ثقيل للمساحات الواسعة",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 4350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السلام للزجاج", "price": 4500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d7",
+    "name": "شباك ألوميتال فردي دبل جلاس 100×120 سم",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "ألوميتال",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 3200,
+    "description": "شباك ألوميتال منزلق أو قلاب زجاج عازل",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 3350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السلام للزجاج", "price": 3500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n7",
+    "name": "زجاج عادي شفاف 6 مم للداخل (Clear Float Glass)",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "زجاج ومرايا",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 280,
+    "description": "زجاج كريستال شفاف 6مم للشبابيك والتقطيع",
+    "sources": [
+      { "storeName": "السلام للزجاج", "price": 300, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرواد للألوميتال", "price": 320, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x7",
+    "name": "زجاج رفليكتيف عاكس شمسي أزرق 6 مم",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "زجاج ومرايا",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 580,
+    "description": "زجاج عاكس للأشعة ملون للواجهات",
+    "sources": [
+      { "storeName": "السلام للزجاج", "price": 610, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرواد للألوميتال", "price": 630, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h7",
+    "name": "زجاج لاميناتي أمان (Laminated) 6+6 مم",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "زجاج ومرايا",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 950,
+    "description": "زجاج طبقتين مقاوم للكسر والسيكوريت",
+    "sources": [
+      { "storeName": "السلام للزجاج", "price": 980, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرواد للألوميتال", "price": 1020, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r7",
+    "name": "مرايا عادية 4 مم مقطوعة بالقياس",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "زجاج ومرايا",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 320,
+    "description": "مرآة حمام وديكور 4 مم صافية",
+    "sources": [
+      { "storeName": "السلام للزجاج", "price": 340, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرواد للألوميتال", "price": 360, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b7",
+    "name": "ألوميتال كومبوزيت (ACM) 4 مم أبيض للواجهات",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "ألوميتال",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 650,
+    "description": "ألواح كلادينج ألومنيوم للواجهات التجارية",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 680, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة المصرية للحجر", "price": 700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l7",
+    "name": "سيليكون نيوتر (Neutral Silicone) للألوميتال أبيض 280 مل",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "إكسسوارات ألوميتال",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "أنبوب",
+    "lowestPrice": 120,
+    "description": "سيليكون متعادل لا يتفاعل مع المعادن لتركيبات الواجهات",
+    "sources": [
+      { "storeName": "السلام للزجاج", "price": 135, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرواد للألوميتال", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v7",
+    "name": "كابينة شاور منزلقة زجاج 8 مم كاملة",
+    "category": "الألوميتال والزجاج",
+    "subCategory": "كبائن شاور",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 2800,
+    "description": "كابينة حمام زجاج سيكوريت مع إكسسوارات ستانلس",
+    "sources": [
+      { "storeName": "السلام للزجاج", "price": 2950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرواد للألوميتال", "price": 3100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f7",
+    "name": "لوح جبسون بورد كناوف وردي (Fire Resistant) 12.5 مم",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "كناوف",
+    "unit": "لوح",
+    "lowestPrice": 320,
+    "description": "لوح وردي مقاوم للحريق للأسقف والفواصل",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 335, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p7",
+    "name": "لوح جبسون بورد GFRC أزرق (رطوبة + حريق) 12.5 مم",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "كناوف",
+    "unit": "لوح",
+    "lowestPrice": 380,
+    "description": "لوح عالي الجودة يقاوم الرطوبة العالية والحرارة للحمامات",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z7",
+    "name": "قطاع UD (Wall Track) صاج 0.45 مم 3 متر",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "عود (3 متر)",
+    "lowestPrice": 30,
+    "description": "قطاع حائطي معدني لتثبيت الجبسون بورد",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 35, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بدر الدين للمواد", "price": 40, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j8",
+    "name": "قطاع CD (Ceiling Main Runner) صاج 0.5 مم 3.6 متر",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "عود",
+    "lowestPrice": 48,
+    "description": "شاسيه سقف رئيسي لتركيب الألواح",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 52, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بدر الدين للمواد", "price": 55, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t8",
+    "name": "علاق أرجوحة هيدروليك (Nonius Hanger) للجبسون",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "قطعة",
+    "lowestPrice": 12,
+    "description": "علاقة لربط الجبسون بورد بالسقف الخرساني",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 15, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 18, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d8",
+    "name": "براغي جبسون 25 مم (Drywall Screw Fine) علبة",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "علبة 500 قطعة",
+    "lowestPrice": 55,
+    "description": "مسامير برمة صلب سوداء لتثبيت الجبس بالشاسيه",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "كناوف إيجيبت توزيع", "price": 70, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n8",
+    "name": "مونة جبسون لاصقة (Jointing Compound) 25 كجم",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "كناوف",
+    "unit": "دلو",
+    "lowestPrice": 180,
+    "description": "معجون ممتاز للفواصل بين الألواح",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 190, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 200, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9x8",
+    "name": "ألواح PVC سقف منقوش أبيض 10 سم عرض",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "أسقف PVC",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 85,
+    "description": "أسقف بلاستيك معلقة للحمامات مقاومة للماء",
+    "sources": [
+      { "storeName": "بيت الإباء الديكوري", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "وال تيك للتشطيبات", "price": 105, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9h8",
+    "name": "ألواح ألومنيوم سقف 15×15 مع هيكل تعليق",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "أسقف معلقة",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 280,
+    "description": "بلاطات ألومنيوم مقاومة للصدأ للمطابخ التجارية",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 295, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة الهندسية", "price": 310, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9r8",
+    "name": "لوح كناوف دانوليين (صوتي) 12.5 مم",
+    "category": "الأسقف والجبسون بورد",
+    "subCategory": "جبسون بورد",
+    "phase": "فنش",
+    "brand": "كناوف",
+    "unit": "لوح",
+    "lowestPrice": 420,
+    "description": "لوح جبسون بورد مخرّم عازل للصوت لقاعات السينما والمكاتب",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 440, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة الهندسية", "price": 460, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9b8",
+    "name": "فوم عازل بخاخ PU Spray Foam 750 مل",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل مائي",
+    "phase": "تأسيس",
+    "brand": "Soudal",
+    "unit": "أنبوبة",
+    "lowestPrice": 380,
+    "description": "عزل بولي يوريثان بخاخ لملء الفراغات ومنع التسرب",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9l8",
+    "name": "لوح XPS عازل أسطح 5 سم كثافة 30 كجم/م³",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل حراري وصوتي",
+    "phase": "تأسيس",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 280,
+    "description": "فوم أزرق كثافة عالية للعزل الحراري تحت البلاط",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 295, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بدر الدين للمواد", "price": 310, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9v8",
+    "name": "لوح EPS بولي استيرين أبيض 5 سم",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل حراري وصوتي",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 180,
+    "description": "فوم أبيض اقتصادي للحوائط والفواصل الحرارية",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 195, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 210, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9f8",
+    "name": "ممبرين بيتومين 3 مم أحادي الطبقة",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل مائي",
+    "phase": "تأسيس",
+    "brand": "محلي",
+    "unit": "لفة (10 متر)",
+    "lowestPrice": 650,
+    "description": "لفائف عزل مائي وحراري للأسقف المبلطة",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 680, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بدر الدين للمواد", "price": 700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9p8",
+    "name": "مادة إيلاستومريك للأسطح (سيكا سيل 570)",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل مائي",
+    "phase": "فنش",
+    "brand": "سيكا",
+    "unit": "دلو 20 كجم",
+    "lowestPrice": 1450,
+    "description": "عزل مطاطي أكريليك أبيض عاكس للحرارة",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 1480, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 1520, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9z8",
+    "name": "شريط أسفلتي ذاتي اللصق 15 سم للفواصل",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل مائي",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "لفة 10 متر",
+    "lowestPrice": 280,
+    "description": "شريط بيتومين لاصق لمنع التسرب في أركان الأسطح",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 295, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بدر الدين للمواد", "price": 310, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9j9",
+    "name": "مانع صدأ حديد في الخرسانة (سيكا فيرو)",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "كيماويات خرسانة",
+    "phase": "تأسيس",
+    "brand": "سيكا",
+    "unit": "دلو 10 كجم",
+    "lowestPrice": 650,
+    "description": "دهان حماية وتسليح مانع لصدأ الحديد",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 680, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9t9",
+    "name": "مادة حقن شروخ إيبوكسي (سيكا إينجكت)",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل مائي",
+    "phase": "فنش",
+    "brand": "سيكا",
+    "unit": "أنبوبة 330 مل",
+    "lowestPrice": 450,
+    "description": "إيبوكسي سائل لحقن وملء الشروخ الخرسانية الدقيقة",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 470, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة الهندسية", "price": 490, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9d9",
+    "name": "عزل حراري ألياف زجاجية Glass Wool 5 سم",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل حراري وصوتي",
+    "phase": "تأسيس",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 120,
+    "description": "عازل صوتي وحراري لأسقف الجبسون بورد",
+    "sources": [
+      { "storeName": "المتحدة للكيماويات", "price": 135, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "كناوف إيجيبت توزيع", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9n9",
+    "name": "شريط عزل صوتي (Acoustic Tape) تحت الجدران",
+    "category": "العزل والمواد الخصوصية",
+    "subCategory": "عزل حراري وصوتي",
+    "phase": "تأسيس",
+    "brand": "مستورد",
+    "unit": "متر طولي",
+    "lowestPrice": 35,
+    "description": "لصق يمنع انتقال الذبذبات والصوت للأسقف والجدران",
+    "sources": [
+      { "storeName": "كناوف إيجيبت توزيع", "price": 40, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المتحدة للكيماويات", "price": 45, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9xA",
+    "name": "باب غرفة خشب زان طبيعي صماصيم 90×210 سم",
+    "category": "نجارة",
+    "subCategory": "أبواب وحلوق",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "قطعة",
+    "lowestPrice": 8500,
+    "description": "باب خشبي مصمت زان تقيل للفيلات والقصور",
+    "sources": [
+      { "storeName": "الرويعي للأخشاب", "price": 8700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محلات الموسكي", "price": 8900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9hA",
+    "name": "باب حمام WPC مقاوم رطوبة 70 سم",
+    "category": "نجارة",
+    "subCategory": "أبواب وحلوق",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 2800,
+    "description": "باب بلاستيك ومركب خشبي مقاوم للماء 100% للحمامات ضيق",
+    "sources": [
+      { "storeName": "وال تيك للتشطيبات", "price": 2950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بيت الإباء الديكوري", "price": 3100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9rA",
+    "name": "باب حمام WPC مقاوم رطوبة 80 سم",
+    "category": "نجارة",
+    "subCategory": "أبواب وحلوق",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 3200,
+    "description": "باب WPC للحمامات قياس قياسي مقاوم للمياه",
+    "sources": [
+      { "storeName": "وال تيك للتشطيبات", "price": 3350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بيت الإباء الديكوري", "price": 3500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9bA",
+    "name": "حلق ألومنيوم للأبواب ضلفة واحدة",
+    "category": "نجارة",
+    "subCategory": "أبواب وحلوق",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "قطعة",
+    "lowestPrice": 650,
+    "description": "إطار باب ألومنيوم للحمامات والغرف كبديل للخشب",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 680, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للأخشاب", "price": 710, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9lA",
+    "name": "شيش ألومنيوم حشرات رمادي 90 سم",
+    "category": "نجارة",
+    "subCategory": "شيش وشبابيك",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 220,
+    "description": "سلك ناموس ألومنيوم مقاوم للصدأ للشبابيك",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 240, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محلات الموسكي", "price": 260, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9vA",
+    "name": "مقبض باب روسيتا مضغوطة ذهبي كروم",
+    "category": "نجارة",
+    "subCategory": "إكسسوارات أبواب",
+    "phase": "إكسسوارات",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 380,
+    "description": "أكرة باب نحاس/كروم عالية الجودة",
+    "sources": [
+      { "storeName": "محلات الموسكي", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الرويعي للمعدات", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9fA",
+    "name": "مفصلة باب 4 بوصة ستانلس مجلفن",
+    "category": "نجارة",
+    "subCategory": "إكسسوارات أبواب",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "زوج (2 قطعة)",
+    "lowestPrice": 85,
+    "description": "مفصلة باب خشب ستانلس مقاومة للصدأ",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محلات الموسكي", "price": 105, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9pA",
+    "name": "دكة باب (Door Bottom Seal) ألومنيوم تشيلن",
+    "category": "نجارة",
+    "subCategory": "إكسسوارات أبواب",
+    "phase": "إكسسوارات",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 180,
+    "description": "مانع أتربة وحشرات سفلي للأبواب الخشبية والمصفحة",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 195, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "محلات الموسكي", "price": 210, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9zA",
+    "name": "لوح MDF 9 مم (120×240 سم)",
+    "category": "نجارة",
+    "subCategory": "ألواح خشبية",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "لوح",
+    "lowestPrice": 480,
+    "description": "لوح خشب مضغوط لأعمال الديكور والتجاليد",
+    "sources": [
+      { "storeName": "الرويعي للأخشاب", "price": 500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 520, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9jB",
+    "name": "لوح MDF 18 مم (120×240 سم)",
+    "category": "نجارة",
+    "subCategory": "ألواح خشبية",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "لوح",
+    "lowestPrice": 780,
+    "description": "لوح خشب MDF سميك لصناعة دواليب المطابخ والمكاتب",
+    "sources": [
+      { "storeName": "الرويعي للأخشاب", "price": 810, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 830, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9tB",
+    "name": "DVR تسجيل 8 كاميرا TVI Hikvision",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "كاميرات مراقبة",
+    "phase": "إكسسوارات",
+    "brand": "Hikvision",
+    "unit": "قطعة",
+    "lowestPrice": 4500,
+    "description": "جهاز تسجيل كاميرات انالوج HD لـ 8 منافذ بوضوح 5 ميجا",
+    "sources": [
+      { "storeName": "كمبيومي", "price": 4650, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "تكنولوجي فالي", "price": 4800, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9dB",
+    "name": "NVR تسجيل 8 كاميرا IP Hikvision",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "كاميرات مراقبة",
+    "phase": "إكسسوارات",
+    "brand": "Hikvision",
+    "unit": "قطعة",
+    "lowestPrice": 5200,
+    "description": "جهاز تسجيل شبكي لكاميرات الـ IP بدقة 4K",
+    "sources": [
+      { "storeName": "كمبيومي", "price": 5400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "راديو شاك", "price": 5600, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9nB",
+    "name": "هارد ديسك مراقبة 2 تيرا Seagate SkyHawk",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "كاميرات مراقبة",
+    "phase": "إكسسوارات",
+    "brand": "Seagate",
+    "unit": "قطعة",
+    "lowestPrice": 3800,
+    "description": "قرص صلب مخصص للتسجيل المستمر لكاميرات المراقبة 24/7",
+    "sources": [
+      { "storeName": "كمبيومي", "price": 3950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "تكنولوجي فالي", "price": 4100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9xB",
+    "name": "كاميرا داخلية IP 4 ميجا Hikvision دوم",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "كاميرات مراقبة",
+    "phase": "إكسسوارات",
+    "brand": "Hikvision",
+    "unit": "قطعة",
+    "lowestPrice": 1450,
+    "description": "كاميرا شبكية IP شكل قبة (Dome) للرؤية الداخلية الواسعة",
+    "sources": [
+      { "storeName": "تكنولوجي فالي", "price": 1520, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "كمبيومي", "price": 1600, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9hB",
+    "name": "لوحة إنذار حريق 4 منطقة Notifier / UTC",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "إنذار حريق",
+    "phase": "إكسسوارات",
+    "brand": "Notifier",
+    "unit": "قطعة",
+    "lowestPrice": 8500,
+    "description": "لوحة تحكم كلاسيكية لإنذار الحريق لـ 4 زونات",
+    "sources": [
+      { "storeName": "رنيار للكهرباء", "price": 8700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "تكنولوجي فالي", "price": 8900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9rB",
+    "name": "كاشف حرارة ثابت 57 درجة (Fixed Temp Detector)",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "إنذار حريق",
+    "phase": "إكسسوارات",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 380,
+    "description": "حساس حريق حراري للمطابخ وغرف المولدات",
+    "sources": [
+      { "storeName": "النور للأدوات الكهربائية", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9bB",
+    "name": "زر إطفاء حريق يدوي (Manual Call Point)",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "إنذار حريق",
+    "phase": "إكسسوارات",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 450,
+    "description": "كاسر زجاج إنذار يدوي في حالة الحريق",
+    "sources": [
+      { "storeName": "النور للأدوات الكهربائية", "price": 470, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "تكنولوجي فالي", "price": 490, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9lB",
+    "name": "شاشة إنتركم فيديو 7 بوصة Fermax / Hikvision",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "إنتركم",
+    "phase": "فنش",
+    "brand": "Fermax / Hikvision",
+    "unit": "قطعة",
+    "lowestPrice": 3500,
+    "description": "شاشة داخلية ملونة 7 بوصة لفتح الباب ورؤية الزائر",
+    "sources": [
+      { "storeName": "كمبيومي", "price": 3650, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "تكنولوجي فالي", "price": 3800, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9vB",
+    "name": "نظام تحكم دخول RFID + كارت Hikvision",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "سمارت هوم",
+    "phase": "إكسسوارات",
+    "brand": "Hikvision",
+    "unit": "قطعة",
+    "lowestPrice": 3200,
+    "description": "جهاز اكسس كنترول بالكارت أو البصمة للأبواب الإلكترونية",
+    "sources": [
+      { "storeName": "كمبيومي", "price": 3350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "تكنولوجي فالي", "price": 3500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9fB",
+    "name": "سويتش شبكة 8 منافذ PoE مُدار",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "شبكات وإنترنت",
+    "phase": "تأسيس",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 2800,
+    "description": "سويتش شبكات يدعم إمداد الكاميرات بالكهرباء (PoE)",
+    "sources": [
+      { "storeName": "راديو شاك", "price": 2950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "كمبيومي", "price": 3100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9pB",
+    "name": "كابل CCTV RG59 سيامي لفة 305 متر",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "كاميرات مراقبة",
+    "phase": "تأسيس",
+    "brand": "السويدي",
+    "unit": "لفة (305م)",
+    "lowestPrice": 1800,
+    "description": "كابل دش وكاميرات مدمج مع سلك كهرباء للتأسيس",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 1850, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "كمبيومي", "price": 1950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9zB",
+    "name": "كابل إنذار حريق 2×1.5 مم مقاوم للحريق",
+    "category": "التيار الخفيف والأنظمة",
+    "subCategory": "إنذار حريق",
+    "phase": "تأسيس",
+    "brand": "السويدي",
+    "unit": "متر",
+    "lowestPrice": 18,
+    "description": "سلك مجدول مقاوم للحريق لنظام Fire Alarm",
+    "sources": [
+      { "storeName": "السويدي للكابلات", "price": 20, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "رنيار للكهرباء", "price": 23, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9jC",
+    "name": "غسالة صحون بلت إن Bosch 60 سم 13 فرد",
+    "category": "المطابخ والرخام",
+    "subCategory": "أجهزة بلت-إن",
+    "phase": "فنش",
+    "brand": "Bosch",
+    "unit": "جهاز",
+    "lowestPrice": 35000,
+    "description": "غسالة أطباق مخفية داخل كابينة المطبخ",
+    "sources": [
+      { "storeName": "B-Tech", "price": 36000, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "راية إلكترونيكس", "price": 37000, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9tC",
+    "name": "مايكروويف بلت إن Toshiba / Bosch 60 سم",
+    "category": "المطابخ والرخام",
+    "subCategory": "أجهزة بلت-إن",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "جهاز",
+    "lowestPrice": 18000,
+    "description": "مايكروويف وشواية يدمج في دواليب المطبخ",
+    "sources": [
+      { "storeName": "B-Tech", "price": 18500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "راية إلكترونيكس", "price": 19000, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9dC",
+    "name": "شافطة بلت إن فريش / فور-فلو 90 سم",
+    "category": "المطابخ والرخام",
+    "subCategory": "أجهزة بلت-إن",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "جهاز",
+    "lowestPrice": 8500,
+    "description": "شفاط مطبخ هرمي أو زجاجي فلات لطرد الأدخنة",
+    "sources": [
+      { "storeName": "B-Tech", "price": 8800, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "راية إلكترونيكس", "price": 9100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9nC",
+    "name": "رخام كرارة أبيض جبلية مصري بجميع المقاسات",
+    "category": "المطابخ والرخام",
+    "subCategory": "رخام وجرانيت",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 380,
+    "description": "رخام أبيض ذو عروق رمادية للدرج والمطابخ",
+    "sources": [
+      { "storeName": "شريف رخام", "price": 410, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة المصرية للحجر", "price": 430, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9xC",
+    "name": "رخام بيج تركي (Crema Marfil) مستورد",
+    "category": "المطابخ والرخام",
+    "subCategory": "رخام وجرانيت",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 850,
+    "description": "رخام كريما مارفيل بيج هادئ راقي جدا",
+    "sources": [
+      { "storeName": "شريف رخام", "price": 880, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة المصرية للحجر", "price": 920, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9hC",
+    "name": "جرانيت رمادي أسوان المصري",
+    "category": "المطابخ والرخام",
+    "subCategory": "رخام وجرانيت",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 650,
+    "description": "جرانيت مصري عالي التحمل للسلالم وكونترات المطبخ",
+    "sources": [
+      { "storeName": "شريف رخام", "price": 680, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة المصرية للحجر", "price": 720, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9rC",
+    "name": "حوض مطبخ ستانلس عين واحدة Franke",
+    "category": "المطابخ والرخام",
+    "subCategory": "أحواض مطابخ",
+    "phase": "فنش",
+    "brand": "Franke",
+    "unit": "قطعة",
+    "lowestPrice": 3200,
+    "description": "حوض مطبخ ألماني الصنع بضمان 10 سنوات",
+    "sources": [
+      { "storeName": "سمارت هوم ستور", "price": 3350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "إيكيا مصر", "price": 3500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9bC",
+    "name": "صنبور مطبخ ارتفاع عالي (High Mixer) جروهي كروم",
+    "category": "المطابخ والرخام",
+    "subCategory": "أحواض مطابخ",
+    "phase": "فنش",
+    "brand": "جروهي",
+    "unit": "قطعة",
+    "lowestPrice": 2800,
+    "description": "خلاط شجرة للمطبخ سوستة لسهولة غسيل الأطباق",
+    "sources": [
+      { "storeName": "محجوب", "price": 2950, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السيرجاني للأدوات الصحية", "price": 3100, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9lC",
+    "name": "مفصلة خزانة مطبخ هيدروليكية (بلوم / Hettich)",
+    "category": "المطابخ والرخام",
+    "subCategory": "خامات مطابخ",
+    "phase": "إكسسوارات",
+    "brand": "Blum / Hettich",
+    "unit": "قطعة",
+    "lowestPrice": 85,
+    "description": "مفصلة سوفت كلوز لأبواب المطابخ تمنع الخبط",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 95, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "إيكيا مصر", "price": 105, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9vC",
+    "name": "درج ناعم الإغلاق (Soft Close Drawer Runner) 45 سم",
+    "category": "المطابخ والرخام",
+    "subCategory": "خامات مطابخ",
+    "phase": "إكسسوارات",
+    "brand": "مستورد",
+    "unit": "زوج",
+    "lowestPrice": 320,
+    "description": "مجرى درج تلسكوبي ناعم الإغلاق للأحمال الثقيلة",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 340, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "إيكيا مصر", "price": 360, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9fC",
+    "name": "طوب واجهة هاشمي عتيق (Rustic) سمك 2.5 سم",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "حجر صناعي وطبيعي",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 420,
+    "description": "حجر واجهات هاشمي كلاسيكي للقصور والفيلات",
+    "sources": [
+      { "storeName": "الشركة المصرية للحجر", "price": 450, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "جرين سباير", "price": 470, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9pC",
+    "name": "ألوميتال كومبوزيت (ACM) 4 مم للواجهات",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "حجر صناعي وطبيعي",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر مربع",
+    "lowestPrice": 680,
+    "description": "ألواح كلادينج لتغطية واجهات المباني بألوان متعددة",
+    "sources": [
+      { "storeName": "الرواد للألوميتال", "price": 710, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "الشركة المصرية للحجر", "price": 730, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9zC",
+    "name": "بلاط خارجي مضاد للانزلاق 40×40 حوش",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "لاند سكيب",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 220,
+    "description": "سيراميك كواترو مانع للإنزلاق لحوش الفيلات والحدائق",
+    "sources": [
+      { "storeName": "السلاب", "price": 240, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مظلوم للسيراميك", "price": 260, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9jD",
+    "name": "حد ترابه (Kerb Stone) بيتوني خارجي",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "لاند سكيب",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "متر طولي",
+    "lowestPrice": 120,
+    "description": "بردورة رصيف خرسانية لعزل الحدائق عن الممرات",
+    "sources": [
+      { "storeName": "المصريون للبناء", "price": 135, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "جرين سباير", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9tD",
+    "name": "إضاءة سبوت حديقة غرز أرضي LED IP65",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "لاند سكيب",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 380,
+    "description": "سبوت إضاءة يغرز في الأرض مقاوم للماء للحدائق",
+    "sources": [
+      { "storeName": "النور للأدوات الكهربائية", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "جرين سباير", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9dD",
+    "name": "ديكو بلاستر جاهز للواجهات (Deco Plaster Facade)",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "حجر صناعي وطبيعي",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "شكارة 25 كجم",
+    "lowestPrice": 380,
+    "description": "بياض ديكوري ملوّن لعمل خشونة جذابة في الواجهات",
+    "sources": [
+      { "storeName": "سيكا مصر", "price": 400, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "مركز تلوين GLC", "price": 420, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9nD",
+    "name": "بلاط ممرات خارجية (Paving Block) هولندي",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "لاند سكيب",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 280,
+    "description": "إنترلوك أرصفة هولندي مقاوم للاحتكاك العالي",
+    "sources": [
+      { "storeName": "جرين سباير", "price": 295, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 310, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9xD",
+    "name": "دهان واجهات أكريليك ديكوري ملمس (Textured)",
+    "category": "الواجهات واللاند سكيب",
+    "subCategory": "حجر صناعي وطبيعي",
+    "phase": "فنش",
+    "brand": "Jotun / GLC",
+    "unit": "دلو 20 كجم",
+    "lowestPrice": 1800,
+    "description": "جرافيتو واجهات بلمسة حجرية وخشنة يقاوم العوامل الجوية",
+    "sources": [
+      { "storeName": "مركز تلوين GLC", "price": 1850, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "جوتن العبور", "price": 1900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9hD",
+    "name": "جلاخة زاوية (Angle Grinder) 115 مم 900 وات",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 1800,
+    "description": "صاروخ قطعية وتجليخ 4.5 بوصة للصنايعية",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 1850, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 1900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9rD",
+    "name": "قرص تقطيع سيراميك ورخام 4.5 بوصة",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 65,
+    "description": "أسطوانة قطعية ماسية جافة ومبللة للسيراميك والبورسلين",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 75, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المهندس للسيراميك", "price": 85, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9bD",
+    "name": "ماكينة تقطيع بلاط رطب (Wet Tile Cutter)",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "قطعة",
+    "lowestPrice": 8500,
+    "description": "طاولة قطع بورسلين كهربائية دقيقة بالماء لمنع الغبار",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 8700, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 8900, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9lD",
+    "name": "ماكينة نشر دائرية خشب (Circular Saw) 1400 وات",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 3200,
+    "description": "منشار صينية خشب لقص الألواح والكونتر بدقة",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 3350, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 3500, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9vD",
+    "name": "خلاط كهربائي للدهان والملاط 1200 وات (Mixer)",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 2500,
+    "description": "دريل خلط بمعلقة لخفق الدهانات والمون الجافة",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 2650, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 2800, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "W1x2Y3z4A5b6C7d8E9fD",
+    "name": "بلورة حفر SDS خرسانة 16 مم طول 45 سم",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 180,
+    "description": "بنطة هيلتي طويلة لثقب الحوائط وتمرير الكابلات",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 195, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 210, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "G1h2I3j4K5l6M7n8O9pD",
+    "name": "متر قياس رقمي ليزر 30 متر (Laser Distance)",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 850,
+    "description": "متر ليزر لرفع المقاسات وحساب المساحات بدقة عالية",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 880, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 910, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Q1r2S3t4U5v6W7x8Y9zD",
+    "name": "ميزان ماء ألومنيوم 60 سم (Spirit Level)",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 120,
+    "description": "ميزان ماء بـ 3 عيون لضبط الأفقية والرأسية للمباني",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 135, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "A1b2C3d4E5f6G7h8I9jE",
+    "name": "مسطرة ألومنيوم قاطعة 2 متر",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "محلي",
+    "unit": "قطعة",
+    "lowestPrice": 180,
+    "description": "كدة ألومنيوم (مسطرة) لضبط المحارة واللياسة",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 195, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "المصريون للبناء", "price": 210, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "K1l2M3n4O5p6Q7r8S9tE",
+    "name": "فرشاة سلك يد (Wire Brush) للتنظيف",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 35,
+    "description": "فرشاة سلك صلب لإزالة الصدأ والدهانات القديمة",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 40, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 45, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "U1v2W3x4Y5z6A7b8C9dE",
+    "name": "صندوق أدوات كهربائي محمول (Tool Box) بلاستيك",
+    "category": "أدوات ومعدات التنفيذ",
+    "subCategory": "أدوات يدوية وكهربائية",
+    "phase": "تأسيس",
+    "brand": "متعدد",
+    "unit": "قطعة",
+    "lowestPrice": 350,
+    "description": "شنطة عدة قوية لحفظ الأدوات اليدوية للفنيين",
+    "sources": [
+      { "storeName": "الرويعي للمعدات", "price": 370, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "شارع الجمهورية للمعدات", "price": 390, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "E1f2G3h4I5j6K7l8M9nE",
+    "name": "لوح تيك (Teak) تجليد حوائط خشبي 3D بانل",
+    "category": "ديكورات وتكسيات",
+    "subCategory": "بديل خشب WPC",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 580,
+    "description": "ألواح خشب تيك بارزة لعمل ديكورات كلاسيكية للجدران",
+    "sources": [
+      { "storeName": "بيت الإباء الديكوري", "price": 600, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "وال تيك للتشطيبات", "price": 620, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "O1p2Q3r4S5t6U7v8W9xE",
+    "name": "ميرور إيفكت (Mirror Effect) لوح ديكوري 120×240",
+    "category": "ديكورات وتكسيات",
+    "subCategory": "بديل رخام",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "لوح",
+    "lowestPrice": 850,
+    "description": "لوح أكريليك عاكس كالمرايا للديكورات المودرن",
+    "sources": [
+      { "storeName": "بيت الإباء الديكوري", "price": 880, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "السلام للزجاج", "price": 910, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "Y1z2A3b4C5d6E7f8G9hE",
+    "name": "لوح موجات جبس 3D ديكوري (Gypsum 3D Panel)",
+    "category": "ديكورات وتكسيات",
+    "subCategory": "كرانيش وزوايا",
+    "phase": "فنش",
+    "brand": "محلي",
+    "unit": "متر مربع",
+    "lowestPrice": 420,
+    "description": "بلاطات 3D جبسية تركب على الحائط وتعطي شكل أمواج",
+    "sources": [
+      { "storeName": "وال تيك للتشطيبات", "price": 440, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بيت الإباء الديكوري", "price": 460, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "I1j2K3l4M5n6O7p8Q9rE",
+    "name": "طوب ديكوري أبيض (Exposed Brick Look)",
+    "category": "ديكورات وتكسيات",
+    "subCategory": "حجر ديكوري",
+    "phase": "فنش",
+    "brand": "متعدد",
+    "unit": "متر مربع",
+    "lowestPrice": 280,
+    "description": "قوالب طوب حراري أبيض للديكور الداخلي وتكسية الجدران",
+    "sources": [
+      { "storeName": "الشركة المصرية للحجر", "price": 300, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "وال تيك للتشطيبات", "price": 320, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "S1t2U3v4W5x6Y7z8A9bE",
+    "name": "ستارة (Curtain Wallpaper) للجدران 3D ملمس",
+    "category": "ديكورات وتكسيات",
+    "subCategory": "ورق حائط",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "رول",
+    "lowestPrice": 1200,
+    "description": "ورق حائط ثقيل بملمس قماشي ستائر للتكسيات الفخمة",
+    "sources": [
+      { "storeName": "بيت الإباء الديكوري", "price": 1250, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "وال تيك للتشطيبات", "price": 1300, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "C1d2E3f4G5h6I7j8K9lE",
+    "name": "كرانيش PVC عالي اللمعة مطلي 10 سم",
+    "category": "ديكورات وتكسيات",
+    "subCategory": "كرانيش وزوايا",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر طولي",
+    "lowestPrice": 55,
+    "description": "أعواد زوايا سقف PVC لون ذهبي أو فضي للديكورات",
+    "sources": [
+      { "storeName": "وال تيك للتشطيبات", "price": 65, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "بيت الإباء الديكوري", "price": 75, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  },
+  {
+    "id": "M1n2O3p4Q5r6S7t8U9vE",
+    "name": "إضاءة خفية ليد داخلي نيتشر (LED Neon Flex)",
+    "category": "ديكورات وتكسيات",
+    "subCategory": "ديكورات مضيئة",
+    "phase": "فنش",
+    "brand": "مستورد",
+    "unit": "متر",
+    "lowestPrice": 120,
+    "description": "خراطيم ليد نيون سيليكون تشكيل ديكوري للحوائط",
+    "sources": [
+      { "storeName": "النور للأدوات الكهربائية", "price": 135, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" },
+      { "storeName": "وال تيك للتشطيبات", "price": 150, "url": "#", "isAvailable": true, "lastUpdated": "2025-01-15T00:00:00.000Z" }
+    ]
+  }
+]

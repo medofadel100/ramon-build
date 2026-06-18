@@ -12,7 +12,6 @@ import {
   limit, 
   writeBatch,
   serverTimestamp,
-  addDoc,
   arrayUnion
 } from 'firebase/firestore';
 import { db } from './firebase';
@@ -190,7 +189,7 @@ export async function dbGetMasterConstants(): Promise<ConstantDefinition[]> {
     
     const defaultMap = new Map(DEFAULT_CONSTANTS.map(c => [c.key, c]));
     
-    const fixedDbConsts = dbConsts.map((c: any) => {
+    const fixedDbConsts = dbConsts.map((c: Partial<ConstantDefinition>) => {
       if (!c) return null;
       const def = defaultMap.get(c.key);
       if (def) {
@@ -204,7 +203,7 @@ export async function dbGetMasterConstants(): Promise<ConstantDefinition[]> {
       return c;
     }).filter(Boolean);
 
-    const dbKeys = new Set(fixedDbConsts.map((c: any) => c.key));
+    const dbKeys = new Set(fixedDbConsts.map((c) => c?.key));
     const newDefaults = DEFAULT_CONSTANTS.filter(c => !dbKeys.has(c.key));
     
     return [...fixedDbConsts, ...newDefaults];
@@ -324,7 +323,7 @@ export async function createProject(
   for (const item of itemsToSeed) {
     const itemDocRef = doc(db, 'projects', projectId, 'sections', item.sectionId, 'items', item.id);
     
-    const specsMap: Record<string, any> = {};
+    const specsMap: Record<string, string | number | boolean> = {};
     item.specs.forEach(field => {
       specsMap[field.key] = field.defaultValue;
     });
@@ -381,7 +380,7 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
 
   // Fetch Sections
   const sectionsSnapshot = await getDocs(collection(db, 'projects', projectId, 'sections'));
-  const sections = sectionsSnapshot.docs.map(doc => doc.data() as any);
+  const sections = sectionsSnapshot.docs.map(doc => doc.data() as { id: string; sectionKey: string; title: string; enabled: boolean });
 
   // Fetch all Items from all sections in parallel
   const items: BOQItem[] = [];
@@ -590,7 +589,7 @@ export async function generateEngineerInviteToken(
   return token;
 }
 
-export async function getInviteTokenData(projectId: string, token: string): Promise<any | null> {
+export async function getInviteTokenData(projectId: string, token: string): Promise<Record<string, unknown> | null> {
   const docRef = doc(db, 'projects', projectId, 'inviteTokens', token);
   const snap = await getDoc(docRef);
   return snap.exists() ? snap.data() : null;
@@ -701,7 +700,7 @@ export async function dbUpdateProjectConstants(
 ): Promise<void> {
   const projectRef = doc(db, 'projects', projectId);
   
-  const updates: any = {
+  const updates: Record<string, unknown> = {
     projectConstants: constants,
     updatedAt: serverTimestamp()
   };
