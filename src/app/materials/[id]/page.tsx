@@ -29,6 +29,7 @@ export default function MaterialDetailsPage() {
       if (found) {
         setMaterial(found);
       }
+    }
   }, [loading, materials, params.id]);
 
   const chartData = useMemo(() => {
