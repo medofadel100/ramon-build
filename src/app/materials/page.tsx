@@ -6,6 +6,7 @@ import { MarketCategory, MarketSubCategory, MarketMaterial } from '@/types/marke
 import { Card } from '@/components/ui/card';
 import { Search, Filter, Store, Activity, ChevronRight, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 
 export default function MaterialsMarketplacePage() {
   const { materials, loading, startMaterialSync, stopMaterialSync } = useMarketStore();
@@ -59,9 +60,11 @@ export default function MaterialsMarketplacePage() {
   }, [materials, searchTerm, selectedCategory, selectedPhase, selectedBrand]);
 
   return (
-    <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
+    <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans flex flex-col">
+      <Navbar />
+      <div className="flex-1 p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">سوق الخامات</h1>
