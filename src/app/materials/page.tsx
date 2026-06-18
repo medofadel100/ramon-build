@@ -248,5 +248,6 @@ export default function MaterialsMarketplacePage() {
         </div>
       </div>
     </div>
+  </div>
   );
 }
