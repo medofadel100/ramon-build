@@ -42,7 +42,7 @@ async function refreshPriceForSource(source: any, materialName: string) {
 async function refreshSourcePrices(material: any) {
   const normalizedMaterial = normalizeMarketMaterialSources(material);
   const updatedSources = await Promise.all((normalizedMaterial.sources || []).map((source: any) => refreshPriceForSource(source, normalizedMaterial.name)));
-  const lowestPrice = updatedSources.length > 0 ? Math.min(...updatedSources.map((s: any) => s.price)) : (normalizedMaterial.lowestPrice || 0);
+  const lowestPrice = updatedSources.length > 0 ? Math.min(...updatedSources.map((s: any) => s.price)) : ((normalizedMaterial as any).lowestPrice || 0);
   return { sources: updatedSources, lowestPrice };
 }
 
