@@ -5,8 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMarketStore } from '@/store/marketStore';
 import { MarketMaterial } from '@/types/market';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, Store, ExternalLink, Activity, Clock, TrendingDown } from 'lucide-react';
+import { ArrowLeft, Store, ExternalLink, Activity, Clock, TrendingDown } from 'lucide-react';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 
 export default function MaterialDetailsPage() {
   const params = useParams();
@@ -48,15 +49,17 @@ export default function MaterialDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans p-6">
-      <div className="max-w-5xl mx-auto space-y-6">
-        {/* Top Nav */}
-        <button 
-          onClick={() => router.push('/materials')}
-          className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-        >
-          <ArrowRight className="w-4 h-4" /> العودة لسوق الخامات
-        </button>
+    <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans flex flex-col">
+      <Navbar />
+      <div className="flex-1 p-6">
+        <div className="max-w-5xl mx-auto space-y-6">
+          {/* Top Nav */}
+          <button 
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> العودة لسوق الخامات
+          </button>
 
         {/* Header Card */}
         <div className="bg-[#13151c]/80 border border-[#222634] rounded-2xl p-8 backdrop-blur-xl relative overflow-hidden">
@@ -105,8 +108,8 @@ export default function MaterialDetailsPage() {
         </h2>
         
         <div className="grid grid-cols-1 gap-4">
-          {material.sources.sort((a, b) => a.price - b.price).map((source, idx) => (
-            <Card key={idx} className={`bg-[#13151c]/60 border-[#222634] hover:bg-[#13151c] transition-colors p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${idx === 0 ? 'border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.05)]' : ''}`}>
+          {[...material.sources].sort((a, b) => a.price - b.price).map((source, idx) => (
+            <Card key={source.storeName} className={`bg-[#13151c]/60 border-[#222634] hover:bg-[#13151c] transition-colors p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${idx === 0 ? 'border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.05)]' : ''}`}>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-lg bg-slate-900 border border-[#222634] flex items-center justify-center text-slate-400">
                   <Store className="w-6 h-6" />
@@ -144,6 +147,7 @@ export default function MaterialDetailsPage() {
           ))}
         </div>
 
+        </div>
       </div>
     </div>
   );

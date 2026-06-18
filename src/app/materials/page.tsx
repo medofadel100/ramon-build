@@ -31,10 +31,10 @@ export default function MaterialsMarketplacePage() {
     };
   }, [startMaterialSync, stopMaterialSync]);
 
-  // Reset selected brand when category changes
+  // Reset selected brand when category or phase changes
   useEffect(() => {
     setSelectedBrand('الكل');
-  }, [selectedCategory]);
+  }, [selectedCategory, selectedPhase]);
 
   const availableBrands = useMemo(() => {
     // Only get brands for the current category to avoid a huge list
@@ -80,7 +80,7 @@ export default function MaterialsMarketplacePage() {
 
         {/* Filters and Search */}
         <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-64 space-y-6 shrink-0">
+          <div className="w-full lg:w-64 space-y-6 shrink-0 lg:sticky lg:top-6 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
              <div className="bg-[#13151c]/80 border border-[#222634] rounded-xl p-5 backdrop-blur-xl">
                <h3 className="flex items-center gap-2 font-semibold text-white mb-4">
                  <Filter className="w-4 h-4 text-cyan-400" /> التصنيفات
@@ -217,21 +217,21 @@ export default function MaterialsMarketplacePage() {
                                 <span className="text-sm font-medium text-slate-500">ج.م / {material.unit}</span>
                               </div>
                            </div>
-                           
-                           <div className="flex flex-wrap items-center gap-2 pt-2 relative z-20">
+                                                      <div className="flex flex-wrap items-center gap-2 pt-2 relative z-20">
                               {material.sources.slice(0, 3).map((source, idx) => (
-                                 <a 
+                                 <button 
                                    key={idx} 
-                                   href={source.url !== '#' ? source.url : `https://www.google.com/search?q=${encodeURIComponent('شراء ' + material.name + ' من ' + source.storeName)}`}
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   onClick={(e) => e.stopPropagation()}
+                                   onClick={(e) => {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     window.open(source.url !== '#' ? source.url : `https://www.google.com/search?q=${encodeURIComponent('شراء ' + material.name + ' من ' + source.storeName)}`, '_blank');
+                                   }}
                                    className="flex items-center gap-1.5 text-[11px] font-medium text-slate-300 bg-slate-900/80 hover:bg-slate-800 px-2.5 py-1.5 rounded-md border border-slate-800 shadow-sm hover:border-cyan-500/50 hover:text-cyan-400 transition-all cursor-pointer"
                                  >
                                     <Store className="w-3.5 h-3.5 text-cyan-500" />
                                     <span>{source.storeName}</span>
                                     <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                                 </a>
+                                 </button>
                               ))}
                               {material.sources.length > 3 && (
                                 <span className="text-xs font-medium text-slate-500 bg-slate-900/50 px-2 py-1 rounded-md">+{material.sources.length - 3} متاجر</span>
