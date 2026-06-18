@@ -438,7 +438,7 @@ export default function ProjectBOQTab() {
                                           {field.type === 'select' ? (
                                             <select
                                               disabled={!canEdit}
-                                              value={val}
+                                              value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, e.target.value)}
                                               className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#c5a880]"
                                             >
@@ -447,7 +447,7 @@ export default function ProjectBOQTab() {
                                           ) : field.type === 'material_selector' ? (
                                             <select
                                               disabled={!canEdit}
-                                              value={val}
+                                              value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, e.target.value)}
                                               className="w-full bg-[#201811] border border-[#c5a880]/30 rounded px-2.5 py-1.5 text-xs text-[#c5a880] font-semibold focus:outline-none focus:border-[#c5a880]"
                                             >
@@ -462,7 +462,7 @@ export default function ProjectBOQTab() {
                                             <input
                                               type="number"
                                               disabled={!canEdit}
-                                              value={val}
+                                              value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, Number(e.target.value) || 0)}
                                               className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-center text-xs text-white focus:outline-none focus:border-[#c5a880]"
                                             />
@@ -470,7 +470,7 @@ export default function ProjectBOQTab() {
                                             <input
                                               type="text"
                                               disabled={!canEdit}
-                                              value={val}
+                                              value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, e.target.value)}
                                               className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-right text-xs text-white focus:outline-none focus:border-[#c5a880]"
                                             />
@@ -530,7 +530,7 @@ export default function ProjectBOQTab() {
                                                 {field.type === 'select' ? (
                                                   <select
                                                     disabled={!canEdit}
-                                                    value={val}
+                                                    value={val as string | number}
                                                     onChange={(e) => {
                                                       const updates = { [field.key]: e.target.value };
                                                       handleUpdateAreaOverride(item, zoneId, zoneId, updates, override.quantity);
@@ -542,7 +542,7 @@ export default function ProjectBOQTab() {
                                                 ) : field.type === 'material_selector' ? (
                                                   <select
                                                     disabled={!canEdit}
-                                                    value={val}
+                                                    value={val as string | number}
                                                     onChange={(e) => {
                                                       const updates = { [field.key]: e.target.value };
                                                       handleUpdateAreaOverride(item, zoneId, zoneId, updates, override.quantity);
@@ -560,7 +560,7 @@ export default function ProjectBOQTab() {
                                                   <input
                                                     type="text"
                                                     disabled={!canEdit}
-                                                    value={val}
+                                                    value={val as string | number}
                                                     onChange={(e) => {
                                                       const updates = { [field.key]: e.target.value };
                                                       handleUpdateAreaOverride(item, zoneId, zoneId, updates, override.quantity);
