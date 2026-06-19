@@ -190,7 +190,7 @@ export async function dbGetMasterConstants(): Promise<ConstantDefinition[]> {
     const defaultMap = new Map(DEFAULT_CONSTANTS.map(c => [c.key, c]));
     
     const fixedDbConsts = dbConsts.map((c: Partial<ConstantDefinition>) => {
-      if (!c) return null;
+      if (!c || !c.key) return null;
       const def = defaultMap.get(c.key);
       if (def) {
         return {
