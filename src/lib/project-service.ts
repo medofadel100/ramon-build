@@ -325,7 +325,7 @@ export async function createProject(
     
     const specsMap: Record<string, string | number | boolean> = {};
     item.specs.forEach(field => {
-      specsMap[field.key] = field.defaultValue;
+      specsMap[field.key] = field.defaultValue ?? '';
     });
 
     const boqItem: BOQItem = {
