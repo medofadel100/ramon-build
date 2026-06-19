@@ -88,7 +88,7 @@ export function resolveSourceUrl(source: { storeName: string; url?: string }, qu
   return buildSearchUrl(def, query);
 }
 
-export function normalizeMarketMaterialSources(material: { sources?: { storeName: string; url?: string; price: number; isAvailable: boolean; lastUpdated?: number; }[]; name: string; [key: string]: unknown }) {
+export function normalizeMarketMaterialSources<T extends { sources?: { storeName: string; url?: string; price: number; isAvailable: boolean; lastUpdated?: number; }[]; name: string; }>(material: T): T {
   const normalizedSources = (material.sources || []).map((source) => ({
     ...source,
     url: resolveSourceUrl(source, material.name)
