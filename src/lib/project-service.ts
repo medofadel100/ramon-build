@@ -206,7 +206,7 @@ export async function dbGetMasterConstants(): Promise<ConstantDefinition[]> {
     const dbKeys = new Set(fixedDbConsts.map((c) => c?.key));
     const newDefaults = DEFAULT_CONSTANTS.filter(c => !dbKeys.has(c.key));
     
-    return [...fixedDbConsts, ...newDefaults];
+    return [...(fixedDbConsts.filter(Boolean) as ConstantDefinition[]), ...newDefaults];
   } catch (err) {
     console.error("Error fetching master constants:", err);
     return DEFAULT_CONSTANTS;
