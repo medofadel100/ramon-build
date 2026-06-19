@@ -145,6 +145,7 @@ export interface MarketMaterial {
   phase?: MarketPhase;
   unit: string;
   imageUrl?: string;
+  lastUpdated?: number;
   sources: MarketSource[];
   lowestPrice: number;
   priceHistory?: { date: string; price: number }[];

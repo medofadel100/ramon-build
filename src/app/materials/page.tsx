@@ -69,7 +69,7 @@ export default function MaterialsMarketplacePage() {
       'الماركة / العلامة التجارية': m.brand || 'متعدد',
       'أقل سعر (ج.م)': m.lowestPrice,
       'الوحدة': m.unit,
-      'تاريخ آخر تحديث': new Date(m.lastUpdated).toLocaleDateString('ar-EG'),
+      'تاريخ آخر تحديث': m.lastUpdated ? new Date(m.lastUpdated).toLocaleDateString('ar-EG') : 'غير متوفر',
       'المتاجر المتوفرة': m.sources.filter(s => s.isAvailable).length,
       'إجمالي المتاجر المقارنة': m.sources.length,
       'كود المادة': m.id,
