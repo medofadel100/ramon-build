@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 const p1 = 'AQ.Ab8RN6Jh46jMwFC';
 const p2 = 'fzjLAVvVqo-8vWNVDm8ro1SJpFlKX2OtN2g';
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || (p1 + p2);
-const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
 
 export async function POST(req: Request) {
   try {
