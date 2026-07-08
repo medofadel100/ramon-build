@@ -9,9 +9,10 @@ import { DEFAULT_CONSTANTS } from '@/lib/constants';
 import { 
   ChevronDown, ChevronUp, CheckSquare, Square, ToggleLeft, ToggleRight, 
   Plus, Trash2, Edit2, Settings, FileText, CheckCircle2, MessageSquare, ShieldAlert,
-  LayoutGrid, X
+  LayoutGrid, X, Activity
 } from 'lucide-react';
 import { MarketPricePicker } from './MarketPricePicker';
+import { ItemPriceAnalyzerModal } from './ItemPriceAnalyzerModal';
 
 export default function ProjectBOQTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
@@ -33,6 +34,9 @@ export default function ProjectBOQTab() {
 
   // Market Picker state
   const [activeMarketTarget, setActiveMarketTarget] = useState<{ item: BOQItem, field: string } | null>(null);
+
+  // Analyzer state
+  const [analyzerItem, setAnalyzerItem] = useState<BOQItem | null>(null);
 
   // Constants mapping
   const projectConstantsMap = currentProject?.projectConstants || {};
@@ -640,10 +644,19 @@ export default function ProjectBOQTab() {
 
                               {/* 3. Pricing Editor */}
                               <div className="space-y-4">
-                                <h5 className="text-xs font-bold text-slate-400 border-b border-[#222634] pb-1.5 flex items-center gap-1.5">
-                                  <FileText className="h-3.5 w-3.5 text-[#c5a880]" />
-                                  التسعير وبنود اليوميات
-                                </h5>
+                                <div className="flex items-center justify-between border-b border-[#222634] pb-1.5">
+                                  <h5 className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                                    <FileText className="h-3.5 w-3.5 text-[#c5a880]" />
+                                    التسعير وبنود اليوميات
+                                  </h5>
+                                  <button
+                                    onClick={() => setAnalyzerItem(item)}
+                                    className="text-[9px] bg-purple-500/10 text-purple-400 px-2 py-1 rounded border border-purple-500/30 hover:bg-purple-500/20 transition flex items-center gap-1"
+                                  >
+                                    <Activity className="w-3 h-3" />
+                                    تحليل ذكي للسعر
+                                  </button>
+                                </div>
 
                                 <div className="flex flex-col md:flex-row gap-5">
                                   
@@ -660,6 +673,7 @@ export default function ProjectBOQTab() {
                                         <option value="materials_labor_split">تجزئة خامات ومصنعية</option>
                                         <option value="lump_sum">مقطوعية كاملة (شامل)</option>
                                         <option value="daily_rate">يوميات عمل الصنيعي</option>
+                                        <option value="detailed_breakdown">تفكيك كامل (خامات، مصنعية، معدات، مصروفات)</option>
                                       </select>
                                     </div>
 
@@ -701,6 +715,65 @@ export default function ProjectBOQTab() {
                                               value={item.pricing.laborUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'laborUnitPrice', e.target.value)}
                                               className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-amber-500/50 transition"
+                                            />
+                                          </div>
+                                        </>
+                                      )}
+
+                                      {item.pricing.mode === 'detailed_breakdown' && (
+                                        <>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <div className="flex items-center justify-between mb-2">
+                                              <label className="text-right text-[10px] font-bold text-emerald-400 flex items-center gap-1.5">
+                                                <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                                سعر الوحدة (خامات) ج.م
+                                              </label>
+                                            </div>
+                                            <input
+                                              type="number"
+                                              disabled={!canEdit}
+                                              value={item.pricing.materialUnitPrice}
+                                              onChange={(e) => handlePricingChange(item, 'materialUnitPrice', e.target.value)}
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-emerald-500/50 transition"
+                                            />
+                                          </div>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-amber-400 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-amber-500"></span>
+                                              سعر الوحدة (مصنعية) ج.م
+                                            </label>
+                                            <input
+                                              type="number"
+                                              disabled={!canEdit}
+                                              value={item.pricing.laborUnitPrice}
+                                              onChange={(e) => handlePricingChange(item, 'laborUnitPrice', e.target.value)}
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-amber-500/50 transition"
+                                            />
+                                          </div>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-blue-400 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                                              سعر الوحدة (معدات) ج.م
+                                            </label>
+                                            <input
+                                              type="number"
+                                              disabled={!canEdit}
+                                              value={item.pricing.equipmentUnitPrice || ''}
+                                              onChange={(e) => handlePricingChange(item, 'equipmentUnitPrice', e.target.value)}
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-blue-500/50 transition"
+                                            />
+                                          </div>
+                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-purple-400 mb-2 flex items-center gap-1.5">
+                                              <span className="h-2 w-2 rounded-full bg-purple-500"></span>
+                                              سعر الوحدة (مصروفات عامة وإدارية) ج.م
+                                            </label>
+                                            <input
+                                              type="number"
+                                              disabled={!canEdit}
+                                              value={item.pricing.overheadUnitPrice || ''}
+                                              onChange={(e) => handlePricingChange(item, 'overheadUnitPrice', e.target.value)}
+                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-purple-500/50 transition"
                                             />
                                           </div>
                                         </>
@@ -1166,6 +1239,15 @@ export default function ProjectBOQTab() {
             setActiveMarketTarget(null);
           }}
           onClose={() => setActiveMarketTarget(null)}
+        />
+      )}
+
+      {analyzerItem && (
+        <ItemPriceAnalyzerModal
+          item={analyzerItem}
+          zones={currentProject.zones}
+          projectConstants={currentProject.projectConstants}
+          onClose={() => setAnalyzerItem(null)}
         />
       )}
 

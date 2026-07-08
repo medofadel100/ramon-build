@@ -27,7 +27,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
   const loadingProject = useProjectStore((state) => state.loading);
 
   // Active Report template selection selection
-  const [reportType, setReportType] = useState<'client' | 'materials' | 'internal'>('client');
+  const [reportType, setReportType] = useState<'client' | 'materials' | 'internal' | 'quotation'>('quotation');
 
   useEffect(() => {
     if (!loadingAuth && !user) {
@@ -177,6 +177,21 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                   <span className="block text-[8px] text-slate-500 font-medium mt-0.5">تفاصيل التكلفة والتجزئة، أيام التنفيذ والجدول</span>
                 </div>
               </button>
+
+              <button
+                onClick={() => setReportType('quotation')}
+                className={`w-full p-3.5 rounded-lg text-right border transition flex items-center gap-3 ${
+                  reportType === 'quotation'
+                    ? 'bg-[#c5a880]/15 border-[#c5a880] text-white font-bold'
+                    : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700'
+                }`}
+              >
+                <FileText className="h-4 w-4 shrink-0" />
+                <div className="text-right">
+                  <span className="block text-xs">٤. عرض سعر مالي للعميل</span>
+                  <span className="block text-[8px] text-slate-500 font-medium mt-0.5">تفاصيل كميات وأسعار للبنود المنفذة</span>
+                </div>
+              </button>
             </div>
 
             <button
@@ -234,6 +249,75 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                   <span className="text-slate-900 text-xs font-black">{currentProject.header.designCode}</span>
                 </div>
               </div>
+
+              {/* REPORT 4: Quotation */}
+              {reportType === 'quotation' && (
+                <div className="space-y-6">
+                  <div>
+                    <h2 className="text-sm font-black text-slate-900 border-b border-slate-400 pb-1 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5"><Tag className="h-3.5 w-3.5 text-slate-500" /> عرض سعر معتمد</span>
+                      <span className="text-[10px] text-slate-500 font-bold">صالح لمدة ١٥ يوماً من تاريخ الإصدار</span>
+                    </h2>
+                  </div>
+
+                  <table className="w-full text-right text-[10px] font-bold border-collapse border border-slate-300">
+                    <thead className="bg-[#13151c] text-white border-b border-slate-300">
+                      <tr>
+                        <th className="p-2 border border-slate-300 w-12 text-center">رقم</th>
+                        <th className="p-2 border border-slate-300 text-right">البيان</th>
+                        <th className="p-2 border border-slate-300 text-center w-16">الوحدة</th>
+                        <th className="p-2 border border-slate-300 text-center w-20">الكمية</th>
+                        <th className="p-2 border border-slate-300 text-center w-20">الفئة (ج.م)</th>
+                        <th className="p-2 border border-slate-300 text-center w-24">الإجمالي (ج.م)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200">
+                      {currentProject.sections.filter(sec => sec.enabled).map((sec, secIdx) => {
+                        const secItems = activeItems.filter(it => it.sectionId === sec.id);
+                        if (secItems.length === 0) return null;
+
+                        return (
+                          <React.Fragment key={sec.id}>
+                            <tr className="bg-slate-100 font-black border-y-2 border-slate-300">
+                              <td colSpan={6} className="p-2 text-slate-800">
+                                بند ({secIdx + 1}): {sec.title}
+                              </td>
+                            </tr>
+                            {secItems.map((item, itemIdx) => {
+                              const res = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
+                              const unitPrice = res.quantity > 0 ? (res.total / res.quantity) : 0;
+                              return (
+                                <tr key={item.id}>
+                                  <td className="p-2 border border-slate-300 text-center text-slate-500">{itemIdx + 1}</td>
+                                  <td className="p-2 border border-slate-300 text-slate-800">
+                                    <span className="block font-black">{item.title}</span>
+                                    {item.notes && <span className="block text-[8px] text-slate-500 font-medium mt-0.5">{item.notes}</span>}
+                                  </td>
+                                  <td className="p-2 border border-slate-300 text-center">{item.unit}</td>
+                                  <td className="p-2 border border-slate-300 text-center">{res.quantity.toFixed(1)}</td>
+                                  <td className="p-2 border border-slate-300 text-center">
+                                    {unitPrice > 0 ? Math.round(unitPrice).toLocaleString() : '-'}
+                                  </td>
+                                  <td className="p-2 border border-slate-300 text-center font-extrabold text-slate-900 bg-slate-50">
+                                    {res.total > 0 ? res.total.toLocaleString() : '-'}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </React.Fragment>
+                        );
+                      })}
+                      
+                      <tr className="bg-slate-100 font-extrabold border-t-2 border-slate-900 text-xs">
+                        <td className="p-3 border border-slate-350 text-right" colSpan={5}>إجمالي عرض السعر التقديري</td>
+                        <td className="p-3 border border-slate-350 text-center bg-[#c5a880]/10 text-slate-900">
+                          {summary.grandTotal.toLocaleString()} ج.م
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
 
               {/* REPORT 1: Client BOQ Report */}
               {reportType === 'client' && (

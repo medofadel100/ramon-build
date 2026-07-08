@@ -6,7 +6,17 @@ import { db } from '@/lib/firebase';
 import { upload } from '@vercel/blob/client';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
-import { FileText, Image as ImageIcon, Trash2, Upload, ExternalLink, Paperclip, Eye, Download } from 'lucide-react';
+import { FileText, Image as ImageIcon, Trash2, Upload, ExternalLink, Paperclip, Eye, Download, MapPin, Plus, Check } from 'lucide-react';
+import { generateId } from '@/lib/utils';
+
+export interface Pin {
+  id: string;
+  x: number;
+  y: number;
+  note: string;
+  createdBy: string;
+  createdAt: string;
+}
 
 export interface Attachment {
   name: string;
@@ -14,6 +24,7 @@ export interface Attachment {
   type: string;
   uploadedAt: string;
   size: number;
+  pins?: Pin[];
 }
 
 export default function ProjectAttachmentsTab() {
@@ -24,6 +35,10 @@ export default function ProjectAttachmentsTab() {
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [previewAttachment, setPreviewAttachment] = useState<Attachment | null>(null);
+  const [pinMode, setPinMode] = useState(false);
+  const [activePin, setActivePin] = useState<Pin | null>(null);
+  const [newPinCoords, setNewPinCoords] = useState<{x: number, y: number} | null>(null);
+  const [newPinNote, setNewPinNote] = useState('');
 
   useEffect(() => {
     if (currentProject) {
@@ -82,6 +97,62 @@ export default function ProjectAttachmentsTab() {
       setLoading(false);
       setUploadProgress(null);
     }
+  };
+
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (!pinMode || !previewAttachment) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setNewPinCoords({ x, y });
+    setNewPinNote('');
+    setActivePin(null);
+  };
+
+  const handleSavePin = async () => {
+    if (!previewAttachment || !newPinCoords || !newPinNote) return;
+
+    const newPin: Pin = {
+      id: generateId(),
+      x: newPinCoords.x,
+      y: newPinCoords.y,
+      note: newPinNote,
+      createdBy: user?.name || 'مهندس',
+      createdAt: new Date().toISOString()
+    };
+
+    const updatedAttachment = {
+      ...previewAttachment,
+      pins: [...(previewAttachment.pins || []), newPin]
+    };
+
+    const updatedAttachments = attachments.map(a => a.url === updatedAttachment.url ? updatedAttachment : a);
+
+    const projectDocRef = doc(db, 'projects', currentProject.id);
+    await updateDoc(projectDocRef, { attachments: updatedAttachments });
+
+    setAttachments(updatedAttachments);
+    setPreviewAttachment(updatedAttachment);
+    setNewPinCoords(null);
+    setNewPinNote('');
+  };
+
+  const handleDeletePin = async (pinId: string) => {
+    if (!previewAttachment || !canEdit) return;
+    
+    const updatedAttachment = {
+      ...previewAttachment,
+      pins: (previewAttachment.pins || []).filter(p => p.id !== pinId)
+    };
+
+    const updatedAttachments = attachments.map(a => a.url === updatedAttachment.url ? updatedAttachment : a);
+
+    const projectDocRef = doc(db, 'projects', currentProject.id);
+    await updateDoc(projectDocRef, { attachments: updatedAttachments });
+
+    setAttachments(updatedAttachments);
+    setPreviewAttachment(updatedAttachment);
+    setActivePin(null);
   };
 
   const handleDeleteAttachment = async (att: Attachment) => {
@@ -246,6 +317,19 @@ export default function ProjectAttachmentsTab() {
             <div className="flex items-center justify-between p-4 border-b border-[#222634] bg-[#1a1c24]">
               <h3 className="text-sm font-bold text-white truncate max-w-[70%]" dir="ltr">{previewAttachment.name}</h3>
               <div className="flex items-center gap-3">
+                {previewAttachment.type.startsWith('image/') && canEdit && (
+                  <button
+                    onClick={() => setPinMode(!pinMode)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition border ${
+                      pinMode 
+                        ? 'bg-amber-500 text-[#0d0e12] border-amber-500' 
+                        : 'bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500/20'
+                    }`}
+                  >
+                    <MapPin className="w-3.5 h-3.5" />
+                    {pinMode ? 'إلغاء وضع الملاحظات' : 'إضافة ملاحظة (Pin)'}
+                  </button>
+                )}
                 <a
                   href={previewAttachment.url}
                   download
@@ -268,8 +352,75 @@ export default function ProjectAttachmentsTab() {
             {/* Modal Body / Viewer */}
             <div className="flex-1 bg-[#0d0e12] overflow-auto flex items-center justify-center relative">
               {previewAttachment.type.startsWith('image/') ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={previewAttachment.url} alt={previewAttachment.name} className="max-w-full max-h-full object-contain p-4" />
+                <div className="relative inline-block max-w-full max-h-full">
+                  {pinMode && (
+                    <div className="absolute top-4 right-4 z-50 bg-black/80 backdrop-blur text-white px-3 py-1.5 rounded-lg text-xs border border-amber-500/30 flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-amber-500" />
+                      انقر على أي نقطة في المخطط لإضافة ملاحظة
+                    </div>
+                  )}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src={previewAttachment.url} 
+                    alt={previewAttachment.name} 
+                    className={`max-w-full max-h-full object-contain ${pinMode ? 'cursor-crosshair' : 'cursor-default'}`} 
+                    onClick={handleImageClick}
+                  />
+                  
+                  {previewAttachment.pins?.map(pin => (
+                    <div
+                      key={pin.id}
+                      className="absolute group z-40"
+                      style={{ left: `${pin.x}%`, top: `${pin.y}%`, transform: 'translate(-50%, -100%)' }}
+                    >
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActivePin(activePin?.id === pin.id ? null : pin);
+                          setNewPinCoords(null);
+                        }}
+                        className={`text-rose-500 transition-transform ${activePin?.id === pin.id ? 'scale-125 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]' : 'hover:scale-110 drop-shadow-md'}`}
+                      >
+                        <MapPin className="w-8 h-8 fill-rose-500/20" />
+                      </button>
+
+                      {activePin?.id === pin.id && (
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-2xl z-50 animate-in fade-in zoom-in-95">
+                          <p className="text-xs text-white mb-2 font-bold whitespace-pre-wrap">{pin.note}</p>
+                          <div className="flex justify-between items-center text-[9px] text-slate-500 border-t border-slate-800 pt-2 mt-2">
+                            <span>{pin.createdBy}</span>
+                            {canEdit && (
+                              <button onClick={() => handleDeletePin(pin.id)} className="text-rose-400 hover:text-rose-300">حذف</button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {newPinCoords && (
+                    <div 
+                      className="absolute z-50"
+                      style={{ left: `${newPinCoords.x}%`, top: `${newPinCoords.y}%`, transform: 'translate(-50%, -100%)' }}
+                    >
+                      <MapPin className="w-8 h-8 text-amber-500 fill-amber-500/20 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-slate-900 border border-amber-500/30 rounded-lg p-3 shadow-2xl animate-in fade-in zoom-in-95">
+                        <textarea
+                          autoFocus
+                          value={newPinNote}
+                          onChange={e => setNewPinNote(e.target.value)}
+                          placeholder="اكتب ملاحظتك على هذا الجزء..."
+                          className="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white focus:outline-none focus:border-amber-500 resize-none mb-2"
+                          rows={3}
+                        />
+                        <div className="flex justify-between gap-2">
+                          <button onClick={() => setNewPinCoords(null)} className="px-3 py-1.5 rounded bg-slate-800 text-slate-400 text-xs hover:bg-slate-700 flex-1">إلغاء</button>
+                          <button onClick={handleSavePin} disabled={!newPinNote} className="px-3 py-1.5 rounded bg-amber-600 text-white text-xs font-bold hover:bg-amber-500 disabled:opacity-50 flex-1">حفظ</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               ) : previewAttachment.type === 'application/pdf' ? (
                 <iframe src={`${previewAttachment.url}#toolbar=0`} className="w-full h-full border-0 bg-white" title="PDF Preview" />
               ) : previewAttachment.name.match(/\.(doc|docx|xls|xlsx|ppt|pptx)$/i) ? (

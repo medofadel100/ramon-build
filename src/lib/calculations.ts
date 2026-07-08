@@ -24,9 +24,11 @@ export interface BOQItem {
     quantity: number;
   }>;
   pricing: {
-    mode: 'materials_labor_split' | 'lump_sum' | 'daily_rate';
+    mode: 'materials_labor_split' | 'lump_sum' | 'daily_rate' | 'detailed_breakdown';
     materialUnitPrice: number;
     laborUnitPrice: number;
+    equipmentUnitPrice?: number;
+    overheadUnitPrice?: number;
     lumpSumPrice: number;
     dailyRate: number;
     estimatedDays: number;
@@ -46,6 +48,12 @@ export interface BOQItem {
     multiplier?: number;
     packageSize?: number;
   }[];
+  schedule?: {
+    startDate?: string;
+    endDate?: string;
+    progress?: number;
+    dependencies?: string[];
+  };
 }
 
 // 1. Calculate Wall Area
@@ -118,6 +126,8 @@ export interface ItemTotalResult {
   quantity: number;
   materialCost: number;
   laborCost: number;
+  equipmentCost: number;
+  overheadCost: number;
   total: number;
   estimatedDays: number;
 }
@@ -143,13 +153,15 @@ export function calculateItemTotalRaw(item: BOQItem, zones: Zone[], _projectCons
 
 export function calculateItemTotal(item: BOQItem, zones: Zone[], projectConstants?: Record<string, number>): ItemTotalResult {
   if (!item.isActive) {
-    return { quantity: 0, materialCost: 0, laborCost: 0, total: 0, estimatedDays: 0 };
+    return { quantity: 0, materialCost: 0, laborCost: 0, equipmentCost: 0, overheadCost: 0, total: 0, estimatedDays: 0 };
   }
 
   const { quantity, estimatedDays } = calculateItemTotalRaw(item, zones, projectConstants);
 
   let materialCost = 0;
   let laborCost = 0;
+  let equipmentCost = 0;
+  let overheadCost = 0;
   let total = 0;
 
   const isRenovation = item.renovationAction !== undefined;
@@ -157,7 +169,7 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[], projectConstant
   const isRemoveOnly = isRenovation && item.renovationAction === 'remove_only';
 
   if (isKeep) {
-    return { quantity, materialCost: 0, laborCost: 0, total: 0, estimatedDays: 0 };
+    return { quantity, materialCost: 0, laborCost: 0, equipmentCost: 0, overheadCost: 0, total: 0, estimatedDays: 0 };
   }
 
   const pricing = item.pricing;
@@ -199,12 +211,26 @@ export function calculateItemTotal(item: BOQItem, zones: Zone[], projectConstant
     }
 
     total = laborCost + materialCost;
+  } else if (pricing.mode === 'detailed_breakdown') {
+    const matUnitPrice = pricing.materialUnitPrice || 0;
+    const labUnitPrice = pricing.laborUnitPrice || 0;
+    const eqUnitPrice = pricing.equipmentUnitPrice || 0;
+    const ohUnitPrice = pricing.overheadUnitPrice || 0;
+
+    materialCost = quantity * matUnitPrice;
+    laborCost = quantity * labUnitPrice;
+    equipmentCost = quantity * eqUnitPrice;
+    overheadCost = quantity * ohUnitPrice;
+
+    total = materialCost + laborCost + equipmentCost + overheadCost;
   }
 
   return {
     quantity,
     materialCost,
     laborCost,
+    equipmentCost,
+    overheadCost,
     total,
     estimatedDays
   };
@@ -216,6 +242,8 @@ export interface SectionSummary {
   title: string;
   materialCost: number;
   laborCost: number;
+  equipmentCost: number;
+  overheadCost: number;
   totalCost: number;
 }
 
@@ -223,6 +251,8 @@ export interface ProjectSummaryResult {
   bySection: Record<string, SectionSummary>;
   grandMaterialCost: number;
   grandLaborCost: number;
+  grandEquipmentCost: number;
+  grandOverheadCost: number;
   grandTotal: number;
   totalDays: number;
   supervisionValue: number;
@@ -239,6 +269,8 @@ export function calculateProjectSummary(
   const bySection: Record<string, SectionSummary> = {};
   let grandMaterialCost = 0;
   let grandLaborCost = 0;
+  let grandEquipmentCost = 0;
+  let grandOverheadCost = 0;
   let grandTotal = 0;
   let totalDays = 0;
 
@@ -249,6 +281,8 @@ export function calculateProjectSummary(
         title: sec.title,
         materialCost: 0,
         laborCost: 0,
+        equipmentCost: 0,
+        overheadCost: 0,
         totalCost: 0,
       };
     }
@@ -259,10 +293,14 @@ export function calculateProjectSummary(
       const res = calculateItemTotal(item, zones, projectConstants);
       bySection[item.sectionId].materialCost += res.materialCost;
       bySection[item.sectionId].laborCost += res.laborCost;
+      bySection[item.sectionId].equipmentCost += res.equipmentCost;
+      bySection[item.sectionId].overheadCost += res.overheadCost;
       bySection[item.sectionId].totalCost += res.total;
       
       grandMaterialCost += res.materialCost;
       grandLaborCost += res.laborCost;
+      grandEquipmentCost += res.equipmentCost;
+      grandOverheadCost += res.overheadCost;
       grandTotal += res.total;
       totalDays += res.estimatedDays;
     }
@@ -275,6 +313,8 @@ export function calculateProjectSummary(
     bySection,
     grandMaterialCost,
     grandLaborCost,
+    grandEquipmentCost,
+    grandOverheadCost,
     grandTotal,
     totalDays,
     supervisionValue,

@@ -18,7 +18,15 @@ import ProjectAccountingTab from '@/components/project/ProjectAccountingTab';
 import ProjectInspectionTab from '@/components/project/ProjectInspectionTab';
 import ProjectConstantsTab from '@/components/project/ProjectConstantsTab';
 import ProjectMaterialsMarketTab from '@/components/project/ProjectMaterialsMarketTab';
-import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign, ClipboardCheck, Settings2, Store } from 'lucide-react';
+import ProjectModulesTab from '@/components/project/ProjectModulesTab';
+import ProjectScheduleTab from '@/components/project/ProjectScheduleTab';
+import ProjectDailyLogsTab from '@/components/project/ProjectDailyLogsTab';
+import ProjectRfiTab from '@/components/project/ProjectRfiTab';
+import ProjectProcurementTab from '@/components/project/ProjectProcurementTab';
+import ProjectInventoryTab from '@/components/project/ProjectInventoryTab';
+import ProjectBimTab from '@/components/project/ProjectBimTab';
+import ProjectAITab from '@/components/project/ProjectAITab';
+import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign, ClipboardCheck, Settings2, Store, CalendarDays, Navigation, FileQuestion, ShoppingCart, Box, Bot } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectPageProps {
@@ -38,7 +46,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
   const loadingProject = useProjectStore((state) => state.loading);
   const projectError = useProjectStore((state) => state.error);
 
-  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting' | 'inspection' | 'constants' | 'market'>('boq');
+  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'schedule' | 'dailylogs' | 'rfi' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting' | 'inspection' | 'constants' | 'market' | 'modules' | 'procurement' | 'inventory_track' | 'bim' | 'ai'>('boq');
 
   useEffect(() => {
     if (!loadingAuth && !user) {
@@ -91,20 +99,32 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
     );
   }
 
-  const tabList = [
-    { id: 'boq', label: 'حصر الكميات (BOQ)', icon: ClipboardList },
-    { id: 'summary', label: 'الملخص المالي والزمني', icon: Layout },
-    { id: 'info', label: 'ملف المشروع وحالته', icon: Info },
-    { id: 'team', label: 'فريق العمل (دعوات)', icon: Users },
-    { id: 'zones', label: 'المساحات والحيّز', icon: Layers },
-    { id: 'suppliers', label: 'الموردين والصناعية', icon: Package },
-    { id: 'accounting', label: 'الحسابات والدفعات', icon: DollarSign },
-    { id: 'inspection', label: 'استلام الأعمال', icon: ClipboardCheck },
-    { id: 'constants', label: 'الخامات والثوابت', icon: Settings2 },
-    { id: 'market', label: 'سوق الخامات', icon: Store },
-    { id: 'attachments', label: 'المرفقات', icon: Paperclip },
-    { id: 'sharing', label: 'مشاركة العميل', icon: Share2 }
+  const activeModules = currentProject.activeModules || ['boq', 'schedule', 'qa_qc', 'financials', 'inventory', 'client_portal'];
+
+  const allTabs = [
+    { id: 'boq', label: 'حصر الكميات (BOQ)', icon: ClipboardList, module: 'boq' },
+    { id: 'summary', label: 'الملخص المالي والزمني', icon: Layout, module: 'boq' },
+    { id: 'schedule', label: 'الجدول الزمني (Gantt)', icon: CalendarDays, module: 'schedule' },
+    { id: 'dailylogs', label: 'اليوميات الميدانية', icon: Navigation, module: 'qa_qc' },
+    { id: 'rfi', label: 'طلبات واعتمادات', icon: FileQuestion, module: 'qa_qc' },
+    { id: 'inspection', label: 'استلام الأعمال', icon: ClipboardCheck, module: 'qa_qc' },
+    { id: 'info', label: 'ملف المشروع وحالته', icon: Info, module: 'boq' },
+    { id: 'team', label: 'فريق العمل', icon: Users, module: 'boq' },
+    { id: 'zones', label: 'المساحات والحيّز', icon: Layers, module: 'boq' },
+    { id: 'suppliers', label: 'الموردين والصناعية', icon: Package, module: 'inventory' },
+    { id: 'accounting', label: 'الحسابات والدفعات', icon: DollarSign, module: 'financials' },
+    { id: 'constants', label: 'الخامات والثوابت', icon: Settings2, module: 'boq' },
+    { id: 'inventory_track', label: 'المخازن والمواد', icon: Package, module: 'inventory' },
+    { id: 'procurement', label: 'عطاءات ومشتريات', icon: ShoppingCart, module: 'inventory' },
+    { id: 'market', label: 'سوق الخامات', icon: Store, module: 'inventory' },
+    { id: 'bim', label: 'مجسمات BIM', icon: Box, module: 'boq' },
+    { id: 'ai', label: 'المساعد الذكي', icon: Bot, module: 'boq' },
+    { id: 'attachments', label: 'المرفقات', icon: Paperclip, module: 'boq' },
+    { id: 'sharing', label: 'مشاركة العميل', icon: Share2, module: 'client_portal' },
+    { id: 'modules', label: 'إعدادات الأدوات', icon: Settings2, module: 'boq' }
   ] as const;
+
+  const tabList = allTabs.filter(tab => activeModules.includes(tab.module));
 
   return (
     <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo select-none">
@@ -179,6 +199,9 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
         <div className="animate-in fade-in duration-200">
           {activeTab === 'boq' && <ProjectBOQTab />}
+          {activeTab === 'schedule' && <ProjectScheduleTab />}
+          {activeTab === 'dailylogs' && <ProjectDailyLogsTab />}
+          {activeTab === 'rfi' && <ProjectRfiTab />}
           {activeTab === 'zones' && <ProjectZonesTab />}
           {activeTab === 'summary' && <ProjectSummaryTab />}
           {activeTab === 'info' && <ProjectHeaderTab />}
@@ -188,8 +211,13 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
           {activeTab === 'inspection' && <ProjectInspectionTab />}
           {activeTab === 'constants' && <ProjectConstantsTab />}
           {activeTab === 'market' && <ProjectMaterialsMarketTab />}
+          {activeTab === 'inventory_track' && <ProjectInventoryTab />}
+          {activeTab === 'procurement' && <ProjectProcurementTab />}
+          {activeTab === 'bim' && <ProjectBimTab />}
+          {activeTab === 'ai' && <ProjectAITab />}
           {activeTab === 'attachments' && <ProjectAttachmentsTab />}
           {activeTab === 'sharing' && <ProjectSharingTab />}
+          {activeTab === 'modules' && <ProjectModulesTab />}
         </div>
       </main>
 

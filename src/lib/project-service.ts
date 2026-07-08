@@ -124,6 +124,56 @@ export interface AccountEntry {
   notes: string;
 }
 
+export interface DailyLog {
+  id: string;
+  date: string;
+  engineerId: string;
+  engineerName: string;
+  notes: string;
+  weather?: string;
+  photos?: string[];
+  progressUpdates?: { itemId: string; previousProgress: number; newProgress: number }[];
+}
+
+export interface QCForm {
+  id: string;
+  type: 'RFI' | 'IR';
+  title: string;
+  description: string;
+  status: 'draft' | 'submitted' | 'approved' | 'rejected';
+  dateCreated: string;
+  createdBy: string;
+  response?: string;
+  responseDate?: string;
+  responder?: string;
+}
+
+export interface RFQ {
+  id: string;
+  title: string;
+  description: string;
+  status: 'draft' | 'sent' | 'awarded' | 'closed';
+  dateCreated: string;
+  dueDate: string;
+  createdBy: string;
+  items: { itemName: string; quantity: number; unit: string }[];
+  suppliers: { supplierId: string; supplierName: string; price?: number; note?: string; awarded?: boolean }[];
+}
+
+export interface InventoryTransaction {
+  id: string;
+  type: 'in' | 'out';
+  date: string;
+  materialName: string;
+  quantity: number;
+  unit: string;
+  unitPrice?: number;
+  supplierId?: string;
+  relatedItemId?: string; // BOQ Item ID for 'out' transactions
+  notes: string;
+  recordedBy: string;
+}
+
 export interface ProjectData {
   id: string;
   header: ProjectHeader;
@@ -132,12 +182,17 @@ export interface ProjectData {
   items: BOQItem[];
   clientShareToken: string;
   clientShareSettings: { showPrices: boolean; showDetailedPricing: boolean };
+  activeModules?: string[];
   suppliers?: Supplier[];
   workers?: Worker[];
   accounts?: AccountEntry[];
   attachments?: Attachment[];
   projectConstants?: Record<string, number>;
   customConstantsDefinitions?: ConstantDefinition[];
+  dailyLogs?: DailyLog[];
+  qaqcForms?: QCForm[];
+  rfqs?: RFQ[];
+  inventory?: InventoryTransaction[];
 }
 
 // ==========================================
@@ -268,6 +323,7 @@ export async function createProject(
     header,
     clientShareToken,
     clientShareSettings,
+    activeModules: ['boq', 'financials', 'inventory'],
     projectConstants: projectConstantsMap,
     customConstantsDefinitions: masterConsts.filter(c => !DEFAULT_CONSTANTS.find(dc => dc.key === c.key)),
     createdAt: serverTimestamp(),
