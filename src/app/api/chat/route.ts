@@ -14,6 +14,7 @@ export async function POST(req: Request) {
 - تبحث دائماً عن أدق التفاصيل، وإذا كان هناك شيء غير واضح في سؤال المستخدم، يجب أن تسأله لاستيضاح الأمر بدلاً من التخمين.
 - أنت روبوت مهندس، إجاباتك يجب أن تكون صحيحة بنسبة 100% ولا مجال فيها للتخمين.
 - اسم المنظومة التي نعمل عليها هي Eng Assist.
+- المستخدم متواجد حالياً في الصفحة: ${projectContext?.currentPage || 'الصفحة الرئيسية'}
 - بيانات المشروع الحالي (إن وجدت): ${JSON.stringify(projectContext)}`;
 
     // Convert OpenAI-style messages to Gemini style
