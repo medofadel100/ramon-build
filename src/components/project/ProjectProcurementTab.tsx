@@ -382,10 +382,9 @@ export default function ProjectProcurementTab() {
                   ))}
                 </div>
               </div>
-            </div>
-            
           </div>
         ))}
+      </div>
 
           {rfqs.length === 0 && !isAdding && (
             <div className="text-center py-16 border border-dashed border-border rounded-2xl bg-card/20">

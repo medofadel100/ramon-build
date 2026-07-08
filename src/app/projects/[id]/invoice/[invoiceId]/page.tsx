@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Printer, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { ProjectService } from '@/lib/project-service';
+import { getProjectData } from '@/lib/project-service';
 
 export default function InvoicePage() {
   const params = useParams();
@@ -17,7 +17,7 @@ export default function InvoicePage() {
 
   useEffect(() => {
     if (!currentProject && id) {
-      ProjectService.getProjectData(id).then(data => {
+      getProjectData(id).then(data => {
         if (data) setCurrentProject(data);
       });
     }

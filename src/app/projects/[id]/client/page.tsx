@@ -6,7 +6,7 @@ import { useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Briefcase, Calendar, CheckCircle2, DollarSign, ArrowRight, HardHat, FileText, LayoutGrid } from 'lucide-react';
 import Link from 'next/link';
-import { ProjectService } from '@/lib/project-service';
+import { getProjectData } from '@/lib/project-service';
 
 export default function ClientPortalPage() {
   const params = useParams();
@@ -17,7 +17,7 @@ export default function ClientPortalPage() {
 
   useEffect(() => {
     if (!currentProject && id) {
-      ProjectService.getProjectData(id).then(data => {
+      getProjectData(id).then(data => {
         if (data) setCurrentProject(data);
       });
     }
