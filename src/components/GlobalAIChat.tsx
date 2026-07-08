@@ -109,7 +109,7 @@ export default function GlobalAIChat() {
       </button>
 
       {/* Chat Window */}
-      <div className={`fixed bottom-6 right-6 z-[9999] w-[400px] h-[600px] max-w-[calc(100vw-48px)] max-h-[calc(100vh-48px)] bg-[#0d0e12] border border-[#222634] rounded-2xl shadow-2xl flex flex-col font-cairo overflow-hidden transition-all duration-300 transform origin-bottom-right ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}`}>
+      <div className={`fixed md:bottom-6 md:right-6 bottom-0 right-0 z-[9999] w-full md:w-[400px] h-[85vh] md:h-[600px] md:max-w-[calc(100vw-48px)] md:max-h-[calc(100vh-48px)] bg-[#0d0e12] border border-[#222634] rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col font-cairo overflow-hidden transition-all duration-300 transform md:origin-bottom-right ${isOpen ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-full md:translate-y-0 md:scale-0 opacity-0 pointer-events-none'}`}>
         
         {/* Header */}
         <div className="flex justify-between items-center bg-[#13151c] p-4 border-b border-[#222634] shrink-0">

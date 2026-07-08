@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useProjectStore } from '@/store/projectStore';
-import { LogOut, Home, PlusCircle, Settings, Users, Database, User, BookOpen, Package, Calculator, Store } from 'lucide-react';
+import { LogOut, Home, PlusCircle, Settings, Users, Database, User, BookOpen, Package, Calculator, Store, Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Navbar() {
   const user = useAuthStore((state) => state.user);
@@ -13,6 +14,7 @@ export default function Navbar() {
   const savingOperation = useProjectStore((state) => state.savingOperation);
   const pathname = usePathname();
   const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const savingLabels: Record<string, string> = {
     loadProject: 'تحميل المشروع...',
@@ -67,11 +69,11 @@ export default function Navbar() {
               R
             </div>
             <span className="font-cairo text-base font-bold text-white hidden md:inline">
-              المكتب الفني لشركة رامون
+              المكتب الفني
             </span>
           </Link>
           
-          <div className="hidden sm:flex items-center gap-2 font-cairo text-sm font-medium">
+          <div className="hidden lg:flex items-center gap-2 font-cairo text-sm font-medium">
             <Link 
               href="/dashboard" 
               className={`px-3 py-1.5 rounded-lg transition ${
@@ -204,8 +206,112 @@ export default function Navbar() {
               </button>
             </div>
           )}
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 rounded-lg bg-slate-900 border border-slate-800 hover:bg-[#c5a880]/15 hover:text-[#c5a880] text-slate-400 transition"
+          >
+            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-[#13151c] border-b border-slate-800 shadow-2xl z-50 p-4 font-cairo animate-in slide-in-from-top-4 duration-200">
+          <div className="flex flex-col gap-2">
+            <Link 
+              href="/dashboard" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/dashboard') ? 'bg-[#c5a880]/15 text-[#c5a880] font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+            >
+              <Home className="h-5 w-5" />
+              المشاريع
+            </Link>
+            <Link 
+              href="/projects/new" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/projects/new') ? 'bg-[#c5a880]/15 text-[#c5a880] font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+            >
+              <PlusCircle className="h-5 w-5" />
+              مشروع جديد
+            </Link>
+            <Link 
+              href="/dashboard/directory" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/dashboard/directory') ? 'bg-[#c5a880]/15 text-[#c5a880] font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+            >
+              <BookOpen className="h-5 w-5" />
+              دليل الموردين
+            </Link>
+            <Link 
+              href="/materials" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/materials') ? 'bg-emerald-500/15 text-emerald-400 font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+            >
+              <Store className="h-5 w-5" />
+              سوق الخامات
+            </Link>
+            <Link 
+              href="/admin/constants" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/constants') ? 'bg-[#c5a880]/15 text-[#c5a880] font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+            >
+              <Package className="h-5 w-5" />
+              الكتالوج المركزي للخامات
+            </Link>
+            <Link 
+              href="/admin/rates" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/rates') ? 'bg-[#c5a880]/15 text-[#c5a880] font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+            >
+              <Calculator className="h-5 w-5" />
+              المعدلات ونسب الهدر
+            </Link>
+
+            {user?.role === 'admin' && (
+              <>
+                <Link 
+                  href="/admin/price-list" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/price-list') ? 'bg-[#c5a880]/15 text-[#c5a880] font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+                >
+                  <Database className="h-5 w-5" />
+                  مصنعيات البنود
+                </Link>
+                <Link 
+                  href="/admin/users" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/users') ? 'bg-[#c5a880]/15 text-[#c5a880] font-bold' : 'text-slate-300 hover:bg-slate-800/50'}`}
+                >
+                  <Users className="h-5 w-5" />
+                  المستخدمين
+                </Link>
+              </>
+            )}
+            
+            <div className="h-px bg-slate-800 my-2"></div>
+            
+            <Link 
+              href="/profile" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl transition text-slate-300 hover:bg-slate-800/50"
+            >
+              <User className="h-5 w-5" />
+              الملف الشخصي
+            </Link>
+            
+            <button
+              onClick={() => { setIsMobileMenuOpen(false); handleSignOut(); }}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl transition text-red-400 hover:bg-slate-800/50 text-right w-full"
+            >
+              <LogOut className="h-5 w-5" />
+              تسجيل الخروج
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
