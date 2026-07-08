@@ -21,7 +21,7 @@ interface InspectionItem {
 }
 
 const STATUS_CONFIG: Record<InspectionStatus, { label: string; color: string; bgColor: string; borderColor: string; icon: any }> = {
-  not_started: { label: 'لم يبدأ', color: 'text-slate-400', bgColor: 'bg-slate-900/60', borderColor: 'border-slate-700', icon: Circle },
+  not_started: { label: 'لم يبدأ', color: 'text-muted-foreground', bgColor: 'bg-muted/60', borderColor: 'border-border', icon: Circle },
   in_progress: { label: 'جاري التنفيذ', color: 'text-amber-400', bgColor: 'bg-amber-950/30', borderColor: 'border-amber-800/50', icon: Clock },
   partial_handover: { label: 'استلام جزئي', color: 'text-blue-400', bgColor: 'bg-blue-950/30', borderColor: 'border-blue-800/50', icon: AlertTriangle },
   fully_received: { label: 'تم الاستلام', color: 'text-emerald-400', bgColor: 'bg-emerald-950/30', borderColor: 'border-emerald-800/50', icon: CheckCircle2 },
@@ -160,19 +160,19 @@ export default function ProjectInspectionTab() {
     <div className="space-y-6 font-cairo select-none">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#222634] pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-4">
         <div>
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
-            <ClipboardCheck className="h-5 w-5 text-[#c5a880]" />
+          <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <ClipboardCheck className="h-5 w-5 text-primary" />
             قائمة استلام الأعمال (Inspection Checklist)
           </h3>
-          <p className="text-xs text-slate-400 mt-0.5">تتبع حالة استلام كل بند من بنود المشروع مع ملاحظات المهندس المسؤول.</p>
+          <p className="text-xs text-muted-foreground mt-0.5">تتبع حالة استلام كل بند من بنود المشروع مع ملاحظات المهندس المسؤول.</p>
         </div>
         {canEdit && (
           <button
             onClick={handleSaveAll}
             disabled={isSaving}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
           >
             {isSaving ? 'جاري الحفظ...' : <><Save className="h-4 w-4" /> حفظ التعديلات</>}
           </button>
@@ -180,12 +180,12 @@ export default function ProjectInspectionTab() {
       </div>
 
       {/* Progress Bar */}
-      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5">
+      <div className="rounded-xl border border-border bg-card p-5">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-bold text-white">نسبة إنجاز الاستلام</span>
-          <span className="text-2xl font-black text-[#c5a880]">{progressPercent}%</span>
+          <span className="text-sm font-bold text-foreground">نسبة إنجاز الاستلام</span>
+          <span className="text-2xl font-black text-primary">{progressPercent}%</span>
         </div>
-        <div className="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800">
+        <div className="w-full bg-muted rounded-full h-3 overflow-hidden border border-border">
           <div 
             className="h-full rounded-full bg-gradient-to-r from-[#c5a880] to-emerald-500 transition-all duration-700 ease-out"
             style={{ width: `${progressPercent}%` }}
@@ -201,7 +201,7 @@ export default function ProjectInspectionTab() {
           <span className="flex items-center gap-1.5 text-amber-400">
             <Clock className="h-3.5 w-3.5" /> جاري: {inProgressItems}
           </span>
-          <span className="flex items-center gap-1.5 text-slate-400">
+          <span className="flex items-center gap-1.5 text-muted-foreground">
             <Circle className="h-3.5 w-3.5" /> لم يبدأ: {totalItems - completedItems - inProgressItems - partialItems}
           </span>
         </div>
@@ -209,15 +209,15 @@ export default function ProjectInspectionTab() {
 
       {/* Filter */}
       <div className="flex items-center gap-2 flex-wrap">
-        <Filter className="h-4 w-4 text-slate-500" />
+        <Filter className="h-4 w-4 text-muted-foreground" />
         {(['all', ...STATUS_ORDER] as const).map(f => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-[11px] font-bold border transition ${
               filter === f
-                ? 'bg-[#c5a880]/10 border-[#c5a880] text-white'
-                : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-900'
+                ? 'bg-primary/10 border-primary text-foreground'
+                : 'border-transparent text-muted-foreground hover:text-white hover:bg-slate-900'
             }`}
           >
             {f === 'all' ? `الكل (${totalItems})` : `${STATUS_CONFIG[f].label} (${inspectionItems.filter(i => i.status === f).length})`}
@@ -232,29 +232,29 @@ export default function ProjectInspectionTab() {
         const secTotal = group.items.length;
 
         return (
-          <div key={secId} className="rounded-xl border border-[#222634] bg-[#13151c] overflow-hidden">
+          <div key={secId} className="rounded-xl border border-border bg-card overflow-hidden">
             {/* Section Header */}
             <button
               onClick={() => toggleSection(secId)}
               className="w-full flex items-center justify-between p-4 hover:bg-slate-900/50 transition"
             >
               <div className="flex items-center gap-3">
-                <span className="text-[10px] text-slate-500 font-bold bg-slate-900 px-2 py-0.5 rounded">{secId}</span>
-                <span className="text-sm font-bold text-white">{group.sectionTitle}</span>
+                <span className="text-[10px] text-muted-foreground font-bold bg-muted px-2 py-0.5 rounded">{secId}</span>
+                <span className="text-sm font-bold text-foreground">{group.sectionTitle}</span>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
                   secCompleted === secTotal && secTotal > 0
                     ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-800/40'
-                    : 'bg-slate-900 text-slate-400'
+                    : 'bg-muted text-muted-foreground'
                 }`}>
                   {secCompleted}/{secTotal}
                 </span>
               </div>
-              {isExpanded ? <ChevronUp className="h-4 w-4 text-slate-500" /> : <ChevronDown className="h-4 w-4 text-slate-500" />}
+              {isExpanded ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
             </button>
 
             {/* Items */}
             {isExpanded && (
-              <div className="border-t border-[#222634] divide-y divide-[#1a1c24]">
+              <div className="border-t border-border divide-y divide-[#1a1c24]">
                 {group.items.map(item => {
                   const config = STATUS_CONFIG[item.status];
                   const StatusIcon = config.icon;
@@ -278,12 +278,12 @@ export default function ProjectInspectionTab() {
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-xs font-bold text-white">{item.title}</span>
+                            <span className="text-xs font-bold text-foreground">{item.title}</span>
                             <span className={`text-[9px] font-bold px-2 py-0.5 rounded border ${config.borderColor} ${config.color}`}>
                               {config.label}
                             </span>
                             {item.inspectionDate && item.status === 'fully_received' && (
-                              <span className="text-[9px] text-slate-500">
+                              <span className="text-[9px] text-muted-foreground">
                                 تاريخ الاستلام: {new Date(item.inspectionDate).toLocaleDateString('ar-EG')}
                               </span>
                             )}
@@ -291,7 +291,7 @@ export default function ProjectInspectionTab() {
 
                           {/* Notes */}
                           {item.notes && editingNoteId !== item.itemId && (
-                            <p className="text-[11px] text-slate-400 mt-1.5 bg-slate-900/40 rounded px-2 py-1 border-r-2 border-amber-600">
+                            <p className="text-[11px] text-muted-foreground mt-1.5 bg-muted/40 rounded px-2 py-1 border-r-2 border-amber-600">
                               📝 {item.notes}
                             </p>
                           )}
@@ -303,18 +303,18 @@ export default function ProjectInspectionTab() {
                                 value={noteText}
                                 onChange={(e) => setNoteText(e.target.value)}
                                 placeholder="اكتب ملاحظة الاستلام..."
-                                className="flex-1 rounded border border-[#222634] bg-[#0d0e12] px-3 py-1.5 text-xs text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
+                                className="flex-1 rounded border border-border bg-background px-3 py-1.5 text-xs text-foreground placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
                                 autoFocus
                               />
                               <button
                                 onClick={() => saveNoteForItem(item.itemId)}
-                                className="px-3 py-1.5 rounded bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition"
+                                className="px-3 py-1.5 rounded bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition"
                               >
                                 حفظ
                               </button>
                               <button
                                 onClick={() => setEditingNoteId(null)}
-                                className="px-2 py-1.5 rounded bg-slate-800 text-slate-400 text-xs hover:text-white transition"
+                                className="px-2 py-1.5 rounded bg-accent text-muted-foreground text-xs hover:text-white transition"
                               >
                                 ✕
                               </button>
@@ -327,7 +327,7 @@ export default function ProjectInspectionTab() {
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => { setEditingNoteId(item.itemId); setNoteText(item.notes); }}
-                              className="p-1.5 rounded hover:bg-slate-800 text-slate-500 hover:text-[#c5a880] transition"
+                              className="p-1.5 rounded hover:bg-slate-800 text-muted-foreground hover:text-[#c5a880] transition"
                               title="إضافة/تعديل ملاحظة"
                             >
                               <MessageSquare className="h-3.5 w-3.5" />
@@ -336,7 +336,7 @@ export default function ProjectInspectionTab() {
                             <select
                               value={item.status}
                               onChange={(e) => updateItemStatus(item.itemId, e.target.value as InspectionStatus)}
-                              className="text-[10px] bg-transparent border border-slate-800 rounded px-1 py-1 text-slate-400 focus:outline-none focus:border-[#c5a880]"
+                              className="text-[10px] bg-transparent border border-border rounded px-1 py-1 text-muted-foreground focus:outline-none focus:border-[#c5a880]"
                             >
                               {STATUS_ORDER.map(s => (
                                 <option key={s} value={s}>{STATUS_CONFIG[s].label}</option>
@@ -355,9 +355,9 @@ export default function ProjectInspectionTab() {
       })}
 
       {Object.keys(filteredGroups).length === 0 && (
-        <div className="text-center py-16 border border-dashed border-[#222634] rounded-xl">
+        <div className="text-center py-16 border border-dashed border-border rounded-xl">
           <ClipboardCheck className="h-12 w-12 text-slate-700 mx-auto mb-3" />
-          <p className="text-slate-400 font-semibold">لا يوجد بنود مطابقة للفلتر المحدد</p>
+          <p className="text-muted-foreground font-semibold">لا يوجد بنود مطابقة للفلتر المحدد</p>
         </div>
       )}
     </div>

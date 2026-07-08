@@ -62,18 +62,18 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
 
   if (loadingAuth || !user) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
 
   if (loadingProject) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12] text-white">
+      <div className="flex h-screen w-screen items-center justify-center bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
-          <p className="font-cairo text-sm text-slate-400">جاري تحميل بيانات المشروع الفنية...</p>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p className="font-cairo text-sm text-muted-foreground">جاري تحميل بيانات المشروع الفنية...</p>
         </div>
       </div>
     );
@@ -81,15 +81,15 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
 
   if (projectError || !currentProject) {
     return (
-      <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo">
+      <div className="min-h-screen bg-background flex flex-col font-cairo">
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center text-center p-6 select-none">
-          <div className="max-w-md border border-slate-800 bg-[#13151c] p-8 rounded-2xl shadow-xl">
-            <h2 className="text-xl font-bold text-white mb-2">تعذر فتح المشروع</h2>
-            <p className="text-sm text-slate-400 mb-6">{projectError || 'حدث خطأ غير متوقع أثناء معالجة الطلب.'}</p>
+          <div className="max-w-md border border-border bg-card p-8 rounded-2xl shadow-xl">
+            <h2 className="text-xl font-bold text-foreground mb-2">تعذر فتح المشروع</h2>
+            <p className="text-sm text-muted-foreground mb-6">{projectError || 'حدث خطأ غير متوقع أثناء معالجة الطلب.'}</p>
             <Link 
               href="/dashboard"
-              className="px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold shadow hover:brightness-110 transition"
+              className="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold shadow hover:brightness-110 transition"
             >
               العودة إلى المشاريع
             </Link>
@@ -127,16 +127,16 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
   const tabList = allTabs.filter(tab => activeModules.includes(tab.module));
 
   return (
-    <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo select-none">
+    <div className="min-h-screen bg-background flex flex-col font-cairo select-none">
       <Navbar />
 
       {/* Project Sub-header Section */}
-      <header className="border-b border-[#222634] bg-[#13151c]/45 py-5 px-6">
+      <header className="border-b border-border bg-card/45 py-5 px-6">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Link 
               href="/dashboard" 
-              className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white transition"
+              className="p-2 rounded-lg bg-muted border border-border hover:bg-slate-800 text-muted-foreground hover:text-white transition"
               title="العودة للمشاريع"
             >
               <ChevronLeft className="h-4 w-4 transform rotate-180" />
@@ -144,26 +144,26 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
             
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-[#c5a880] tracking-wider">{currentProject.header.projectCode}</span>
-                <span className="text-[10px] text-slate-500">•</span>
-                <span className="text-xs text-slate-400 font-medium">المالك: {currentProject.header.ownerName}</span>
+                <span className="text-xs font-bold text-primary tracking-wider">{currentProject.header.projectCode}</span>
+                <span className="text-[10px] text-muted-foreground">•</span>
+                <span className="text-xs text-muted-foreground font-medium">المالك: {currentProject.header.ownerName}</span>
                 {currentProject.header.consultantName && (
                   <>
-                    <span className="text-[10px] text-slate-500">•</span>
-                    <span className="text-xs text-slate-400 font-medium">الاستشاري: {currentProject.header.consultantName}</span>
+                    <span className="text-[10px] text-muted-foreground">•</span>
+                    <span className="text-xs text-muted-foreground font-medium">الاستشاري: {currentProject.header.consultantName}</span>
                   </>
                 )}
               </div>
-              <h2 className="text-xl font-bold text-white mt-1.5">{currentProject.header.name}</h2>
+              <h2 className="text-xl font-bold text-foreground mt-1.5">{currentProject.header.name}</h2>
             </div>
           </div>
 
           <div className="flex gap-3">
             <Link
               href={`/projects/${currentProject.id}/export`}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:text-white hover:border-[#c5a880]/50 transition shadow"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-muted border border-border text-xs font-bold text-secondary-foreground hover:text-white hover:border-[#c5a880]/50 transition shadow"
             >
-              <FileText className="h-4 w-4 text-[#c5a880]" />
+              <FileText className="h-4 w-4 text-primary" />
               توليد وتصدير التقارير PDF
             </Link>
           </div>
@@ -172,7 +172,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
 
       {/* Tab Navigation header */}
       <div className="mx-auto max-w-7xl w-full px-4 pt-6">
-        <div className="flex flex-nowrap md:flex-wrap items-center gap-2 pb-4 border-b border-[#222634] select-none overflow-x-auto md:overflow-x-visible whitespace-nowrap scrollbar-hide">
+        <div className="flex flex-nowrap md:flex-wrap items-center gap-2 pb-4 border-b border-border select-none overflow-x-auto md:overflow-x-visible whitespace-nowrap scrollbar-hide">
           {tabList.map(tab => {
             const TabIcon = tab.icon;
             const active = activeTab === tab.id;
@@ -183,11 +183,11 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg border transition whitespace-nowrap ${
                   active 
-                    ? 'bg-[#c5a880]/10 border-[#c5a880] text-white shadow-sm shadow-[#c5a880]/5' 
-                    : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/20'
+                    ? 'bg-primary/10 border-primary text-foreground shadow-sm shadow-[#c5a880]/5' 
+                    : 'border-transparent text-muted-foreground hover:text-white hover:bg-slate-800/20'
                 }`}
               >
-                <TabIcon className={`h-4 w-4 ${active ? 'text-[#c5a880]' : 'text-slate-500'}`} />
+                <TabIcon className={`h-4 w-4 ${active ? 'text-primary' : 'text-muted-foreground'}`} />
                 {tab.label}
               </button>
             );

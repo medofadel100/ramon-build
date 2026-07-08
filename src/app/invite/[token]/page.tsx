@@ -58,11 +58,11 @@ export default function InvitePage({ params }: InvitePageProps) {
 
   // We need to fix the path. I'll create a revised invite page that takes projectId and token.
   return (
-    <div className="min-h-screen bg-[#0d0e12] flex items-center justify-center font-cairo p-4">
-      <div className="w-full max-w-md rounded-2xl border border-[#222634] bg-[#13151c] p-8 shadow-2xl text-center">
-        <Loader2 className="h-10 w-10 text-[#c5a880] animate-spin mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-white mb-2">جاري التحقق من الدعوة...</h2>
-        <p className="text-sm text-slate-400">يرجى الانتظار قليلاً</p>
+    <div className="min-h-screen bg-background flex items-center justify-center font-cairo p-4">
+      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-2xl text-center">
+        <Loader2 className="h-10 w-10 text-primary animate-spin mx-auto mb-4" />
+        <h2 className="text-xl font-bold text-foreground mb-2">جاري التحقق من الدعوة...</h2>
+        <p className="text-sm text-muted-foreground">يرجى الانتظار قليلاً</p>
       </div>
     </div>
   );

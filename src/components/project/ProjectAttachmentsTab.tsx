@@ -194,10 +194,10 @@ export default function ProjectAttachmentsTab() {
     <div className="space-y-6 font-cairo select-none">
       
       {/* Upload Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#222634] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
         <div>
-          <h3 className="text-lg font-bold text-white">المرفقات والمخططات الهندسية</h3>
-          <p className="text-xs text-slate-400 mt-0.5">قم بإرفاق صور الموقع، تفاصيل تشطيب المقايسة، أو الرسومات المعمارية المعتمدة.</p>
+          <h3 className="text-lg font-bold text-foreground">المرفقات والمخططات الهندسية</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">قم بإرفاق صور الموقع، تفاصيل تشطيب المقايسة، أو الرسومات المعمارية المعتمدة.</p>
         </div>
 
         {canEdit && (
@@ -211,7 +211,7 @@ export default function ProjectAttachmentsTab() {
             />
             <label
               htmlFor="file-uploader"
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] text-[#0d0e12] text-xs font-bold shadow hover:brightness-110 cursor-pointer transition ${
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] text-primary-foreground text-xs font-bold shadow hover:brightness-110 cursor-pointer transition ${
                 loading ? 'opacity-50 pointer-events-none' : ''
               }`}
             >
@@ -224,14 +224,14 @@ export default function ProjectAttachmentsTab() {
 
       {/* Upload progress bar progress */}
       {uploadProgress !== null && (
-        <div className="rounded-xl border border-[#c5a880]/20 bg-[#c5a880]/5 p-4 space-y-2">
-          <div className="flex justify-between text-xs font-bold text-[#c5a880]">
+        <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 space-y-2">
+          <div className="flex justify-between text-xs font-bold text-primary">
             <span>جاري رفع الملف في الخلفية...</span>
             <span>{uploadProgress}%</span>
           </div>
-          <div className="w-full bg-slate-900 rounded-full h-2 overflow-hidden">
+          <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
             <div 
-              className="bg-[#c5a880] h-full transition-all duration-300"
+              className="bg-primary h-full transition-all duration-300"
               style={{ width: `${uploadProgress}%` }}
             ></div>
           </div>
@@ -240,10 +240,10 @@ export default function ProjectAttachmentsTab() {
 
       {/* Attachments list view */}
       {attachments.length === 0 ? (
-        <div className="text-center py-20 border border-dashed border-[#222634] rounded-2xl bg-[#13151c]/20">
+        <div className="text-center py-20 border border-dashed border-border rounded-2xl bg-card/20">
           <Paperclip className="h-12 w-12 text-slate-600 mx-auto mb-4" />
-          <p className="text-slate-400 font-semibold">لا يوجد أي ملفات مرفقة بهذا المشروع</p>
-          <p className="text-xs text-slate-500 mt-1">اضغط على زر الرفع لإضافة ملفات جديدة لمشاركتها.</p>
+          <p className="text-muted-foreground font-semibold">لا يوجد أي ملفات مرفقة بهذا المشروع</p>
+          <p className="text-xs text-muted-foreground mt-1">اضغط على زر الرفع لإضافة ملفات جديدة لمشاركتها.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -253,22 +253,22 @@ export default function ProjectAttachmentsTab() {
             return (
               <div 
                 key={idx}
-                className="flex items-center gap-4 rounded-xl border border-[#222634] bg-[#13151c] p-4 hover:border-slate-700 transition"
+                className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 hover:border-slate-700 transition"
               >
                 {/* Thumb icon */}
-                <div className="h-12 w-12 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 overflow-hidden">
+                <div className="h-12 w-12 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground overflow-hidden">
                   {isImage ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={att.url} alt={att.name} className="h-full w-full object-cover" />
                   ) : (
-                    <FileText className="h-6 w-6 text-[#c5a880]" />
+                    <FileText className="h-6 w-6 text-primary" />
                   )}
                 </div>
 
                 {/* Details */}
                 <div className="flex-1 min-w-0 text-right">
-                  <h4 className="text-xs font-bold text-white truncate" title={att.name}>{att.name}</h4>
-                  <div className="flex gap-3 text-[10px] text-slate-500 mt-1 font-semibold">
+                  <h4 className="text-xs font-bold text-foreground truncate" title={att.name}>{att.name}</h4>
+                  <div className="flex gap-3 text-[10px] text-muted-foreground mt-1 font-semibold">
                     <span>الحجم: {formatSize(att.size)}</span>
                     <span>التاريخ: {new Date(att.uploadedAt).toLocaleDateString('ar-EG')}</span>
                   </div>
@@ -278,7 +278,7 @@ export default function ProjectAttachmentsTab() {
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => setPreviewAttachment(att)}
-                    className="p-1.5 rounded hover:bg-slate-800 text-[#c5a880] hover:text-white transition"
+                    className="p-1.5 rounded hover:bg-slate-800 text-primary hover:text-white transition"
                     title="معاينة الملف"
                   >
                     <Eye className="h-4 w-4" />
@@ -288,7 +288,7 @@ export default function ProjectAttachmentsTab() {
                     target="_blank"
                     rel="noopener noreferrer"
                     download
-                    className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition"
+                    className="p-1.5 rounded hover:bg-slate-800 text-muted-foreground hover:text-white transition"
                     title="تحميل"
                   >
                     <Download className="h-4 w-4" />
@@ -296,7 +296,7 @@ export default function ProjectAttachmentsTab() {
                   {canEdit && (
                     <button
                       onClick={() => handleDeleteAttachment(att)}
-                      className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition"
+                      className="p-1.5 rounded hover:bg-slate-800 text-muted-foreground hover:text-rose-400 transition"
                       title="حذف الملف"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -312,17 +312,17 @@ export default function ProjectAttachmentsTab() {
       {/* File Preview Modal */}
       {previewAttachment && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 sm:p-8">
-          <div className="w-full max-w-6xl h-full max-h-[90vh] flex flex-col bg-[#13151c] rounded-2xl border border-[#222634] shadow-2xl overflow-hidden">
+          <div className="w-full max-w-6xl h-full max-h-[90vh] flex flex-col bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-[#222634] bg-[#1a1c24]">
-              <h3 className="text-sm font-bold text-white truncate max-w-[70%]" dir="ltr">{previewAttachment.name}</h3>
+            <div className="flex items-center justify-between p-4 border-b border-border bg-[#1a1c24]">
+              <h3 className="text-sm font-bold text-foreground truncate max-w-[70%]" dir="ltr">{previewAttachment.name}</h3>
               <div className="flex items-center gap-3">
                 {previewAttachment.type.startsWith('image/') && canEdit && (
                   <button
                     onClick={() => setPinMode(!pinMode)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition border ${
                       pinMode 
-                        ? 'bg-amber-500 text-[#0d0e12] border-amber-500' 
+                        ? 'bg-amber-500 text-primary-foreground border-amber-500' 
                         : 'bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500/20'
                     }`}
                   >
@@ -335,14 +335,14 @@ export default function ProjectAttachmentsTab() {
                   download
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c5a880]/10 text-[#c5a880] text-xs font-bold hover:bg-[#c5a880] hover:text-[#0d0e12] transition"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-bold hover:bg-[#c5a880] hover:text-[#0d0e12] transition"
                 >
                   <Download className="h-3.5 w-3.5" />
                   تحميل
                 </a>
                 <button
                   onClick={() => setPreviewAttachment(null)}
-                  className="px-4 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition"
+                  className="px-4 py-1.5 rounded-lg bg-muted border border-border text-xs font-bold text-secondary-foreground hover:text-white hover:bg-slate-800 transition"
                 >
                   إغلاق (X)
                 </button>
@@ -350,11 +350,11 @@ export default function ProjectAttachmentsTab() {
             </div>
             
             {/* Modal Body / Viewer */}
-            <div className="flex-1 bg-[#0d0e12] overflow-auto flex items-center justify-center relative">
+            <div className="flex-1 bg-background overflow-auto flex items-center justify-center relative">
               {previewAttachment.type.startsWith('image/') ? (
                 <div className="relative inline-block max-w-full max-h-full">
                   {pinMode && (
-                    <div className="absolute top-4 right-4 z-50 bg-black/80 backdrop-blur text-white px-3 py-1.5 rounded-lg text-xs border border-amber-500/30 flex items-center gap-2">
+                    <div className="absolute top-4 right-4 z-50 bg-black/80 backdrop-blur text-foreground px-3 py-1.5 rounded-lg text-xs border border-amber-500/30 flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-amber-500" />
                       انقر على أي نقطة في المخطط لإضافة ملاحظة
                     </div>
@@ -385,9 +385,9 @@ export default function ProjectAttachmentsTab() {
                       </button>
 
                       {activePin?.id === pin.id && (
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-2xl z-50 animate-in fade-in zoom-in-95">
-                          <p className="text-xs text-white mb-2 font-bold whitespace-pre-wrap">{pin.note}</p>
-                          <div className="flex justify-between items-center text-[9px] text-slate-500 border-t border-slate-800 pt-2 mt-2">
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-muted border border-border rounded-lg p-3 shadow-2xl z-50 animate-in fade-in zoom-in-95">
+                          <p className="text-xs text-foreground mb-2 font-bold whitespace-pre-wrap">{pin.note}</p>
+                          <div className="flex justify-between items-center text-[9px] text-muted-foreground border-t border-border pt-2 mt-2">
                             <span>{pin.createdBy}</span>
                             {canEdit && (
                               <button onClick={() => handleDeletePin(pin.id)} className="text-rose-400 hover:text-rose-300">حذف</button>
@@ -404,18 +404,18 @@ export default function ProjectAttachmentsTab() {
                       style={{ left: `${newPinCoords.x}%`, top: `${newPinCoords.y}%`, transform: 'translate(-50%, -100%)' }}
                     >
                       <MapPin className="w-8 h-8 text-amber-500 fill-amber-500/20 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-slate-900 border border-amber-500/30 rounded-lg p-3 shadow-2xl animate-in fade-in zoom-in-95">
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-muted border border-amber-500/30 rounded-lg p-3 shadow-2xl animate-in fade-in zoom-in-95">
                         <textarea
                           autoFocus
                           value={newPinNote}
                           onChange={e => setNewPinNote(e.target.value)}
                           placeholder="اكتب ملاحظتك على هذا الجزء..."
-                          className="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white focus:outline-none focus:border-amber-500 resize-none mb-2"
+                          className="w-full bg-background border border-border rounded p-2 text-xs text-foreground focus:outline-none focus:border-amber-500 resize-none mb-2"
                           rows={3}
                         />
                         <div className="flex justify-between gap-2">
-                          <button onClick={() => setNewPinCoords(null)} className="px-3 py-1.5 rounded bg-slate-800 text-slate-400 text-xs hover:bg-slate-700 flex-1">إلغاء</button>
-                          <button onClick={handleSavePin} disabled={!newPinNote} className="px-3 py-1.5 rounded bg-amber-600 text-white text-xs font-bold hover:bg-amber-500 disabled:opacity-50 flex-1">حفظ</button>
+                          <button onClick={() => setNewPinCoords(null)} className="px-3 py-1.5 rounded bg-accent text-muted-foreground text-xs hover:bg-slate-700 flex-1">إلغاء</button>
+                          <button onClick={handleSavePin} disabled={!newPinNote} className="px-3 py-1.5 rounded bg-amber-600 text-foreground text-xs font-bold hover:bg-amber-500 disabled:opacity-50 flex-1">حفظ</button>
                         </div>
                       </div>
                     </div>
@@ -428,7 +428,7 @@ export default function ProjectAttachmentsTab() {
               ) : previewAttachment.name.match(/\.(dwg|dxf)$/i) ? (
                 <div className="flex flex-col w-full h-full bg-white relative">
                   <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-                    <a href={previewAttachment.url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded bg-emerald-600/90 text-white text-xs font-bold hover:bg-emerald-500 shadow-md backdrop-blur-sm transition">
+                    <a href={previewAttachment.url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded bg-emerald-600/90 text-foreground text-xs font-bold hover:bg-emerald-500 shadow-md backdrop-blur-sm transition">
                       <Download className="h-4 w-4" />
                       تحميل الملف الأصلي
                     </a>
@@ -438,9 +438,9 @@ export default function ProjectAttachmentsTab() {
               ) : (
                 <div className="text-center p-8 max-w-sm">
                   <FileText className="h-16 w-16 text-slate-700 mx-auto mb-4" />
-                  <p className="text-slate-300 font-bold mb-2">لا يمكن معاينة هذا النوع من الملفات داخل المتصفح</p>
-                  <p className="text-xs text-slate-500 mb-6">يرجى تحميل الملف لفتحه باستخدام البرنامج المناسب على جهازك.</p>
-                  <a href={previewAttachment.url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold hover:brightness-110 transition shadow-lg">
+                  <p className="text-secondary-foreground font-bold mb-2">لا يمكن معاينة هذا النوع من الملفات داخل المتصفح</p>
+                  <p className="text-xs text-muted-foreground mb-6">يرجى تحميل الملف لفتحه باستخدام البرنامج المناسب على جهازك.</p>
+                  <a href={previewAttachment.url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:brightness-110 transition shadow-lg">
                     <Download className="h-4 w-4" />
                     تحميل الملف
                   </a>

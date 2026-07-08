@@ -109,34 +109,34 @@ export default function AdminPriceListPage() {
 
   if (loadingAuth || !user || user.role !== 'admin') {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo select-none pb-12">
+    <div className="min-h-screen bg-background flex flex-col font-cairo select-none pb-12">
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-8 space-y-6">
         
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-[#c5a880]/10 text-[#c5a880] shadow">
+          <div className="p-2.5 rounded-xl bg-primary/10 text-primary shadow">
             <Database className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">كتالوج قائمة الأسعار الافتراضية</h1>
-            <p className="text-xs text-slate-400 mt-0.5">تعديل الأسعار الافتراضية للخامات ومصنعيات البنود عند إنشاء مقايسات جديدة.</p>
+            <h1 className="text-xl font-bold text-foreground">كتالوج قائمة الأسعار الافتراضية</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">تعديل الأسعار الافتراضية للخامات ومصنعيات البنود عند إنشاء مقايسات جديدة.</p>
           </div>
         </div>
 
         {/* Informational Tip */}
-        <div className="rounded-xl border border-[#222634] bg-slate-900/40 p-4 flex gap-3 text-slate-400 text-xs font-semibold leading-relaxed">
-          <Info className="h-5 w-5 text-[#c5a880] shrink-0 mt-0.5" />
+        <div className="rounded-xl border border-border bg-muted/40 p-4 flex gap-3 text-muted-foreground text-xs font-semibold leading-relaxed">
+          <Info className="h-5 w-5 text-primary shrink-0 mt-0.5" />
           <div>
-            <p className="text-white font-bold">منطق كتالوج الأسعار</p>
-            <p className="text-slate-400 mt-1 font-medium">
+            <p className="text-foreground font-bold">منطق كتالوج الأسعار</p>
+            <p className="text-muted-foreground mt-1 font-medium">
               عند إدخال وتحديث أي سعر لوحدة هنا، سيتلقاها المهندس تلقائياً كمقترح افتراضي عند قيامه بإنشاء أي مشروع حصر جديد. لا تؤثر هذه التعديلات على المشاريع القائمة التي تم العمل عليها وتثبيت تكاليفها بالفعل لضمان استقرار العقود.
             </p>
           </div>
@@ -145,8 +145,8 @@ export default function AdminPriceListPage() {
         {/* Pricing catalogue tree table */}
         {loadingPrices ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
-            <p className="text-xs text-slate-400">جاري تحميل كتالوج الأسعار الافتراضية...</p>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            <p className="text-xs text-muted-foreground">جاري تحميل كتالوج الأسعار الافتراضية...</p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -155,15 +155,15 @@ export default function AdminPriceListPage() {
               if (secPrices.length === 0) return null;
 
               return (
-                <div key={sec.id} className="overflow-x-auto border border-[#222634] rounded-xl bg-[#13151c] shadow-lg">
+                <div key={sec.id} className="overflow-x-auto border border-border rounded-xl bg-card shadow-lg">
                   <table className="w-full text-right text-xs">
-                    <thead className="bg-[#1a1c24] border-b border-[#222634] font-bold text-white">
+                    <thead className="bg-[#1a1c24] border-b border-border font-bold text-foreground">
                       <tr>
-                        <th className="p-3 text-right text-[#c5a880]" colSpan={6}>
+                        <th className="p-3 text-right text-primary" colSpan={6}>
                           {sec.id} - {sec.title}
                         </th>
                       </tr>
-                      <tr className="bg-[#1a1c24]/80 text-slate-400 border-b border-[#222634] text-[10px]">
+                      <tr className="bg-[#1a1c24]/80 text-muted-foreground border-b border-border text-[10px]">
                         <th className="p-3 text-right">بيان بند الحصر</th>
                         <th className="p-3 text-center w-20">الوحدة</th>
                         <th className="p-3 text-center w-36">سعر الخامات المقترح (ج.م)</th>
@@ -172,14 +172,14 @@ export default function AdminPriceListPage() {
                         <th className="p-3 text-center w-28">حفظ</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#222634] text-slate-300">
+                    <tbody className="divide-y divide-[#222634] text-secondary-foreground">
                       {secPrices.map((item) => (
                         <tr key={item.itemId} className="hover:bg-slate-900/20">
-                          <td className="p-3 font-semibold text-white">
-                            <span className="text-[10px] text-slate-500 font-bold block">{item.itemId}</span>
+                          <td className="p-3 font-semibold text-foreground">
+                            <span className="text-[10px] text-muted-foreground font-bold block">{item.itemId}</span>
                             {item.title}
                           </td>
-                          <td className="p-3 text-center font-bold text-slate-400">{item.unit}</td>
+                          <td className="p-3 text-center font-bold text-muted-foreground">{item.unit}</td>
                           
                           {/* Materials Rate */}
                           <td className="p-2 text-center">
@@ -188,7 +188,7 @@ export default function AdminPriceListPage() {
                                 type="number"
                                 value={item.materialUnitPrice}
                                 onChange={(e) => handlePriceChange(item.itemId, 'materialUnitPrice', e.target.value)}
-                                className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center font-bold text-white focus:outline-none focus:border-[#c5a880]"
+                                className="w-full bg-[#1a1c24] border border-border rounded px-2 py-1 text-center font-bold text-foreground focus:outline-none focus:border-[#c5a880]"
                               />
                             ) : (
                               <span className="text-slate-600">-</span>
@@ -202,7 +202,7 @@ export default function AdminPriceListPage() {
                                 type="number"
                                 value={item.laborUnitPrice}
                                 onChange={(e) => handlePriceChange(item.itemId, 'laborUnitPrice', e.target.value)}
-                                className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center font-bold text-white focus:outline-none focus:border-[#c5a880]"
+                                className="w-full bg-[#1a1c24] border border-border rounded px-2 py-1 text-center font-bold text-foreground focus:outline-none focus:border-[#c5a880]"
                               />
                             ) : (
                               <span className="text-slate-600">-</span>
@@ -216,7 +216,7 @@ export default function AdminPriceListPage() {
                                 type="number"
                                 value={item.dailyRate}
                                 onChange={(e) => handlePriceChange(item.itemId, 'dailyRate', e.target.value)}
-                                className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center font-bold text-white focus:outline-none focus:border-[#c5a880]"
+                                className="w-full bg-[#1a1c24] border border-border rounded px-2 py-1 text-center font-bold text-foreground focus:outline-none focus:border-[#c5a880]"
                               />
                             ) : (
                               <span className="text-slate-600">-</span>
@@ -231,7 +231,7 @@ export default function AdminPriceListPage() {
                               className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition mx-auto ${
                                 saveSuccessId === item.itemId
                                   ? 'bg-emerald-950 border border-emerald-800 text-emerald-400'
-                                  : 'bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800'
+                                  : 'bg-muted border border-border text-secondary-foreground hover:text-white hover:bg-slate-800'
                               }`}
                             >
                               {savingId === item.itemId ? (

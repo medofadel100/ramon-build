@@ -195,7 +195,7 @@ export default function ProjectTeamTab() {
       case 'interior_design': return 'text-purple-400 bg-purple-950/40 border-purple-800/50';
       case 'finishing_supervisor': return 'text-orange-400 bg-orange-950/40 border-orange-800/50';
       case 'structural': return 'text-teal-400 bg-teal-950/40 border-teal-800/50';
-      default: return 'text-slate-400 bg-slate-800 border-slate-700';
+      default: return 'text-muted-foreground bg-accent border-border';
     }
   };
 
@@ -205,16 +205,16 @@ export default function ProjectTeamTab() {
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
-            <Users className="h-5 w-5 text-[#c5a880]" />
+          <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <Users className="h-5 w-5 text-primary" />
             فريق العمل والمهندسين
           </h3>
-          <p className="text-xs text-slate-400 mt-0.5">المهندسين المُعيَّنين على هذا المشروع وتخصصاتهم.</p>
+          <p className="text-xs text-muted-foreground mt-0.5">المهندسين المُعيَّنين على هذا المشروع وتخصصاتهم.</p>
         </div>
         {canEdit && (
           <button
             onClick={() => { setShowInviteModal(true); setGeneratedLink(''); setInviteMode('link'); setManualName(''); }}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition"
           >
             <UserPlus className="h-4 w-4" />
             إضافة مهندس للمشروع
@@ -223,12 +223,12 @@ export default function ProjectTeamTab() {
       </div>
 
       {/* Consultant Name Display */}
-      <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
+      <div className="rounded-xl border border-border bg-[#1a1c24] p-5">
         <div className="flex items-center gap-2 mb-2">
-          <Shield className="h-4 w-4 text-[#c5a880]" />
-          <span className="text-xs font-bold text-slate-400">المهندس الاستشاري</span>
+          <Shield className="h-4 w-4 text-primary" />
+          <span className="text-xs font-bold text-muted-foreground">المهندس الاستشاري</span>
         </div>
-        <p className="text-sm font-bold text-white">
+        <p className="text-sm font-bold text-foreground">
           {currentProject.header.consultantName || 'لم يتم تحديده بعد (يمكنك إضافته من تاب ملف المشروع)'}
         </p>
       </div>
@@ -240,30 +240,30 @@ export default function ProjectTeamTab() {
           
           if (isEditing) {
             return (
-              <div key={eng.uid || idx} className="rounded-xl border border-[#c5a880] bg-[#1a1c24] p-5 shadow-lg">
+              <div key={eng.uid || idx} className="rounded-xl border border-primary bg-[#1a1c24] p-5 shadow-lg">
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1">اسم المهندس</label>
+                    <label className="block text-right text-[10px] font-semibold text-muted-foreground mb-1">اسم المهندس</label>
                     <input
                       type="text"
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="w-full rounded-md border border-[#222634] bg-[#13151c] px-3 py-1.5 text-xs text-white focus:border-[#c5a880] focus:outline-none"
+                      className="w-full rounded-md border border-border bg-card px-3 py-1.5 text-xs text-foreground focus:border-[#c5a880] focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1">تخصص المهندس</label>
+                    <label className="block text-right text-[10px] font-semibold text-muted-foreground mb-1">تخصص المهندس</label>
                     <select
                       value={editSpecialty}
                       onChange={(e) => setEditSpecialty(e.target.value as AssignedEngineer['specialty'])}
-                      className="w-full rounded-md border border-[#222634] bg-[#13151c] px-3 py-1.5 text-xs text-white focus:border-[#c5a880] focus:outline-none"
+                      className="w-full rounded-md border border-border bg-card px-3 py-1.5 text-xs text-foreground focus:border-[#c5a880] focus:outline-none"
                     >
                       {SPECIALTIES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                     </select>
                   </div>
                   <div className="flex gap-2 justify-end pt-2">
-                    <button onClick={() => setEditingEngineer(null)} className="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-white text-[10px] font-bold">إلغاء</button>
-                    <button onClick={handleSaveEdit} className="flex items-center gap-1 px-3 py-1.5 rounded bg-[#c5a880] text-[#0d0e12] text-[10px] font-bold hover:brightness-110">
+                    <button onClick={() => setEditingEngineer(null)} className="px-3 py-1.5 rounded bg-muted text-muted-foreground hover:text-white text-[10px] font-bold">إلغاء</button>
+                    <button onClick={handleSaveEdit} className="flex items-center gap-1 px-3 py-1.5 rounded bg-primary text-primary-foreground text-[10px] font-bold hover:brightness-110">
                       <Save className="h-3.5 w-3.5" /> حفظ
                     </button>
                   </div>
@@ -275,7 +275,7 @@ export default function ProjectTeamTab() {
           return (
             <div
               key={eng.uid || idx}
-              className="rounded-xl border border-[#222634] bg-[#13151c] p-5 hover:border-[#c5a880]/30 transition"
+              className="rounded-xl border border-border bg-card p-5 hover:border-[#c5a880]/30 transition"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[11px] font-semibold ${getSpecialtyColor(eng.specialty)}`}>
@@ -290,7 +290,7 @@ export default function ProjectTeamTab() {
                         setEditName(eng.name);
                         setEditSpecialty(eng.specialty);
                       }}
-                      className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition"
+                      className="p-1 rounded hover:bg-slate-800 text-muted-foreground hover:text-white transition"
                       title="تعديل بيانات المهندس"
                     >
                       <Edit2 className="h-3.5 w-3.5" />
@@ -307,9 +307,9 @@ export default function ProjectTeamTab() {
                   </div>
                 )}
               </div>
-              <h4 className="text-sm font-bold text-white">{eng.name}</h4>
-              {eng.email && <p className="text-xs text-slate-400 mt-0.5">{eng.email}</p>}
-              <p className="text-[10px] text-slate-500 mt-2">
+              <h4 className="text-sm font-bold text-foreground">{eng.name}</h4>
+              {eng.email && <p className="text-xs text-muted-foreground mt-0.5">{eng.email}</p>}
+              <p className="text-[10px] text-muted-foreground mt-2">
                 انضم: {new Date(eng.joinedAt).toLocaleDateString('ar-EG')}
               </p>
             </div>
@@ -317,10 +317,10 @@ export default function ProjectTeamTab() {
         })}
 
         {engineers.length === 0 && (
-          <div className="col-span-full text-center py-12 border border-dashed border-[#222634] rounded-xl bg-[#13151c]/40">
+          <div className="col-span-full text-center py-12 border border-dashed border-border rounded-xl bg-card/40">
             <Users className="h-10 w-10 text-slate-700 mx-auto mb-3" />
-            <p className="text-sm text-slate-400">لا يوجد مهندسين معينين حالياً</p>
-            <p className="text-xs text-slate-500 mt-1">استخدم زر "دعوة مهندس جديد" لإضافة أعضاء الفريق</p>
+            <p className="text-sm text-muted-foreground">لا يوجد مهندسين معينين حالياً</p>
+            <p className="text-xs text-muted-foreground mt-1">استخدم زر "دعوة مهندس جديد" لإضافة أعضاء الفريق</p>
           </div>
         )}
       </div>
@@ -328,14 +328,14 @@ export default function ProjectTeamTab() {
       {/* Invite Modal */}
       {showInviteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md mx-4 rounded-2xl border border-[#222634] bg-[#13151c] p-6 shadow-2xl">
-            <h3 className="text-lg font-bold text-white mb-4">إضافة مهندس للمشروع</h3>
+          <div className="w-full max-w-md mx-4 rounded-2xl border border-border bg-card p-6 shadow-2xl">
+            <h3 className="text-lg font-bold text-foreground mb-4">إضافة مهندس للمشروع</h3>
 
             <div className="flex gap-2 mb-6">
               <button
                 onClick={() => setInviteMode('link')}
                 className={`flex-1 py-2 rounded-lg text-xs font-semibold transition border ${
-                  inviteMode === 'link' ? 'bg-[#c5a880]/10 border-[#c5a880] text-[#c5a880]' : 'border-[#222634] text-slate-400 hover:text-white'
+                  inviteMode === 'link' ? 'bg-primary/10 border-primary text-primary' : 'border-border text-muted-foreground hover:text-white'
                 }`}
               >
                 توليد رابط دعوة
@@ -343,7 +343,7 @@ export default function ProjectTeamTab() {
               <button
                 onClick={() => setInviteMode('existing')}
                 className={`flex-1 py-2 rounded-lg text-xs font-semibold transition border ${
-                  inviteMode === 'existing' ? 'bg-[#c5a880]/10 border-[#c5a880] text-[#c5a880]' : 'border-[#222634] text-slate-400 hover:text-white'
+                  inviteMode === 'existing' ? 'bg-primary/10 border-primary text-primary' : 'border-border text-muted-foreground hover:text-white'
                 }`}
               >
                 من المسجلين
@@ -351,7 +351,7 @@ export default function ProjectTeamTab() {
               <button
                 onClick={() => setInviteMode('manual')}
                 className={`flex-1 py-2 rounded-lg text-xs font-semibold transition border ${
-                  inviteMode === 'manual' ? 'bg-[#c5a880]/10 border-[#c5a880] text-[#c5a880]' : 'border-[#222634] text-slate-400 hover:text-white'
+                  inviteMode === 'manual' ? 'bg-primary/10 border-primary text-primary' : 'border-border text-muted-foreground hover:text-white'
                 }`}
               >
                 إضافة يدوية مباشرة
@@ -360,7 +360,7 @@ export default function ProjectTeamTab() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-right text-xs font-semibold text-slate-400 mb-2">اختر التخصص / الدور</label>
+                <label className="block text-right text-xs font-semibold text-muted-foreground mb-2">اختر التخصص / الدور</label>
                 <div className="grid grid-cols-2 gap-2">
                   {SPECIALTIES.map(spec => {
                     const SpecIcon = spec.icon;
@@ -370,8 +370,8 @@ export default function ProjectTeamTab() {
                         onClick={() => setSelectedSpecialty(spec.value)}
                         className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold border transition ${
                           selectedSpecialty === spec.value
-                            ? 'bg-[#c5a880]/10 border-[#c5a880] text-white'
-                            : 'border-slate-800 bg-[#1a1c24] text-slate-400 hover:border-slate-700'
+                            ? 'bg-primary/10 border-primary text-foreground'
+                            : 'border-border bg-[#1a1c24] text-muted-foreground hover:border-slate-700'
                         }`}
                       >
                         <SpecIcon className="h-3.5 w-3.5" />
@@ -384,39 +384,39 @@ export default function ProjectTeamTab() {
 
               {inviteMode === 'manual' ? (
                 <div className="space-y-3 pt-2">
-                  <label className="block text-right text-xs font-semibold text-slate-400">اسم المهندس</label>
+                  <label className="block text-right text-xs font-semibold text-muted-foreground">اسم المهندس</label>
                   <input
                     type="text"
                     value={manualName}
                     onChange={(e) => setManualName(e.target.value)}
                     placeholder="اكتب اسم المهندس..."
-                    className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-xs text-white text-right focus:border-[#c5a880] focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-xs text-foreground text-right focus:border-[#c5a880] focus:outline-none"
                   />
                   <button
                     onClick={handleManualAdd}
                     disabled={!manualName.trim()}
-                    className="w-full py-2.5 mt-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+                    className="w-full py-2.5 mt-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
                   >
                     إضافة المهندس فوراً
                   </button>
                 </div>
               ) : inviteMode === 'existing' ? (
                 <div className="space-y-3 pt-2">
-                  <label className="block text-right text-xs font-semibold text-slate-400">اختر المهندس</label>
+                  <label className="block text-right text-xs font-semibold text-muted-foreground">اختر المهندس</label>
                   {loadingUsers ? (
                     <div className="flex justify-center py-4">
-                      <Loader2 className="h-6 w-6 text-[#c5a880] animate-spin" />
+                      <Loader2 className="h-6 w-6 text-primary animate-spin" />
                     </div>
                   ) : systemUsers.length === 0 ? (
-                    <div className="text-center py-4 border border-dashed border-[#222634] rounded-lg">
-                      <p className="text-xs text-slate-400">لا يوجد مهندسون متاحون للإضافة</p>
+                    <div className="text-center py-4 border border-dashed border-border rounded-lg">
+                      <p className="text-xs text-muted-foreground">لا يوجد مهندسون متاحون للإضافة</p>
                     </div>
                   ) : (
                     <>
                       <select
                         value={selectedUserUid}
                         onChange={(e) => setSelectedUserUid(e.target.value)}
-                        className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-xs text-white text-right focus:border-[#c5a880] focus:outline-none"
+                        className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-xs text-foreground text-right focus:border-[#c5a880] focus:outline-none"
                       >
                         <option value="">-- اضغط لاختيار مهندس مسجل --</option>
                         {systemUsers.map(u => (
@@ -428,7 +428,7 @@ export default function ProjectTeamTab() {
                       <button
                         onClick={handleAddExistingUser}
                         disabled={!selectedUserUid}
-                        className="w-full py-2.5 mt-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+                        className="w-full py-2.5 mt-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
                       >
                         إضافة المهندس فوراً
                       </button>
@@ -441,7 +441,7 @@ export default function ProjectTeamTab() {
                     <button
                       onClick={handleGenerateInvite}
                       disabled={generating}
-                      className="w-full py-2.5 mt-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+                      className="w-full py-2.5 mt-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
                     >
                       {generating ? 'جاري التوليد...' : 'توليد رابط الدعوة'}
                     </button>
@@ -449,13 +449,13 @@ export default function ProjectTeamTab() {
 
                   {generatedLink && (
                     <div className="space-y-3 pt-2">
-                      <label className="block text-right text-xs font-semibold text-slate-400">رابط الدعوة (أرسله للمهندس للتسجيل بنفسه)</label>
+                      <label className="block text-right text-xs font-semibold text-muted-foreground">رابط الدعوة (أرسله للمهندس للتسجيل بنفسه)</label>
                       <div className="flex gap-2">
                         <input
                           type="text"
                           readOnly
                           value={generatedLink}
-                          className="flex-1 rounded-lg border border-[#222634] bg-[#1a1c24] px-3 py-2 text-xs text-white text-left direction-ltr"
+                          className="flex-1 rounded-lg border border-border bg-[#1a1c24] px-3 py-2 text-xs text-foreground text-left direction-ltr"
                           dir="ltr"
                         />
                         <button
@@ -463,13 +463,13 @@ export default function ProjectTeamTab() {
                           className={`px-3 py-2 rounded-lg text-xs font-semibold transition ${
                             linkCopied
                               ? 'bg-emerald-950 border border-emerald-800 text-emerald-400'
-                              : 'bg-slate-900 border border-slate-800 text-slate-300 hover:text-white'
+                              : 'bg-muted border border-border text-secondary-foreground hover:text-white'
                           }`}
                         >
                           {linkCopied ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                         </button>
                       </div>
-                      <p className="text-[10px] text-slate-500 text-right">
+                      <p className="text-[10px] text-muted-foreground text-right">
                         هذا الرابط صالح لاستخدام واحد فقط. عند فتحه سيتم إضافة المهندس تلقائياً للمشروع.
                       </p>
                     </div>
@@ -481,7 +481,7 @@ export default function ProjectTeamTab() {
             <div className="flex justify-end mt-6">
               <button
                 onClick={() => setShowInviteModal(false)}
-                className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-400 hover:text-white transition"
+                className="px-4 py-2 rounded-lg bg-muted border border-border text-xs font-semibold text-muted-foreground hover:text-white transition"
               >
                 إغلاق
               </button>

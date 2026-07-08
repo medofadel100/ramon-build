@@ -14,9 +14,9 @@ export default function AuthInitializer({ children }: { children: React.ReactNod
 
   if (loading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12] text-white select-none">
+      <div className="flex h-screen w-screen items-center justify-center bg-background text-foreground select-none">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
           <p className="font-cairo text-lg text-gray-300 font-medium">جاري تحميل نظام رامون للحصر والكميات...</p>
         </div>
       </div>

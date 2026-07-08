@@ -83,18 +83,18 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
 
   if (loadingAuth || !user) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
 
   if (loadingProject || !currentProject || !summary) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12] text-white">
+      <div className="flex h-screen w-screen items-center justify-center bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
-          <p className="font-cairo text-sm text-slate-400">جاري معالجة بيانات التصدير والطباعة...</p>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p className="font-cairo text-sm text-muted-foreground">جاري معالجة بيانات التصدير والطباعة...</p>
         </div>
       </div>
     );
@@ -107,7 +107,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
   const activeItems = currentProject.items.filter(it => it.isActive);
 
   return (
-    <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo select-none pb-12">
+    <div className="min-h-screen bg-background flex flex-col font-cairo select-none pb-12">
       
       {/* Navbar with hidden rules on print */}
       <div className="no-print">
@@ -120,15 +120,15 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
         <div className="w-full lg:w-80 space-y-6 no-print">
           <Link
             href={`/projects/${currentProject.id}`}
-            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-white transition"
           >
             <ArrowRight className="h-4 w-4 transform rotate-180" />
             العودة للوحة تحكم المشروع
           </Link>
 
-          <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5 space-y-4">
-            <h3 className="text-sm font-bold text-white">اختر نوع التقرير الفني</h3>
-            <p className="text-[10px] text-slate-400 leading-normal">
+          <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+            <h3 className="text-sm font-bold text-foreground">اختر نوع التقرير الفني</h3>
+            <p className="text-[10px] text-muted-foreground leading-normal">
               اختر أحد القوالب التصديرية الثلاثة لتوليد مستند طباعة معتمد للعميل أو الإدارة الفنية.
             </p>
 
@@ -137,14 +137,14 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 onClick={() => setReportType('client')}
                 className={`w-full p-3.5 rounded-lg text-right border transition flex items-center gap-3 ${
                   reportType === 'client'
-                    ? 'bg-[#c5a880]/15 border-[#c5a880] text-white font-bold'
-                    : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700'
+                    ? 'bg-primary/15 border-primary text-foreground font-bold'
+                    : 'border-border bg-muted/40 text-muted-foreground hover:border-slate-700'
                 }`}
               >
                 <FileText className="h-4 w-4 shrink-0" />
                 <div className="text-right">
                   <span className="block text-xs">١. تقرير مقايسة العميل</span>
-                  <span className="block text-[8px] text-slate-500 font-medium mt-0.5">جدول الأبعاد وحصر البنود والمواصفات</span>
+                  <span className="block text-[8px] text-muted-foreground font-medium mt-0.5">جدول الأبعاد وحصر البنود والمواصفات</span>
                 </div>
               </button>
               
@@ -152,14 +152,14 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 onClick={() => setReportType('materials')}
                 className={`w-full p-3.5 rounded-lg text-right border transition flex items-center gap-3 ${
                   reportType === 'materials'
-                    ? 'bg-[#c5a880]/15 border-[#c5a880] text-white font-bold'
-                    : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700'
+                    ? 'bg-primary/15 border-primary text-foreground font-bold'
+                    : 'border-border bg-muted/40 text-muted-foreground hover:border-slate-700'
                 }`}
               >
                 <ClipboardList className="h-4 w-4 shrink-0" />
                 <div className="text-right">
                   <span className="block text-xs">٢. كشف مواد الشراء</span>
-                  <span className="block text-[8px] text-slate-500 font-medium mt-0.5">مستلزمات الدهان، البورسلين، والصرف بالفواصل والنسب</span>
+                  <span className="block text-[8px] text-muted-foreground font-medium mt-0.5">مستلزمات الدهان، البورسلين، والصرف بالفواصل والنسب</span>
                 </div>
               </button>
 
@@ -167,14 +167,14 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 onClick={() => setReportType('internal')}
                 className={`w-full p-3.5 rounded-lg text-right border transition flex items-center gap-3 ${
                   reportType === 'internal'
-                    ? 'bg-[#c5a880]/15 border-[#c5a880] text-white font-bold'
-                    : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700'
+                    ? 'bg-primary/15 border-primary text-foreground font-bold'
+                    : 'border-border bg-muted/40 text-muted-foreground hover:border-slate-700'
                 }`}
               >
                 <Printer className="h-4 w-4 shrink-0" />
                 <div className="text-right">
                   <span className="block text-xs">٣. مقايسة الحصر واليوميات الداخلي</span>
-                  <span className="block text-[8px] text-slate-500 font-medium mt-0.5">تفاصيل التكلفة والتجزئة، أيام التنفيذ والجدول</span>
+                  <span className="block text-[8px] text-muted-foreground font-medium mt-0.5">تفاصيل التكلفة والتجزئة، أيام التنفيذ والجدول</span>
                 </div>
               </button>
 
@@ -182,21 +182,21 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 onClick={() => setReportType('quotation')}
                 className={`w-full p-3.5 rounded-lg text-right border transition flex items-center gap-3 ${
                   reportType === 'quotation'
-                    ? 'bg-[#c5a880]/15 border-[#c5a880] text-white font-bold'
-                    : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700'
+                    ? 'bg-primary/15 border-primary text-foreground font-bold'
+                    : 'border-border bg-muted/40 text-muted-foreground hover:border-slate-700'
                 }`}
               >
                 <FileText className="h-4 w-4 shrink-0" />
                 <div className="text-right">
                   <span className="block text-xs">٤. عرض سعر مالي للعميل</span>
-                  <span className="block text-[8px] text-slate-500 font-medium mt-0.5">تفاصيل كميات وأسعار للبنود المنفذة</span>
+                  <span className="block text-[8px] text-muted-foreground font-medium mt-0.5">تفاصيل كميات وأسعار للبنود المنفذة</span>
                 </div>
               </button>
             </div>
 
             <button
               onClick={handlePrint}
-              className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] py-2.5 font-cairo text-xs font-bold text-[#0d0e12] shadow-lg hover:brightness-110 active:scale-95 transition"
+              className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] py-2.5 font-cairo text-xs font-bold text-primary-foreground shadow-lg hover:brightness-110 active:scale-95 transition"
             >
               <Printer className="h-4 w-4" />
               طباعة وحفظ PDF بالمتصفح
@@ -205,7 +205,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
         </div>
 
         {/* Preview Frame Area - A4 styled layout preview */}
-        <div className="flex-1 overflow-x-auto p-1 bg-slate-900/20 border border-dashed border-[#222634] rounded-2xl flex justify-center">
+        <div className="flex-1 overflow-x-auto p-1 bg-muted/20 border border-dashed border-border rounded-2xl flex justify-center">
           
           <div 
             id="print-sheet-node"
@@ -219,33 +219,33 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                   <img src="/logo.jpeg" alt="Ramon Build Logo" className="w-16 h-16 object-contain rounded-md" />
                   <div>
                     <h1 className="text-xl font-extrabold tracking-tight">مكتب رامون الفني للتشطيبات والمقاولات</h1>
-                    <p className="text-[10px] font-bold text-slate-500 mt-1">المكتب الهندسي الاستشاري للحصر والكميات والمواصفات</p>
+                    <p className="text-[10px] font-bold text-muted-foreground mt-1">المكتب الهندسي الاستشاري للحصر والكميات والمواصفات</p>
                   </div>
                 </div>
                 <div className="text-left">
-                  <span className="text-xs font-black tracking-wider block bg-slate-900 text-white px-2 py-0.5 rounded text-center">
+                  <span className="text-xs font-black tracking-wider block bg-muted text-foreground px-2 py-0.5 rounded text-center">
                     {currentProject.header.projectCode}
                   </span>
-                  <span className="text-[9px] font-bold text-slate-400 block mt-1">تاريخ الإصدار: {currentProject.header.issueDate}</span>
+                  <span className="text-[9px] font-bold text-muted-foreground block mt-1">تاريخ الإصدار: {currentProject.header.issueDate}</span>
                 </div>
               </div>
 
               {/* Project Header Info */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 border border-slate-350 bg-slate-50 rounded-xl mb-6 text-[10px] font-bold">
                 <div>
-                  <span className="text-slate-400 block">المشروع المستهدف</span>
+                  <span className="text-muted-foreground block">المشروع المستهدف</span>
                   <span className="text-slate-900 text-xs font-black">{currentProject.header.name}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block">العميل المستفيد</span>
+                  <span className="text-muted-foreground block">العميل المستفيد</span>
                   <span className="text-slate-900 text-xs font-black">{currentProject.header.ownerName}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block">المحافظة والعنوان</span>
+                  <span className="text-muted-foreground block">المحافظة والعنوان</span>
                   <span className="text-slate-900 text-xs font-black">{currentProject.header.governorate} - {currentProject.header.addressDetails || 'الموقع المسجل'}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block">الكود التصميمي</span>
+                  <span className="text-muted-foreground block">الكود التصميمي</span>
                   <span className="text-slate-900 text-xs font-black">{currentProject.header.designCode}</span>
                 </div>
               </div>
@@ -255,13 +255,13 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-sm font-black text-slate-900 border-b border-slate-400 pb-1 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5"><Tag className="h-3.5 w-3.5 text-slate-500" /> عرض سعر معتمد</span>
-                      <span className="text-[10px] text-slate-500 font-bold">صالح لمدة ١٥ يوماً من تاريخ الإصدار</span>
+                      <span className="flex items-center gap-1.5"><Tag className="h-3.5 w-3.5 text-muted-foreground" /> عرض سعر معتمد</span>
+                      <span className="text-[10px] text-muted-foreground font-bold">صالح لمدة ١٥ يوماً من تاريخ الإصدار</span>
                     </h2>
                   </div>
 
                   <table className="w-full text-right text-[10px] font-bold border-collapse border border-slate-300">
-                    <thead className="bg-[#13151c] text-white border-b border-slate-300">
+                    <thead className="bg-card text-foreground border-b border-slate-300">
                       <tr>
                         <th className="p-2 border border-slate-300 w-12 text-center">رقم</th>
                         <th className="p-2 border border-slate-300 text-right">البيان</th>
@@ -288,10 +288,10 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                               const unitPrice = res.quantity > 0 ? (res.total / res.quantity) : 0;
                               return (
                                 <tr key={item.id}>
-                                  <td className="p-2 border border-slate-300 text-center text-slate-500">{itemIdx + 1}</td>
+                                  <td className="p-2 border border-slate-300 text-center text-muted-foreground">{itemIdx + 1}</td>
                                   <td className="p-2 border border-slate-300 text-slate-800">
                                     <span className="block font-black">{item.title}</span>
-                                    {item.notes && <span className="block text-[8px] text-slate-500 font-medium mt-0.5">{item.notes}</span>}
+                                    {item.notes && <span className="block text-[8px] text-muted-foreground font-medium mt-0.5">{item.notes}</span>}
                                   </td>
                                   <td className="p-2 border border-slate-300 text-center">{item.unit}</td>
                                   <td className="p-2 border border-slate-300 text-center">{res.quantity.toFixed(1)}</td>
@@ -310,7 +310,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                       
                       <tr className="bg-slate-100 font-extrabold border-t-2 border-slate-900 text-xs">
                         <td className="p-3 border border-slate-350 text-right" colSpan={5}>إجمالي عرض السعر التقديري</td>
-                        <td className="p-3 border border-slate-350 text-center bg-[#c5a880]/10 text-slate-900">
+                        <td className="p-3 border border-slate-350 text-center bg-primary/10 text-slate-900">
                           {summary.grandTotal.toLocaleString()} ج.م
                         </td>
                       </tr>
@@ -324,7 +324,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-sm font-black text-slate-900 border-b border-slate-400 pb-1 flex items-center gap-1.5">
-                      <Tag className="h-3.5 w-3.5 text-slate-500" />
+                      <Tag className="h-3.5 w-3.5 text-muted-foreground" />
                       مقايسة حصر البنود والمواصفات التفصيلية للعميل
                     </h2>
                   </div>
@@ -349,7 +349,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                         return (
                           <React.Fragment key={sec.id}>
                             <tr className="bg-slate-50 font-black">
-                              <td className="p-2 border border-slate-300 text-center text-slate-500">{sec.id}</td>
+                              <td className="p-2 border border-slate-300 text-center text-muted-foreground">{sec.id}</td>
                               <td className="p-2 border border-slate-300 text-slate-900" colSpan={currentProject.clientShareSettings.showPrices ? 4 : 3}>
                                 {sec.title}
                               </td>
@@ -358,11 +358,11 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                               const res = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
                               return (
                                 <tr key={item.id}>
-                                  <td className="p-2 border border-slate-300 text-center text-slate-400">{item.id}</td>
+                                  <td className="p-2 border border-slate-300 text-center text-muted-foreground">{item.id}</td>
                                   <td className="p-2 border border-slate-300 text-slate-800">
                                     <span>{item.title}</span>
                                     {item.notes && (
-                                      <span className="block text-[8px] text-slate-400 mt-0.5">ملاحظة: {item.notes}</span>
+                                      <span className="block text-[8px] text-muted-foreground mt-0.5">ملاحظة: {item.notes}</span>
                                     )}
                                   </td>
                                   <td className="p-2 border border-slate-300 text-center">{res.quantity.toFixed(1)}</td>
@@ -397,7 +397,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-sm font-black text-slate-900 border-b border-slate-400 pb-1 flex items-center gap-1.5">
-                      <ClipboardList className="h-3.5 w-3.5 text-slate-500" />
+                      <ClipboardList className="h-3.5 w-3.5 text-muted-foreground" />
                       بيان مواد ومستلزمات الشراء المطلوبة للموقع
                     </h2>
                   </div>
@@ -418,17 +418,17 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                     <tbody className="divide-y divide-slate-200">
                       {purchaseMaterials.length === 0 ? (
                         <tr>
-                          <td className="p-4 text-center text-slate-400" colSpan={8}>لا توجد مواد شراء معرفة في مواصفات بنود المقايسة.</td>
+                          <td className="p-4 text-center text-muted-foreground" colSpan={8}>لا توجد مواد شراء معرفة في مواصفات بنود المقايسة.</td>
                         </tr>
                       ) : (
                         <>
                           {purchaseMaterials.map((mat, idx) => (
                             <tr key={idx} className="hover:bg-slate-50 transition">
-                              <td className="p-2 border border-slate-300 text-slate-500 font-semibold">{mat.title}</td>
+                              <td className="p-2 border border-slate-300 text-muted-foreground font-semibold">{mat.title}</td>
                               <td className="p-2 border border-slate-300 text-slate-900 font-black">
                                 {mat.material}
                                 {mat.packagingDetails && (
-                                  <span className="block text-[8.5px] text-slate-400 font-normal mt-0.5">{mat.packagingDetails}</span>
+                                  <span className="block text-[8.5px] text-muted-foreground font-normal mt-0.5">{mat.packagingDetails}</span>
                                 )}
                               </td>
                               <td className="p-2 border border-slate-300 text-center text-slate-600">{mat.qtyRequired.toFixed(1)}</td>
@@ -438,7 +438,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                               <td className="p-2 border border-slate-300 text-center text-slate-900 font-extrabold">{mat.totalCost.toLocaleString()} ج.م</td>
                               <td className="p-2 border border-slate-300 text-center">
                                 <span className="inline-block border border-slate-400 w-3 h-3 rounded mr-1"></span>
-                                <span className="text-[8px] text-slate-400 mr-1 leading-none">لم يورد</span>
+                                <span className="text-[8px] text-muted-foreground mr-1 leading-none">لم يورد</span>
                               </td>
                             </tr>
                           ))}
@@ -460,7 +460,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-sm font-black text-slate-900 border-b border-slate-400 pb-1 flex items-center gap-1.5">
-                      <FileText className="h-3.5 w-3.5 text-slate-500" />
+                      <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                       تقرير مقايسة الحصر الداخلي وبنود اليوميات
                     </h2>
                   </div>
@@ -496,7 +496,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
                                   <td className="p-2 border border-slate-300 text-slate-800">
                                     {item.title}
                                     {item.pricing.mode === 'daily_rate' && (
-                                      <span className="inline-block px-1 rounded bg-slate-150 text-[7px] text-slate-500 font-normal mr-1">يوميات</span>
+                                      <span className="inline-block px-1 rounded bg-slate-150 text-[7px] text-muted-foreground font-normal mr-1">يوميات</span>
                                     )}
                                   </td>
                                   <td className="p-2 border border-slate-300 text-center">{res.quantity.toFixed(1)}</td>
@@ -540,7 +540,7 @@ export default function ProjectExportPage({ params }: ExportPageProps) {
             </div>
 
             {/* PRINT FOOTER STAMP */}
-            <div className="border-t border-slate-400 pt-8 mt-12 flex justify-between items-center text-[9px] font-bold text-slate-400">
+            <div className="border-t border-slate-400 pt-8 mt-12 flex justify-between items-center text-[9px] font-bold text-muted-foreground">
               <div className="space-y-1">
                 <p>توقيع المهندس المسؤول: .............................</p>
                 <p>توقيع مدير المكتب الفني: .............................</p>

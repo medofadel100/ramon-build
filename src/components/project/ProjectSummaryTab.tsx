@@ -4,7 +4,7 @@ import { useProjectStore } from '@/store/projectStore';
 import { calculateProjectSummary, calculateItemTotal } from '@/lib/calculations';
 import { DollarSign, Clock, Layout, Hammer, Percent, Save, Edit, Trash2, Plus, RefreshCw, Split } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
 const COLORS = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#eab308'];
 
@@ -145,40 +145,40 @@ export default function ProjectSummaryTab() {
       {/* 1. Quick Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         
-        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5 flex items-center justify-between">
+        <div className="rounded-xl border border-border bg-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <span className="block text-xs font-semibold text-slate-500">التكلفة الصافية للمشروع</span>
-            <p className="text-xl font-extrabold text-white tracking-wide">{summary.grandTotal.toLocaleString()} ج.م</p>
+            <span className="block text-xs font-semibold text-muted-foreground">التكلفة الصافية للمشروع</span>
+            <p className="text-xl font-extrabold text-foreground tracking-wide">{summary.grandTotal.toLocaleString()} ج.م</p>
           </div>
-          <div className="p-3 rounded-lg bg-slate-800 text-slate-400">
+          <div className="p-3 rounded-lg bg-accent text-muted-foreground">
             <DollarSign className="h-5 w-5" />
           </div>
         </div>
 
-        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5 flex items-center justify-between">
+        <div className="rounded-xl border border-border bg-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <span className="block text-xs font-semibold text-slate-500">إجمالي بند الخامات</span>
-            <p className="text-xl font-extrabold text-white tracking-wide">{summary.grandMaterialCost.toLocaleString()} ج.م</p>
+            <span className="block text-xs font-semibold text-muted-foreground">إجمالي بند الخامات</span>
+            <p className="text-xl font-extrabold text-foreground tracking-wide">{summary.grandMaterialCost.toLocaleString()} ج.م</p>
           </div>
           <div className="p-3 rounded-lg bg-sky-500/10 text-sky-400">
             <Layout className="h-5 w-5" />
           </div>
         </div>
 
-        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5 flex items-center justify-between">
+        <div className="rounded-xl border border-border bg-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <span className="block text-xs font-semibold text-slate-500">إجمالي بند المصنعية</span>
-            <p className="text-xl font-extrabold text-white tracking-wide">{summary.grandLaborCost.toLocaleString()} ج.م</p>
+            <span className="block text-xs font-semibold text-muted-foreground">إجمالي بند المصنعية</span>
+            <p className="text-xl font-extrabold text-foreground tracking-wide">{summary.grandLaborCost.toLocaleString()} ج.م</p>
           </div>
           <div className="p-3 rounded-lg bg-emerald-500/10 text-emerald-400">
             <Hammer className="h-5 w-5" />
           </div>
         </div>
 
-        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5 flex items-center justify-between">
+        <div className="rounded-xl border border-border bg-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <span className="block text-xs font-semibold text-slate-500">مدة التنفيذ المتوقعة</span>
-            <p className="text-xl font-extrabold text-white tracking-wide">{projectTotalDays} أيام عمل</p>
+            <span className="block text-xs font-semibold text-muted-foreground">مدة التنفيذ المتوقعة</span>
+            <p className="text-xl font-extrabold text-foreground tracking-wide">{projectTotalDays} أيام عمل</p>
           </div>
           <div className="p-3 rounded-lg bg-amber-500/10 text-amber-400">
             <Clock className="h-5 w-5" />
@@ -188,13 +188,13 @@ export default function ProjectSummaryTab() {
       </div>
 
       {/* Supervision Fee Setting */}
-      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
-            <Percent className="h-4 w-4 text-[#c5a880]" />
+          <h3 className="text-base font-bold text-foreground mb-1 flex items-center gap-2">
+            <Percent className="h-4 w-4 text-primary" />
             نسبة الإشراف الهندسي والإدارة
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground">
             أدخل نسبة الأرباح أو الإشراف الهندسي ليتم إضافتها تلقائياً للإجمالي النهائي المعروض للعميل.
           </p>
         </div>
@@ -208,14 +208,14 @@ export default function ProjectSummaryTab() {
               step="0.1"
               value={supervisionPercentage}
               onChange={(e) => setSupervisionPercentage(parseFloat(e.target.value) || 0)}
-              className="w-24 rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+              className="w-24 rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
             />
-            <span className="absolute left-4 top-2.5 text-slate-500 font-bold">%</span>
+            <span className="absolute left-4 top-2.5 text-muted-foreground font-bold">%</span>
           </div>
           <button
             onClick={handleSaveSupervision}
             disabled={isSaving || supervisionPercentage === currentProject.header.supervisionPercentage}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSaving ? 'جاري الحفظ...' : <><Save className="h-4 w-4" /> حفظ النسبة</>}
           </button>
@@ -223,33 +223,33 @@ export default function ProjectSummaryTab() {
       </div>
 
       {/* Financial Aggregation Table */}
-      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
-        <h3 className="text-base font-bold text-white mb-4">الملخص المالي التفصيلي للأقسام</h3>
+      <div className="rounded-xl border border-border bg-card p-6 shadow-xl">
+        <h3 className="text-base font-bold text-foreground mb-4">الملخص المالي التفصيلي للأقسام</h3>
         
         <div className="overflow-x-auto">
           <table className="w-full text-right text-xs">
-            <thead className="bg-[#1a1c24] text-slate-400 font-bold border-b border-[#222634]">
+            <thead className="bg-[#1a1c24] text-muted-foreground font-bold border-b border-border">
               <tr>
                 <th className="p-3 text-right">كود القسم</th>
                 <th className="p-3 text-right">اسم القسم الفني</th>
                 <th className="p-3 text-center">تكلفة الخامات (ج.م)</th>
                 <th className="p-3 text-center">تكلفة المصنعية / اليوميات (ج.م)</th>
-                <th className="p-3 text-center bg-[#c5a880]/5 text-[#c5a880]">إجمالي تكلفة القسم</th>
+                <th className="p-3 text-center bg-primary/5 text-primary">إجمالي تكلفة القسم</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#222634] text-slate-300">
+            <tbody className="divide-y divide-[#222634] text-secondary-foreground">
               {Object.values(summary.bySection).map((sec) => (
                 <tr key={sec.sectionId} className="hover:bg-slate-900/40 transition">
-                  <td className="p-3 text-slate-500 font-bold">{sec.sectionId}</td>
-                  <td className="p-3 text-white font-bold">{sec.title}</td>
+                  <td className="p-3 text-muted-foreground font-bold">{sec.sectionId}</td>
+                  <td className="p-3 text-foreground font-bold">{sec.title}</td>
                   <td className="p-3 text-center">{sec.materialCost.toLocaleString()} ج.م</td>
                   <td className="p-3 text-center">{sec.laborCost.toLocaleString()} ج.م</td>
-                  <td className="p-3 text-center bg-[#c5a880]/5 text-[#c5a880] font-black">
+                  <td className="p-3 text-center bg-primary/5 text-primary font-black">
                     {sec.totalCost.toLocaleString()} ج.م
                   </td>
                 </tr>
               ))}
-              <tr className="bg-[#1a1c24]/50 border-t border-[#222634] text-white font-bold text-sm">
+              <tr className="bg-[#1a1c24]/50 border-t border-border text-foreground font-bold text-sm">
                 <td className="p-3" colSpan={2}>التكلفة الصافية</td>
                 <td className="p-3 text-center">{summary.grandMaterialCost.toLocaleString()} ج.م</td>
                 <td className="p-3 text-center">{summary.grandLaborCost.toLocaleString()} ج.م</td>
@@ -257,15 +257,15 @@ export default function ProjectSummaryTab() {
                   {summary.grandTotal.toLocaleString()} ج.م
                 </td>
               </tr>
-              <tr className="bg-[#1a1c24]/80 border-t border-slate-800 text-[#c5a880] font-bold text-sm">
+              <tr className="bg-[#1a1c24]/80 border-t border-border text-primary font-bold text-sm">
                 <td className="p-3" colSpan={4}>قيمة الإشراف الهندسي والإدارة ({currentProject.header.supervisionPercentage || 0}%)</td>
                 <td className="p-3 text-center font-black">
                   + {summary.supervisionValue.toLocaleString()} ج.م
                 </td>
               </tr>
-              <tr className="bg-[#c5a880]/10 border-t-2 border-[#c5a880]/30 text-white font-extrabold text-base">
+              <tr className="bg-primary/10 border-t-2 border-primary/30 text-foreground font-extrabold text-base">
                 <td className="p-4" colSpan={4}>الإجمالي الكلي النهائي (المعروض للعميل)</td>
-                <td className="p-4 text-center text-[#c5a880] font-black drop-shadow-md">
+                <td className="p-4 text-center text-primary font-black drop-shadow-md">
                   {summary.grandTotalWithSupervision.toLocaleString()} ج.م
                 </td>
               </tr>
@@ -276,8 +276,8 @@ export default function ProjectSummaryTab() {
 
       {/* Financial Dashboards (Charts) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
-          <h3 className="text-base font-bold text-white mb-6">توزيع تكلفة المشروع بالأقسام</h3>
+        <div className="rounded-xl border border-border bg-card p-6 shadow-xl">
+          <h3 className="text-base font-bold text-foreground mb-6">توزيع تكلفة المشروع بالأقسام</h3>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -305,8 +305,8 @@ export default function ProjectSummaryTab() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
-          <h3 className="text-base font-bold text-white mb-6">مقارنة الخامات والمصنعيات للأقسام</h3>
+        <div className="rounded-xl border border-border bg-card p-6 shadow-xl">
+          <h3 className="text-base font-bold text-foreground mb-6">مقارنة الخامات والمصنعيات للأقسام</h3>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -330,18 +330,110 @@ export default function ProjectSummaryTab() {
         </div>
       </div>
 
+      {/* Profit & Loss (P&L) Analytics Section */}
+      <div className="rounded-xl border border-border bg-card p-6 shadow-xl">
+        <h3 className="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+          <BarChart className="h-5 w-5 text-indigo-400" />
+          تحليل الأرباح والخسائر (P&L Analytics)
+        </h3>
+
+        {(() => {
+          const clientAccounts = currentProject.accounts?.filter(a => a.personType === 'client') || [];
+          const expenseAccounts = currentProject.accounts?.filter(a => a.personType === 'supplier' || a.personType === 'worker' || a.personType === 'expense') || [];
+
+          const actualIncome = clientAccounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
+          const actualExpenses = expenseAccounts.reduce((sum, a) => sum + a.installments.filter(i => i.isPaid).reduce((s, i) => s + i.amount, 0), 0);
+          const actualProfit = actualIncome - actualExpenses;
+
+          const expectedCost = summary.grandTotal;
+          const expectedProfit = summary.supervisionValue;
+          const expectedIncome = expectedCost + expectedProfit;
+
+          const profitMarginExpected = expectedIncome > 0 ? (expectedProfit / expectedIncome) * 100 : 0;
+          const profitMarginActual = actualIncome > 0 ? (actualProfit / actualIncome) * 100 : 0;
+
+          const pnlData = [
+            {
+              name: 'المخطط (المقايسة)',
+              الإيرادات: expectedIncome,
+              المصروفات: expectedCost,
+              الأرباح: expectedProfit,
+            },
+            {
+              name: 'الفعلي (الحسابات)',
+              الإيرادات: actualIncome,
+              المصروفات: actualExpenses,
+              الأرباح: actualProfit,
+            }
+          ];
+
+          return (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-[#1a1c24] border border-border p-5 rounded-xl text-center">
+                  <span className="block text-xs font-bold text-muted-foreground mb-1">الربح الفعلي / المخطط</span>
+                  <div className="flex items-end justify-center gap-2">
+                    <p className={`text-2xl font-black ${actualProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {actualProfit.toLocaleString()}
+                    </p>
+                    <span className="text-sm text-muted-foreground pb-1">/ {expectedProfit.toLocaleString()} ج.م</span>
+                  </div>
+                </div>
+                
+                <div className="bg-[#1a1c24] border border-border p-5 rounded-xl text-center">
+                  <span className="block text-xs font-bold text-muted-foreground mb-1">هامش الربح (المتوقع vs الفعلي)</span>
+                  <div className="flex items-end justify-center gap-2">
+                    <p className={`text-2xl font-black ${profitMarginActual >= profitMarginExpected ? 'text-emerald-400' : 'text-amber-400'}`}>
+                      {profitMarginActual.toFixed(1)}%
+                    </p>
+                    <span className="text-sm text-muted-foreground pb-1">/ {profitMarginExpected.toFixed(1)}%</span>
+                  </div>
+                </div>
+
+                <div className="bg-[#1a1c24] border border-border p-5 rounded-xl text-center">
+                  <span className="block text-xs font-bold text-muted-foreground mb-1">نسبة سداد العميل للتكلفة الفعلية</span>
+                  <div className="flex items-end justify-center gap-2">
+                    <p className={`text-2xl font-black ${actualIncome >= actualExpenses ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {actualExpenses > 0 ? ((actualIncome / actualExpenses) * 100).toFixed(1) : 0}%
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-80 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={pnlData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                    <XAxis dataKey="name" stroke="#94a3b8" tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }} />
+                    <YAxis stroke="#94a3b8" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                    <RechartsTooltip 
+                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569', borderRadius: '8px' }}
+                      itemStyle={{ fontWeight: 'bold' }}
+                    />
+                    <Legend wrapperStyle={{ paddingTop: '20px' }} />
+                    <Bar dataKey="الإيرادات" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="المصروفات" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="الأرباح" fill="#10b981" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </>
+          );
+        })()}
+      </div>
+
       {/* 3. Professional Gantt Chart */}
-      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl relative">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-xl relative">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-[#c5a880]" />
-            <h3 className="text-base font-bold text-white">الجدول الزمني ومسار التنفيذ (Gantt Chart)</h3>
+            <Clock className="h-5 w-5 text-primary" />
+            <h3 className="text-base font-bold text-foreground">الجدول الزمني ومسار التنفيذ (Gantt Chart)</h3>
           </div>
           
           {!isEditingTimeline ? (
             <button
               onClick={() => { setIsEditingTimeline(true); setEditingSchedule(activeSchedule.map(s => ({...s}))); }}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-bold text-[#c5a880] hover:bg-slate-800 transition"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted border border-border text-xs font-bold text-primary hover:bg-slate-800 transition"
             >
               <Edit className="h-4 w-4" />
               تخصيص وتعديل الجدول
@@ -357,14 +449,14 @@ export default function ProjectSummaryTab() {
               </button>
               <button
                 onClick={() => setIsEditingTimeline(false)}
-                className="px-3 py-2 rounded-lg bg-slate-800 text-xs font-bold text-slate-300 hover:text-white transition"
+                className="px-3 py-2 rounded-lg bg-accent text-xs font-bold text-secondary-foreground hover:text-white transition"
               >
                 إلغاء
               </button>
               <button
                 onClick={handleSaveTimeline}
                 disabled={isSaving}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
               >
                 {isSaving ? 'جاري الحفظ...' : <><Save className="h-4 w-4" /> حفظ الجدول</>}
               </button>
@@ -372,7 +464,7 @@ export default function ProjectSummaryTab() {
           )}
         </div>
         
-        <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+        <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
           {hasOverrides 
             ? '✅ يتم عرض الجدول الزمني المخصص المحفوظ لهذا المشروع. اضغط "تخصيص" لتعديله.'
             : 'جدول تلقائي بناءً على تقدير أيام كل قسم. اضغط "تخصيص وتعديل" لتغيير الترتيب أو تقسيم أي مرحلة.'}
@@ -380,7 +472,7 @@ export default function ProjectSummaryTab() {
 
         {/* Timeline Ruler - horizontal axis */}
         {projectTotalDays > 0 && (
-          <div className="mb-2 relative h-6 border-b border-[#222634]">
+          <div className="mb-2 relative h-6 border-b border-border">
             {Array.from({ length: Math.min(Math.ceil(projectTotalDays / Math.max(1, Math.ceil(projectTotalDays / 10))), 12) }, (_, i) => {
               const step = Math.max(1, Math.ceil(projectTotalDays / 10));
               const day = i * step;
@@ -393,8 +485,8 @@ export default function ProjectSummaryTab() {
               );
             })}
             <div className="absolute top-0 left-full flex flex-col items-end" style={{ right: 0, left: 'auto' }}>
-              <div className="w-px h-2 bg-[#c5a880]"></div>
-              <span className="text-[8px] text-[#c5a880] font-bold mt-0.5">{projectTotalDays}</span>
+              <div className="w-px h-2 bg-primary"></div>
+              <span className="text-[8px] text-primary font-bold mt-0.5">{projectTotalDays}</span>
             </div>
           </div>
         )}
@@ -432,25 +524,25 @@ export default function ProjectSummaryTab() {
                       type="text" 
                       value={sec.title}
                       onChange={(e) => updateTimelineStage(sec.id, 'title', e.target.value)}
-                      className="flex-1 min-w-[140px] rounded border border-[#222634] bg-[#1a1c24] px-2 py-1.5 text-xs text-white focus:border-[#c5a880] focus:outline-none"
+                      className="flex-1 min-w-[140px] rounded border border-border bg-[#1a1c24] px-2 py-1.5 text-xs text-foreground focus:border-[#c5a880] focus:outline-none"
                       placeholder="اسم المرحلة"
                     />
-                    <div className="flex items-center gap-1 bg-[#1a1c24] rounded border border-[#222634] px-2 py-1">
-                      <span className="text-[10px] text-slate-500">بداية:</span>
+                    <div className="flex items-center gap-1 bg-[#1a1c24] rounded border border-border px-2 py-1">
+                      <span className="text-[10px] text-muted-foreground">بداية:</span>
                       <input 
                         type="number" min="0" value={sec.startDay}
                         onChange={(e) => updateTimelineStage(sec.id, 'startDay', e.target.value)}
-                        className="w-14 bg-transparent text-xs text-white text-center focus:outline-none"
+                        className="w-14 bg-transparent text-xs text-foreground text-center focus:outline-none"
                       />
                     </div>
-                    <div className="flex items-center gap-1 bg-[#1a1c24] rounded border border-[#222634] px-2 py-1">
-                      <span className="text-[10px] text-slate-500">مدة:</span>
+                    <div className="flex items-center gap-1 bg-[#1a1c24] rounded border border-border px-2 py-1">
+                      <span className="text-[10px] text-muted-foreground">مدة:</span>
                       <input 
                         type="number" min="1" value={sec.duration}
                         onChange={(e) => updateTimelineStage(sec.id, 'duration', e.target.value)}
-                        className="w-14 bg-transparent text-xs text-white text-center focus:outline-none"
+                        className="w-14 bg-transparent text-xs text-foreground text-center focus:outline-none"
                       />
-                      <span className="text-[10px] text-slate-500">يوم</span>
+                      <span className="text-[10px] text-muted-foreground">يوم</span>
                     </div>
                     <button
                       onClick={() => {
@@ -480,16 +572,16 @@ export default function ProjectSummaryTab() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 mb-0.5">
-                    {isPhase && <span className="text-[9px] text-slate-600 bg-slate-900 px-1.5 py-0.5 rounded">مرحلة {sec.phase}</span>}
-                    <span className="text-[11px] font-bold text-white truncate max-w-[200px]">{sec.title}</span>
-                    <span className="text-[9px] text-slate-500">
+                    {isPhase && <span className="text-[9px] text-slate-600 bg-muted px-1.5 py-0.5 rounded">مرحلة {sec.phase}</span>}
+                    <span className="text-[11px] font-bold text-foreground truncate max-w-[200px]">{sec.title}</span>
+                    <span className="text-[9px] text-muted-foreground">
                       (يوم {sec.startDay} → يوم {sec.endDay})
                     </span>
                   </div>
                 )}
                 
                 {/* Gantt Bar */}
-                <div className="bg-slate-900/60 border border-slate-800/50 h-8 rounded-md relative overflow-hidden">
+                <div className="bg-muted/60 border border-border/50 h-8 rounded-md relative overflow-hidden">
                   <div 
                     className={`absolute h-full rounded-md bg-gradient-to-r ${colorClass} flex items-center justify-center transition-all duration-500 ease-out shadow-lg`}
                     style={{
@@ -498,7 +590,7 @@ export default function ProjectSummaryTab() {
                       ...(sec.color ? { background: sec.color } : {})
                     }}
                   >
-                    <span className="text-[10px] font-extrabold text-white drop-shadow-md whitespace-nowrap px-2">
+                    <span className="text-[10px] font-extrabold text-foreground drop-shadow-md whitespace-nowrap px-2">
                       {sec.duration} يوم
                     </span>
                   </div>
@@ -513,7 +605,7 @@ export default function ProjectSummaryTab() {
           <div className="mt-6 flex justify-center gap-3">
             <button 
               onClick={addTimelineStage}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-slate-600 text-slate-400 hover:text-white hover:border-slate-400 transition text-xs font-bold"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-slate-600 text-muted-foreground hover:text-white hover:border-slate-400 transition text-xs font-bold"
             >
               <Plus className="h-4 w-4" />
               إضافة مرحلة حرة
@@ -522,20 +614,20 @@ export default function ProjectSummaryTab() {
         )}
 
         {/* Footer Summary */}
-        <div className="border-t border-[#222634] pt-4 mt-6 flex flex-col sm:flex-row justify-between gap-3">
+        <div className="border-t border-border pt-4 mt-6 flex flex-col sm:flex-row justify-between gap-3">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-sm bg-gradient-to-r from-blue-500 to-blue-600"></div>
-              <span className="text-[10px] text-slate-400">أعمال مختلفة</span>
+              <span className="text-[10px] text-muted-foreground">أعمال مختلفة</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-sm bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
-              <span className="text-[10px] text-slate-400">يمكن التداخل</span>
+              <span className="text-[10px] text-muted-foreground">يمكن التداخل</span>
             </div>
           </div>
           <div className="flex gap-6 text-xs font-bold">
-            <span className="text-slate-500">إجمالي المدة: <span className="text-[#c5a880]">{projectTotalDays} يوم عمل</span></span>
-            <span className="text-slate-500">مراحل العمل: <span className="text-white">{displaySchedule.length} مرحلة</span></span>
+            <span className="text-muted-foreground">إجمالي المدة: <span className="text-primary">{projectTotalDays} يوم عمل</span></span>
+            <span className="text-muted-foreground">مراحل العمل: <span className="text-foreground">{displaySchedule.length} مرحلة</span></span>
           </div>
         </div>
       </div>

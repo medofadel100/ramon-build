@@ -87,13 +87,13 @@ export default function InvitePage({ params }: InvitePageProps) {
 
   if (loading || loadingAuth) {
     return (
-      <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo">
+      <div className="min-h-screen bg-background flex flex-col font-cairo">
         <Navbar />
         <div className="flex-1 flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-2xl border border-[#222634] bg-[#13151c] p-8 shadow-2xl text-center">
-            <Loader2 className="h-10 w-10 text-[#c5a880] animate-spin mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-white mb-2">جاري التحقق من الدعوة...</h2>
-            <p className="text-sm text-slate-400">يرجى الانتظار قليلاً</p>
+          <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-2xl text-center">
+            <Loader2 className="h-10 w-10 text-primary animate-spin mx-auto mb-4" />
+            <h2 className="text-xl font-bold text-foreground mb-2">جاري التحقق من الدعوة...</h2>
+            <p className="text-sm text-muted-foreground">يرجى الانتظار قليلاً</p>
           </div>
         </div>
       </div>
@@ -101,21 +101,21 @@ export default function InvitePage({ params }: InvitePageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo">
+    <div className="min-h-screen bg-background flex flex-col font-cairo">
       <Navbar />
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-md rounded-2xl border border-[#222634] bg-[#13151c] p-8 shadow-2xl text-center">
+        <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-2xl text-center">
           
           {error && (
             <div className="animate-in zoom-in duration-300">
               <div className="mx-auto w-16 h-16 bg-rose-950/50 rounded-full flex items-center justify-center border border-rose-900/50 mb-6">
                 <XCircle className="h-8 w-8 text-rose-500" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-3">الدعوة غير صالحة</h2>
-              <p className="text-sm text-slate-400 mb-8">{error}</p>
+              <h2 className="text-xl font-bold text-foreground mb-3">الدعوة غير صالحة</h2>
+              <p className="text-sm text-muted-foreground mb-8">{error}</p>
               <Link
                 href="/dashboard"
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold border border-slate-800 hover:bg-slate-800 transition"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-muted text-foreground text-sm font-bold border border-border hover:bg-slate-800 transition"
               >
                 العودة للوحة التحكم
                 <ArrowRight className="h-4 w-4" />
@@ -128,18 +128,18 @@ export default function InvitePage({ params }: InvitePageProps) {
               <div className="mx-auto w-16 h-16 bg-emerald-950/50 rounded-full flex items-center justify-center border border-emerald-900/50 mb-6">
                 <CheckCircle className="h-8 w-8 text-emerald-500" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">تم قبول الدعوة بنجاح!</h2>
-              <p className="text-sm text-slate-400 mb-2">
+              <h2 className="text-2xl font-bold text-foreground mb-2">تم قبول الدعوة بنجاح!</h2>
+              <p className="text-sm text-muted-foreground mb-2">
                 تم إضافتك إلى فريق العمل كـ 
-                <span className="text-[#c5a880] font-bold mx-1 px-2 py-0.5 bg-[#c5a880]/10 rounded border border-[#c5a880]/20">
+                <span className="text-primary font-bold mx-1 px-2 py-0.5 bg-primary/10 rounded border border-primary/20">
                   {inviteData?.specialtyLabel || 'مهندس'}
                 </span>
               </p>
-              <p className="text-xs text-slate-500 mb-8">يمكنك الآن الوصول إلى المشروع والتعديل عليه.</p>
+              <p className="text-xs text-muted-foreground mb-8">يمكنك الآن الوصول إلى المشروع والتعديل عليه.</p>
               
               <Link
                 href={`/projects/${projectId}`}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-[#c5a880] text-[#0d0e12] text-sm font-bold hover:brightness-110 shadow-lg shadow-[#c5a880]/20 transition"
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-primary-foreground text-sm font-bold hover:brightness-110 shadow-lg shadow-[#c5a880]/20 transition"
               >
                 الدخول إلى المشروع
                 <ArrowRight className="h-4 w-4" />

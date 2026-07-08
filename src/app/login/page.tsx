@@ -143,13 +143,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0d0e12] px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 rounded-2xl border border-slate-800 bg-[#13151c] p-8 shadow-2xl backdrop-blur-sm">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 rounded-2xl border border-border bg-card p-8 shadow-2xl backdrop-blur-sm">
         <div className="text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#c5a880] to-[#e5c595] text-[#0d0e12] font-bold text-2xl shadow-lg">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#c5a880] to-[#e5c595] text-primary-foreground font-bold text-2xl shadow-lg">
             R
           </div>
-          <h2 className="mt-6 text-center font-cairo text-2xl font-bold tracking-tight text-white">
+          <h2 className="mt-6 text-center font-cairo text-2xl font-bold tracking-tight text-foreground">
             المكتب الفني لشركة رامون للتشطيبات والمقاولات
           </h2>
           <p className="mt-2 text-center font-cairo text-sm text-[#8a96a8]">
@@ -167,7 +167,7 @@ export default function LoginPage() {
           {isRegister && (
             <>
               <div>
-                <label className="block text-right text-xs font-cairo font-medium text-slate-400 mb-1.5">
+                <label className="block text-right text-xs font-cairo font-medium text-muted-foreground mb-1.5">
                   اسم المهندس *
                 </label>
                 <input
@@ -175,18 +175,18 @@ export default function LoginPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-foreground placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                   placeholder="مثال: أحمد فاضل"
                 />
               </div>
               <div>
-                <label className="block text-right text-xs font-cairo font-medium text-slate-400 mb-1.5">
+                <label className="block text-right text-xs font-cairo font-medium text-muted-foreground mb-1.5">
                   المسمى الوظيفي
                 </label>
                 <select
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-foreground placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                 >
                   <option value="مهندس مكتب فني">مهندس مكتب فني</option>
                   <option value="مهندس حصر ومواصفات">مهندس حصر ومواصفات</option>
@@ -195,14 +195,14 @@ export default function LoginPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-right text-xs font-cairo font-medium text-slate-400 mb-1.5">
+                <label className="block text-right text-xs font-cairo font-medium text-muted-foreground mb-1.5">
                   رقم الهاتف (الواتس اب)
                 </label>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-foreground placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                   placeholder="01xxxxxxxxx"
                 />
               </div>
@@ -210,7 +210,7 @@ export default function LoginPage() {
           )}
 
           <div>
-            <label className="block text-right text-xs font-cairo font-medium text-slate-400 mb-1.5">
+            <label className="block text-right text-xs font-cairo font-medium text-muted-foreground mb-1.5">
               البريد الإلكتروني *
             </label>
             <input
@@ -218,13 +218,13 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880] dir-ltr"
+              className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-foreground placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880] dir-ltr"
               placeholder="engineer@ramonbuild.com"
             />
           </div>
 
           <div>
-            <label className="block text-right text-xs font-cairo font-medium text-slate-400 mb-1.5">
+            <label className="block text-right text-xs font-cairo font-medium text-muted-foreground mb-1.5">
               كلمة المرور *
             </label>
             <input
@@ -232,17 +232,17 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+              className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-foreground placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
               placeholder="••••••••"
             />
             {isRegister && password.length > 0 && (
-              <p className="mt-2 text-[11px] text-slate-400">قوة كلمة المرور: <span className="font-semibold text-white">{passwordStrength}</span></p>
+              <p className="mt-2 text-[11px] text-muted-foreground">قوة كلمة المرور: <span className="font-semibold text-foreground">{passwordStrength}</span></p>
             )}
           </div>
 
           {isRegister && (
             <div>
-              <label className="block text-right text-xs font-cairo font-medium text-slate-400 mb-1.5">
+              <label className="block text-right text-xs font-cairo font-medium text-muted-foreground mb-1.5">
                 تأكيد كلمة المرور *
               </label>
               <input
@@ -250,7 +250,7 @@ export default function LoginPage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-white placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                className="w-full rounded-lg border border-border bg-[#1a1c24] px-4 py-2.5 text-right font-cairo text-sm text-foreground placeholder-slate-500 focus:border-[#c5a880] focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                 placeholder="••••••••"
               />
             </div>
@@ -259,7 +259,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loadingLocal}
-            className="flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] py-2.5 font-cairo text-sm font-semibold text-[#0d0e12] shadow-lg hover:brightness-110 active:brightness-95 disabled:opacity-50 transition duration-150"
+            className="flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#c5a880] to-[#e5c595] py-2.5 font-cairo text-sm font-semibold text-primary-foreground shadow-lg hover:brightness-110 active:brightness-95 disabled:opacity-50 transition duration-150"
           >
             {loadingLocal ? (
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#0d0e12] border-t-transparent"></div>
@@ -277,7 +277,7 @@ export default function LoginPage() {
               setIsRegister(!isRegister);
               setErrorLocal('');
             }}
-            className="font-cairo text-xs text-[#c5a880] hover:underline"
+            className="font-cairo text-xs text-primary hover:underline"
           >
             {isRegister ? 'لديك حساب بالفعل؟ سجل دخولك' : 'لا تملك حساب؟ اطلب إنشاء حساب أو سجل كمهندس جديد'}
           </button>

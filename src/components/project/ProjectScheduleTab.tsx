@@ -95,36 +95,36 @@ export default function ProjectScheduleTab() {
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h3 className="text-lg font-black text-white flex items-center gap-2">
+          <h3 className="text-lg font-black text-foreground flex items-center gap-2">
             <CalendarDays className="w-5 h-5 text-indigo-400" />
             الجدول الزمني التفاعلي (Gantt)
           </h3>
-          <p className="text-xs text-slate-400 mt-1 font-medium">اسحب البنود لتعديل تاريخ البداية والنهاية، واسحب الشريط الأخضر لتحديث نسبة الإنجاز.</p>
+          <p className="text-xs text-muted-foreground mt-1 font-medium">اسحب البنود لتعديل تاريخ البداية والنهاية، واسحب الشريط الأخضر لتحديث نسبة الإنجاز.</p>
         </div>
 
-        <div className="flex bg-[#1a1c24] border border-[#222634] rounded-lg p-1">
+        <div className="flex bg-[#1a1c24] border border-border rounded-lg p-1">
           <button
             onClick={() => setView(ViewMode.Day)}
-            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Day ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white'}`}
+            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Day ? 'bg-indigo-500 text-foreground' : 'text-muted-foreground hover:text-white'}`}
           >
             يومي
           </button>
           <button
             onClick={() => setView(ViewMode.Week)}
-            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Week ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white'}`}
+            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Week ? 'bg-indigo-500 text-foreground' : 'text-muted-foreground hover:text-white'}`}
           >
             أسبوعي
           </button>
           <button
             onClick={() => setView(ViewMode.Month)}
-            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Month ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white'}`}
+            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Month ? 'bg-indigo-500 text-foreground' : 'text-muted-foreground hover:text-white'}`}
           >
             شهري
           </button>
         </div>
       </div>
 
-      <div className="bg-[#13151c] rounded-xl border border-[#222634] overflow-x-auto p-4">
+      <div className="bg-card rounded-xl border border-border overflow-x-auto p-4">
         {tasks.length > 0 ? (
           <div className="min-w-[800px]">
             <Gantt
@@ -142,7 +142,7 @@ export default function ProjectScheduleTab() {
         ) : (
           <div className="text-center py-12">
             <Calendar className="w-12 h-12 text-slate-700 mx-auto mb-3" />
-            <p className="text-sm text-slate-500 font-bold">لا توجد بنود مفعلة في هذا المشروع لعرضها في الجدول الزمني.</p>
+            <p className="text-sm text-muted-foreground font-bold">لا توجد بنود مفعلة في هذا المشروع لعرضها في الجدول الزمني.</p>
           </div>
         )}
       </div>

@@ -122,8 +122,8 @@ export default function AdminConstantsPage() {
 
   if (loadingAuth || !user) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
@@ -136,15 +136,15 @@ export default function AdminConstantsPage() {
 
     return (
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-[#c5a880] mb-4 flex items-center gap-2">
-          <div className="h-1.5 w-1.5 rounded-full bg-[#c5a880]"></div>
+        <h3 className="text-sm font-bold text-primary mb-4 flex items-center gap-2">
+          <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
           {title}
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {items.map(c => (
-            <div key={c.key} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-[#222634] bg-[#1a1c24] hover:border-[#c5a880]/30 transition group">
+            <div key={c.key} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-border bg-[#1a1c24] hover:border-[#c5a880]/30 transition group">
               <div className="flex-1">
-                <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                   {c.label}
                   {c.key.startsWith('custom_') && (
                     <span className="text-[9px] px-1.5 py-0.5 rounded bg-sky-900/30 text-sky-400 border border-sky-800/40">مضاف يدوياً</span>
@@ -152,11 +152,11 @@ export default function AdminConstantsPage() {
                 </h4>
                 {c.group === 'materials' && (
                   <div className="mt-3 flex items-center gap-2">
-                    <Package className="h-3.5 w-3.5 text-slate-500" />
+                    <Package className="h-3.5 w-3.5 text-muted-foreground" />
                     <select
                       value={c.supplierId || ''}
                       onChange={(e) => handleConstantChange(c.key, 'supplierId', e.target.value)}
-                      className="bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-[#c5a880] w-48"
+                      className="bg-card border border-border rounded px-2 py-1 text-xs text-secondary-foreground focus:outline-none focus:border-[#c5a880] w-48"
                     >
                       <option value="">-- لم يتم ربط مورد --</option>
                       {suppliers.map(s => (
@@ -172,16 +172,16 @@ export default function AdminConstantsPage() {
                     type="number"
                     value={c.defaultValue}
                     onChange={(e) => handleConstantChange(c.key, 'defaultValue', e.target.value)}
-                    className="w-full bg-[#13151c] border border-[#222634] rounded-lg px-3 py-2 text-left text-sm font-bold text-emerald-400 focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-2 text-left text-sm font-bold text-emerald-400 focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 pointer-events-none">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
                     {c.unit}
                   </span>
                 </div>
                 {c.key.startsWith('custom_') && (
                   <button
                     onClick={() => handleDelete(c.key)}
-                    className="opacity-0 group-hover:opacity-100 p-2 rounded-lg bg-slate-900 border border-slate-800 text-rose-500 hover:bg-rose-950/20 transition"
+                    className="opacity-0 group-hover:opacity-100 p-2 rounded-lg bg-muted border border-border text-rose-500 hover:bg-rose-950/20 transition"
                     title="حذف الخامة"
                   >
                     <X className="h-4 w-4" />
@@ -196,25 +196,25 @@ export default function AdminConstantsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo select-none pb-12">
+    <div className="min-h-screen bg-background flex flex-col font-cairo select-none pb-12">
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-8 space-y-6">
         
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#13151c] p-5 rounded-xl border border-[#222634]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card p-5 rounded-xl border border-border">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-[#c5a880]/10 text-[#c5a880] shadow">
+            <div className="p-2.5 rounded-xl bg-primary/10 text-primary shadow">
               <Globe className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">الكتالوج المركزي للخامات والأسعار</h1>
-              <p className="text-xs text-slate-400 mt-0.5">القاعدة المركزية التي تُسحب منها أسعار وخامات كافة المشاريع الجديدة في النظام.</p>
+              <h1 className="text-xl font-bold text-foreground">الكتالوج المركزي للخامات والأسعار</h1>
+              <p className="text-xs text-muted-foreground mt-0.5">القاعدة المركزية التي تُسحب منها أسعار وخامات كافة المشاريع الجديدة في النظام.</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowAddModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm font-bold hover:bg-slate-700 transition"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-accent border border-border text-foreground text-sm font-bold hover:bg-slate-700 transition"
             >
               <Plus className="h-4 w-4" />
               إضافة خامة جديدة
@@ -222,7 +222,7 @@ export default function AdminConstantsPage() {
             <button
               onClick={handleSave}
               disabled={isSaving || loading}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-bold shadow hover:brightness-110 transition disabled:opacity-50"
             >
               {isSaving ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
               حفظ التعديلات
@@ -231,11 +231,11 @@ export default function AdminConstantsPage() {
         </div>
 
         {/* Informational Tip */}
-        <div className="rounded-xl border border-[#222634] bg-slate-900/40 p-4 flex gap-3 text-slate-400 text-xs font-semibold leading-relaxed">
+        <div className="rounded-xl border border-border bg-muted/40 p-4 flex gap-3 text-muted-foreground text-xs font-semibold leading-relaxed">
           <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
           <div>
-            <p className="text-white font-bold">تأثير الكتالوج</p>
-            <p className="text-slate-400 mt-1 font-medium">
+            <p className="text-foreground font-bold">تأثير الكتالوج</p>
+            <p className="text-muted-foreground mt-1 font-medium">
               تعديلك للأسعار هنا سيعتبر "الافتراضي الجديد" لأي مشروع يتم إنشاؤه من الآن فصاعداً. المشاريع القديمة لن تتأثر أسعارها بهذه التعديلات لضمان استقرار عقودها، إلا إذا دخلت لصفحة المشروع وقمت بتحديث أسعاره من هناك.
             </p>
           </div>
@@ -243,11 +243,11 @@ export default function AdminConstantsPage() {
 
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
-            <p className="text-xs text-slate-400">جاري تحميل الكتالوج العالمي...</p>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            <p className="text-xs text-muted-foreground">جاري تحميل الكتالوج العالمي...</p>
           </div>
         ) : (
-          <div className="bg-[#13151c] rounded-2xl p-6 border border-[#222634]">
+          <div className="bg-card rounded-2xl p-6 border border-border">
             {renderGroup('خامات عامة (أسمنت، رمل، حديد)', materials, 'general')}
             {renderGroup('أعمال المباني', materials, 'masonry')}
             {renderGroup('أعمال المحارة والدهانات والجبس', materials, 'plastering')}
@@ -270,12 +270,12 @@ export default function AdminConstantsPage() {
       {/* Add Custom Constant Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-[#13151c] border border-[#222634] rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between p-5 border-b border-[#222634] bg-[#1a1c24]">
-              <h3 className="text-lg font-bold text-white">إضافة خامة للكتالوج المركزي</h3>
+          <div className="bg-card border border-border rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-5 border-b border-border bg-[#1a1c24]">
+              <h3 className="text-lg font-bold text-foreground">إضافة خامة للكتالوج المركزي</h3>
               <button 
                 onClick={() => setShowAddModal(false)}
-                className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition"
+                className="p-2 rounded-lg hover:bg-slate-800 text-muted-foreground hover:text-white transition"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -283,23 +283,23 @@ export default function AdminConstantsPage() {
             
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-400 mb-2">اسم الخامة أو التوصيف</label>
+                <label className="block text-xs font-bold text-muted-foreground mb-2">اسم الخامة أو التوصيف</label>
                 <input
                   type="text"
                   placeholder="مثال: لفة سلك دش 100م"
                   value={newConst.label}
                   onChange={(e) => setNewConst({...newConst, label: e.target.value, key: e.target.value})}
-                  className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  className="w-full rounded-lg bg-[#1a1c24] border border-border px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 mb-2">القسم الهندسي</label>
+                  <label className="block text-xs font-bold text-muted-foreground mb-2">القسم الهندسي</label>
                   <select
                     value={newConst.subgroup}
                     onChange={(e) => setNewConst({...newConst, subgroup: e.target.value as any})}
-                    className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                    className="w-full rounded-lg bg-[#1a1c24] border border-border px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                   >
                     <option value="general">خامات عامة</option>
                     <option value="masonry">أعمال المباني</option>
@@ -318,24 +318,24 @@ export default function AdminConstantsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 mb-2">وحدة القياس</label>
+                  <label className="block text-xs font-bold text-muted-foreground mb-2">وحدة القياس</label>
                   <input
                     type="text"
                     placeholder="مثال: ج.م، متر، لتر"
                     value={newConst.unit}
                     onChange={(e) => setNewConst({...newConst, unit: e.target.value})}
-                    className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                    className="w-full rounded-lg bg-[#1a1c24] border border-border px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-400 mb-2">القيمة / السعر الافتراضي</label>
+                <label className="block text-xs font-bold text-muted-foreground mb-2">القيمة / السعر الافتراضي</label>
                 <input
                   type="number"
                   value={newConst.value || ''}
                   onChange={(e) => setNewConst({...newConst, value: parseFloat(e.target.value)})}
-                  className="w-full rounded-lg bg-[#1a1c24] border border-[#222634] px-4 py-3 text-sm font-bold text-emerald-400 focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
+                  className="w-full rounded-lg bg-[#1a1c24] border border-border px-4 py-3 text-sm font-bold text-emerald-400 focus:outline-none focus:ring-1 focus:ring-[#c5a880]"
                 />
               </div>
 
@@ -343,7 +343,7 @@ export default function AdminConstantsPage() {
                 <button
                   onClick={handleAddCustomConstant}
                   disabled={!newConst.label || !newConst.value}
-                  className="w-full py-3 rounded-xl bg-[#c5a880] text-[#0d0e12] font-bold shadow hover:brightness-110 transition disabled:opacity-50"
+                  className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold shadow hover:brightness-110 transition disabled:opacity-50"
                 >
                   إضافة الخامة
                 </button>

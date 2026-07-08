@@ -6,13 +6,13 @@ import MaterialsMarketplacePage from '@/app/materials/page';
 export default function ProjectMaterialsMarketTab() {
   return (
     <div className="space-y-6">
-      <div className="bg-[#13151c] border border-[#222634] rounded-xl p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="bg-card border border-border rounded-xl p-6 flex flex-col md:flex-row justify-between items-center gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Store className="w-5 h-5 text-cyan-400" />
             سوق الخامات والأسعار المباشرة
           </h2>
-          <p className="text-sm text-slate-400 mt-1">تصفح الأسعار المحدثة من المتاجر واربطها ببنود المشروع مباشرة (قريباً).</p>
+          <p className="text-sm text-muted-foreground mt-1">تصفح الأسعار المحدثة من المتاجر واربطها ببنود المشروع مباشرة (قريباً).</p>
         </div>
         <Link 
           href="/materials" 
@@ -25,7 +25,7 @@ export default function ProjectMaterialsMarketTab() {
       </div>
       
       {/* Render the full marketplace directly here but wrap it to isolate styles if needed, or simply render the component */}
-      <div className="border border-[#222634] rounded-xl overflow-hidden relative" style={{ height: '800px' }}>
+      <div className="border border-border rounded-xl overflow-hidden relative" style={{ height: '800px' }}>
         <iframe src="/materials" className="w-full h-full border-0" title="Materials Marketplace" />
       </div>
     </div>

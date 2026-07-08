@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { ProjectHeader, formatDate } from '@/lib/project-service';
-import { Save, Info, User, Phone, MapPin, Calendar, CheckSquare, Eye, Trash2 } from 'lucide-react';
+import { Save, Info, User, Phone, MapPin, Calendar, CheckSquare, Eye, Trash2, Copy, ExternalLink, Calculator } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -26,6 +26,7 @@ export default function ProjectHeaderTab() {
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState(currentProject?.header.expectedDeliveryDate || '');
   const [actualDeliveryDate, setActualDeliveryDate] = useState(currentProject?.header.actualDeliveryDate || '');
   const [status, setStatus] = useState<ProjectHeader['status']>(currentProject?.header.status || 'quantity_prep');
+  const [applyVat, setApplyVat] = useState(currentProject?.header.applyVat ?? true);
   const [isEditing, setIsEditing] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -44,7 +45,8 @@ export default function ProjectHeaderTab() {
       issueDate,
       expectedDeliveryDate,
       actualDeliveryDate,
-      status
+      status,
+      applyVat
     });
     setIsEditing(false);
     setSaveSuccess(true);
@@ -115,34 +117,34 @@ export default function ProjectHeaderTab() {
       
       {/* Overview Metadata Card */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
-          <span className="block text-xs font-semibold text-slate-500 mb-1">رمز التعريف والمسلسل</span>
-          <p className="text-xl font-extrabold text-[#c5a880] tracking-wider">{currentProject.header.projectCode}</p>
+        <div className="rounded-xl border border-border bg-[#1a1c24] p-5">
+          <span className="block text-xs font-semibold text-muted-foreground mb-1">رمز التعريف والمسلسل</span>
+          <p className="text-xl font-extrabold text-primary tracking-wider">{currentProject.header.projectCode}</p>
         </div>
-        <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
-          <span className="block text-xs font-semibold text-slate-500 mb-1">نوع المشروع</span>
-          <p className="text-sm font-bold text-white mt-1">{getWorkTypeLabel(currentProject.header.projectType.workType)}</p>
+        <div className="rounded-xl border border-border bg-[#1a1c24] p-5">
+          <span className="block text-xs font-semibold text-muted-foreground mb-1">نوع المشروع</span>
+          <p className="text-sm font-bold text-foreground mt-1">{getWorkTypeLabel(currentProject.header.projectType.workType)}</p>
         </div>
-        <div className="rounded-xl border border-[#222634] bg-[#1a1c24] p-5">
-          <span className="block text-xs font-semibold text-slate-500 mb-1">حالة المستند الحالية</span>
+        <div className="rounded-xl border border-border bg-[#1a1c24] p-5">
+          <span className="block text-xs font-semibold text-muted-foreground mb-1">حالة المستند الحالية</span>
           <div className="flex items-center gap-2 mt-1">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#c5a880] animate-pulse"></span>
-            <p className="text-sm font-bold text-white">{getStatusLabel(currentProject.header.status)}</p>
+            <span className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse"></span>
+            <p className="text-sm font-bold text-foreground">{getStatusLabel(currentProject.header.status)}</p>
           </div>
         </div>
       </div>
 
       {/* Main Details Form */}
-      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
-        <div className="flex items-center justify-between border-b border-[#222634] pb-4 mb-6">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-xl">
+        <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
           <div>
-            <h3 className="text-lg font-bold text-white">تفاصيل وملف المشروع</h3>
-            <p className="text-xs text-slate-400 mt-0.5">البيانات الفنية وتفاصيل الاتصال الخاصة بالعميل والموقع.</p>
+            <h3 className="text-lg font-bold text-foreground">تفاصيل وملف المشروع</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">البيانات الفنية وتفاصيل الاتصال الخاصة بالعميل والموقع.</p>
           </div>
           {canEdit && !isEditing && (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-[#c5a880] hover:bg-slate-800 transition"
+              className="px-4 py-1.5 rounded-lg bg-muted border border-border text-xs font-semibold text-primary hover:bg-slate-800 transition"
             >
               تعديل البيانات
             </button>
@@ -160,8 +162,8 @@ export default function ProjectHeaderTab() {
             
             {/* Project Name */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <Info className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <Info className="h-3.5 w-3.5 text-muted-foreground" />
                 اسم المشروع
               </label>
               <input
@@ -170,14 +172,14 @@ export default function ProjectHeaderTab() {
                 disabled={!isEditing}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 disabled:border-slate-850 px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-[#1a1c24]/50 disabled:bg-slate-900/30 disabled:border-slate-850 px-4 py-2.5 text-right text-sm text-foreground placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
               />
             </div>
 
             {/* Owner Name */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-muted-foreground" />
                 اسم المالك (العميل)
               </label>
               <input
@@ -186,14 +188,14 @@ export default function ProjectHeaderTab() {
                 disabled={!isEditing}
                 value={ownerName}
                 onChange={(e) => setOwnerName(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
               />
             </div>
 
             {/* Owner Phone */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <Phone className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                 رقم تليفون المالك
               </label>
               <div className="relative">
@@ -203,7 +205,7 @@ export default function ProjectHeaderTab() {
                   disabled={!isEditing}
                   value={ownerPhone}
                   onChange={(e) => setOwnerPhone(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                 />
                 {!isEditing && ownerPhone && (
                   <a
@@ -220,8 +222,8 @@ export default function ProjectHeaderTab() {
 
             {/* Consultant Name */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-muted-foreground" />
                 اسم الاستشاري
               </label>
               <input
@@ -230,14 +232,14 @@ export default function ProjectHeaderTab() {
                 value={consultantName}
                 onChange={(e) => setConsultantName(e.target.value)}
                 placeholder="اسم المهندس الاستشاري أو المكتب"
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
               />
             </div>
 
             {/* Design Code */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <CheckSquare className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <CheckSquare className="h-3.5 w-3.5 text-muted-foreground" />
                 الكود التصميمي / المرجعي
               </label>
               <input
@@ -245,21 +247,21 @@ export default function ProjectHeaderTab() {
                 disabled={!isEditing}
                 value={designCode}
                 onChange={(e) => setDesignCode(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
               />
             </div>
 
             {/* Governorate */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
                 الموقع / المحافظة
               </label>
               <select
                 disabled={!isEditing}
                 value={governorate}
                 onChange={(e) => setGovernorate(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
               >
                 {governorates.map(g => <option key={g} value={g}>{g}</option>)}
               </select>
@@ -267,8 +269,8 @@ export default function ProjectHeaderTab() {
 
             {/* Location details */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
                 العنوان التفصيلي
               </label>
               <input
@@ -276,14 +278,14 @@ export default function ProjectHeaderTab() {
                 disabled={!isEditing}
                 value={addressDetails}
                 onChange={(e) => setAddressDetails(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-[#1a1c24]/50 disabled:bg-slate-900/30 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
               />
             </div>
 
             {/* Issue Date */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
                 تاريخ الإصدار (بدء المشروع)
               </label>
               {isEditing ? (
@@ -291,10 +293,10 @@ export default function ProjectHeaderTab() {
                   type="date"
                   value={issueDate}
                   onChange={(e) => setIssueDate(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                 />
               ) : (
-                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                <div className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-foreground">
                   {formatDate(issueDate)}
                 </div>
               )}
@@ -302,8 +304,8 @@ export default function ProjectHeaderTab() {
 
             {/* Expected Delivery Date */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
                 تاريخ التسليم المتوقع
               </label>
               {isEditing ? (
@@ -311,10 +313,10 @@ export default function ProjectHeaderTab() {
                   type="date"
                   value={expectedDeliveryDate}
                   onChange={(e) => setExpectedDeliveryDate(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                 />
               ) : (
-                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                <div className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-foreground">
                   {formatDate(expectedDeliveryDate)}
                 </div>
               )}
@@ -322,7 +324,7 @@ export default function ProjectHeaderTab() {
 
             {/* Actual Delivery Date */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5 text-emerald-500" />
                 تاريخ التسليم الفعلي
               </label>
@@ -331,10 +333,10 @@ export default function ProjectHeaderTab() {
                   type="date"
                   value={actualDeliveryDate}
                   onChange={(e) => setActualDeliveryDate(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                 />
               ) : (
-                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                <div className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-foreground">
                   {formatDate(actualDeliveryDate)}
                 </div>
               )}
@@ -342,15 +344,15 @@ export default function ProjectHeaderTab() {
 
             {/* Status */}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <Eye className="h-3.5 w-3.5 text-slate-500" />
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <Eye className="h-3.5 w-3.5 text-muted-foreground" />
                 حالة المستند
               </label>
               {isEditing ? (
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                 >
                   <option value="quantity_prep">تجهيز الكميات</option>
                   <option value="pricing_prep">تجهيز الأسعار</option>
@@ -361,8 +363,31 @@ export default function ProjectHeaderTab() {
                   <option value="handover">التسليم</option>
                 </select>
               ) : (
-                <div className="w-full rounded-lg border border-[#222634] bg-[#1a1c24]/50 px-4 py-2.5 text-right text-sm text-white">
+                <div className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground">
                   {getStatusLabel(status)}
+                </div>
+              )}
+            </div>
+
+            {/* VAT */}
+            <div>
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
+                <Calculator className="h-3.5 w-3.5 text-muted-foreground" />
+                حساب ضريبة القيمة المضافة (VAT 14%)
+              </label>
+              {isEditing ? (
+                <div className="flex items-center justify-end gap-3 w-full rounded-lg border border-border bg-card px-4 py-2.5">
+                  <span className="text-sm font-semibold text-foreground">تفعيل الضريبة لأوامر الشراء</span>
+                  <input
+                    type="checkbox"
+                    checked={applyVat}
+                    onChange={(e) => setApplyVat(e.target.checked)}
+                    className="w-4 h-4 text-primary bg-muted border-border rounded focus:ring-primary focus:ring-2"
+                  />
+                </div>
+              ) : (
+                <div className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground">
+                  {applyVat ? 'مفعلة (14%)' : 'غير مفعلة'}
                 </div>
               )}
             </div>
@@ -371,7 +396,7 @@ export default function ProjectHeaderTab() {
 
           {/* Form Actions */}
           {isEditing && (
-            <div className="flex gap-3 justify-end border-t border-[#222634] pt-5 mt-8">
+            <div className="flex gap-3 justify-end border-t border-border pt-5 mt-8">
               <button
                 type="button"
                 onClick={() => {
@@ -388,14 +413,15 @@ export default function ProjectHeaderTab() {
                   setExpectedDeliveryDate(currentProject.header.expectedDeliveryDate || '');
                   setActualDeliveryDate(currentProject.header.actualDeliveryDate || '');
                   setStatus(currentProject.header.status);
+                  setApplyVat(currentProject.header.applyVat ?? true);
                 }}
-                className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-400 hover:text-white transition"
+                className="px-4 py-2 rounded-lg bg-muted border border-border text-xs font-semibold text-muted-foreground hover:text-white transition"
               >
                 إلغاء التغييرات
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold shadow hover:brightness-110 transition animate-pulse"
+                className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold shadow hover:brightness-110 transition animate-pulse"
               >
                 <Save className="h-4 w-4" />
                 حفظ التعديلات
@@ -403,6 +429,38 @@ export default function ProjectHeaderTab() {
             </div>
           )}
         </form>
+      </div>
+
+      {/* Client Portal Link */}
+      <div className="rounded-xl border border-indigo-900/30 bg-indigo-950/10 p-6 shadow-xl mt-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-lg font-bold text-indigo-400 flex items-center gap-2">
+              <ExternalLink className="h-5 w-5" />
+              بوابة العميل (Client Portal)
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">شارك هذا الرابط مع العميل لمتابعة إنجاز المشروع والمستخلصات الخاصة به.</p>
+            <div className="mt-3 flex items-center gap-2 max-w-lg">
+              <input 
+                type="text" 
+                readOnly 
+                value={`${typeof window !== 'undefined' ? window.location.origin : ''}/projects/${currentProject.id}/client`} 
+                className="w-full rounded-lg border border-border bg-[#1a1c24]/50 px-4 py-2 text-left text-xs text-muted-foreground focus:outline-none"
+                dir="ltr"
+              />
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(`${window.location.origin}/projects/${currentProject.id}/client`);
+                  alert('تم نسخ الرابط بنجاح!');
+                }}
+                className="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition flex items-center gap-2"
+              >
+                <Copy className="h-4 w-4" />
+                نسخ
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {canEdit && (
@@ -413,7 +471,7 @@ export default function ProjectHeaderTab() {
                 منطقة الخطر (Danger Zone) 
                 <span className="text-sm font-normal text-rose-400 mr-2 opacity-80">- اوعى تدوس هنا يا عزازي ابوس ايدك 😂</span>
               </h3>
-              <p className="text-xs text-slate-400 mt-1">حذف المشروع سيؤدي إلى مسح جميع البيانات المتعلقة به بشكل نهائي (الأسعار، الحصر، الموردين، إلخ).</p>
+              <p className="text-xs text-muted-foreground mt-1">حذف المشروع سيؤدي إلى مسح جميع البيانات المتعلقة به بشكل نهائي (الأسعار، الحصر، الموردين، إلخ).</p>
             </div>
             <button
               onClick={handleDeleteProject}

@@ -98,13 +98,13 @@ export default function ProjectSuppliersTab() {
     <div className="space-y-6 font-cairo select-none">
       
       {/* Section Toggle */}
-      <div className="flex items-center gap-2 border-b border-[#222634] pb-3">
+      <div className="flex items-center gap-2 border-b border-border pb-3">
         <button
           onClick={() => { setActiveSection('suppliers'); resetForm(); }}
           className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold border transition ${
             activeSection === 'suppliers'
-              ? 'bg-[#c5a880]/10 border-[#c5a880] text-white'
-              : 'border-transparent text-slate-400 hover:text-white'
+              ? 'bg-primary/10 border-primary text-foreground'
+              : 'border-transparent text-muted-foreground hover:text-white'
           }`}
         >
           <Package className="h-4 w-4" />
@@ -114,8 +114,8 @@ export default function ProjectSuppliersTab() {
           onClick={() => { setActiveSection('workers'); resetForm(); }}
           className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold border transition ${
             activeSection === 'workers'
-              ? 'bg-[#c5a880]/10 border-[#c5a880] text-white'
-              : 'border-transparent text-slate-400 hover:text-white'
+              ? 'bg-primary/10 border-primary text-foreground'
+              : 'border-transparent text-muted-foreground hover:text-white'
           }`}
         >
           <Hammer className="h-4 w-4" />
@@ -127,7 +127,7 @@ export default function ProjectSuppliersTab() {
       {canEdit && !showAddForm && (
         <button
           onClick={() => { setShowAddForm(true); setEditingId(null); setFormName(''); setFormPhone(''); setFormSpecialty(''); setFormNotes(''); setFormDailyRate(0); }}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition"
         >
           <Plus className="h-4 w-4" />
           {activeSection === 'suppliers' ? 'إضافة مورد جديد' : 'إضافة صنايعي جديد'}
@@ -136,34 +136,34 @@ export default function ProjectSuppliersTab() {
 
       {/* Add/Edit Form */}
       {showAddForm && (
-        <div className="rounded-xl border border-[#c5a880]/30 bg-[#1a1c24] p-5 space-y-4">
-          <h4 className="text-sm font-bold text-white">
+        <div className="rounded-xl border border-primary/30 bg-[#1a1c24] p-5 space-y-4">
+          <h4 className="text-sm font-bold text-foreground">
             {editingId ? 'تعديل البيانات' : (activeSection === 'suppliers' ? 'إضافة مورد جديد' : 'إضافة صنايعي جديد')}
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">الاسم *</label>
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5">الاسم *</label>
               <input
                 type="text" value={formName} onChange={(e) => setFormName(e.target.value)}
                 placeholder="الاسم الكامل"
-                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
               />
             </div>
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">رقم التليفون</label>
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5">رقم التليفون</label>
               <input
                 type="tel" value={formPhone} onChange={(e) => setFormPhone(e.target.value)}
                 placeholder="01xxxxxxxxx"
-                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
               />
             </div>
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5">
                 {activeSection === 'suppliers' ? 'التخصص' : 'الحرفة'}
               </label>
               <select
                 value={formSpecialty} onChange={(e) => setFormSpecialty(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
               >
                 <option value="">اختر...</option>
                 {(activeSection === 'suppliers' ? SUPPLIER_SPECIALTIES : WORKER_TRADES).map(s => (
@@ -173,18 +173,18 @@ export default function ProjectSuppliersTab() {
             </div>
             {activeSection === 'workers' && (
               <div>
-                <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">اليومية (ج.م)</label>
+                <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5">اليومية (ج.م)</label>
                 <input
                   type="number" value={formDailyRate} onChange={(e) => setFormDailyRate(Number(e.target.value))}
-                  className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                 />
               </div>
             )}
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">المحافظة</label>
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5">المحافظة</label>
               <select
                 value={formGovernorate} onChange={(e) => setFormGovernorate(e.target.value)}
-                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
               >
                 <option value="">اختر المحافظة...</option>
                 {GOVERNORATES.map(g => (
@@ -193,24 +193,24 @@ export default function ProjectSuppliersTab() {
               </select>
             </div>
             <div>
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">العنوان التفصيلي</label>
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5">العنوان التفصيلي</label>
               <input
                 type="text" value={formAddress} onChange={(e) => setFormAddress(e.target.value)}
                 placeholder="مثال: شارع التحرير - الدور الثالث"
-                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
+                className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground placeholder-slate-600 focus:border-[#c5a880] focus:outline-none"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-right text-xs font-semibold text-slate-400 mb-1.5">ملاحظات</label>
+              <label className="block text-right text-xs font-semibold text-muted-foreground mb-1.5">ملاحظات</label>
               <textarea
                 value={formNotes} onChange={(e) => setFormNotes(e.target.value)}
                 rows={2}
-                className="w-full rounded-lg border border-[#222634] bg-[#13151c] px-4 py-2.5 text-right text-sm text-white placeholder-slate-600 focus:border-[#c5a880] focus:outline-none resize-none"
+                className="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-right text-sm text-foreground placeholder-slate-600 focus:border-[#c5a880] focus:outline-none resize-none"
               />
             </div>
           </div>
           <div className="flex gap-2 justify-end">
-            <button onClick={resetForm} className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-white transition">
+            <button onClick={resetForm} className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-muted border border-border text-xs text-muted-foreground hover:text-white transition">
               <X className="h-3.5 w-3.5" /> إلغاء
             </button>
             <button
@@ -228,7 +228,7 @@ export default function ProjectSuppliersTab() {
                 }
               }}
               disabled={!formName}
-              className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
+              className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 transition disabled:opacity-50"
             >
               <Save className="h-3.5 w-3.5" /> {editingId ? 'حفظ التعديلات' : 'إضافة'}
             </button>
@@ -240,16 +240,16 @@ export default function ProjectSuppliersTab() {
       {activeSection === 'suppliers' && (
         <div className="space-y-3">
           {suppliers.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-[#222634] rounded-xl bg-[#13151c]/40">
+            <div className="text-center py-12 border border-dashed border-border rounded-xl bg-card/40">
               <Package className="h-10 w-10 text-slate-700 mx-auto mb-3" />
-              <p className="text-sm text-slate-400">لا يوجد موردين مُسجلين لهذا المشروع</p>
+              <p className="text-sm text-muted-foreground">لا يوجد موردين مُسجلين لهذا المشروع</p>
             </div>
           ) : (
             suppliers.map(supplier => (
-              <div key={supplier.id} className="rounded-xl border border-[#222634] bg-[#13151c] p-4 flex items-center justify-between hover:border-[#c5a880]/30 transition">
+              <div key={supplier.id} className="rounded-xl border border-border bg-card p-4 flex items-center justify-between hover:border-[#c5a880]/30 transition">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <h4 className="text-sm font-bold text-white">{supplier.name}</h4>
+                    <h4 className="text-sm font-bold text-foreground">{supplier.name}</h4>
                     {supplier.specialty && (
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-sky-950/40 text-sky-400 border border-sky-800/40">
                         {supplier.specialty}
@@ -259,7 +259,7 @@ export default function ProjectSuppliersTab() {
                   <div className="flex items-center gap-3 mt-1.5">
                     {supplier.phone && (
                       <>
-                        <span className="text-xs text-slate-400 flex items-center gap-1">
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
                           <Phone className="h-3 w-3" /> {supplier.phone}
                         </span>
                         <a
@@ -271,17 +271,17 @@ export default function ProjectSuppliersTab() {
                       </>
                     )}
                     {supplier.governorate && (
-                      <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                      <span className="text-[10px] text-muted-foreground flex items-center gap-1">
                         <MapPin className="h-3 w-3" /> {supplier.governorate}
                       </span>
                     )}
-                    {supplier.address && <span className="text-[10px] text-slate-500">• {supplier.address}</span>}
-                    {supplier.notes && <span className="text-[10px] text-slate-500">• {supplier.notes}</span>}
+                    {supplier.address && <span className="text-[10px] text-muted-foreground">• {supplier.address}</span>}
+                    {supplier.notes && <span className="text-[10px] text-muted-foreground">• {supplier.notes}</span>}
                   </div>
                 </div>
                 {canEdit && (
                   <div className="flex gap-1.5">
-                    <button onClick={() => startEdit(supplier)} className="p-1.5 rounded hover:bg-slate-800 text-slate-500 hover:text-white transition">
+                    <button onClick={() => startEdit(supplier)} className="p-1.5 rounded hover:bg-slate-800 text-muted-foreground hover:text-white transition">
                       <Edit3 className="h-3.5 w-3.5" />
                     </button>
                     <button onClick={() => { if (confirm('حذف هذا المورد؟')) removeSupplier(supplier.id); }} className="p-1.5 rounded hover:bg-slate-800 text-rose-500/60 hover:text-rose-400 transition">
@@ -299,29 +299,29 @@ export default function ProjectSuppliersTab() {
       {activeSection === 'workers' && (
         <div className="space-y-3">
           {workers.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-[#222634] rounded-xl bg-[#13151c]/40">
+            <div className="text-center py-12 border border-dashed border-border rounded-xl bg-card/40">
               <Hammer className="h-10 w-10 text-slate-700 mx-auto mb-3" />
-              <p className="text-sm text-slate-400">لا يوجد صناعية مسجلين لهذا المشروع</p>
+              <p className="text-sm text-muted-foreground">لا يوجد صناعية مسجلين لهذا المشروع</p>
             </div>
           ) : (
             workers.map(worker => (
-              <div key={worker.id} className="rounded-xl border border-[#222634] bg-[#13151c] p-4 flex items-center justify-between hover:border-[#c5a880]/30 transition">
+              <div key={worker.id} className="rounded-xl border border-border bg-card p-4 flex items-center justify-between hover:border-[#c5a880]/30 transition">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <h4 className="text-sm font-bold text-white">{worker.name}</h4>
+                    <h4 className="text-sm font-bold text-foreground">{worker.name}</h4>
                     {worker.trade && (
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-950/40 text-amber-400 border border-amber-800/40">
                         {worker.trade}
                       </span>
                     )}
                     {worker.dailyRate > 0 && (
-                      <span className="text-[10px] text-slate-500">اليومية: {worker.dailyRate} ج.م</span>
+                      <span className="text-[10px] text-muted-foreground">اليومية: {worker.dailyRate} ج.م</span>
                     )}
                   </div>
                   <div className="flex items-center gap-3 mt-1.5">
                     {worker.phone && (
                       <>
-                        <span className="text-xs text-slate-400 flex items-center gap-1">
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
                           <Phone className="h-3 w-3" /> {worker.phone}
                         </span>
                         <a
@@ -333,17 +333,17 @@ export default function ProjectSuppliersTab() {
                       </>
                     )}
                     {worker.governorate && (
-                      <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                      <span className="text-[10px] text-muted-foreground flex items-center gap-1">
                         <MapPin className="h-3 w-3" /> {worker.governorate}
                       </span>
                     )}
-                    {worker.address && <span className="text-[10px] text-slate-500">• {worker.address}</span>}
-                    {worker.notes && <span className="text-[10px] text-slate-500">• {worker.notes}</span>}
+                    {worker.address && <span className="text-[10px] text-muted-foreground">• {worker.address}</span>}
+                    {worker.notes && <span className="text-[10px] text-muted-foreground">• {worker.notes}</span>}
                   </div>
                 </div>
                 {canEdit && (
                   <div className="flex gap-1.5">
-                    <button onClick={() => startEdit(worker)} className="p-1.5 rounded hover:bg-slate-800 text-slate-500 hover:text-white transition">
+                    <button onClick={() => startEdit(worker)} className="p-1.5 rounded hover:bg-slate-800 text-muted-foreground hover:text-white transition">
                       <Edit3 className="h-3.5 w-3.5" />
                     </button>
                     <button onClick={() => { if (confirm('حذف هذا الصنايعي؟')) removeWorker(worker.id); }} className="p-1.5 rounded hover:bg-slate-800 text-rose-500/60 hover:text-rose-400 transition">

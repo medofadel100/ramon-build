@@ -106,8 +106,8 @@ export default function ProfilePage() {
 
   if (loadingAuth || !user) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
@@ -131,7 +131,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0e12] flex flex-col font-cairo">
+    <div className="min-h-screen bg-background flex flex-col font-cairo">
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-8 select-none">
@@ -140,55 +140,55 @@ export default function ProfilePage() {
         <div className="flex items-center gap-3 mb-8">
           <Link 
             href="/dashboard" 
-            className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white transition"
+            className="p-2 rounded-lg bg-muted border border-border hover:bg-slate-800 text-muted-foreground hover:text-white transition"
             title="العودة للمشاريع"
           >
             <ChevronLeft className="h-4 w-4 transform rotate-180" />
           </Link>
-          <h1 className="text-2xl font-bold text-white tracking-wide">الملف الشخصي</h1>
+          <h1 className="text-2xl font-bold text-foreground tracking-wide">الملف الشخصي</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Profile Details Sidebar */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="rounded-2xl border border-[#222634] bg-[#13151c] p-6 shadow-xl text-center relative group">
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-xl text-center relative group">
               {!isEditing && (
                 <button 
                   onClick={() => setIsEditing(true)}
-                  className="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-[#c5a880] hover:bg-[#c5a880]/10 transition opacity-0 group-hover:opacity-100"
+                  className="absolute top-4 right-4 p-2 rounded-lg bg-muted border border-border text-muted-foreground hover:text-[#c5a880] hover:bg-[#c5a880]/10 transition opacity-0 group-hover:opacity-100"
                   title="تعديل البيانات"
                 >
                   <Edit2 className="h-4 w-4" />
                 </button>
               )}
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#c5a880] to-[#e5c595] text-[#0d0e12] font-bold text-3xl shadow-lg mb-4">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#c5a880] to-[#e5c595] text-primary-foreground font-bold text-3xl shadow-lg mb-4">
                 {user.name.charAt(0).toUpperCase()}
               </div>
               
               {isEditing ? (
                 <div className="space-y-3 mt-4 text-right">
                   <div>
-                    <label className="block text-[10px] text-slate-500 mb-1">الاسم</label>
+                    <label className="block text-[10px] text-muted-foreground mb-1">الاسم</label>
                     <input 
                       type="text" 
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-3 py-1.5 text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-[#1a1c24] px-3 py-1.5 text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                     />
                   </div>
                   <div className="flex gap-2 justify-center pt-2">
                     <button 
                       onClick={handleSaveProfile}
                       disabled={isSaving}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold hover:brightness-110 disabled:opacity-50"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:brightness-110 disabled:opacity-50"
                     >
                       {isSaving ? <div className="h-3 w-3 animate-spin rounded-full border-2 border-[#0d0e12] border-t-transparent" /> : <Save className="h-3 w-3" />}
                       حفظ
                     </button>
                     <button 
                       onClick={() => setIsEditing(false)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-white text-xs font-medium hover:bg-slate-700"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-foreground text-xs font-medium hover:bg-slate-700"
                     >
                       <X className="h-3 w-3" />
                       إلغاء
@@ -197,62 +197,62 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <>
-                  <h2 className="text-xl font-bold text-white">{user.name}</h2>
-                  <span className="inline-block px-3 py-1 mt-2 rounded-md bg-[#c5a880]/10 border border-[#c5a880]/20 text-xs font-semibold text-[#c5a880]">
+                  <h2 className="text-xl font-bold text-foreground">{user.name}</h2>
+                  <span className="inline-block px-3 py-1 mt-2 rounded-md bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
                     {roleLabels[user.role] || user.role}
                   </span>
                 </>
               )}
             </div>
 
-            <div className="rounded-2xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
-              <h3 className="text-sm font-bold text-slate-300 mb-5 border-b border-[#222634] pb-2">بيانات التواصل والوظيفة</h3>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-xl">
+              <h3 className="text-sm font-bold text-secondary-foreground mb-5 border-b border-border pb-2">بيانات التواصل والوظيفة</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <Briefcase className="h-4 w-4 text-[#c5a880] mt-0.5" />
+                  <Briefcase className="h-4 w-4 text-primary mt-0.5" />
                   <div className="w-full">
-                    <span className="block text-[10px] font-semibold text-slate-500">المسمى الوظيفي</span>
+                    <span className="block text-[10px] font-semibold text-muted-foreground">المسمى الوظيفي</span>
                     {isEditing ? (
                       <input 
                         type="text" 
                         value={editJobTitle}
                         onChange={(e) => setEditJobTitle(e.target.value)}
-                        className="w-full mt-1 rounded-lg border border-[#222634] bg-[#1a1c24] px-2 py-1 text-sm text-white focus:border-[#c5a880] focus:outline-none"
+                        className="w-full mt-1 rounded-lg border border-border bg-[#1a1c24] px-2 py-1 text-sm text-foreground focus:border-[#c5a880] focus:outline-none"
                       />
                     ) : (
-                      <span className="text-sm text-white font-medium">{user.jobTitle || 'مهندس مكتب فني'}</span>
+                      <span className="text-sm text-foreground font-medium">{user.jobTitle || 'مهندس مكتب فني'}</span>
                     )}
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Mail className="h-4 w-4 text-[#c5a880] mt-0.5" />
+                  <Mail className="h-4 w-4 text-primary mt-0.5" />
                   <div className="w-full">
-                    <span className="block text-[10px] font-semibold text-slate-500">البريد الإلكتروني</span>
-                    <span className="text-sm text-white font-medium">{user.email}</span>
+                    <span className="block text-[10px] font-semibold text-muted-foreground">البريد الإلكتروني</span>
+                    <span className="text-sm text-foreground font-medium">{user.email}</span>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Phone className="h-4 w-4 text-[#c5a880] mt-0.5" />
+                  <Phone className="h-4 w-4 text-primary mt-0.5" />
                   <div className="w-full">
-                    <span className="block text-[10px] font-semibold text-slate-500">رقم الهاتف</span>
+                    <span className="block text-[10px] font-semibold text-muted-foreground">رقم الهاتف</span>
                     {isEditing ? (
                       <input 
                         type="tel" 
                         value={editPhone}
                         onChange={(e) => setEditPhone(e.target.value)}
-                        className="w-full mt-1 rounded-lg border border-[#222634] bg-[#1a1c24] px-2 py-1 text-sm text-white focus:border-[#c5a880] focus:outline-none text-right dir-rtl"
+                        className="w-full mt-1 rounded-lg border border-border bg-[#1a1c24] px-2 py-1 text-sm text-foreground focus:border-[#c5a880] focus:outline-none text-right dir-rtl"
                         placeholder="01xxxxxxxxx"
                       />
                     ) : (
-                      <span className="text-sm text-white font-medium">{user.phone || 'غير مسجل'}</span>
+                      <span className="text-sm text-foreground font-medium">{user.phone || 'غير مسجل'}</span>
                     )}
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Calendar className="h-4 w-4 text-[#c5a880] mt-0.5" />
+                  <Calendar className="h-4 w-4 text-primary mt-0.5" />
                   <div>
-                    <span className="block text-[10px] font-semibold text-slate-500">تاريخ الانضمام</span>
-                    <span className="text-sm text-white font-medium">
+                    <span className="block text-[10px] font-semibold text-muted-foreground">تاريخ الانضمام</span>
+                    <span className="text-sm text-foreground font-medium">
                       {user.createdAt ? new Date(user.createdAt).toLocaleDateString('ar-EG') : 'غير متوفر'}
                     </span>
                   </div>
@@ -269,23 +269,23 @@ export default function ProfilePage() {
 
           {/* Projects List Section */}
           <div className="lg:col-span-2">
-            <div className="flex items-center justify-between border-b border-[#222634] pb-4 mb-6">
+            <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
               <div>
-                <h3 className="text-lg font-bold text-white">سابقة الأعمال والمشاريع الحالية</h3>
-                <p className="text-xs text-slate-400 mt-0.5">سجل بجميع المشاريع التي تشارك فيها أو تم إسنادها لك كمهندس.</p>
+                <h3 className="text-lg font-bold text-foreground">سابقة الأعمال والمشاريع الحالية</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">سجل بجميع المشاريع التي تشارك فيها أو تم إسنادها لك كمهندس.</p>
               </div>
             </div>
 
             {loadingProjects ? (
               <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c5a880] border-t-transparent"></div>
-                <p className="text-sm text-slate-400">جاري تحميل المشاريع...</p>
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+                <p className="text-sm text-muted-foreground">جاري تحميل المشاريع...</p>
               </div>
             ) : projects.length === 0 ? (
-              <div className="text-center py-20 border border-dashed border-[#222634] rounded-2xl bg-[#13151c]/40">
-                <FileText className="h-12 w-12 text-[#c5a880]/30 mx-auto mb-4" />
-                <p className="text-slate-400 font-medium">لم يتم إسناد أي مشاريع لك بعد</p>
-                <p className="text-xs text-slate-500 mt-1">عندما تتم دعوتك لمشروع، سيظهر هنا.</p>
+              <div className="text-center py-20 border border-dashed border-border rounded-2xl bg-card/40">
+                <FileText className="h-12 w-12 text-primary/30 mx-auto mb-4" />
+                <p className="text-muted-foreground font-medium">لم يتم إسناد أي مشاريع لك بعد</p>
+                <p className="text-xs text-muted-foreground mt-1">عندما تتم دعوتك لمشروع، سيظهر هنا.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -293,31 +293,31 @@ export default function ProfilePage() {
                   <Link 
                     key={project.id}
                     href={`/projects/${project.id}`}
-                    className="group rounded-xl border border-[#222634] bg-[#13151c] p-5 hover:border-[#c5a880]/50 transition duration-200 block shadow-sm"
+                    className="group rounded-xl border border-border bg-card p-5 hover:border-[#c5a880]/50 transition duration-200 block shadow-sm"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-bold text-[#c5a880] bg-[#c5a880]/10 px-2 py-0.5 rounded tracking-wider">
+                      <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded tracking-wider">
                         {project.header.projectCode}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-semibold px-2 py-0.5 rounded border border-slate-800">
+                      <span className="text-[10px] text-muted-foreground font-semibold px-2 py-0.5 rounded border border-border">
                         {getStatusLabel(project.header.status)}
                       </span>
                     </div>
                     
-                    <h4 className="text-base font-bold text-white group-hover:text-[#c5a880] transition truncate mb-1">
+                    <h4 className="text-base font-bold text-foreground group-hover:text-[#c5a880] transition truncate mb-1">
                       {project.header.name}
                     </h4>
                     
-                    <p className="text-xs text-slate-400 truncate mb-4">
+                    <p className="text-xs text-muted-foreground truncate mb-4">
                       المالك: {project.header.ownerName}
                     </p>
 
-                    <div className="flex items-center justify-between pt-3 border-t border-[#222634]">
-                      <span className="text-[10px] text-slate-500 flex items-center gap-1">
+                    <div className="flex items-center justify-between pt-3 border-t border-border">
+                      <span className="text-[10px] text-muted-foreground flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         الإصدار: {project.header.issueDate}
                       </span>
-                      <span className="text-xs font-semibold text-[#c5a880] group-hover:underline">
+                      <span className="text-xs font-semibold text-primary group-hover:underline">
                         عرض التفاصيل
                       </span>
                     </div>

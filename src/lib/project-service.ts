@@ -79,6 +79,7 @@ export interface ProjectHeader {
   assignedEngineers: string[];
   engineersDetails: AssignedEngineer[];
   scheduleOverrides?: ScheduleOverride[];
+  applyVat?: boolean;
 }
 
 export interface Supplier {
@@ -115,7 +116,7 @@ export interface PaymentInstallment {
 
 export interface AccountEntry {
   id: string;
-  personType: 'supplier' | 'worker' | 'client';
+  personType: 'supplier' | 'worker' | 'client' | 'expense';
   personId: string;
   personName: string;
   totalAgreedAmount: number;
@@ -146,6 +147,32 @@ export interface QCForm {
   response?: string;
   responseDate?: string;
   responder?: string;
+}
+
+export interface PurchaseOrderItem {
+  id: string;
+  materialName: string;
+  quantity: number;
+  unit: string;
+  unitPrice: number;
+  totalPrice: number;
+  status: 'pending' | 'ordered' | 'delivered' | 'partially_delivered';
+  deliveredQuantity: number;
+}
+
+export interface PurchaseOrder {
+  id: string;
+  poNumber: string;
+  supplierId: string;
+  supplierName: string;
+  dateCreated: string;
+  expectedDeliveryDate?: string;
+  status: 'draft' | 'issued' | 'completed' | 'cancelled';
+  items: PurchaseOrderItem[];
+  subtotal: number;
+  vatAmount: number;
+  totalAmount: number;
+  notes: string;
 }
 
 export interface RFQ {
@@ -224,6 +251,7 @@ export interface ProjectData {
   rfqs?: RFQ[];
   inventory?: InventoryTransaction[];
   invoices?: Invoice[];
+  purchaseOrders?: PurchaseOrder[];
 }
 
 // ==========================================
@@ -259,6 +287,34 @@ export async function generateProjectCode(): Promise<string> {
 
   const paddedNum = String(nextNum).padStart(3, '0');
   return `RMD-${currentYear}-${paddedNum}`;
+}
+
+// ==========================================
+// Purchase Orders Operations
+// ==========================================
+
+export async function dbAddPurchaseOrder(projectId: string, poInput: Omit<PurchaseOrder, 'id' | 'poNumber'>): Promise<string> {
+  const qSnap = await getDocs(collection(db, `projects/${projectId}/purchaseOrders`));
+  const newNumber = `PO-${(qSnap.size + 1).toString().padStart(3, '0')}`;
+  
+  const ref = doc(collection(db, `projects/${projectId}/purchaseOrders`));
+  const po: PurchaseOrder = {
+    ...poInput,
+    id: ref.id,
+    poNumber: newNumber,
+  };
+  await setDoc(ref, po);
+  return ref.id;
+}
+
+export async function dbUpdatePurchaseOrder(projectId: string, po: PurchaseOrder): Promise<void> {
+  const ref = doc(db, `projects/${projectId}/purchaseOrders`, po.id);
+  await updateDoc(ref, { ...po });
+}
+
+export async function dbDeletePurchaseOrder(projectId: string, poId: string): Promise<void> {
+  const ref = doc(db, `projects/${projectId}/purchaseOrders`, poId);
+  await deleteDoc(ref);
 }
 
 // ==========================================
@@ -495,6 +551,10 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
   const accountsSnapshot = await getDocs(collection(db, 'projects', projectId, 'accounts'));
   const accounts: AccountEntry[] = accountsSnapshot.docs.map(doc => doc.data() as AccountEntry);
 
+  // Fetch Purchase Orders
+  const poSnapshot = await getDocs(collection(db, 'projects', projectId, 'purchaseOrders'));
+  const purchaseOrders: PurchaseOrder[] = poSnapshot.docs.map(doc => doc.data() as PurchaseOrder);
+
   const header: ProjectHeader = {
     ...pData.header,
     expectedDeliveryDate: pData.header?.expectedDeliveryDate || '',
@@ -516,6 +576,7 @@ export async function getProjectData(projectId: string): Promise<ProjectData | n
     suppliers,
     workers,
     accounts,
+    purchaseOrders,
     attachments: pData.attachments || [],
     projectConstants: pData.projectConstants || {},
     customConstantsDefinitions: pData.customConstantsDefinitions || []
@@ -764,7 +825,7 @@ async function deleteCollectionDocumentsPath(pathSegments: string[]): Promise<vo
 }
 
 export async function deleteProject(projectId: string): Promise<void> {
-  const subcollections = ['areas', 'suppliers', 'workers', 'accounts', 'inviteTokens', 'attachments'];
+  const subcollections = ['areas', 'suppliers', 'workers', 'accounts', 'inviteTokens', 'attachments', 'purchaseOrders'];
 
   for (const sub of subcollections) {
     await deleteCollectionDocuments(projectId, sub);

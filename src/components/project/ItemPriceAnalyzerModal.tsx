@@ -41,37 +41,37 @@ export function ItemPriceAnalyzerModal({ item, zones, projectConstants, onClose 
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 font-cairo">
-      <div className="w-full max-w-lg bg-[#13151c] border border-[#222634] rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div className="w-full max-w-lg bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[#222634] bg-[#1a1c24]">
-          <h2 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-[#1a1c24]">
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
             <Activity className="w-4 h-4 text-purple-400" />
             التحليل الذكي للأسعار
           </h2>
-          <button onClick={onClose} className="p-1 text-slate-400 hover:text-white rounded-md hover:bg-slate-800 transition">
+          <button onClick={onClose} className="p-1 text-muted-foreground hover:text-white rounded-md hover:bg-slate-800 transition">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="p-6 space-y-6">
           <div className="text-center space-y-2">
-            <h3 className="text-lg font-black text-white">{item.title}</h3>
-            <p className="text-xs text-slate-400 font-medium">كود البند: {item.id}</p>
+            <h3 className="text-lg font-black text-foreground">{item.title}</h3>
+            <p className="text-xs text-muted-foreground font-medium">كود البند: {item.id}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-[#1a1c24] border border-[#222634] p-4 rounded-xl text-center">
-              <span className="block text-[10px] text-slate-400 mb-1 font-bold">سعر الوحدة الحالي</span>
-              <span className="block text-2xl font-black text-white">{Math.round(unitPrice).toLocaleString()} <span className="text-xs text-slate-500">ج.م</span></span>
+            <div className="bg-[#1a1c24] border border-border p-4 rounded-xl text-center">
+              <span className="block text-[10px] text-muted-foreground mb-1 font-bold">سعر الوحدة الحالي</span>
+              <span className="block text-2xl font-black text-foreground">{Math.round(unitPrice).toLocaleString()} <span className="text-xs text-muted-foreground">ج.م</span></span>
             </div>
             
-            <div className="bg-[#1a1c24] border border-[#222634] p-4 rounded-xl text-center relative overflow-hidden">
-              <span className="block text-[10px] text-slate-400 mb-1 font-bold">متوسط سوقي تقديري</span>
+            <div className="bg-[#1a1c24] border border-border p-4 rounded-xl text-center relative overflow-hidden">
+              <span className="block text-[10px] text-muted-foreground mb-1 font-bold">متوسط سوقي تقديري</span>
               {marketAnalysis ? (
-                <span className="block text-2xl font-black text-cyan-400">{Math.round(marketAnalysis.avgPrice).toLocaleString()} <span className="text-xs text-slate-500">ج.م</span></span>
+                <span className="block text-2xl font-black text-cyan-400">{Math.round(marketAnalysis.avgPrice).toLocaleString()} <span className="text-xs text-muted-foreground">ج.م</span></span>
               ) : (
-                <span className="block text-sm font-bold text-slate-500 mt-2">لا توجد بيانات سوقية</span>
+                <span className="block text-sm font-bold text-muted-foreground mt-2">لا توجد بيانات سوقية</span>
               )}
             </div>
           </div>
@@ -80,7 +80,7 @@ export function ItemPriceAnalyzerModal({ item, zones, projectConstants, onClose 
             <div className={`p-4 rounded-xl border flex items-start gap-3 ${
               marketAnalysis.isHigher ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' :
               marketAnalysis.isLower ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
-              'bg-slate-800 border-slate-700 text-slate-300'
+              'bg-accent border-border text-secondary-foreground'
             }`}>
               {marketAnalysis.isHigher ? <TrendingUp className="w-5 h-5 shrink-0" /> :
                marketAnalysis.isLower ? <TrendingDown className="w-5 h-5 shrink-0" /> :
@@ -107,10 +107,10 @@ export function ItemPriceAnalyzerModal({ item, zones, projectConstants, onClose 
           </div>
         </div>
 
-        <div className="p-4 border-t border-[#222634] bg-[#1a1c24]">
+        <div className="p-4 border-t border-border bg-[#1a1c24]">
           <button
             onClick={onClose}
-            className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition"
+            className="w-full py-2.5 bg-accent hover:bg-slate-700 text-foreground text-xs font-bold rounded-lg transition"
           >
             إغلاق نافذة التحليل
           </button>

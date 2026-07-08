@@ -3,6 +3,8 @@ import { Cairo } from "next/font/google";
 import "./globals.css";
 import AuthInitializer from "@/components/AuthInitializer";
 import GlobalAIChat from "@/components/GlobalAIChat";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "sonner";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -21,14 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ar"
-      dir="rtl"
-      className={`${cairo.variable} h-full antialiased dark`}
-    >
-      <body className="min-h-full bg-[#0d0e12] text-slate-100 font-sans antialiased flex flex-col selection:bg-[#c5a880]/30 selection:text-white relative">
-        <AuthInitializer>{children}</AuthInitializer>
-        <GlobalAIChat />
+    <html lang="ar" dir="rtl" className={`${cairo.variable} h-full antialiased`} suppressHydrationWarning>
+      <body className="min-h-full bg-background text-foreground font-sans antialiased flex flex-col selection:bg-primary/30 selection:text-primary-foreground relative">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <AuthInitializer>{children}</AuthInitializer>
+          <GlobalAIChat />
+          <Toaster position="top-center" richColors theme="system" />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -75,16 +75,16 @@ export default function ProjectSharingTab() {
     <div className="space-y-6 font-cairo select-none max-w-2xl">
       
       <div>
-        <h3 className="text-lg font-bold text-white">إعدادات مشاركة العميل</h3>
-        <p className="text-xs text-slate-400 mt-0.5">
+        <h3 className="text-lg font-bold text-foreground">إعدادات مشاركة العميل</h3>
+        <p className="text-xs text-muted-foreground mt-0.5">
           يتيح لك هذا القسم مشاركة نسخة للعرض فقط (Read-only) مع العميل لمتابعة تفاصيل الحصر والمواصفات والأبعاد والكميات.
         </p>
       </div>
 
       {/* Share Link Card */}
-      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-5 space-y-4">
-        <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
-          <LinkIcon className="h-4 w-4 text-[#c5a880]" />
+      <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+        <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5">
+          <LinkIcon className="h-4 w-4 text-primary" />
           رابط المشاركة الخاص بالعميل
         </h4>
 
@@ -93,11 +93,11 @@ export default function ProjectSharingTab() {
             type="text"
             readOnly
             value={shareUrl}
-            className="flex-1 bg-[#1a1c24] border border-[#222634] rounded-lg px-4 py-2.5 text-xs text-slate-400 text-left dir-ltr focus:outline-none focus:ring-0"
+            className="flex-1 bg-[#1a1c24] border border-border rounded-lg px-4 py-2.5 text-xs text-muted-foreground text-left dir-ltr focus:outline-none focus:ring-0"
           />
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-bold text-[#c5a880] hover:bg-slate-800 transition"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-muted border border-border text-xs font-bold text-primary hover:bg-slate-800 transition"
           >
             {copied ? (
               <>
@@ -113,7 +113,7 @@ export default function ProjectSharingTab() {
           </button>
         </div>
 
-        <p className="text-[10px] text-slate-500 leading-normal flex items-start gap-1.5 pt-2">
+        <p className="text-[10px] text-muted-foreground leading-normal flex items-start gap-1.5 pt-2">
           <ShieldAlert className="h-4 w-4 text-amber-500/80 shrink-0" />
           <span>
             هذا الرابط يعمل دون الحاجة لتسجيل دخول. يستطيع أي شخص لديه الرابط استعراض حصر بنود المشروع.
@@ -122,26 +122,26 @@ export default function ProjectSharingTab() {
       </div>
 
       {/* View Configurations */}
-      <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 space-y-5">
-        <h4 className="text-sm font-bold text-white">إعدادات رؤية الأسعار للعميل</h4>
-        <p className="text-xs text-slate-400">تحكم فيما يراه العميل من تفاصيل مالية وأسعار بنود في نسخته المفتوحة.</p>
+      <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+        <h4 className="text-sm font-bold text-foreground">إعدادات رؤية الأسعار للعميل</h4>
+        <p className="text-xs text-muted-foreground">تحكم فيما يراه العميل من تفاصيل مالية وأسعار بنود في نسخته المفتوحة.</p>
 
         <div className="space-y-4 pt-2">
           {/* Option 1: Show/Hide total costs */}
-          <div className="flex items-center justify-between p-3 rounded-lg bg-[#1a1c24]/40 border border-[#222634]">
+          <div className="flex items-center justify-between p-3 rounded-lg bg-[#1a1c24]/40 border border-border">
             <div className="max-w-md">
-              <span className="block text-xs font-bold text-white mb-0.5">إظهار الأسعار والتكاليف</span>
-              <p className="text-[10px] text-slate-400 leading-normal">
+              <span className="block text-xs font-bold text-foreground mb-0.5">إظهار الأسعار والتكاليف</span>
+              <p className="text-[10px] text-muted-foreground leading-normal">
                 في حال تعطيل هذا الخيار، لن يرى العميل أي تكاليف مادية (سيتم إخفاء أسعار الوحدات، المجاميع للأقسام، والإجمالي الكلي).
               </p>
             </div>
             <button
               disabled={!canEdit}
               onClick={() => handleSettingChange('showPrices', !showPrices)}
-              className="p-1 text-slate-400 hover:text-white"
+              className="p-1 text-muted-foreground hover:text-white"
             >
               {showPrices ? (
-                <Eye className="h-6 w-6 text-[#c5a880]" />
+                <Eye className="h-6 w-6 text-primary" />
               ) : (
                 <EyeOff className="h-6 w-6 text-slate-600" />
               )}
@@ -150,20 +150,20 @@ export default function ProjectSharingTab() {
 
           {/* Option 2: Show/Hide detailed unit rates */}
           {showPrices && (
-            <div className="flex items-center justify-between p-3 rounded-lg bg-[#1a1c24]/40 border border-[#222634] animate-in fade-in duration-200">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-[#1a1c24]/40 border border-border animate-in fade-in duration-200">
               <div className="max-w-md">
-                <span className="block text-xs font-bold text-white mb-0.5">إظهار الأسعار التفصيلية للبنود (BOQ Detailed Rates)</span>
-                <p className="text-[10px] text-slate-400 leading-normal">
+                <span className="block text-xs font-bold text-foreground mb-0.5">إظهار الأسعار التفصيلية للبنود (BOQ Detailed Rates)</span>
+                <p className="text-[10px] text-muted-foreground leading-normal">
                   في حال تعطيل هذا الخيار، سيرى العميل فقط "إجمالي التكلفة التقديرية للقسم" (مثال: إجمالي السباكة التأسيس) بدون رؤية تفاصيل ومصنعية كل بند ومحارة ودهان بمفرده.
                 </p>
               </div>
               <button
                 disabled={!canEdit}
                 onClick={() => handleSettingChange('showDetailedPricing', !showDetailedPricing)}
-                className="p-1 text-slate-400 hover:text-white"
+                className="p-1 text-muted-foreground hover:text-white"
               >
                 {showDetailedPricing ? (
-                  <Eye className="h-6 w-6 text-[#c5a880]" />
+                  <Eye className="h-6 w-6 text-primary" />
                 ) : (
                   <EyeOff className="h-6 w-6 text-slate-600" />
                 )}
@@ -178,14 +178,14 @@ export default function ProjectSharingTab() {
         <div className="rounded-xl border border-rose-950/30 bg-rose-950/5 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="max-w-md">
             <span className="block text-xs font-bold text-rose-400 mb-0.5">خيارات أمنية متقدمة</span>
-            <p className="text-[10px] text-slate-400 leading-normal">
+            <p className="text-[10px] text-muted-foreground leading-normal">
               إعادة توليد المعرف العشوائي للرابط لتأمين المستند وإبطال صلاحية الرابط الحالي الموزع للعملاء.
             </p>
           </div>
           <button
             disabled={regenerating}
             onClick={handleRegenerateToken}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs text-rose-400 hover:bg-rose-950/20 hover:border-rose-900 transition shrink-0"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-muted border border-border text-xs text-rose-400 hover:bg-rose-950/20 hover:border-rose-900 transition shrink-0"
           >
             {regenerating ? (
               <RefreshCw className="h-4 w-4 animate-spin text-rose-400" />

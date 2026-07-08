@@ -120,12 +120,12 @@ export default function MaterialForm({ initialData, onClose }: MaterialFormProps
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-[#13151c] border border-[#222634] rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl">
-        <div className="flex justify-between items-center p-6 border-b border-[#222634]">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+      <div className="bg-card border border-border rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl">
+        <div className="flex justify-between items-center p-6 border-b border-border">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
             {initialData ? 'تعديل بيانات الخامة' : 'إضافة خامة جديدة'}
           </h2>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+          <button onClick={onClose} className="p-2 text-muted-foreground hover:text-white rounded-lg hover:bg-slate-800">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -136,51 +136,51 @@ export default function MaterialForm({ initialData, onClose }: MaterialFormProps
             {/* Basic Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">اسم الخامة <span className="text-rose-500">*</span></label>
+                <label className="text-sm font-medium text-muted-foreground">اسم الخامة <span className="text-rose-500">*</span></label>
                 <input
                   required
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full bg-[#1a1c24] border border-[#222634] rounded-lg px-4 py-2.5 text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-[#1a1c24] border border-border rounded-lg px-4 py-2.5 text-foreground focus:border-emerald-500 focus:outline-none"
                   placeholder="مثال: أسمنت بورتلاندي السويس"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">الماركة / العلامة التجارية</label>
+                <label className="text-sm font-medium text-muted-foreground">الماركة / العلامة التجارية</label>
                 <input
                   type="text"
                   name="brand"
                   value={formData.brand}
                   onChange={handleChange}
-                  className="w-full bg-[#1a1c24] border border-[#222634] rounded-lg px-4 py-2.5 text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-[#1a1c24] border border-border rounded-lg px-4 py-2.5 text-foreground focus:border-emerald-500 focus:outline-none"
                   placeholder="مثال: السويس للأسمنت"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">التصنيف الأساسي <span className="text-rose-500">*</span></label>
+                <label className="text-sm font-medium text-muted-foreground">التصنيف الأساسي <span className="text-rose-500">*</span></label>
                 <select
                   required
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full bg-[#1a1c24] border border-[#222634] rounded-lg px-4 py-2.5 text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-[#1a1c24] border border-border rounded-lg px-4 py-2.5 text-foreground focus:border-emerald-500 focus:outline-none"
                 >
                   {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">التصنيف الفرعي <span className="text-rose-500">*</span></label>
+                <label className="text-sm font-medium text-muted-foreground">التصنيف الفرعي <span className="text-rose-500">*</span></label>
                 <select
                   required
                   name="subCategory"
                   value={formData.subCategory}
                   onChange={handleChange}
-                  className="w-full bg-[#1a1c24] border border-[#222634] rounded-lg px-4 py-2.5 text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-[#1a1c24] border border-border rounded-lg px-4 py-2.5 text-foreground focus:border-emerald-500 focus:outline-none"
                 >
                   {availableSubCategories.map(sub => <option key={sub} value={sub}>{sub}</option>)}
                   <option value="أخرى">أخرى</option>
@@ -188,38 +188,38 @@ export default function MaterialForm({ initialData, onClose }: MaterialFormProps
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">المرحلة</label>
+                <label className="text-sm font-medium text-muted-foreground">المرحلة</label>
                 <select
                   name="phase"
                   value={formData.phase}
                   onChange={handleChange}
-                  className="w-full bg-[#1a1c24] border border-[#222634] rounded-lg px-4 py-2.5 text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-[#1a1c24] border border-border rounded-lg px-4 py-2.5 text-foreground focus:border-emerald-500 focus:outline-none"
                 >
                   {PHASES.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">الوحدة القياسية <span className="text-rose-500">*</span></label>
+                <label className="text-sm font-medium text-muted-foreground">الوحدة القياسية <span className="text-rose-500">*</span></label>
                 <input
                   required
                   type="text"
                   name="unit"
                   value={formData.unit}
                   onChange={handleChange}
-                  className="w-full bg-[#1a1c24] border border-[#222634] rounded-lg px-4 py-2.5 text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-[#1a1c24] border border-border rounded-lg px-4 py-2.5 text-foreground focus:border-emerald-500 focus:outline-none"
                   placeholder="مثال: شيكارة، م2، لفة"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">أقل سعر (ج.م)</label>
+                <label className="text-sm font-medium text-muted-foreground">أقل سعر (ج.م)</label>
                 <input
                   type="number"
                   name="lowestPrice"
                   value={formData.lowestPrice}
                   readOnly
-                  className="w-full bg-[#13151c] border border-[#222634] rounded-lg px-4 py-2.5 text-emerald-400 font-bold focus:outline-none cursor-not-allowed"
+                  className="w-full bg-card border border-border rounded-lg px-4 py-2.5 text-emerald-400 font-bold focus:outline-none cursor-not-allowed"
                   placeholder="يحسب تلقائياً من المتاجر"
                 />
               </div>
@@ -228,7 +228,7 @@ export default function MaterialForm({ initialData, onClose }: MaterialFormProps
             {/* Sources */}
             <div className="mt-8">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <Store className="w-5 h-5 text-indigo-400" />
                   المتاجر ومصادر الأسعار
                 </h3>
@@ -244,44 +244,44 @@ export default function MaterialForm({ initialData, onClose }: MaterialFormProps
 
               <div className="space-y-4">
                 {formData.sources?.map((source, index) => (
-                  <div key={index} className="p-4 bg-[#1a1c24] border border-[#222634] rounded-xl flex flex-wrap lg:flex-nowrap gap-4 items-end relative group">
+                  <div key={index} className="p-4 bg-[#1a1c24] border border-border rounded-xl flex flex-wrap lg:flex-nowrap gap-4 items-end relative group">
                     <div className="w-full lg:w-1/4 space-y-2">
-                      <label className="text-xs font-medium text-slate-400">اسم المتجر</label>
+                      <label className="text-xs font-medium text-muted-foreground">اسم المتجر</label>
                       <input
                         type="text"
                         value={source.storeName}
                         onChange={(e) => handleUpdateSource(index, 'storeName', e.target.value)}
-                        className="w-full bg-[#13151c] border border-[#222634] rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 focus:outline-none"
+                        className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:border-indigo-500 focus:outline-none"
                         required
                       />
                     </div>
                     <div className="w-full lg:w-1/4 space-y-2">
-                      <label className="text-xs font-medium text-slate-400">السعر (ج.م)</label>
+                      <label className="text-xs font-medium text-muted-foreground">السعر (ج.م)</label>
                       <input
                         type="number"
                         value={source.price}
                         onChange={(e) => handleUpdateSource(index, 'price', Number(e.target.value))}
-                        className="w-full bg-[#13151c] border border-[#222634] rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 focus:outline-none"
+                        className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:border-indigo-500 focus:outline-none"
                         required
                       />
                     </div>
                     <div className="w-full lg:w-2/4 space-y-2">
-                      <label className="text-xs font-medium text-slate-400">الرابط الإلكتروني (URL)</label>
+                      <label className="text-xs font-medium text-muted-foreground">الرابط الإلكتروني (URL)</label>
                       <input
                         type="url"
                         value={source.url}
                         onChange={(e) => handleUpdateSource(index, 'url', e.target.value)}
-                        className="w-full bg-[#13151c] border border-[#222634] rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 focus:outline-none text-left"
+                        className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:border-indigo-500 focus:outline-none text-left"
                         dir="ltr"
                       />
                     </div>
                     <div className="w-full lg:w-auto flex items-center gap-2 pb-2">
-                      <label className="text-sm text-slate-300 flex items-center gap-2 cursor-pointer">
+                      <label className="text-sm text-secondary-foreground flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={source.isAvailable}
                           onChange={(e) => handleUpdateSource(index, 'isAvailable', e.target.checked)}
-                          className="w-4 h-4 rounded bg-[#13151c] border-[#222634] text-emerald-500 focus:ring-emerald-500 focus:ring-offset-[#1a1c24]"
+                          className="w-4 h-4 rounded bg-card border-border text-emerald-500 focus:ring-emerald-500 focus:ring-offset-[#1a1c24]"
                         />
                         متوفر؟
                       </label>
@@ -298,7 +298,7 @@ export default function MaterialForm({ initialData, onClose }: MaterialFormProps
                 ))}
 
                 {formData.sources?.length === 0 && (
-                  <div className="text-center py-8 border-2 border-dashed border-[#222634] rounded-xl text-slate-500">
+                  <div className="text-center py-8 border-2 border-dashed border-border rounded-xl text-muted-foreground">
                     لم يتم إضافة أي متاجر بعد.
                   </div>
                 )}
@@ -308,11 +308,11 @@ export default function MaterialForm({ initialData, onClose }: MaterialFormProps
           </form>
         </div>
 
-        <div className="p-6 border-t border-[#222634] flex justify-end gap-3 bg-[#13151c] rounded-b-xl">
+        <div className="p-6 border-t border-border flex justify-end gap-3 bg-card rounded-b-xl">
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2.5 rounded-lg font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors"
+            className="px-6 py-2.5 rounded-lg font-semibold text-secondary-foreground bg-accent hover:bg-slate-700 transition-colors"
           >
             إلغاء
           </button>

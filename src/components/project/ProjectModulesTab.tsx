@@ -70,13 +70,13 @@ export default function ProjectModulesTab() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6 border-b border-[#222634] pb-4">
-        <div className="p-2 bg-[#c5a880]/10 rounded-lg">
-          <Settings className="w-5 h-5 text-[#c5a880]" />
+      <div className="flex items-center gap-2 mb-6 border-b border-border pb-4">
+        <div className="p-2 bg-primary/10 rounded-lg">
+          <Settings className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white">إعدادات الأدوات (Modules)</h2>
-          <p className="text-xs text-slate-400 mt-1">قم بتفعيل الأدوات التي ستحتاجها في هذا المشروع فقط لتسريع العمل وتخفيف الزحام في الواجهة.</p>
+          <h2 className="text-xl font-bold text-foreground">إعدادات الأدوات (Modules)</h2>
+          <p className="text-xs text-muted-foreground mt-1">قم بتفعيل الأدوات التي ستحتاجها في هذا المشروع فقط لتسريع العمل وتخفيف الزحام في الواجهة.</p>
         </div>
       </div>
 
@@ -89,22 +89,22 @@ export default function ProjectModulesTab() {
             <div 
               key={module.id} 
               className={`p-5 rounded-xl border transition-all ${
-                isActive ? 'bg-slate-800/40 border-[#c5a880]/40' : 'bg-[#13151c]/50 border-[#222634]'
+                isActive ? 'bg-accent/40 border-primary/40' : 'bg-card/50 border-border'
               }`}
             >
               <div className="flex justify-between items-start mb-3">
-                <div className={`p-2.5 rounded-lg ${isActive ? 'bg-[#c5a880]/20 text-[#c5a880]' : 'bg-slate-800 text-slate-400'}`}>
+                <div className={`p-2.5 rounded-lg ${isActive ? 'bg-primary/20 text-primary' : 'bg-accent text-muted-foreground'}`}>
                   <Icon className="w-5 h-5" />
                 </div>
                 
                 {module.required ? (
-                  <span className="text-[10px] font-bold text-slate-500 bg-slate-800 px-2 py-1 rounded">أساسي</span>
+                  <span className="text-[10px] font-bold text-muted-foreground bg-accent px-2 py-1 rounded">أساسي</span>
                 ) : (
                   <button
                     onClick={() => toggleModule(module.id)}
                     disabled={saving}
                     className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors focus:outline-none ${
-                      isActive ? 'bg-[#c5a880]' : 'bg-slate-700'
+                      isActive ? 'bg-primary' : 'bg-slate-700'
                     }`}
                   >
                     <span className="sr-only">Toggle module</span>
@@ -117,10 +117,10 @@ export default function ProjectModulesTab() {
                 )}
               </div>
               
-              <h3 className={`font-bold text-sm mb-1.5 ${isActive ? 'text-white' : 'text-slate-300'}`}>
+              <h3 className={`font-bold text-sm mb-1.5 ${isActive ? 'text-foreground' : 'text-secondary-foreground'}`}>
                 {module.name}
               </h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 {module.description}
               </p>
             </div>

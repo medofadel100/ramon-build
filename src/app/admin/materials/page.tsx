@@ -45,7 +45,7 @@ export default function AdminMaterialsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0e14] text-slate-200 font-sans flex flex-col">
+    <div className="min-h-screen bg-[#0b0e14] text-foreground font-sans flex flex-col">
       <Navbar />
       <div className="flex-1 p-6">
         <div className="max-w-7xl mx-auto space-y-8">
@@ -59,12 +59,12 @@ export default function AdminMaterialsPage() {
                   إدارة سوق الخامات
                 </h1>
               </div>
-              <p className="text-slate-400 mt-2">
+              <p className="text-muted-foreground mt-2">
                 لوحة تحكم الإدارة لإضافة، وتعديل، وحذف الخامات والمنتجات المسعرة.
               </p>
             </div>
             <div className="flex gap-2">
-              <Link href="/materials" className="bg-slate-900/50 border border-[#222634] rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-slate-800 transition-colors">
+              <Link href="/materials" className="bg-muted/50 border border-border rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-slate-800 transition-colors">
                  عودة للسوق
               </Link>
               <button
@@ -80,28 +80,28 @@ export default function AdminMaterialsPage() {
             </div>
           </div>
 
-          <div className="bg-[#13151c] border border-[#222634] rounded-xl overflow-hidden shadow-xl">
+          <div className="bg-card border border-border rounded-xl overflow-hidden shadow-xl">
             {/* Toolbar */}
-            <div className="p-4 border-b border-[#222634] flex flex-col md:flex-row gap-4 justify-between items-center bg-[#1a1c24]">
+            <div className="p-4 border-b border-border flex flex-col md:flex-row gap-4 justify-between items-center bg-[#1a1c24]">
               <div className="relative w-full md:w-96">
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
+                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
                 <input
                   type="text"
                   placeholder="ابحث بالاسم، الماركة، أو التصنيف..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-[#13151c] border border-[#222634] rounded-lg py-2.5 pr-10 pl-4 text-white placeholder-slate-500 focus:outline-none focus:border-rose-500/50 focus:ring-1 focus:ring-rose-500/50 transition-all"
+                  className="w-full bg-card border border-border rounded-lg py-2.5 pr-10 pl-4 text-foreground placeholder-slate-500 focus:outline-none focus:border-rose-500/50 focus:ring-1 focus:ring-rose-500/50 transition-all"
                 />
               </div>
-              <div className="text-sm font-medium text-slate-400">
-                إجمالي الخامات: <span className="text-white font-bold">{filteredMaterials.length}</span>
+              <div className="text-sm font-medium text-muted-foreground">
+                إجمالي الخامات: <span className="text-foreground font-bold">{filteredMaterials.length}</span>
               </div>
             </div>
 
             {/* Table */}
             <div className="overflow-x-auto">
               <table className="w-full text-right text-sm">
-                <thead className="bg-[#222634]/50 text-slate-300 border-b border-[#222634]">
+                <thead className="bg-[#222634]/50 text-secondary-foreground border-b border-border">
                   <tr>
                     <th className="px-6 py-4 font-bold">اسم الخامة / الماركة</th>
                     <th className="px-6 py-4 font-bold">التصنيف</th>
@@ -114,7 +114,7 @@ export default function AdminMaterialsPage() {
                 <tbody className="divide-y divide-[#222634]">
                   {loading && materials.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                      <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
                         <div className="flex flex-col items-center justify-center gap-3">
                           <div className="w-8 h-8 border-2 border-rose-500 border-t-transparent rounded-full animate-spin"></div>
                           جاري تحميل الخامات...
@@ -123,7 +123,7 @@ export default function AdminMaterialsPage() {
                     </tr>
                   ) : filteredMaterials.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                      <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
                         <AlertTriangle className="w-8 h-8 text-orange-500 mx-auto mb-2 opacity-50" />
                         لا توجد خامات مطابقة للبحث.
                       </td>
@@ -132,12 +132,12 @@ export default function AdminMaterialsPage() {
                     filteredMaterials.map(material => (
                       <tr key={material.id} className="hover:bg-[#1a1c24]/50 transition-colors">
                         <td className="px-6 py-4">
-                          <div className="font-bold text-white">{material.name}</div>
-                          {material.brand && <div className="text-xs text-slate-400 mt-1">{material.brand}</div>}
+                          <div className="font-bold text-foreground">{material.name}</div>
+                          {material.brand && <div className="text-xs text-muted-foreground mt-1">{material.brand}</div>}
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-slate-300">{material.category}</div>
-                          <div className="text-xs text-slate-500 mt-1">{material.subCategory}</div>
+                          <div className="text-secondary-foreground">{material.category}</div>
+                          <div className="text-xs text-muted-foreground mt-1">{material.subCategory}</div>
                         </td>
                         <td className="px-6 py-4">
                           <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${
@@ -149,13 +149,13 @@ export default function AdminMaterialsPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-center">
-                          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold text-xs border border-slate-700">
+                          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-accent text-secondary-foreground font-bold text-xs border border-border">
                             {material.sources?.length || 0}
                           </span>
                         </td>
                         <td className="px-6 py-4">
                           <div className="font-bold text-emerald-400">{material.lowestPrice.toLocaleString()} ج.م</div>
-                          <div className="text-[10px] text-slate-500 mt-1">لكل {material.unit}</div>
+                          <div className="text-[10px] text-muted-foreground mt-1">لكل {material.unit}</div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-end gap-2">

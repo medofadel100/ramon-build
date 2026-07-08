@@ -255,6 +255,21 @@ export default function ProjectBOQTab() {
 
   return (
     <div className="space-y-6 font-cairo select-none">
+
+      <div className="flex justify-between items-center bg-card p-4 rounded-xl border border-border shadow-sm">
+        <div>
+          <h2 className="font-bold text-foreground">جدول الكميات والمواصفات (BOQ)</h2>
+          <p className="text-xs text-muted-foreground mt-1">حصر وتوصيف وتسعير بنود المشروع</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => window.open(`/projects/${currentProject.id}/quotation`, '_blank')}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-400 text-sm font-bold rounded-lg border border-indigo-500/30 transition-all"
+          >
+            <FileText className="w-4 h-4" /> عرض السعر (العميل)
+          </button>
+        </div>
+      </div>
       
       {/* Sections List */}
       <div className="space-y-4">
@@ -268,8 +283,8 @@ export default function ProjectBOQTab() {
               key={section.id} 
               className={`rounded-xl border transition ${
                 section.enabled 
-                  ? 'border-[#222634] bg-[#13151c]' 
-                  : 'border-[#1b1c24] bg-slate-900/20 opacity-60'
+                  ? 'border-border bg-card' 
+                  : 'border-[#1b1c24] bg-muted/20 opacity-60'
               }`}
             >
               
@@ -284,34 +299,34 @@ export default function ProjectBOQTab() {
                       e.stopPropagation();
                       toggleSection(section.id, !section.enabled);
                     }}
-                    className="p-1 rounded text-slate-400 hover:text-white transition"
+                    className="p-1 rounded text-muted-foreground hover:text-white transition"
                     title={section.enabled ? 'تعطيل القسم بالكامل' : 'تفعيل القسم'}
                   >
                     {section.enabled ? (
-                      <ToggleRight className="h-6 w-6 text-[#c5a880]" />
+                      <ToggleRight className="h-6 w-6 text-primary" />
                     ) : (
                       <ToggleLeft className="h-6 w-6 text-slate-600" />
                     )}
                   </button>
                   <div>
-                    <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
-                      <span className="text-slate-500 text-xs">{section.id}</span>
+                    <h3 className="text-sm font-bold text-foreground flex items-center gap-1.5">
+                      <span className="text-muted-foreground text-xs">{section.id}</span>
                       {section.title}
                     </h3>
-                    <p className="text-[10px] text-slate-400 font-medium">عدد البنود: {sectionItems.length}</p>
+                    <p className="text-[10px] text-muted-foreground font-medium">عدد البنود: {sectionItems.length}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4" onClick={e => e.stopPropagation()}>
                   {section.enabled && (
-                    <span className="text-xs font-extrabold text-[#c5a880] bg-[#c5a880]/10 px-2.5 py-1 rounded">
+                    <span className="text-xs font-extrabold text-primary bg-primary/10 px-2.5 py-1 rounded">
                       إجمالي القسم: {sectionTotal.toLocaleString()} ج.م
                     </span>
                   )}
                   {section.enabled && canEdit && (
                     <button
                       onClick={() => triggerAddCustomModal(section.id)}
-                      className="p-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition"
+                      className="p-1.5 rounded bg-muted border border-border text-muted-foreground hover:text-white hover:border-slate-700 transition"
                       title="إضافة بند مخصص"
                     >
                       <Plus className="h-3.5 w-3.5" />
@@ -319,7 +334,7 @@ export default function ProjectBOQTab() {
                   )}
                   <button 
                     onClick={() => toggleSectionExpand(section.id)}
-                    className="p-1.5 rounded hover:bg-slate-800 text-slate-500"
+                    className="p-1.5 rounded hover:bg-slate-800 text-muted-foreground"
                   >
                     {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </button>
@@ -328,9 +343,9 @@ export default function ProjectBOQTab() {
 
               {/* Section Items Body */}
               {isExpanded && section.enabled && (
-                <div className="p-4 border-t border-[#222634] space-y-4">
+                <div className="p-4 border-t border-border space-y-4">
                   {sectionItems.length === 0 ? (
-                    <p className="text-center text-xs text-slate-500 py-4 font-semibold">لا يوجد بنود في هذا القسم حالياً.</p>
+                    <p className="text-center text-xs text-muted-foreground py-4 font-semibold">لا يوجد بنود في هذا القسم حالياً.</p>
                   ) : (
                     sectionItems.map((item) => {
                       const itemResult = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
@@ -342,8 +357,8 @@ export default function ProjectBOQTab() {
                           key={item.id}
                           className={`rounded-lg border transition ${
                             item.isActive 
-                              ? 'border-[#222634] bg-[#1a1c24]/30' 
-                              : 'border-slate-900/40 bg-slate-950/20 opacity-50'
+                              ? 'border-border bg-[#1a1c24]/30' 
+                              : 'border-slate-900/40 bg-background/20 opacity-50'
                           }`}
                         >
                           {/* Item Summary Row */}
@@ -357,19 +372,19 @@ export default function ProjectBOQTab() {
                                   e.stopPropagation();
                                   if (canEdit) handleToggleActive(item, !item.isActive);
                                 }}
-                                className="text-slate-400 hover:text-white transition"
+                                className="text-muted-foreground hover:text-white transition"
                               >
                                 {item.isActive ? (
-                                  <CheckSquare className="h-4.5 w-4.5 text-[#c5a880]" />
+                                  <CheckSquare className="h-4.5 w-4.5 text-primary" />
                                 ) : (
                                   <Square className="h-4.5 w-4.5" />
                                 )}
                               </button>
                               
                               <div>
-                                <h4 className="text-xs font-bold text-white">{item.title}</h4>
+                                <h4 className="text-xs font-bold text-foreground">{item.title}</h4>
                                 {item.egyptianCodeRef && (
-                                  <span className="text-[9px] text-[#c5a880] font-semibold block mt-0.5">
+                                  <span className="text-[9px] text-primary font-semibold block mt-0.5">
                                     مرجع: {item.egyptianCodeRef}
                                   </span>
                                 )}
@@ -382,7 +397,7 @@ export default function ProjectBOQTab() {
                                 <select
                                   value={item.renovationAction || 'new_addition'}
                                   onChange={(e) => handleItemPropChange(item, 'renovationAction', e.target.value)}
-                                  className="bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-[10px] text-slate-300 focus:outline-none"
+                                  className="bg-card border border-border rounded px-2 py-1 text-[10px] text-secondary-foreground focus:outline-none"
                                 >
                                   <option value="new_addition">إضافة جديدة</option>
                                   <option value="keep">إبقاء القائم</option>
@@ -395,22 +410,22 @@ export default function ProjectBOQTab() {
                                 <div className="text-right">
                                   <div className="flex items-center gap-1.5">
                                     {item.quantitySource === 'calculated' && !item.perAreaOverrides && (
-                                      <span className="inline-block px-1.5 py-0.5 rounded bg-[#c5a880]/15 text-[#c5a880] text-[8px] font-bold">حساب تلقائي</span>
+                                      <span className="inline-block px-1.5 py-0.5 rounded bg-primary/15 text-primary text-[8px] font-bold">حساب تلقائي</span>
                                     )}
-                                    <span className="text-xs text-white font-bold">{itemResult.quantity.toFixed(1)} {item.unit}</span>
+                                    <span className="text-xs text-foreground font-bold">{itemResult.quantity.toFixed(1)} {item.unit}</span>
                                   </div>
                                 </div>
                               )}
 
                               {item.isActive && (
-                                <span className="text-xs font-bold text-white w-24 text-left">
+                                <span className="text-xs font-bold text-foreground w-24 text-left">
                                   {itemResult.total.toLocaleString()} ج.م
                                 </span>
                               )}
 
                               <button 
                                 onClick={() => toggleItemExpand(item.id)}
-                                className="p-1 rounded hover:bg-slate-800 text-slate-500"
+                                className="p-1 rounded hover:bg-slate-800 text-muted-foreground"
                               >
                                 {isItemExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                               </button>
@@ -419,13 +434,13 @@ export default function ProjectBOQTab() {
 
                           {/* Expanded Specifications Spec Editor Card */}
                           {isItemExpanded && item.isActive && (
-                            <div className="p-4 border-t border-[#222634] bg-[#13151c]/40 rounded-b-lg space-y-5">
+                            <div className="p-4 border-t border-border bg-card/40 rounded-b-lg space-y-5">
                               
                               {/* 1. Specs Form */}
                               {template && template.specs.length > 0 && (
                                 <div className="space-y-4">
-                                  <h5 className="text-xs font-bold text-slate-400 border-b border-[#222634] pb-1.5 flex items-center gap-1.5">
-                                    <Settings className="h-3.5 w-3.5 text-[#c5a880]" />
+                                  <h5 className="text-xs font-bold text-muted-foreground border-b border-border pb-1.5 flex items-center gap-1.5">
+                                    <Settings className="h-3.5 w-3.5 text-primary" />
                                     مواصفات البند الفنية
                                   </h5>
 
@@ -435,7 +450,7 @@ export default function ProjectBOQTab() {
 
                                       return (
                                         <div key={field.key}>
-                                          <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1">
+                                          <label className="block text-right text-[10px] font-semibold text-muted-foreground mb-1">
                                             {field.label} {field.unit && `(${field.unit})`}
                                           </label>
                                           
@@ -444,7 +459,7 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#c5a880]"
+                                              className="w-full bg-[#1a1c24] border border-border rounded px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-[#c5a880]"
                                             >
                                               {field.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                             </select>
@@ -453,7 +468,7 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, e.target.value)}
-                                              className="w-full bg-[#201811] border border-[#c5a880]/30 rounded px-2.5 py-1.5 text-xs text-[#c5a880] font-semibold focus:outline-none focus:border-[#c5a880]"
+                                              className="w-full bg-[#201811] border border-primary/30 rounded px-2.5 py-1.5 text-xs text-primary font-semibold focus:outline-none focus:border-[#c5a880]"
                                             >
                                               <option value="">-- خامة قياسية --</option>
                                               {allMaterials
@@ -468,7 +483,7 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, Number(e.target.value) || 0)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-center text-xs text-white focus:outline-none focus:border-[#c5a880]"
+                                              className="w-full bg-[#1a1c24] border border-border rounded px-2.5 py-1.5 text-center text-xs text-foreground focus:outline-none focus:border-[#c5a880]"
                                             />
                                           ) : (
                                             <input
@@ -476,7 +491,7 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={val as string | number}
                                               onChange={(e) => handleSpecChange(item, field.key, e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-right text-xs text-white focus:outline-none focus:border-[#c5a880]"
+                                              className="w-full bg-[#1a1c24] border border-border rounded px-2.5 py-1.5 text-right text-xs text-foreground focus:outline-none focus:border-[#c5a880]"
                                             />
                                           )}
                                         </div>
@@ -488,16 +503,16 @@ export default function ProjectBOQTab() {
 
                               {/* 2. perAreaOverride Editor */}
                               {template?.perAreaOverride && (
-                                <div className="space-y-3 bg-[#13151c]/60 p-4 border border-[#222634] rounded-lg">
-                                  <div className="flex items-center justify-between border-b border-[#222634] pb-2">
-                                    <h5 className="text-xs font-bold text-white flex items-center gap-1.5">
-                                      <LayoutGrid className="h-3.5 w-3.5 text-[#c5a880]" />
+                                <div className="space-y-3 bg-card/60 p-4 border border-border rounded-lg">
+                                  <div className="flex items-center justify-between border-b border-border pb-2">
+                                    <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                                      <LayoutGrid className="h-3.5 w-3.5 text-primary" />
                                       تعدد المواصفات والكميات لكل مساحة (Accents)
                                     </h5>
                                     {canEdit && (
                                       <button
                                         onClick={() => handleAddAreaOverride(item)}
-                                        className="text-[10px] font-bold text-[#c5a880] hover:underline"
+                                        className="text-[10px] font-bold text-primary hover:underline"
                                       >
                                         + تفعيل مساحة إضافية
                                       </button>
@@ -505,21 +520,21 @@ export default function ProjectBOQTab() {
                                   </div>
 
                                   {Object.keys(item.perAreaOverrides || {}).length === 0 ? (
-                                    <p className="text-[10px] text-slate-500 font-semibold text-center py-2">
+                                    <p className="text-[10px] text-muted-foreground font-semibold text-center py-2">
                                       هذا البند يغذي المشروع بكامل مساحته المجمعة. اضغط بالأعلى لتقسيم البند بمواصفات مختلفة لكل غرفة.
                                     </p>
                                   ) : (
                                     <div className="space-y-3">
                                       {Object.entries(item.perAreaOverrides || {}).map(([zoneId, override]) => (
-                                        <div key={zoneId} className="flex flex-col sm:flex-row items-center gap-3 border border-slate-900 bg-slate-900/30 p-2.5 rounded-lg">
+                                        <div key={zoneId} className="flex flex-col sm:flex-row items-center gap-3 border border-slate-900 bg-muted/30 p-2.5 rounded-lg">
                                           {/* Select room */}
                                           <div className="w-full sm:w-1/4">
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">الغرفة/المساحة</label>
+                                            <label className="block text-right text-[9px] text-muted-foreground mb-0.5">الغرفة/المساحة</label>
                                             <select
                                               disabled={!canEdit}
                                               value={zoneId}
                                               onChange={(e) => handleUpdateAreaOverride(item, zoneId, e.target.value, override.specs, override.quantity)}
-                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-xs text-white"
+                                              className="w-full bg-card border border-border rounded px-2 py-1 text-xs text-foreground"
                                             >
                                               {currentProject.zones.map(z => <option key={z.id} value={z.id}>{z.name}</option>)}
                                             </select>
@@ -530,7 +545,7 @@ export default function ProjectBOQTab() {
                                             const val = override.specs[field.key] !== undefined ? override.specs[field.key] : field.defaultValue;
                                             return (
                                               <div key={field.key} className="w-full sm:w-1/5">
-                                                <label className="block text-right text-[9px] text-slate-400 mb-0.5">{field.label}</label>
+                                                <label className="block text-right text-[9px] text-muted-foreground mb-0.5">{field.label}</label>
                                                 {field.type === 'select' ? (
                                                   <select
                                                     disabled={!canEdit}
@@ -539,7 +554,7 @@ export default function ProjectBOQTab() {
                                                       const updates = { [field.key]: e.target.value };
                                                       handleUpdateAreaOverride(item, zoneId, zoneId, updates, override.quantity);
                                                     }}
-                                                    className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-xs text-white"
+                                                    className="w-full bg-card border border-border rounded px-2 py-1 text-xs text-foreground"
                                                   >
                                                     {field.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                                   </select>
@@ -551,7 +566,7 @@ export default function ProjectBOQTab() {
                                                       const updates = { [field.key]: e.target.value };
                                                       handleUpdateAreaOverride(item, zoneId, zoneId, updates, override.quantity);
                                                     }}
-                                                    className="w-full bg-[#201811] border border-[#c5a880]/30 rounded px-2 py-1 text-xs text-[#c5a880] font-semibold"
+                                                    className="w-full bg-[#201811] border border-primary/30 rounded px-2 py-1 text-xs text-primary font-semibold"
                                                   >
                                                     <option value="">-- خامة قياسية --</option>
                                                     {allMaterials
@@ -569,7 +584,7 @@ export default function ProjectBOQTab() {
                                                       const updates = { [field.key]: e.target.value };
                                                       handleUpdateAreaOverride(item, zoneId, zoneId, updates, override.quantity);
                                                     }}
-                                                    className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-xs text-white"
+                                                    className="w-full bg-card border border-border rounded px-2 py-1 text-xs text-foreground"
                                                   />
                                                 )}
                                               </div>
@@ -578,13 +593,13 @@ export default function ProjectBOQTab() {
 
                                           {/* Quantity */}
                                           <div className="w-full sm:w-20">
-                                            <label className="block text-right text-[9px] text-slate-400 mb-0.5">الكمية ({item.unit})</label>
+                                            <label className="block text-right text-[9px] text-muted-foreground mb-0.5">الكمية ({item.unit})</label>
                                             <input
                                               type="number"
                                               disabled={!canEdit}
                                               value={override.quantity}
                                               onChange={(e) => handleUpdateAreaOverride(item, zoneId, zoneId, {}, Number(e.target.value) || 0)}
-                                              className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-white"
+                                              className="w-full bg-card border border-border rounded px-2 py-1 text-center text-xs text-foreground"
                                             />
                                           </div>
 
@@ -592,7 +607,7 @@ export default function ProjectBOQTab() {
                                           {canEdit && (
                                             <button
                                               onClick={() => handleDeleteAreaOverride(item, zoneId)}
-                                              className="p-1 mt-3 sm:mt-0 rounded bg-slate-900 border border-slate-800 text-rose-500 hover:bg-rose-950/20 transition"
+                                              className="p-1 mt-3 sm:mt-0 rounded bg-muted border border-border text-rose-500 hover:bg-rose-950/20 transition"
                                             >
                                               <Trash2 className="h-3.5 w-3.5" />
                                             </button>
@@ -606,20 +621,20 @@ export default function ProjectBOQTab() {
 
                               {/* 2.5 Quantities Editor */}
                               <div className="space-y-4">
-                                <h5 className="text-xs font-bold text-slate-400 border-b border-[#222634] pb-1.5 flex items-center gap-1.5">
-                                  <LayoutGrid className="h-3.5 w-3.5 text-[#c5a880]" />
+                                <h5 className="text-xs font-bold text-muted-foreground border-b border-border pb-1.5 flex items-center gap-1.5">
+                                  <LayoutGrid className="h-3.5 w-3.5 text-primary" />
                                   تعديل الكمية الإجمالية
                                 </h5>
                                 
                                 <div className="flex flex-col md:flex-row gap-5">
-                                  <div className="flex-1 bg-slate-900/30 border border-[#222634] p-4 rounded-lg space-y-3.5">
+                                  <div className="flex-1 bg-muted/30 border border-border p-4 rounded-lg space-y-3.5">
                                     <div>
-                                      <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1">مصدر حساب الكمية</label>
+                                      <label className="block text-right text-[10px] font-semibold text-muted-foreground mb-1">مصدر حساب الكمية</label>
                                       <select
                                         disabled={!canEdit}
                                         value={item.quantitySource || 'calculated'}
                                         onChange={(e) => handleItemPropChange(item, 'quantitySource', e.target.value)}
-                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-xs text-white focus:outline-none"
+                                        className="w-full bg-[#1a1c24] border border-border rounded px-2.5 py-1.5 text-xs text-foreground focus:outline-none"
                                       >
                                         <option value="calculated">حساب تلقائي من الغرف والمساحات</option>
                                         <option value="manual">تعديل وإدخال يدوي مباشر</option>
@@ -628,13 +643,13 @@ export default function ProjectBOQTab() {
                                     
                                     {item.quantitySource === 'manual' && (
                                       <div>
-                                        <label className="block text-right text-[9px] text-slate-400 mb-0.5">الكمية الإجمالية المعتمدة ({item.unit})</label>
+                                        <label className="block text-right text-[9px] text-muted-foreground mb-0.5">الكمية الإجمالية المعتمدة ({item.unit})</label>
                                         <input
                                           type="number"
                                           disabled={!canEdit}
                                           value={item.quantity || 0}
                                           onChange={(e) => handleItemPropChange(item, 'quantity', parseFloat(e.target.value) || 0)}
-                                          className="w-full bg-[#13151c] border border-[#222634] rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:border-[#c5a880] focus:outline-none"
+                                          className="w-full bg-card border border-border rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:border-[#c5a880] focus:outline-none"
                                         />
                                       </div>
                                     )}
@@ -644,9 +659,9 @@ export default function ProjectBOQTab() {
 
                               {/* 3. Pricing Editor */}
                               <div className="space-y-4">
-                                <div className="flex items-center justify-between border-b border-[#222634] pb-1.5">
-                                  <h5 className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
-                                    <FileText className="h-3.5 w-3.5 text-[#c5a880]" />
+                                <div className="flex items-center justify-between border-b border-border pb-1.5">
+                                  <h5 className="text-xs font-bold text-muted-foreground flex items-center gap-1.5">
+                                    <FileText className="h-3.5 w-3.5 text-primary" />
                                     التسعير وبنود اليوميات
                                   </h5>
                                   <button
@@ -661,14 +676,14 @@ export default function ProjectBOQTab() {
                                 <div className="flex flex-col md:flex-row gap-5">
                                   
                                   {/* Pricing Mode */}
-                                  <div className="flex-1 bg-slate-900/30 border border-[#222634] p-4 rounded-lg space-y-3.5">
+                                  <div className="flex-1 bg-muted/30 border border-border p-4 rounded-lg space-y-3.5">
                                     <div>
-                                      <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1">طريقة الحساب والتسعير</label>
+                                      <label className="block text-right text-[10px] font-semibold text-muted-foreground mb-1">طريقة الحساب والتسعير</label>
                                       <select
                                         disabled={!canEdit}
                                         value={item.pricing.mode}
                                         onChange={(e) => handlePricingModeChange(item, e.target.value as any)}
-                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2.5 py-1.5 text-xs text-white focus:outline-none"
+                                        className="w-full bg-[#1a1c24] border border-border rounded px-2.5 py-1.5 text-xs text-foreground focus:outline-none"
                                       >
                                         <option value="materials_labor_split">تجزئة خامات ومصنعية</option>
                                         <option value="lump_sum">مقطوعية كاملة (شامل)</option>
@@ -681,7 +696,7 @@ export default function ProjectBOQTab() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                       {item.pricing.mode === 'materials_labor_split' && (
                                         <>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
                                             <div className="flex items-center justify-between mb-2">
                                               <label className="text-right text-[10px] font-bold text-emerald-400 flex items-center gap-1.5">
                                                 <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
@@ -701,10 +716,10 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.materialUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'materialUnitPrice', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-emerald-500/50 transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-emerald-500/50 transition"
                                             />
                                           </div>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
                                             <label className="block text-right text-[10px] font-bold text-amber-400 mb-2 flex items-center gap-1.5">
                                               <span className="h-2 w-2 rounded-full bg-amber-500"></span>
                                               سعر الوحدة (مصنعية فقط) ج.م
@@ -714,7 +729,7 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.laborUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'laborUnitPrice', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-amber-500/50 transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-amber-500/50 transition"
                                             />
                                           </div>
                                         </>
@@ -722,7 +737,7 @@ export default function ProjectBOQTab() {
 
                                       {item.pricing.mode === 'detailed_breakdown' && (
                                         <>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
                                             <div className="flex items-center justify-between mb-2">
                                               <label className="text-right text-[10px] font-bold text-emerald-400 flex items-center gap-1.5">
                                                 <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
@@ -734,10 +749,10 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.materialUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'materialUnitPrice', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-emerald-500/50 transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-emerald-500/50 transition"
                                             />
                                           </div>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
                                             <label className="block text-right text-[10px] font-bold text-amber-400 mb-2 flex items-center gap-1.5">
                                               <span className="h-2 w-2 rounded-full bg-amber-500"></span>
                                               سعر الوحدة (مصنعية) ج.م
@@ -747,10 +762,10 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.laborUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'laborUnitPrice', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-amber-500/50 transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-amber-500/50 transition"
                                             />
                                           </div>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
                                             <label className="block text-right text-[10px] font-bold text-blue-400 mb-2 flex items-center gap-1.5">
                                               <span className="h-2 w-2 rounded-full bg-blue-500"></span>
                                               سعر الوحدة (معدات) ج.م
@@ -760,10 +775,10 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.equipmentUnitPrice || ''}
                                               onChange={(e) => handlePricingChange(item, 'equipmentUnitPrice', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-blue-500/50 transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-blue-500/50 transition"
                                             />
                                           </div>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
                                             <label className="block text-right text-[10px] font-bold text-purple-400 mb-2 flex items-center gap-1.5">
                                               <span className="h-2 w-2 rounded-full bg-purple-500"></span>
                                               سعر الوحدة (مصروفات عامة وإدارية) ج.م
@@ -773,14 +788,14 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.overheadUnitPrice || ''}
                                               onChange={(e) => handlePricingChange(item, 'overheadUnitPrice', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-purple-500/50 transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-purple-500/50 transition"
                                             />
                                           </div>
                                         </>
                                       )}
 
                                       {item.pricing.mode === 'lump_sum' && (
-                                        <div className="col-span-1 sm:col-span-2 bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                        <div className="col-span-1 sm:col-span-2 bg-card p-3 rounded-lg border border-border shadow-inner">
                                           <div className="flex items-center justify-between mb-2">
                                             <label className="text-right text-[10px] font-bold text-purple-400 flex items-center gap-1.5">
                                               <span className="h-2 w-2 rounded-full bg-purple-500"></span>
@@ -800,14 +815,14 @@ export default function ProjectBOQTab() {
                                             disabled={!canEdit}
                                             value={item.pricing.lumpSumPrice}
                                             onChange={(e) => handlePricingChange(item, 'lumpSumPrice', e.target.value)}
-                                            className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-2 text-center text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition"
+                                            className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-2 text-center text-base font-bold text-foreground focus:outline-none focus:border-purple-500/50 transition"
                                           />
                                         </div>
                                       )}
 
                                       {item.pricing.mode === 'daily_rate' && (
                                         <>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
                                             <label className="block text-right text-[10px] font-bold text-sky-400 mb-2 flex items-center gap-1.5">
                                               <span className="h-2 w-2 rounded-full bg-sky-500"></span>
                                               يومية الصنايعي المعتمدة ج.م
@@ -817,11 +832,11 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.dailyRate}
                                               onChange={(e) => handlePricingChange(item, 'dailyRate', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-sky-500/50 transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-sky-500/50 transition"
                                             />
                                           </div>
-                                          <div className="bg-[#13151c] p-3 rounded-lg border border-[#222634] shadow-inner">
-                                            <label className="block text-right text-[10px] font-bold text-slate-300 mb-2 flex items-center gap-1.5">
+                                          <div className="bg-card p-3 rounded-lg border border-border shadow-inner">
+                                            <label className="block text-right text-[10px] font-bold text-secondary-foreground mb-2 flex items-center gap-1.5">
                                               <span className="h-2 w-2 rounded-full bg-slate-400"></span>
                                               أيام التنفيذ التقديرية
                                             </label>
@@ -830,12 +845,12 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.estimatedDays}
                                               onChange={(e) => handlePricingChange(item, 'estimatedDays', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none transition"
                                             />
                                           </div>
-                                          <div className="col-span-1 sm:col-span-2 bg-[#13151c] p-3 rounded-lg border border-dashed border-[#222634]">
+                                          <div className="col-span-1 sm:col-span-2 bg-card p-3 rounded-lg border border-dashed border-border">
                                             <div className="flex items-center justify-between mb-2">
-                                              <label className="text-right text-[10px] font-bold text-slate-400 flex items-center gap-1.5">
+                                              <label className="text-right text-[10px] font-bold text-muted-foreground flex items-center gap-1.5">
                                                 <span className="h-2 w-2 rounded-full border border-slate-500"></span>
                                                 إجمالي الخامات لليومية (إن وجدت) ج.م
                                               </label>
@@ -853,17 +868,17 @@ export default function ProjectBOQTab() {
                                               disabled={!canEdit}
                                               value={item.pricing.materialUnitPrice}
                                               onChange={(e) => handlePricingChange(item, 'materialUnitPrice', e.target.value)}
-                                              className="w-full bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none transition"
+                                              className="w-full bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none transition"
                                             />
-                                            <p className="text-[9px] text-slate-500 mt-2 text-center">أدخل تكلفة الخامات الإجمالية المطلوبة مع الصنايعي</p>
+                                            <p className="text-[9px] text-muted-foreground mt-2 text-center">أدخل تكلفة الخامات الإجمالية المطلوبة مع الصنايعي</p>
                                           </div>
                                         </>
                                       )}
                                     </div>
                                     
                                     {item.pricing.mode !== 'daily_rate' && (
-                                      <div className="bg-slate-900/50 p-3 rounded-lg border border-[#222634] shadow-inner mt-4">
-                                        <label className="block text-right text-[10px] font-bold text-slate-300 mb-2 flex items-center gap-1.5">
+                                      <div className="bg-muted/50 p-3 rounded-lg border border-border shadow-inner mt-4">
+                                        <label className="block text-right text-[10px] font-bold text-secondary-foreground mb-2 flex items-center gap-1.5">
                                           <span className="h-2 w-2 rounded-full bg-slate-500"></span>
                                           مدة التنفيذ التقديرية (يوم)
                                         </label>
@@ -872,29 +887,29 @@ export default function ProjectBOQTab() {
                                           disabled={!canEdit}
                                           value={item.pricing.estimatedDays}
                                           onChange={(e) => handlePricingChange(item, 'estimatedDays', e.target.value)}
-                                          className="w-full sm:w-1/3 bg-[#1a1c24] border border-[#222634] rounded-md px-3 py-1.5 text-center text-sm font-bold text-white focus:outline-none focus:border-slate-500/50 transition"
+                                          className="w-full sm:w-1/3 bg-[#1a1c24] border border-border rounded-md px-3 py-1.5 text-center text-sm font-bold text-foreground focus:outline-none focus:border-slate-500/50 transition"
                                         />
                                       </div>
                                     )}
                                   </div>
 
                                   {/* Pricing Output */}
-                                  <div className="flex-1 bg-[#c5a880]/5 border border-[#c5a880]/15 p-4 rounded-lg flex flex-col justify-between">
-                                    <div className="space-y-2 text-xs font-semibold text-slate-400">
+                                  <div className="flex-1 bg-primary/5 border border-primary/15 p-4 rounded-lg flex flex-col justify-between">
+                                    <div className="space-y-2 text-xs font-semibold text-muted-foreground">
                                       <div className="flex justify-between">
                                         <span>إجمالي الخامات:</span>
-                                        <span className="text-white">{itemResult.materialCost.toLocaleString()} ج.م</span>
+                                        <span className="text-foreground">{itemResult.materialCost.toLocaleString()} ج.م</span>
                                       </div>
                                       <div className="flex justify-between">
                                         <span>إجمالي المصنعية / اليوميات:</span>
-                                        <span className="text-white">{itemResult.laborCost.toLocaleString()} ج.م</span>
+                                        <span className="text-foreground">{itemResult.laborCost.toLocaleString()} ج.م</span>
                                       </div>
-                                      <div className="flex justify-between border-t border-[#222634] pt-2 mt-2 font-bold text-sm">
-                                        <span className="text-[#c5a880]">إجمالي البند:</span>
-                                        <span className="text-[#c5a880]">{itemResult.total.toLocaleString()} ج.م</span>
+                                      <div className="flex justify-between border-t border-border pt-2 mt-2 font-bold text-sm">
+                                        <span className="text-primary">إجمالي البند:</span>
+                                        <span className="text-primary">{itemResult.total.toLocaleString()} ج.م</span>
                                       </div>
                                     </div>
-                                    <div className="mt-4 pt-3 border-t border-[#222634] text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
+                                    <div className="mt-4 pt-3 border-t border-border text-[10px] text-muted-foreground font-semibold flex items-center gap-1.5">
                                       <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                                       <span>المدة المقدرة للجدول الزمني: {itemResult.estimatedDays} أيام عمل متواصلة.</span>
                                     </div>
@@ -903,16 +918,16 @@ export default function ProjectBOQTab() {
 
                                 {/* Custom Materials Editor */}
                                 {(item.pricing.mode === 'materials_labor_split' || item.pricing.mode === 'daily_rate') && (
-                                  <div className="space-y-4 mt-6 border-t border-[#222634] pt-4">
-                                      <div className="flex items-center justify-between border-b border-[#222634] pb-1.5">
-                                        <h5 className="text-xs font-bold text-[#c5a880] flex items-center gap-1.5">
+                                  <div className="space-y-4 mt-6 border-t border-border pt-4">
+                                      <div className="flex items-center justify-between border-b border-border pb-1.5">
+                                        <h5 className="text-xs font-bold text-primary flex items-center gap-1.5">
                                           <LayoutGrid className="h-3.5 w-3.5" />
                                           تحليل أسعار الخامات والتوصيف التفصيلي (للتسعير الدقيق)
                                         </h5>
                                         {canEdit && (
                                           <button
                                             onClick={() => handleAddCustomMaterial(item)}
-                                            className="text-[10px] font-bold bg-[#c5a880]/10 px-2 py-1 rounded text-[#c5a880] hover:bg-[#c5a880]/20 transition"
+                                            className="text-[10px] font-bold bg-primary/10 px-2 py-1 rounded text-primary hover:bg-[#c5a880]/20 transition"
                                           >
                                             + إضافة خامة فرعية
                                           </button>
@@ -920,10 +935,10 @@ export default function ProjectBOQTab() {
                                       </div>
 
                                       {item.customMaterials && item.customMaterials.length > 0 ? (
-                                        <div className="overflow-x-auto bg-[#13151c]/60 p-3 rounded-lg border border-[#222634]">
+                                        <div className="overflow-x-auto bg-card/60 p-3 rounded-lg border border-border">
                                           <table className="w-full text-right text-[10px] font-medium border-collapse">
                                             <thead>
-                                              <tr className="text-slate-400 border-b border-[#222634]/60 pb-2 font-bold">
+                                              <tr className="text-muted-foreground border-b border-border/60 pb-2 font-bold">
                                                 <th className="pb-2 text-right">الخامة من الكتالوج المركزي</th>
                                                 <th className="pb-2 text-center w-24">الكمية / النسبة</th>
                                                 <th className="pb-2 text-center w-20">الوحدة</th>
@@ -932,7 +947,7 @@ export default function ProjectBOQTab() {
                                                 <th className="pb-2 w-10"></th>
                                               </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-[#222634]/30 text-slate-300">
+                                            <tbody className="divide-y divide-[#222634]/30 text-secondary-foreground">
                                               {item.customMaterials.map((mat) => (
                                                 <tr key={mat.id} className="hover:bg-slate-900/10 transition">
                                                   <td className="py-2 pr-1">
@@ -956,7 +971,7 @@ export default function ProjectBOQTab() {
                                                           });
                                                         }
                                                       }}
-                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1.5 text-xs text-white focus:outline-none"
+                                                      className="w-full bg-[#1a1c24] border border-border rounded px-2 py-1.5 text-xs text-foreground focus:outline-none"
                                                     >
                                                       <option value="">-- اختر خامة من الكتالوج --</option>
                                                       {allMaterials.map(m => (
@@ -964,9 +979,9 @@ export default function ProjectBOQTab() {
                                                       ))}
                                                     </select>
                                                     {mat.constantKey && allMaterials.find(c => c.key === mat.constantKey)?.supplierName && (
-                                                      <div className="mt-1 flex items-center gap-1 text-[9px] text-[#c5a880]/70 bg-amber-950/20 px-1.5 py-0.5 rounded w-max">
+                                                      <div className="mt-1 flex items-center gap-1 text-[9px] text-primary/70 bg-amber-950/20 px-1.5 py-0.5 rounded w-max">
                                                         <span>📦 متاح لدى:</span>
-                                                        <span className="font-bold text-[#c5a880]">{allMaterials.find(c => c.key === mat.constantKey)?.supplierName}</span>
+                                                        <span className="font-bold text-primary">{allMaterials.find(c => c.key === mat.constantKey)?.supplierName}</span>
                                                       </div>
                                                     )}
                                                     {!mat.constantKey && (
@@ -976,7 +991,7 @@ export default function ProjectBOQTab() {
                                                         value={mat.name}
                                                         placeholder="أو اكتب اسم خامة خارجية يدوياً"
                                                         onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { name: e.target.value })}
-                                                        className="w-full mt-1 bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-xs text-white focus:outline-none"
+                                                        className="w-full mt-1 bg-[#1a1c24] border border-border rounded px-2 py-1 text-xs text-foreground focus:outline-none"
                                                       />
                                                     )}
                                                   </td>
@@ -989,7 +1004,7 @@ export default function ProjectBOQTab() {
                                                         placeholder={`نسبة (من ${item.quantity || 0})`}
                                                         title="استخدم هذه الخانة لربط الكمية بإجمالي كمية البند"
                                                         onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { multiplier: parseFloat(e.target.value) || 0, quantity: 0 })}
-                                                        className="w-full bg-[#1a1c24] border border-[#c5a880]/30 rounded px-2 py-1 text-center text-[10px] text-amber-200 placeholder:text-[#c5a880]/50 focus:outline-none"
+                                                        className="w-full bg-[#1a1c24] border border-primary/30 rounded px-2 py-1 text-center text-[10px] text-amber-200 placeholder:text-[#c5a880]/50 focus:outline-none"
                                                       />
                                                       <input
                                                         type="number"
@@ -997,7 +1012,7 @@ export default function ProjectBOQTab() {
                                                         value={mat.quantity || ''}
                                                         placeholder="رقم ثابت"
                                                         onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { quantity: parseFloat(e.target.value) || 0, multiplier: 0 })}
-                                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:outline-none disabled:opacity-30"
+                                                        className="w-full bg-[#1a1c24] border border-border rounded px-2 py-1 text-center text-xs text-emerald-400 font-bold focus:outline-none disabled:opacity-30"
                                                       />
                                                     </div>
                                                   </td>
@@ -1009,7 +1024,7 @@ export default function ProjectBOQTab() {
                                                         value={mat.unit}
                                                         placeholder="الوحدة (لفة/بستلة..)"
                                                         onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unit: e.target.value })}
-                                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1 text-center text-xs text-slate-400 focus:outline-none disabled:bg-[#13151c]"
+                                                        className="w-full bg-[#1a1c24] border border-border rounded px-2 py-1 text-center text-xs text-muted-foreground focus:outline-none disabled:bg-[#13151c]"
                                                       />
                                                       <input
                                                         type="number"
@@ -1018,7 +1033,7 @@ export default function ProjectBOQTab() {
                                                         placeholder="سعة العبوة (اختياري)"
                                                         title="مثال: إذا كانت الوحدة 'لفة' وطولها 100 متر، اكتب هنا 100 ليتم قسمة إجمالي الأمتار عليها"
                                                         onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { packageSize: parseFloat(e.target.value) || 0 })}
-                                                        className="w-full bg-[#1a1c24] border border-[#222634] rounded px-1 py-1 text-center text-[10px] text-slate-400 placeholder:text-slate-600 focus:outline-none"
+                                                        className="w-full bg-[#1a1c24] border border-border rounded px-1 py-1 text-center text-[10px] text-muted-foreground placeholder:text-slate-600 focus:outline-none"
                                                       />
                                                     </div>
                                                   </td>
@@ -1028,10 +1043,10 @@ export default function ProjectBOQTab() {
                                                       disabled={!canEdit || !!mat.constantKey}
                                                       value={mat.unitPrice}
                                                       onChange={(e) => handleUpdateCustomMaterial(item, mat.id, { unitPrice: parseFloat(e.target.value) || 0 })}
-                                                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-2 text-center text-xs text-white focus:outline-none disabled:bg-[#13151c]"
+                                                      className="w-full bg-[#1a1c24] border border-border rounded px-2 py-2 text-center text-xs text-foreground focus:outline-none disabled:bg-[#13151c]"
                                                     />
                                                   </td>
-                                                  <td className="py-2 pl-1 text-center font-bold text-[#c5a880] align-top">
+                                                  <td className="py-2 pl-1 text-center font-bold text-primary align-top">
                                                     {(() => {
                                                       let calcQty = mat.multiplier ? (item.quantity || 0) * mat.multiplier : (mat.quantity || 0);
                                                       if (mat.packageSize && mat.packageSize > 0) {
@@ -1056,7 +1071,7 @@ export default function ProjectBOQTab() {
                                           </table>
                                         </div>
                                       ) : (
-                                        <p className="text-[10px] text-slate-500 text-center py-2">لم يتم إدخال خامات تفصيلية. سيتم الاعتماد على خانة سعر الوحدة خامات الأساسية المكتوبة بالأعلى.</p>
+                                        <p className="text-[10px] text-muted-foreground text-center py-2">لم يتم إدخال خامات تفصيلية. سيتم الاعتماد على خانة سعر الوحدة خامات الأساسية المكتوبة بالأعلى.</p>
                                       )}
                                     </div>
                                   )}
@@ -1066,15 +1081,15 @@ export default function ProjectBOQTab() {
                                   const mats = calculateItemMaterials(item, currentProject.zones, currentProject.projectConstants);
                                   if (mats.length === 0) return null;
                                   return (
-                                    <div className="space-y-3 bg-[#13151c]/60 border border-[#222634] p-4 rounded-lg mt-4">
-                                        <h5 className="text-xs font-bold text-[#c5a880] flex items-center gap-1.5 border-b border-[#222634] pb-2">
+                                    <div className="space-y-3 bg-card/60 border border-border p-4 rounded-lg mt-4">
+                                        <h5 className="text-xs font-bold text-primary flex items-center gap-1.5 border-b border-border pb-2">
                                           <LayoutGrid className="h-3.5 w-3.5" />
                                           تفاصيل وحصر الخامات المطلوبة للشراء والتسعير
                                         </h5>
                                         <div className="overflow-x-auto">
                                           <table className="w-full text-right text-[10px] font-medium border-collapse">
                                             <thead>
-                                              <tr className="text-slate-400 border-b border-[#222634]/60 pb-2 font-bold">
+                                              <tr className="text-muted-foreground border-b border-border/60 pb-2 font-bold">
                                                 <th className="pb-2 text-right">الخامة / التوصيف</th>
                                                 <th className="pb-2 text-center">الاحتياج الفعلي</th>
                                                 <th className="pb-2 text-center">الكمية المقربة (شراء)</th>
@@ -1083,20 +1098,20 @@ export default function ProjectBOQTab() {
                                                 <th className="pb-2 text-left">إجمالي التكلفة</th>
                                               </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-[#222634]/30 text-slate-300">
+                                            <tbody className="divide-y divide-[#222634]/30 text-secondary-foreground">
                                               {mats.map((mat) => (
                                                 <tr key={mat.key} className="hover:bg-slate-900/10 transition">
-                                                  <td className="py-2.5 text-right font-semibold text-white">
+                                                  <td className="py-2.5 text-right font-semibold text-foreground">
                                                     {mat.name}
                                                     {mat.packagingDetails && (
-                                                      <span className="block text-[8px] text-slate-500 font-normal mt-0.5">{mat.packagingDetails}</span>
+                                                      <span className="block text-[8px] text-muted-foreground font-normal mt-0.5">{mat.packagingDetails}</span>
                                                     )}
                                                   </td>
                                                   <td className="py-2.5 text-center">{mat.qtyRequired.toFixed(1)}</td>
-                                                  <td className="py-2.5 text-center text-[#c5a880] font-bold">{mat.qtyRounded}</td>
+                                                  <td className="py-2.5 text-center text-primary font-bold">{mat.qtyRounded}</td>
                                                   <td className="py-2.5 text-center">{mat.unit}</td>
                                                   <td className="py-2.5 text-center">{mat.unitPrice.toLocaleString()} ج.م</td>
-                                                  <td className="py-2.5 text-left font-bold text-white">{mat.totalCost.toLocaleString()} ج.م</td>
+                                                  <td className="py-2.5 text-left font-bold text-foreground">{mat.totalCost.toLocaleString()} ج.م</td>
                                                 </tr>
                                               ))}
                                             </tbody>
@@ -1108,10 +1123,10 @@ export default function ProjectBOQTab() {
                                 </div>
 
                               {/* 4. Notes, Egyptian Code and Delete */}
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-[#222634] pt-4 mt-3">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-border pt-4 mt-3">
                                 <div>
-                                  <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1 flex items-center gap-1">
-                                    <MessageSquare className="h-3 w-3 text-slate-500" />
+                                  <label className="block text-right text-[10px] font-semibold text-muted-foreground mb-1 flex items-center gap-1">
+                                    <MessageSquare className="h-3 w-3 text-muted-foreground" />
                                     ملاحظات المهندس الفنية
                                   </label>
                                   <textarea
@@ -1120,13 +1135,13 @@ export default function ProjectBOQTab() {
                                     onChange={(e) => handleItemPropChange(item, 'notes', e.target.value)}
                                     rows={2}
                                     placeholder="ملاحظات حرة للصنايعي أو المورد..."
-                                    className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] p-2.5 text-right text-xs text-white focus:outline-none"
+                                    className="w-full rounded-lg border border-border bg-[#1a1c24] p-2.5 text-right text-xs text-foreground focus:outline-none"
                                   />
                                 </div>
                                 <div className="flex flex-col justify-between">
                                   <div>
-                                    <label className="block text-right text-[10px] font-semibold text-slate-400 mb-1 flex items-center gap-1">
-                                      <ShieldAlert className="h-3 w-3 text-slate-500" />
+                                    <label className="block text-right text-[10px] font-semibold text-muted-foreground mb-1 flex items-center gap-1">
+                                      <ShieldAlert className="h-3 w-3 text-muted-foreground" />
                                       كود البناء المصري (مرجع المواصفات)
                                     </label>
                                     <input
@@ -1135,7 +1150,7 @@ export default function ProjectBOQTab() {
                                       value={item.egyptianCodeRef}
                                       onChange={(e) => handleItemPropChange(item, 'egyptianCodeRef', e.target.value)}
                                       placeholder="المستند / كود التركيب المرجعي"
-                                      className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-3 py-1.5 text-right text-xs text-white focus:outline-none"
+                                      className="w-full rounded-lg border border-border bg-[#1a1c24] px-3 py-1.5 text-right text-xs text-foreground focus:outline-none"
                                     />
                                   </div>
 
@@ -1170,12 +1185,12 @@ export default function ProjectBOQTab() {
       {/* Add Custom Item Modal */}
       {isCustomModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between border-b border-[#222634] pb-3 mb-5">
-              <h4 className="text-base font-bold text-white">إضافة بند مخصص في القسم</h4>
+          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between border-b border-border pb-3 mb-5">
+              <h4 className="text-base font-bold text-foreground">إضافة بند مخصص في القسم</h4>
               <button 
                 onClick={() => setIsCustomModalOpen(false)}
-                className="p-1 rounded hover:bg-slate-800 text-slate-500 hover:text-white"
+                className="p-1 rounded hover:bg-slate-800 text-muted-foreground hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -1183,23 +1198,23 @@ export default function ProjectBOQTab() {
 
             <form onSubmit={handleAddCustomItem} className="space-y-4">
               <div>
-                <label className="block text-right text-xs font-semibold text-slate-400 mb-1">اسم البند المقترح *</label>
+                <label className="block text-right text-xs font-semibold text-muted-foreground mb-1">اسم البند المقترح *</label>
                 <input
                   type="text"
                   required
                   value={customTitle}
                   onChange={(e) => setCustomTitle(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-3 py-2 text-right text-xs text-white focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24] px-3 py-2 text-right text-xs text-foreground focus:outline-none"
                   placeholder="مثال: توريد وتركيب ارضيات ايبوكسي"
                 />
               </div>
 
               <div>
-                <label className="block text-right text-xs font-semibold text-slate-400 mb-1">وحدة القياس المعتمدة *</label>
+                <label className="block text-right text-xs font-semibold text-muted-foreground mb-1">وحدة القياس المعتمدة *</label>
                 <select
                   value={customUnit}
                   onChange={(e) => setCustomUnit(e.target.value)}
-                  className="w-full rounded-lg border border-[#222634] bg-[#1a1c24] px-3 py-2 text-right text-xs text-white focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-[#1a1c24] px-3 py-2 text-right text-xs text-foreground focus:outline-none"
                 >
                   <option value="م²">م² (متر مربع)</option>
                   <option value="م³">م³ (متر مكعب)</option>
@@ -1210,17 +1225,17 @@ export default function ProjectBOQTab() {
                 </select>
               </div>
 
-              <div className="flex gap-2.5 justify-end border-t border-[#222634] pt-4 mt-5">
+              <div className="flex gap-2.5 justify-end border-t border-border pt-4 mt-5">
                 <button
                   type="button"
                   onClick={() => setIsCustomModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-400 hover:text-white transition"
+                  className="px-4 py-2 rounded-lg bg-muted border border-border text-xs font-semibold text-muted-foreground hover:text-white transition"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-1 px-5 py-2 rounded-lg bg-[#c5a880] text-[#0d0e12] text-xs font-bold shadow hover:brightness-110 transition"
+                  className="flex items-center gap-1 px-5 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold shadow hover:brightness-110 transition"
                 >
                   <Plus className="h-4 w-4" />
                   تثبيت وإضافة البند
