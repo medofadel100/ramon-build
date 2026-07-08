@@ -56,7 +56,7 @@ export default function ProjectAITab() {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           projectContext: {
             header: currentProject?.header,
-            boq: currentProject?.items?.map(item => ({ name: item.name, unit: item.unit, quantity: item.quantity, price: item.price, total: item.total })),
+            boq: currentProject?.items?.map(item => ({ title: item.title, unit: item.unit, quantity: item.quantity })),
             inventory: currentProject?.inventory?.map(tx => ({ type: tx.type, item: tx.itemName, qty: tx.quantity, date: tx.date })),
             rfqs: currentProject?.rfqs?.map(rfq => ({ title: rfq.title, status: rfq.status, date: rfq.dueDate })),
           }
