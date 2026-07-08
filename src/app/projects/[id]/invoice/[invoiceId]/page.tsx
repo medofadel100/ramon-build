@@ -13,15 +13,13 @@ export default function InvoicePage() {
   const invoiceId = params.invoiceId as string;
   
   const currentProject = useProjectStore((state) => state.currentProject);
-  const setCurrentProject = useProjectStore((state) => state.setCurrentProject);
+  const loadProject = useProjectStore((state) => state.loadProject);
 
   useEffect(() => {
     if (!currentProject && id) {
-      getProjectData(id).then(data => {
-        if (data) setCurrentProject(data);
-      });
+      loadProject(id);
     }
-  }, [id, currentProject, setCurrentProject]);
+  }, [id, currentProject, loadProject]);
 
   if (!currentProject) {
     return <div className="p-10 text-center font-cairo">جاري تحميل المستخلص...</div>;
@@ -59,7 +57,7 @@ export default function InvoicePage() {
             <h1 className="text-4xl font-black text-slate-800 mb-2">
               {invoice.type === 'client' ? 'مستخلص مالك (فاتورة)' : 'مستخلص مقاول باطن'}
             </h1>
-            <h2 className="text-2xl font-bold text-slate-600">{currentProject.header.projectName}</h2>
+            <h2 className="text-2xl font-bold text-slate-600">{currentProject.header.name}</h2>
             <p className="text-slate-500 mt-2">
               موجه إلى: {invoice.type === 'client' ? (currentProject.header.ownerName || 'المالك') : (subcontractor?.name || 'مقاول غير معروف')}
             </p>
@@ -119,22 +117,22 @@ export default function InvoicePage() {
               <span className="font-bold text-slate-600">إجمالي الأعمال المنفذة (الحالي)</span>
               <span className="font-bold">{invoice.subtotal.toLocaleString()} ج.م</span>
             </div>
-            {invoice.taxRate > 0 && (
+            {(invoice.taxRate ?? 0) > 0 && (
               <div className="flex justify-between p-3 border-b border-slate-200 bg-slate-50">
                 <span className="font-bold text-slate-600">القيمة المضافة ({invoice.taxRate}%)</span>
-                <span className="font-bold text-emerald-600">+{invoice.taxAmount.toLocaleString()} ج.م</span>
+                <span className="font-bold text-emerald-600">+{(invoice.taxAmount ?? 0).toLocaleString()} ج.م</span>
               </div>
             )}
-            {invoice.retentionRate > 0 && (
+            {(invoice.retentionRate ?? 0) > 0 && (
               <div className="flex justify-between p-3 border-b border-slate-200 bg-slate-50">
                 <span className="font-bold text-slate-600">تأمين أعمال ({invoice.retentionRate}%)</span>
-                <span className="font-bold text-rose-500">-{invoice.retentionAmount.toLocaleString()} ج.م</span>
+                <span className="font-bold text-rose-500">-{(invoice.retentionAmount ?? 0).toLocaleString()} ج.م</span>
               </div>
             )}
-            {invoice.deductions > 0 && (
+            {(invoice.deductions ?? 0) > 0 && (
               <div className="flex justify-between p-3 border-b border-slate-200 bg-slate-50">
                 <span className="font-bold text-slate-600">خصومات واستقطاعات أخرى</span>
-                <span className="font-bold text-rose-500">-{invoice.deductions.toLocaleString()} ج.م</span>
+                <span className="font-bold text-rose-500">-{(invoice.deductions ?? 0).toLocaleString()} ج.م</span>
               </div>
             )}
             <div className="flex justify-between p-4 bg-slate-800 text-white text-xl">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useProjectStore } from '@/store/projectStore';
-import { calculateProjectSummary } from '@/lib/calculations';
+import { calculateProjectSummary, calculateItemTotal } from '@/lib/calculations';
 import { useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Printer, ArrowRight } from 'lucide-react';
@@ -13,15 +13,13 @@ export default function QuotationPage() {
   const id = params.id as string;
   
   const currentProject = useProjectStore((state) => state.currentProject);
-  const setCurrentProject = useProjectStore((state) => state.setCurrentProject);
+  const loadProject = useProjectStore((state) => state.loadProject);
 
   useEffect(() => {
     if (!currentProject && id) {
-      getProjectData(id).then(data => {
-        if (data) setCurrentProject(data);
-      });
+      loadProject(id);
     }
-  }, [id, currentProject, setCurrentProject]);
+  }, [id, currentProject, loadProject]);
 
   const summary = useMemo(() => {
     if (!currentProject) return null;
@@ -66,7 +64,7 @@ export default function QuotationPage() {
         <div className="border-b-4 border-slate-800 pb-6 mb-8 flex justify-between items-start">
           <div>
             <h1 className="text-4xl font-black text-slate-800 mb-2">عرض سعر هندسي</h1>
-            <h2 className="text-2xl font-bold text-slate-600">{currentProject.header.projectName}</h2>
+            <h2 className="text-2xl font-bold text-slate-600">{currentProject.header.name}</h2>
             <p className="text-slate-500 mt-2">عناية السيد / {currentProject.header.ownerName || 'المالك'}</p>
           </div>
           <div className="text-left">
@@ -110,10 +108,10 @@ export default function QuotationPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-200">
                     {sec.activeItems.map((item, itemIdx) => {
-                      const itemTotal = secSummary?.itemDetails.find(d => d.id === item.id);
-                      if (!itemTotal) return null;
+                      const itemTotal = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
+                      if (!itemTotal || itemTotal.total === 0) return null;
                       
-                      const unitPrice = itemTotal.estimatedDays > 0 ? (itemTotal.total / item.quantity) : 0;
+                      const unitPrice = itemTotal.quantity > 0 ? (itemTotal.total / itemTotal.quantity) : 0;
 
                       return (
                         <tr key={item.id} className="hover:bg-slate-50">
@@ -128,7 +126,7 @@ export default function QuotationPage() {
                             </div>
                           </td>
                           <td className="p-3 text-center text-slate-700">{item.unit}</td>
-                          <td className="p-3 text-center font-bold">{item.quantity.toLocaleString()}</td>
+                          <td className="p-3 text-center font-bold">{itemTotal.quantity.toLocaleString()}</td>
                           <td className="p-3 text-center font-bold">
                             {item.pricing.mode === 'lump_sum' ? '-' : unitPrice.toLocaleString()}
                           </td>

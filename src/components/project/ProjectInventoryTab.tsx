@@ -310,7 +310,7 @@ export default function ProjectInventoryTab() {
                     .filter(tx => tx.type === 'out' && tx.relatedItemId === item.id)
                     .reduce((sum, tx) => sum + tx.quantity, 0);
                   
-                  const estimated = item.quantity;
+                  const estimated = item.quantity || 0;
                   const diff = estimated - actualConsumed;
                   const isOverBudget = diff < 0;
                   const isCritical = diff < 0 && Math.abs(diff) > (estimated * 0.1); // 10% over

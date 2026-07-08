@@ -13,15 +13,13 @@ export default function ClientPortalPage() {
   const id = params.id as string;
   
   const currentProject = useProjectStore((state) => state.currentProject);
-  const setCurrentProject = useProjectStore((state) => state.setCurrentProject);
+  const loadProject = useProjectStore((state) => state.loadProject);
 
   useEffect(() => {
     if (!currentProject && id) {
-      getProjectData(id).then(data => {
-        if (data) setCurrentProject(data);
-      });
+      loadProject(id);
     }
-  }, [id, currentProject, setCurrentProject]);
+  }, [id, currentProject, loadProject]);
 
   const summary = useMemo(() => {
     if (!currentProject) return null;
@@ -56,7 +54,7 @@ export default function ClientPortalPage() {
               <HardHat className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="font-black text-xl tracking-wide">{currentProject.header.projectName}</h1>
+              <h1 className="font-black text-xl tracking-wide">{currentProject.header.name}</h1>
               <p className="text-xs text-slate-400">بوابة العميل (متابعة المشروع)</p>
             </div>
           </div>

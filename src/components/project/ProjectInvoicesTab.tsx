@@ -101,9 +101,9 @@ export default function ProjectInvoicesTab() {
     
     // Recalculate totals
     const subtotal = editingInvoice.items.reduce((acc, item) => acc + item.totalAmount, 0);
-    const taxAmount = (subtotal * editingInvoice.taxRate) / 100;
-    const retentionAmount = (subtotal * editingInvoice.retentionRate) / 100;
-    const totalAmount = subtotal + taxAmount - retentionAmount - editingInvoice.deductions;
+    const taxAmount = (subtotal * (editingInvoice.taxRate ?? 0)) / 100;
+    const retentionAmount = (subtotal * (editingInvoice.retentionRate ?? 0)) / 100;
+    const totalAmount = subtotal + taxAmount - retentionAmount - (editingInvoice.deductions ?? 0);
 
     const updatedInvoice = { ...editingInvoice, subtotal, taxAmount, retentionAmount, totalAmount };
     const updatedInvoices = invoices.map(inv => inv.id === updatedInvoice.id ? updatedInvoice : inv);
@@ -421,8 +421,8 @@ export default function ProjectInvoicesTab() {
                 <p className="font-black text-xl text-emerald-400">
                   {(
                     editingInvoice.items.reduce((acc, item) => acc + item.totalAmount, 0) * 
-                    (1 + editingInvoice.taxRate/100) * 
-                    (1 - editingInvoice.retentionRate/100) - editingInvoice.deductions
+                    (1 + (editingInvoice.taxRate ?? 0)/100) -
+                    (editingInvoice.items.reduce((acc, item) => acc + item.totalAmount, 0) * (editingInvoice.retentionRate ?? 0)/100) - (editingInvoice.deductions ?? 0)
                   ).toLocaleString()} ج.م
                 </p>
               </div>
