@@ -4,6 +4,9 @@ import { useProjectStore } from '@/store/projectStore';
 import { calculateProjectSummary, calculateItemTotal } from '@/lib/calculations';
 import { DollarSign, Clock, Layout, Hammer, Percent, Save, Edit, Trash2, Plus, RefreshCw, Split } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+
+const COLORS = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#eab308'];
 
 interface ScheduleItem {
   id: string;
@@ -268,6 +271,62 @@ export default function ProjectSummaryTab() {
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Financial Dashboards (Charts) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
+          <h3 className="text-base font-bold text-white mb-6">توزيع تكلفة المشروع بالأقسام</h3>
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={Object.values(summary.bySection).filter(s => s.totalCost > 0)}
+                  dataKey="totalCost"
+                  nameKey="title"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  label={({ name, percent }) => `${name} (${((percent || 0) * 100).toFixed(0)}%)`}
+                >
+                  {Object.values(summary.bySection).map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <RechartsTooltip 
+                  formatter={(value: any) => `${Number(value || 0).toLocaleString()} ج.م`}
+                  contentStyle={{ backgroundColor: '#13151c', borderColor: '#222634', borderRadius: '8px', color: '#fff' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-[#222634] bg-[#13151c] p-6 shadow-xl">
+          <h3 className="text-base font-bold text-white mb-6">مقارنة الخامات والمصنعيات للأقسام</h3>
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={Object.values(summary.bySection).filter(s => s.totalCost > 0)}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#222634" />
+                <XAxis dataKey="title" stroke="#94a3b8" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                <YAxis stroke="#94a3b8" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                <RechartsTooltip
+                  formatter={(value: any) => `${Number(value || 0).toLocaleString()} ج.م`}
+                  contentStyle={{ backgroundColor: '#13151c', borderColor: '#222634', borderRadius: '8px', color: '#fff' }}
+                  cursor={{ fill: '#1e293b', opacity: 0.4 }}
+                />
+                <Legend wrapperStyle={{ paddingTop: '20px' }} />
+                <Bar dataKey="materialCost" name="الخامات" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="laborCost" name="المصنعيات" fill="#10b981" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 

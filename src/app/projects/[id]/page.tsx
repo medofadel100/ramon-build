@@ -24,8 +24,9 @@ import ProjectDailyLogsTab from '@/components/project/ProjectDailyLogsTab';
 import ProjectRfiTab from '@/components/project/ProjectRfiTab';
 import ProjectProcurementTab from '@/components/project/ProjectProcurementTab';
 import ProjectInventoryTab from '@/components/project/ProjectInventoryTab';
+import ProjectInvoicesTab from '@/components/project/ProjectInvoicesTab';
 import ProjectBimTab from '@/components/project/ProjectBimTab';
-import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign, ClipboardCheck, Settings2, Store, CalendarDays, Navigation, FileQuestion, ShoppingCart, Box, Bot } from 'lucide-react';
+import { FileText, ClipboardList, Layers, Layout, Paperclip, Share2, Info, ChevronLeft, Users, Package, DollarSign, ClipboardCheck, Settings2, Store, CalendarDays, Navigation, FileQuestion, ShoppingCart, Box, Bot, Receipt } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectPageProps {
@@ -45,7 +46,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
   const loadingProject = useProjectStore((state) => state.loading);
   const projectError = useProjectStore((state) => state.error);
 
-  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'schedule' | 'dailylogs' | 'rfi' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting' | 'inspection' | 'constants' | 'market' | 'modules' | 'procurement' | 'inventory_track' | 'bim'>('boq');
+  const [activeTab, setActiveTab] = useState<'info' | 'zones' | 'boq' | 'schedule' | 'dailylogs' | 'rfi' | 'summary' | 'attachments' | 'sharing' | 'team' | 'suppliers' | 'accounting' | 'inspection' | 'constants' | 'market' | 'modules' | 'procurement' | 'inventory_track' | 'bim' | 'invoices'>('boq');
 
   useEffect(() => {
     if (!loadingAuth && !user) {
@@ -112,6 +113,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
     { id: 'zones', label: 'المساحات والحيّز', icon: Layers, module: 'boq' },
     { id: 'suppliers', label: 'الموردين والصناعية', icon: Package, module: 'inventory' },
     { id: 'accounting', label: 'الحسابات والدفعات', icon: DollarSign, module: 'financials' },
+    { id: 'invoices', label: 'المستخلصات', icon: Receipt, module: 'financials' },
     { id: 'constants', label: 'الخامات والثوابت', icon: Settings2, module: 'boq' },
     { id: 'inventory_track', label: 'المخازن والمواد', icon: Package, module: 'inventory' },
     { id: 'procurement', label: 'عطاءات ومشتريات', icon: ShoppingCart, module: 'inventory' },
@@ -211,6 +213,7 @@ export default function ProjectDetailsPage({ params }: ProjectPageProps) {
           {activeTab === 'market' && <ProjectMaterialsMarketTab />}
           {activeTab === 'inventory_track' && <ProjectInventoryTab />}
           {activeTab === 'procurement' && <ProjectProcurementTab />}
+          {activeTab === 'invoices' && <ProjectInvoicesTab />}
           {activeTab === 'bim' && <ProjectBimTab />}
           {activeTab === 'attachments' && <ProjectAttachmentsTab />}
           {activeTab === 'sharing' && <ProjectSharingTab />}

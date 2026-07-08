@@ -174,6 +174,36 @@ export interface InventoryTransaction {
   recordedBy: string;
 }
 
+export interface InvoiceItem {
+  boqItemId: string;
+  itemName: string;
+  previousQuantity: number;
+  currentQuantity: number;
+  totalQuantity: number;
+  unitPrice: number;
+  totalAmount: number;
+}
+
+export interface Invoice {
+  id: string;
+  type: 'client' | 'subcontractor';
+  status: 'draft' | 'submitted' | 'approved' | 'paid';
+  title: string;
+  dateCreated: string;
+  dueDate: string;
+  subcontractorId?: string; // If type === subcontractor
+  items: InvoiceItem[];
+  subtotal: number;
+  taxRate: number; // e.g. 14 for VAT
+  taxAmount: number;
+  retentionRate?: number; // e.g. 5 for 5% retention
+  retentionAmount?: number;
+  deductions?: number;
+  totalAmount: number;
+  notes: string;
+  createdBy: string;
+}
+
 export interface ProjectData {
   id: string;
   header: ProjectHeader;
@@ -193,6 +223,7 @@ export interface ProjectData {
   qaqcForms?: QCForm[];
   rfqs?: RFQ[];
   inventory?: InventoryTransaction[];
+  invoices?: Invoice[];
 }
 
 // ==========================================
