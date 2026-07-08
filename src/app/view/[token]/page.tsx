@@ -8,7 +8,7 @@ import { Zone, BOQItem, calculateProjectSummary, calculateItemTotal } from '@/li
 import { formatDate } from '@/lib/project-service';
 import { 
   MapPin, Calendar, User, Layers, ClipboardCheck, Info, FileSpreadsheet, Lock, 
-  ChevronUp, ChevronDown, Shield, Users, Zap, Wrench, Building2, Paintbrush, HardHat, Ruler, Phone
+  ChevronUp, ChevronDown, Shield, Users, Zap, Wrench, Building2, Paintbrush, HardHat, Ruler, Phone, Image as ImageIcon, DollarSign, Activity
 } from 'lucide-react';
 
 interface ClientViewPageProps {
@@ -37,9 +37,14 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
   const [zones, setZones] = useState<Zone[]>([]);
   const [sections, setSections] = useState<any[]>([]);
   const [items, setItems] = useState<BOQItem[]>([]);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [dailyLogs, setDailyLogs] = useState<any[]>([]);
 
   // Expanded sections state
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  
+  // Tabs State
+  const [activeTab, setActiveTab] = useState<'boq' | 'financials' | 'gallery'>('boq');
 
   useEffect(() => {
     if (!shareToken) return;
@@ -81,10 +86,23 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
         sectionsList.sort((a, b) => a.id.localeCompare(b.id));
         itemsList.sort((a, b) => a.id.localeCompare(b.id));
 
+        // Fetch Invoices
+        const invoicesSnap = await getDocs(collection(db, 'projects', projectId, 'invoices'));
+        const invoicesList = invoicesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // filter client invoices only? actually client shouldn't see subcontractor invoices
+        const clientInvoices = invoicesList.filter((inv: any) => inv.type === 'client');
+
+        // Fetch Daily Logs
+        const logsSnap = await getDocs(collection(db, 'projects', projectId, 'dailylogs'));
+        const logsList = logsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        logsList.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
         setProject({ id: projectId, ...pData });
         setZones(zonesList);
         setSections(sectionsList);
         setItems(itemsList);
+        setInvoices(clientInvoices);
+        setDailyLogs(logsList);
 
         if (sectionsList.length > 0) {
           setExpandedSections({ 
@@ -323,7 +341,46 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
           </div>
         </section>
 
-        {/* 5. Detailed BOQ Tree */}
+        {/* 3. Tabs Navigation */}
+        <section className="bg-[#13151c]/80 backdrop-blur-md rounded-2xl border border-[#222634] p-2 flex items-center gap-2 overflow-x-auto scrollbar-hide">
+          <button
+            onClick={() => setActiveTab('boq')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition whitespace-nowrap ${
+              activeTab === 'boq' 
+                ? 'bg-[#c5a880] text-[#0d0e12] shadow-lg' 
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+            }`}
+          >
+            <FileSpreadsheet className="w-5 h-5" />
+            حصر الكميات والمقايسة
+          </button>
+          <button
+            onClick={() => setActiveTab('financials')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition whitespace-nowrap ${
+              activeTab === 'financials' 
+                ? 'bg-[#c5a880] text-[#0d0e12] shadow-lg' 
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+            }`}
+          >
+            <DollarSign className="w-5 h-5" />
+            الماليات والمستخلصات
+          </button>
+          <button
+            onClick={() => setActiveTab('gallery')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition whitespace-nowrap ${
+              activeTab === 'gallery' 
+                ? 'bg-[#c5a880] text-[#0d0e12] shadow-lg' 
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+            }`}
+          >
+            <ImageIcon className="w-5 h-5" />
+            معرض الصور واليوميات
+          </button>
+        </section>
+
+        {/* Tab Content */}
+        {activeTab === 'boq' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <section className="space-y-5">
           <div className="flex items-center gap-3 px-1">
             <div className="p-2 rounded-lg bg-[#c5a880]/10 shadow-inner">
@@ -489,6 +546,111 @@ export default function ClientViewPage({ params }: ClientViewPageProps) {
               <p>الأسعار المذكورة أعلاه هي أسعار تقديرية مبنية على حصر كميات الأبعاد المسطحة للموقع (Floor & Wall dimensions) وتخضع لشروط التوريد. مدة التنفيذ المقدرة مجملها <span className="text-[#c5a880] font-bold px-1">{summary.totalDays} أيام</span> عمل متواصلة.</p>
             </div>
           </section>
+        )}
+        </div>
+        )}
+
+        {/* Financials Tab */}
+        {activeTab === 'financials' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-[#13151c] border border-[#222634] p-5 rounded-2xl">
+                <div className="text-xs text-slate-400 font-medium mb-1">إجمالي المستخلصات</div>
+                <div className="text-2xl font-black text-white">{invoices.reduce((acc, inv) => acc + (Number(inv.totalAmount) || 0), 0).toLocaleString()} ج.م</div>
+              </div>
+              <div className="bg-emerald-900/20 border border-emerald-900/50 p-5 rounded-2xl">
+                <div className="text-xs text-emerald-500 font-medium mb-1">إجمالي المدفوعات (تقريبي)</div>
+                <div className="text-2xl font-black text-emerald-400">{invoices.filter(i => i.status === 'paid').reduce((acc, inv) => acc + (Number(inv.totalAmount) || 0), 0).toLocaleString()} ج.م</div>
+              </div>
+              <div className="bg-rose-900/20 border border-rose-900/50 p-5 rounded-2xl">
+                <div className="text-xs text-rose-500 font-medium mb-1">المتبقي للدفع</div>
+                <div className="text-2xl font-black text-rose-400">{invoices.filter(i => i.status !== 'paid').reduce((acc, inv) => acc + (Number(inv.totalAmount) || 0), 0).toLocaleString()} ج.م</div>
+              </div>
+            </div>
+
+            <div className="bg-[#13151c]/80 backdrop-blur-xl border border-[#222634] rounded-3xl overflow-hidden shadow-2xl">
+              <div className="p-6 border-b border-[#222634] bg-[#1a1c24]">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-[#c5a880]" />
+                  المستخلصات المالية
+                </h3>
+              </div>
+              <div className="p-6">
+                {invoices.length === 0 ? (
+                  <div className="text-center py-10 text-slate-500 font-medium">لا توجد مستخلصات مالية معتمدة للعميل حتى الآن.</div>
+                ) : (
+                  <div className="space-y-4">
+                    {invoices.map((invoice, idx) => (
+                      <div key={invoice.id} className="border border-[#222634] rounded-2xl p-5 bg-[#13151c] flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className="text-sm font-bold text-white">مستخلص رقم #{idx + 1}</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${invoice.status === 'paid' ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-800' : 'bg-amber-900/30 text-amber-400 border border-amber-800'}`}>
+                              {invoice.status === 'paid' ? 'تم الدفع' : 'معلق / قيد المراجعة'}
+                            </span>
+                          </div>
+                          <div className="text-xs text-slate-400 flex items-center gap-2">
+                            <Calendar className="w-3 h-3" />
+                            تاريخ الإصدار: {formatDate(invoice.createdAt)}
+                          </div>
+                        </div>
+                        <div className="text-xl font-black text-[#c5a880]">
+                          {Number(invoice.totalAmount).toLocaleString()} ج.م
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Gallery Tab */}
+        {activeTab === 'gallery' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-[#13151c]/80 backdrop-blur-xl border border-[#222634] rounded-3xl overflow-hidden shadow-2xl p-6">
+              <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-[#c5a880]" />
+                اليوميات الميدانية ومعرض الصور
+              </h3>
+              
+              {dailyLogs.length === 0 ? (
+                <div className="text-center py-10 text-slate-500 font-medium">لا توجد يوميات ميدانية منشورة في هذا المشروع حتى الآن.</div>
+              ) : (
+                <div className="space-y-8">
+                  {dailyLogs.map(log => (
+                    <div key={log.id} className="border-b border-[#222634] pb-8 last:border-0 last:pb-0">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700 shrink-0">
+                          <Activity className="w-5 h-5 text-slate-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-white">يومية بتاريخ: {formatDate(log.date)}</h4>
+                          <span className="text-xs text-slate-400">كتبها مهندس الموقع</span>
+                        </div>
+                      </div>
+                      <div className="bg-slate-900/50 rounded-xl p-4 text-sm text-slate-300 leading-relaxed mb-4 border border-slate-800/50">
+                        {log.notes || 'لا توجد ملاحظات تفصيلية.'}
+                      </div>
+                      {log.photos && log.photos.length > 0 && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-4">
+                          {log.photos.map((photo: string, i: number) => (
+                            <a href={photo} target="_blank" rel="noopener noreferrer" key={i} className="group relative aspect-square rounded-xl overflow-hidden border border-slate-800 block">
+                              <img src={photo} alt="صورة الموقع" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <ImageIcon className="w-6 h-6 text-white drop-shadow" />
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         )}
 
       </main>

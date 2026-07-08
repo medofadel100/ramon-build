@@ -7,8 +7,9 @@ import { useProjectStore } from '@/store/projectStore';
 import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Navbar from '@/components/Navbar';
-import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X, BookOpen, Activity, LayoutDashboard, CheckCircle2, Clock } from 'lucide-react';
+import { Search, Filter, Plus, Calendar, MapPin, Phone, User, MessageCircle, FileText, Trash2, AlertTriangle, X, BookOpen, Activity, LayoutDashboard, CheckCircle2, Clock, DollarSign, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 interface ProjectListItem {
   id: string;
@@ -165,6 +166,27 @@ export default function DashboardPage() {
     }
   };
 
+  // KPIs Calculations
+  const totalProjects = projects.length;
+  const activeProjects = projects.filter(p => p.header.status !== 'closed').length;
+  const completedProjects = projects.filter(p => p.header.status === 'closed').length;
+  const sentToClientProjects = projects.filter(p => p.header.status === 'sent_to_client').length;
+
+  // Chart Data preparation
+  const statusData = [
+    { name: 'مسودة', value: projects.filter(p => p.header.status === 'draft').length, color: '#475569' },
+    { name: 'تحت المراجعة', value: projects.filter(p => p.header.status === 'review').length, color: '#f59e0b' },
+    { name: 'معتمد فنيًا', value: projects.filter(p => p.header.status === 'approved').length, color: '#10b981' },
+    { name: 'مرسل للعميل', value: sentToClientProjects, color: '#0ea5e9' },
+    { name: 'مغلق/منتهي', value: completedProjects, color: '#f43f5e' }
+  ].filter(d => d.value > 0);
+
+  const typeData = [
+    { name: 'إنشاء جديد', value: projects.filter(p => p.header.projectType.workType === 'new_build').length },
+    { name: 'تشطيب فقط', value: projects.filter(p => p.header.projectType.workType === 'finishing_only').length },
+    { name: 'تجديد', value: projects.filter(p => p.header.projectType.workType === 'renovation').length },
+  ].filter(d => d.value > 0);
+
   if (loadingAuth || !user) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-[#0d0e12]">
@@ -286,6 +308,119 @@ export default function DashboardPage() {
             </select>
           </div>
         </div>
+
+        {/* Executive Dashboard KPIs (Phase 5) */}
+        {!loadingProjects && totalProjects > 0 && (
+          <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <LayoutDashboard className="w-5 h-5 text-[#c5a880]" />
+              اللوحة التنفيذية
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-[#13151c] border border-[#222634] p-5 rounded-2xl flex items-center gap-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#c5a880]/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                <div className="w-12 h-12 rounded-xl bg-[#c5a880]/10 flex items-center justify-center text-[#c5a880] shrink-0 border border-[#c5a880]/20 z-10">
+                  <Activity className="w-6 h-6" />
+                </div>
+                <div className="z-10">
+                  <div className="text-xs text-slate-400 font-medium mb-1">إجمالي المشاريع</div>
+                  <div className="text-2xl font-black text-white">{totalProjects}</div>
+                </div>
+              </div>
+              <div className="bg-[#13151c] border border-[#222634] p-5 rounded-2xl flex items-center gap-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 shrink-0 border border-sky-500/20 z-10">
+                  <TrendingUp className="w-6 h-6" />
+                </div>
+                <div className="z-10">
+                  <div className="text-xs text-slate-400 font-medium mb-1">المشاريع النشطة</div>
+                  <div className="text-2xl font-black text-white">{activeProjects}</div>
+                </div>
+              </div>
+              <div className="bg-[#13151c] border border-[#222634] p-5 rounded-2xl flex items-center gap-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0 border border-emerald-500/20 z-10">
+                  <CheckCircle2 className="w-6 h-6" />
+                </div>
+                <div className="z-10">
+                  <div className="text-xs text-slate-400 font-medium mb-1">المشاريع المنجزة</div>
+                  <div className="text-2xl font-black text-white">{completedProjects}</div>
+                </div>
+              </div>
+              <div className="bg-[#13151c] border border-[#222634] p-5 rounded-2xl flex items-center gap-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 shrink-0 border border-amber-500/20 z-10">
+                  <DollarSign className="w-6 h-6" />
+                </div>
+                <div className="z-10">
+                  <div className="text-xs text-slate-400 font-medium mb-1">مرسلة للعميل</div>
+                  <div className="text-2xl font-black text-white">{sentToClientProjects}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Project Status Chart */}
+              <div className="bg-[#13151c] border border-[#222634] rounded-2xl p-5">
+                <h3 className="text-sm font-bold text-white mb-4">حالة المشاريع الحالية</h3>
+                <div className="h-[250px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={statusData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {statusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip 
+                        contentStyle={{ backgroundColor: '#13151c', borderColor: '#222634', borderRadius: '12px' }}
+                        itemStyle={{ color: '#fff', fontWeight: 'bold' }}
+                        formatter={(value: any) => [Number(value || 0), 'عدد المشاريع']}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
+                  {statusData.map((entry, index) => (
+                    <div key={index} className="flex items-center gap-1.5 text-xs text-slate-400">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }}></div>
+                      {entry.name} ({entry.value})
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Project Type Chart */}
+              <div className="bg-[#13151c] border border-[#222634] rounded-2xl p-5">
+                <h3 className="text-sm font-bold text-white mb-4">أنواع المشاريع</h3>
+                <div className="h-[250px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={typeData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#222634" vertical={false} />
+                      <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                      <RechartsTooltip 
+                        contentStyle={{ backgroundColor: '#13151c', borderColor: '#222634', borderRadius: '12px' }}
+                        itemStyle={{ color: '#c5a880', fontWeight: 'bold' }}
+                        cursor={{ fill: '#222634', opacity: 0.4 }}
+                        formatter={(value: any) => [Number(value || 0), 'مشروع']}
+                      />
+                      <Bar dataKey="value" fill="#c5a880" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Projects Grid Grid */}
         {loadingProjects ? (

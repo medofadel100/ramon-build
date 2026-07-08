@@ -5,11 +5,15 @@ import { useProjectStore } from '@/store/projectStore';
 import { useAuthStore } from '@/store/authStore';
 import { BOQItem, calculateItemTotal } from '@/lib/calculations';
 import { CalendarDays, Save, Play, CheckCircle2, AlertCircle, Calendar } from 'lucide-react';
+import { Gantt, Task, ViewMode } from 'gantt-task-react';
+import 'gantt-task-react/dist/index.css';
 
 export default function ProjectScheduleTab() {
   const currentProject = useProjectStore((state) => state.currentProject);
   const updateItem = useProjectStore((state) => state.updateItem);
   const user = useAuthStore((state) => state.user);
+
+  const [view, setView] = useState<ViewMode>(ViewMode.Day);
 
   const canEdit = user?.role === 'admin' || currentProject?.header.assignedEngineers.includes(user?.uid || '');
 
@@ -20,35 +24,71 @@ export default function ProjectScheduleTab() {
     return currentProject.items.filter(it => it.isActive && enabledSectionIds.includes(it.sectionId));
   }, [currentProject]);
 
-  // Handle schedule update
-  const handleScheduleUpdate = async (item: BOQItem, field: keyof NonNullable<BOQItem['schedule']>, value: any) => {
-    const currentSchedule = item.schedule || {};
-    const updatedSchedule = { ...currentSchedule, [field]: value };
+  const tasks: Task[] = useMemo(() => {
+    if (activeItems.length === 0) return [];
+    
+    return activeItems.map(item => {
+      const today = new Date();
+      // default start is today, end is today + estimated days or 7 days
+      const res = calculateItemTotal(item, currentProject?.zones || [], currentProject?.projectConstants || {});
+      const estDays = res.estimatedDays || 7;
+      
+      const start = item.schedule?.startDate ? new Date(item.schedule.startDate) : today;
+      const end = item.schedule?.endDate ? new Date(item.schedule.endDate) : new Date(today.getTime() + estDays * 24 * 60 * 60 * 1000);
+      
+      return {
+        start,
+        end,
+        name: item.title,
+        id: item.id,
+        type: 'task',
+        progress: item.schedule?.progress || 0,
+        isDisabled: !canEdit,
+        styles: { 
+          progressColor: '#c5a880', 
+          progressSelectedColor: '#e5c595',
+          backgroundColor: '#1e293b',
+          backgroundSelectedColor: '#334155'
+        }
+      };
+    });
+  }, [activeItems, canEdit, currentProject]);
+
+  // Handlers for Gantt interactions
+  const handleTaskChange = async (task: Task) => {
+    const item = activeItems.find(it => it.id === task.id);
+    if (!item) return;
+
+    // Local offset to prevent timezone mismatch on stringification
+    const tzOffset = task.start.getTimezoneOffset() * 60000;
+    const newStart = new Date(task.start.getTime() - tzOffset).toISOString().split('T')[0];
+    const newEnd = new Date(task.end.getTime() - tzOffset).toISOString().split('T')[0];
+
     await updateItem({
       ...item,
-      schedule: updatedSchedule
+      schedule: {
+        ...item.schedule,
+        startDate: newStart,
+        endDate: newEnd,
+        progress: task.progress
+      }
+    });
+  };
+
+  const handleProgressChange = async (task: Task) => {
+    const item = activeItems.find(it => it.id === task.id);
+    if (!item) return;
+
+    await updateItem({
+      ...item,
+      schedule: {
+        ...item.schedule,
+        progress: task.progress
+      }
     });
   };
 
   if (!currentProject) return null;
-
-  // Simple timeline calculation
-  let minDate = new Date('2050-01-01').getTime();
-  let maxDate = new Date('2000-01-01').getTime();
-
-  activeItems.forEach(item => {
-    if (item.schedule?.startDate) {
-      const d = new Date(item.schedule.startDate).getTime();
-      if (d < minDate) minDate = d;
-    }
-    if (item.schedule?.endDate) {
-      const d = new Date(item.schedule.endDate).getTime();
-      if (d > maxDate) maxDate = d;
-    }
-  });
-
-  const totalDurationMs = maxDate - minDate;
-  const hasDates = totalDurationMs > 0;
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 font-cairo">
@@ -59,119 +99,65 @@ export default function ProjectScheduleTab() {
             <CalendarDays className="w-5 h-5 text-indigo-400" />
             الجدول الزمني التفاعلي (Gantt)
           </h3>
-          <p className="text-xs text-slate-400 mt-1 font-medium">متابعة سير المشروع زمنياً، وتحديث نسب الإنجاز الميدانية.</p>
+          <p className="text-xs text-slate-400 mt-1 font-medium">اسحب البنود لتعديل تاريخ البداية والنهاية، واسحب الشريط الأخضر لتحديث نسبة الإنجاز.</p>
+        </div>
+
+        <div className="flex bg-[#1a1c24] border border-[#222634] rounded-lg p-1">
+          <button
+            onClick={() => setView(ViewMode.Day)}
+            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Day ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            يومي
+          </button>
+          <button
+            onClick={() => setView(ViewMode.Week)}
+            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Week ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            أسبوعي
+          </button>
+          <button
+            onClick={() => setView(ViewMode.Month)}
+            className={`px-4 py-1.5 rounded-md text-xs font-bold transition ${view === ViewMode.Month ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            شهري
+          </button>
         </div>
       </div>
 
-      <div className="bg-[#13151c] rounded-xl border border-[#222634] overflow-hidden">
-        {/* Table Header */}
-        <div className="grid grid-cols-12 gap-4 p-4 border-b border-[#222634] bg-[#1a1c24] text-[10px] font-bold text-slate-400 text-right">
-          <div className="col-span-4">البند / المهمة</div>
-          <div className="col-span-2 text-center">تاريخ البدء</div>
-          <div className="col-span-2 text-center">تاريخ الانتهاء</div>
-          <div className="col-span-2 text-center">المدة التقديرية</div>
-          <div className="col-span-2 text-center">نسبة الإنجاز</div>
-        </div>
-
-        {/* Table Body */}
-        <div className="divide-y divide-[#222634] max-h-[60vh] overflow-y-auto">
-          {activeItems.map((item) => {
-            const res = calculateItemTotal(item, currentProject.zones, currentProject.projectConstants);
-            const estDays = res.estimatedDays || 0;
-            const progress = item.schedule?.progress || 0;
-
-            // Visual bar width
-            let leftPercent = 0;
-            let widthPercent = 100;
-            
-            if (hasDates && item.schedule?.startDate && item.schedule?.endDate) {
-              const s = new Date(item.schedule.startDate).getTime();
-              const e = new Date(item.schedule.endDate).getTime();
-              leftPercent = ((s - minDate) / totalDurationMs) * 100;
-              widthPercent = ((e - s) / totalDurationMs) * 100;
-            }
-
-            return (
-              <div key={item.id} className="p-4 hover:bg-slate-900/40 transition">
-                <div className="grid grid-cols-12 gap-4 items-center">
-                  
-                  {/* Title & Timeline Bar */}
-                  <div className="col-span-4 space-y-2">
-                    <div className="text-xs font-bold text-slate-200 line-clamp-1" title={item.title}>
-                      {item.title}
-                    </div>
-                    {/* Tiny Gantt Bar preview */}
-                    <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden relative">
-                      {hasDates && item.schedule?.startDate && item.schedule?.endDate ? (
-                        <div 
-                          className="absolute h-full bg-indigo-500 rounded-full"
-                          style={{ left: `${leftPercent}%`, width: `${widthPercent}%` }}
-                        >
-                          <div 
-                            className="h-full bg-emerald-400 transition-all" 
-                            style={{ width: `${progress}%` }}
-                          />
-                        </div>
-                      ) : (
-                        <div className="h-full w-full bg-slate-700/50 striped-bg" />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Start Date */}
-                  <div className="col-span-2">
-                    <input 
-                      type="date" 
-                      disabled={!canEdit}
-                      value={item.schedule?.startDate || ''}
-                      onChange={(e) => handleScheduleUpdate(item, 'startDate', e.target.value)}
-                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
-                    />
-                  </div>
-
-                  {/* End Date */}
-                  <div className="col-span-2">
-                    <input 
-                      type="date" 
-                      disabled={!canEdit}
-                      value={item.schedule?.endDate || ''}
-                      onChange={(e) => handleScheduleUpdate(item, 'endDate', e.target.value)}
-                      className="w-full bg-[#1a1c24] border border-[#222634] rounded px-2 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
-                    />
-                  </div>
-
-                  {/* Estimated Duration */}
-                  <div className="col-span-2 text-center text-xs font-bold text-slate-500">
-                    {estDays > 0 ? `${estDays} يوم` : '-'}
-                  </div>
-
-                  {/* Progress */}
-                  <div className="col-span-2 flex items-center gap-2">
-                    <input 
-                      type="range" 
-                      min="0" 
-                      max="100" 
-                      disabled={!canEdit}
-                      value={progress}
-                      onChange={(e) => handleScheduleUpdate(item, 'progress', parseInt(e.target.value))}
-                      className="w-full accent-emerald-500"
-                    />
-                    <span className="text-[10px] font-black text-emerald-400 w-8">{progress}%</span>
-                  </div>
-
-                </div>
-              </div>
-            );
-          })}
-
-          {activeItems.length === 0 && (
-            <div className="text-center py-12">
-              <Calendar className="w-12 h-12 text-slate-700 mx-auto mb-3" />
-              <p className="text-sm text-slate-500 font-bold">لا توجد بنود مفعلة في هذا المشروع لعرضها في الجدول الزمني.</p>
-            </div>
-          )}
-        </div>
+      <div className="bg-[#13151c] rounded-xl border border-[#222634] overflow-x-auto p-4">
+        {tasks.length > 0 ? (
+          <div className="min-w-[800px]">
+            <Gantt
+              tasks={tasks}
+              viewMode={view}
+              onDateChange={handleTaskChange}
+              onProgressChange={handleProgressChange}
+              listCellWidth="200px"
+              columnWidth={view === ViewMode.Month ? 200 : view === ViewMode.Week ? 150 : 60}
+              ganttHeight={Math.max(300, tasks.length * 50)}
+              fontFamily="Cairo, sans-serif"
+              locale="ar"
+            />
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <Calendar className="w-12 h-12 text-slate-700 mx-auto mb-3" />
+            <p className="text-sm text-slate-500 font-bold">لا توجد بنود مفعلة في هذا المشروع لعرضها في الجدول الزمني.</p>
+          </div>
+        )}
       </div>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        /* Overrides for gantt-task-react to match dark mode theme */
+        .gantt .grid-header { fill: #1a1c24 !important; stroke: #222634 !important; }
+        .gantt .grid-row { fill: #13151c !important; stroke: #222634 !important; }
+        .gantt .grid-row:nth-child(even) { fill: #1a1c24 !important; }
+        .gantt .tick { stroke: #222634 !important; }
+        .gantt .tick text { fill: #94a3b8 !important; font-family: Cairo !important; font-weight: bold; }
+        .gantt .task-list-header { fill: #1a1c24 !important; stroke: #222634 !important; }
+        .gantt .task-list-row { stroke: #222634 !important; }
+        .gantt .task-list-item text { fill: #e2e8f0 !important; font-family: Cairo !important; font-weight: bold; font-size: 12px; }
+      `}} />
     </div>
   );
 }
